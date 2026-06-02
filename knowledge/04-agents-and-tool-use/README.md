@@ -12,5 +12,7 @@ harness/SDK specifics → [`../09-tooling-and-sdks`](../09-tooling-and-sdks).
 
 ---
 
-_No notes yet. Add files here and index them in this list:_
-- _(none)_
+_Notes here:_
+- [Agentic AI System — Reference Architecture](agentic-ai-reference-architecture.md) — layered blueprint for a production agent system (9 layers + observability, reliability, governance).
+- [Model Context Protocol (MCP)](model-context-protocol.md) — the open protocol for connecting any model to any tool; roles, primitives, transport, and gotchas.
+- [Claude Code — Multi-Agent Development](claude-code-multi-agent-development.md) — when to use worktrees vs Agent Teams vs parallel subagents, plus multi-Claude operational gotchas.

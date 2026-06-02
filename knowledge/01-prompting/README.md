@@ -11,5 +11,5 @@ reusable prompt assets → [`../../patterns/prompts`](../../patterns/prompts).
 
 ---
 
-_No notes yet. Add files here and index them in this list:_
-- _(none)_
+_Notes here:_
+- [Prompt vs Context vs Harness Engineering](prompt-context-harness-engineering.md) — three nested levels of LLM control: shape one input (prompt) → manage the window (context) → wrap the gather/act/verify loop (harness).
