@@ -9,7 +9,7 @@ interactive: ../../docs/claude-code-architecture/exam-prep.html
 
 # CCA-F Question Bank
 
-77 scenario-based practice questions for the **Claude Certified Architect — Foundations**
+136 scenario-based practice questions for the **Claude Certified Architect — Foundations**
 exam, weighted to the official 5-domain blueprint and mapped to the 30 official task statements.
 Take them interactively (instant feedback + 60-question exam mode) at the
 [practice quiz](../../docs/claude-code-architecture/exam-prep.html); this is the text companion.
@@ -23,12 +23,12 @@ Take them interactively (instant feedback + 60-question exam mode) at the
 
 | Domain | Weight | Questions |
 |---|---|---|
-| Agentic architecture & orchestration | 27% | 20 |
-| Tool design & MCP integration | 18% | 14 |
-| Claude Code config & workflows | 20% | 15 |
-| Prompt engineering & structured output | 20% | 15 |
-| Context management & reliability | 15% | 13 |
-| **Total** | **100%** | **77** |
+| Agentic architecture & orchestration | 27% | 36 |
+| Tool design & MCP integration | 18% | 26 |
+| Claude Code config & workflows | 20% | 29 |
+| Prompt engineering & structured output | 20% | 23 |
+| Context management & reliability | 15% | 22 |
+| **Total** | **100%** | **136** |
 
 ---
 
@@ -438,6 +438,326 @@ _Source:_ <https://code.claude.com/docs/en/sub-agents>
 
 </details>
 
+### D1-21 · L301
+
+*Scenario:* A support agent handles single-issue requests at 94% accuracy, but multi-issue requests ('refund order #1234 AND update shipping for #5678') drop to 58% — it often handles one and forgets the other.
+
+**Most effective fix? (Task 1.6)**
+
+- **A.** A preprocessing model call that decomposes the request first
+- **B.** Combine the tools into fewer universal tools
+- **C.** Add few-shot examples demonstrating decomposition and correct tool sequencing for multi-issue requests
+- **D.** Add a validation step that re-prompts when an issue is missed
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: C.** The agent already handles single issues; it needs to learn the decomposition/sequencing pattern, which few-shot examples teach directly. A separate preprocessing call adds latency/complexity; merging tools loses specificity; re-prompting treats the symptom.
+
+_Source:_ <https://platform.claude.com/docs>
+
+_Adapted from:_ timothywarner (rewritten)
+
+</details>
+
+### D1-22 · L301
+
+*Scenario:* Complex requests ('I was billed twice, my discount didn't apply, and I want to cancel') average 12+ tool calls at 54% success, with repeated redundant get_customer calls.
+
+**Best architecture? (Task 1.2)**
+
+- **A.** Add verification checkpoints between every stage
+- **B.** Combine get_customer/lookup_order/billing into one investigate_issue tool
+- **C.** Decompose into separate issues, investigate them in parallel using shared customer context, then synthesize
+- **D.** Add few-shot examples of ideal sequences
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: C.** Decomposition plus parallel investigation with shared customer context eliminates the redundant retrievals and the long sequential loop. A mega-tool hides complexity without structuring it; checkpoints and examples don't fix the redundant fetches.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+_Adapted from:_ timothywarner (rewritten)
+
+</details>
+
+### D1-23 · L201
+
+*Scenario:* An agent averages 4+ API round-trips because it requests get_customer and then lookup_order on separate turns, even when it clearly needs both up front.
+
+**How do you cut the loops? (Task 1.1)**
+
+- **A.** Increase max_tokens
+- **B.** Instruct the model to bundle the tool requests it needs into a single turn (parallel tool calls)
+- **C.** Create a composite get_customer_with_orders tool
+- **D.** Add speculative execution of every likely tool
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Claude can request multiple tools in one turn; instructing it to bundle obviously-needed calls collapses the sequential loop with minimal change. A composite tool is a heavier redesign; speculative execution wastes calls; max_tokens is irrelevant.
+
+_Source:_ <https://platform.claude.com/docs>
+
+_Adapted from:_ timothywarner (rewritten)
+
+</details>
+
+### D1-24 · L301
+
+*Scenario:* Complex cases are answered correctly, but CSAT is 15% lower: the explanations are inconsistent and the gaps differ case-to-case. No human oversight is wanted.
+
+**Best improvement? (Task 1.4)**
+
+- **A.** Add a self-critique (evaluator–optimizer) stage that checks the draft against concrete criteria before sending
+- **B.** Add a confirmation question: 'Does this fully resolve your issue?'
+- **C.** Upgrade the model for complex cases
+- **D.** Add few-shot examples for the five most common complex types
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: A.** An evaluator–optimizer (self-critique) stage forces the agent to check its own draft against explicit completeness criteria, catching case-specific gaps that vary too much for fixed few-shot coverage. A confirmation prompt shifts work to the customer; a bigger model doesn't address consistency.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+_Adapted from:_ timothywarner (rewritten)
+
+</details>
+
+### D1-25 · L301
+
+*Scenario:* Tools return data in inconsistent formats (Unix timestamps, ISO 8601, numeric status codes), and some are third-party MCP servers you cannot modify.
+
+**Most maintainable normalization? (Task 1.5)**
+
+- **A.** A PostToolUse hook that intercepts tool outputs and applies formatting transforms before the agent sees them
+- **B.** Modify the tools you own and write wrappers for the rest
+- **C.** A normalize_data tool the agent must call after every retrieval
+- **D.** Detailed format documentation in the system prompt
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: A.** A PostToolUse hook is one deterministic interception point that normalizes all tool output in code — including data from unmodifiable third-party MCP servers — without relying on the model to interpret mixed formats or remembering to call a tool.
+
+_Source:_ <https://code.claude.com/docs/en/hooks>
+
+_Adapted from:_ paullarionov (rewritten)
+
+</details>
+
+### D1-26 · L301
+
+*Scenario:* A previous deep-exploration session mapped the auth flows, but the auth module has since been refactored. You need to continue the work reliably.
+
+**Best approach? (Task 1.7)**
+
+- **A.** --resume the prior session
+- **B.** Start fresh and re-explore everything from scratch
+- **C.** Start a new session, inject a structured summary of the still-valid findings, and explicitly note the auth module changed
+- **D.** Resume and tell Claude to ignore its prior auth observations
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: C.** When prior tool results are now stale, resuming imports them as if current. A new session with a curated summary keeps the valid findings while flagging what changed — accurate and far cheaper than re-exploring everything.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+_Adapted from:_ hamzafarooq (rewritten)
+
+</details>
+
+### D1-27 · L301
+
+*Scenario:* A spawned teammate keeps redoing analysis the lead already did and misses project-specific conventions, even though it loads CLAUDE.md.
+
+**Most likely fix? (Task 1.3)**
+
+- **A.** Give the teammate more tools
+- **B.** Pass sufficient context in the spawn prompt — teammates load CLAUDE.md/MCP/skills but NOT the lead's conversation history
+- **C.** Switch the teammate to a larger model
+- **D.** Have the lead do all the work itself
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Teammates start with project memory and skills but not the lead's conversation. Anything learned in that conversation must be passed explicitly in the spawn prompt, or the teammate works blind to it.
+
+_Source:_ <https://code.claude.com/docs/en/agent-teams>
+
+_Adapted from:_ agent-teams docs
+
+</details>
+
+### D1-28 · L201
+
+*Scenario:* A latency-sensitive step just classifies an incoming message into one of three intents; a colleague proposes a multi-agent pipeline for it.
+
+**Best design? (Task 1.2 / 1.6)**
+
+- **A.** A multi-agent pipeline with a coordinator
+- **B.** A single agent (or a single classification call) — multi-agent adds latency and coordination overhead with no benefit
+- **C.** An agent team of three classifiers
+- **D.** A dynamic workflow
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Match the topology to the work. A simple, single-step classification needs one agent; multi-agent orchestration adds latency and complexity for nothing. Over-provisioning is as wrong as under-provisioning.
+
+_Source:_ <https://code.claude.com/docs/en/agents>
+
+</details>
+
+### D1-29 · L201
+
+*Scenario:* An agent gets stuck retrying a tool that is permanently failing, looping until it exhausts resources.
+
+**Soundest design? (Task 1.1)**
+
+- **A.** Remove all iteration limits and let it resolve naturally
+- **B.** Use a max-iteration cap as a safety backstop AND add a stop condition / error classification so it stops retrying unrecoverable failures
+- **C.** Just raise max_tokens
+- **D.** Terminate on the first tool error
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Caps are a safety boundary, not the primary control; pair them with proper error handling (classify and stop on unrecoverable failures). Removing limits invites runaway loops; terminating on any error is too brittle.
+
+_Source:_ <https://platform.claude.com/docs>
+
+</details>
+
+### D1-30 · L301
+
+*Scenario:* A draft must be iteratively improved against a rubric (e.g. a generated summary refined until it meets quality criteria).
+
+**Which pattern fits? (Task 1.6)**
+
+- **A.** A fixed sequential pipeline
+- **B.** An evaluator–optimizer loop: one role produces, another scores against the rubric, repeat until it passes
+- **C.** A single one-shot call
+- **D.** A coordinator with parallel subagents
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Iterative refinement against explicit criteria is the evaluator–optimizer pattern. A fixed pipeline has no feedback loop; one-shot has no refinement; parallel subagents don't iterate on each other's quality.
+
+_Source:_ <https://code.claude.com/docs/en/agents>
+
+</details>
+
+### D1-31 · L301
+
+*Scenario:* A research question requires gathering from many sources and cross-checking claims against each other for trustworthiness, at a scale beyond one conversation.
+
+**Best tool? (orchestration choice)**
+
+- **A.** A single long session
+- **B.** A dynamic workflow (e.g. /deep-research) that fans out and adversarially cross-checks before reporting
+- **C.** One subagent
+- **D.** A 3-person agent team
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Cross-checked, large-scale research is exactly what dynamic workflows are built for — fan out, verify claims against each other, and return only the synthesis. One session/subagent can't scale it; a small team lacks the scripted cross-check pattern.
+
+_Source:_ <https://code.claude.com/docs/en/workflows>
+
+</details>
+
+### D1-32 · L301
+
+*Scenario:* A subagent decides it needs to delegate part of its work to yet another subagent.
+
+**What's true, and the right structure? (Task 1.2)**
+
+- **A.** Subagents can nest freely; let it spawn another
+- **B.** Subagents cannot spawn subagents — restructure so the main session (or a team/workflow) does the orchestration
+- **C.** Switch the subagent to a larger model so it can nest
+- **D.** Add 'Task' to the subagent's allowedTools to enable nesting
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Subagents can't spawn their own subagents (no nesting) — a deliberate constraint. If a workload needs hierarchical delegation, the top-level session orchestrates, or you move to an agent team / dynamic workflow.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+</details>
+
+### D1-33 · L301
+
+*Scenario:* You need to (a) pick up a single investigation tomorrow exactly where you left off, and separately (b) explore two divergent designs from today's shared analysis.
+
+**Which mechanisms? (Task 1.7)**
+
+- **A.** --resume for both
+- **B.** fork_session for both
+- **C.** --resume for the linear continuation (a); fork_session for the two divergent branches (b)
+- **D.** Two terminal windows for both
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: C.** --resume continues one linear thread; fork_session branches independent explorations from a shared baseline. They solve different problems — use each for its case.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+_Adapted from:_ hamzafarooq (rewritten)
+
+</details>
+
+### D1-34 · L301
+
+*Scenario:* A hard bug has three competing hypotheses; you want them pursued in parallel by workers who can challenge and build on each other's findings.
+
+**Best surface? (orchestration choice)**
+
+- **A.** Three subagents reporting up independently
+- **B.** An agent team — peers that share a task list and message each other (adversarial debate)
+- **C.** Agent view
+- **D.** A single session
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** When the workers need to discuss and react to each other, that's an agent team (peer communication). Subagents only report up and can't debate; agent view sessions don't coordinate; one session can't run them in parallel.
+
+_Source:_ <https://code.claude.com/docs/en/agent-teams>
+
+</details>
+
+### D1-35 · L301
+
+*Scenario:* You have three unrelated tasks — fix a bug, review a PR, investigate a flaky test — that you'll start now and check back on later. They don't interact.
+
+**Best surface? (orchestration choice)**
+
+- **A.** An agent team with a lead
+- **B.** Agent view — dispatch them as independent background sessions and supervise from one dashboard
+- **C.** A dynamic workflow
+- **D.** Three subagents in one session
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Independent, non-communicating tasks you supervise loosely are the agent-view case. A team adds unneeded coordination; a workflow is for scripted fan-out; subagents in one session tie them to that conversation's lifecycle.
+
+_Source:_ <https://code.claude.com/docs/en/agent-view>
+
+</details>
+
+### D1-36 · L301
+
+*Scenario:* In an agent team, task B must not start until task A's output exists, and a third task depends on both.
+
+**Best way to coordinate? (Task 1.4)**
+
+- **A.** Tell each teammate to poll the others
+- **B.** Model the dependencies in the shared task list so they auto-resolve and the lead sequences the handoffs
+- **C.** Have the lead do A, B, and C itself
+- **D.** Run all three immediately and hope ordering works out
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Agent teams use a shared task list with dependencies that auto-resolve, so blocked tasks wait and the lead orchestrates handoffs. Polling is wasteful; doing it all in the lead defeats the team; ignoring order causes races.
+
+_Source:_ <https://code.claude.com/docs/en/agent-teams>
+
+</details>
+
 ---
 
 ## Tool design & MCP integration (18%)
@@ -725,6 +1045,244 @@ _Adapted from:_ hamzafarooq/timothywarner (rewritten)
 **Correct: B.** User scope gives a server to all your projects without committing it. Project scope would share it (and risk the credential) with everyone who clones the repo; that's wrong for a personal key.
 
 _Source:_ <https://code.claude.com/docs/en/mcp>
+
+</details>
+
+### D2-15 · L301
+
+*Scenario:* A single agent is configured with 18 tools and frequently selects the wrong one; descriptions are already clear.
+
+**Best structural fix? (Task 2.3)**
+
+- **A.** Add few-shot examples for all 18 tools
+- **B.** Distribute the tools across subagents (~4–5 each) grouped by domain, so each agent chooses from a small, coherent set
+- **C.** Merge tools to reduce the count
+- **D.** Add a keyword routing layer
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Too many tools on one agent degrades selection even with good descriptions. Splitting them across focused subagents (a handful each) is the documented remedy; merging loses capability and routing layers fight the model's own selection.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+_Adapted from:_ dnacenta (rewritten)
+
+</details>
+
+### D2-16 · L201
+
+*Scenario:* On failure, an MCP tool returns a raw stack-trace string, and the coordinator can't decide whether to retry, fall back, or escalate.
+
+**Better tool design? (Task 2.2)**
+
+- **A.** Return the stack trace but make it longer
+- **B.** Return a structured error (failure type, message, and retry/fallback guidance) so the caller can act programmatically
+- **C.** Return an empty success so the agent moves on
+- **D.** Log the error server-side and return nothing
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Callers need structured error context — type and recovery guidance — to choose retry vs fallback vs escalate. A raw trace isn't actionable; empty-success hides the failure; returning nothing strands the coordinator.
+
+_Source:_ <https://code.claude.com/docs/en/mcp>
+
+_Adapted from:_ OlivierAlter (rewritten)
+
+</details>
+
+### D2-17 · L301
+
+*Scenario:* After you rewrite two overlapping tool descriptions, ~30% of requests still misroute. The system prompt contains 'Always look up the customer first.'
+
+**What to investigate next? (Task 2.1)**
+
+- **A.** Add 10–15 more few-shot examples
+- **B.** Audit the system prompt for keyword-sensitive instructions that create unintended tool associations overriding the descriptions
+- **C.** Merge the two tools
+- **D.** Deploy a routing classifier
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** A system-prompt instruction keyed on words like 'customer' can create a keyword→tool association that competes with the descriptions. The systematic residual misrouting points there, not to more examples or a new classifier.
+
+_Source:_ <https://code.claude.com/docs/en/mcp>
+
+_Adapted from:_ hamzafarooq/timothywarner (rewritten)
+
+</details>
+
+### D2-18 · L201
+
+*Scenario:* You need an MCP server that pushes live events to the client (not request/response), and OAuth is not required.
+
+**Which transport? (Task 2.4)**
+
+- **A.** stdio
+- **B.** WebSocket (ws) — for servers that push events; header-auth only
+- **C.** HTTP
+- **D.** SSE (the recommended default)
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** WebSocket suits servers that push events, using header auth (no OAuth, no --transport flag). HTTP is the recommended remote default for request/response with OAuth; stdio is local; SSE is deprecated.
+
+_Source:_ <https://code.claude.com/docs/en/mcp>
+
+</details>
+
+### D2-19 · L201
+
+*Scenario:* A teammate adds a project-scoped MCP server in .mcp.json; on next launch it shows '⏸ Pending approval' for everyone.
+
+**Why, and is that correct? (Task 2.4)**
+
+- **A.** A bug — project servers should auto-start
+- **B.** Correct — project-scoped servers require explicit approval before first use as a trust safeguard
+- **C.** The transport is wrong; switch to stdio
+- **D.** The token expired
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Project-scoped servers (committed in .mcp.json) require explicit per-user approval before they run — a deliberate trust boundary, since a committed server could otherwise execute on every clone. Reset choices with claude mcp reset-project-choices.
+
+_Source:_ <https://code.claude.com/docs/en/mcp>
+
+</details>
+
+### D2-20 · L201
+
+*Scenario:* An agent uses Bash 'sed' to make a targeted source edit instead of the Edit tool.
+
+**Why prefer the built-in Edit tool? (Task 2.5)**
+
+- **A.** sed is slower
+- **B.** Edit makes a precise, reviewable, permission-governed change with a unique-match guard; ad-hoc Bash text manipulation bypasses that tooling and is riskier
+- **C.** Bash can't modify files
+- **D.** sed always corrupts files
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** The Edit tool performs targeted, reviewable edits under the permission system and guards against ambiguous matches. Falling back to Bash text manipulation sidesteps those safeguards — reserve Bash for operations the file tools don't cover.
+
+_Source:_ <https://code.claude.com/docs/en/settings>
+
+</details>
+
+### D2-21 · L201
+
+*Scenario:* In a dev-productivity agent, a fetch tool and a search tool have overlapping descriptions, so the agent often fetches when it should search.
+
+**Most effective first step? (Task 2.1)**
+
+- **A.** Add a routing classifier
+- **B.** Rewrite the descriptions (and rename if needed) so each tool's purpose and boundaries are unambiguous
+- **C.** Remove one of the tools
+- **D.** Add 10 few-shot examples
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Overlapping descriptions are the root cause; clarifying purpose and boundaries (and renaming when names collide semantically) fixes selection at the interface. Classifiers and example padding are heavier and don't remove the ambiguity.
+
+_Source:_ <https://code.claude.com/docs/en/mcp>
+
+_Adapted from:_ timothywarner (rewritten)
+
+</details>
+
+### D2-22 · L201
+
+*Scenario:* For one pure-reasoning step you must ensure the model produces a text answer and does NOT call any tool.
+
+**Best control? (Task 2.3)**
+
+- **A.** tool_choice: "any"
+- **B.** Don't expose tools for that call (or set tool_choice to 'none'), so no tool can be invoked
+- **C.** tool_choice: {"type":"tool","name":"..."}
+- **D.** Lower the temperature
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** To guarantee no tool use, either omit tools from that request or force 'none'. 'any' and a named tool both force a call — the opposite of the requirement; temperature doesn't control tool use.
+
+_Source:_ <https://platform.claude.com/docs>
+
+</details>
+
+### D2-23 · L201
+
+*Scenario:* A remote HTTP MCP server starts returning 401 Unauthorized.
+
+**Expected behavior / action? (Task 2.4)**
+
+- **A.** Hardcode a token in .mcp.json
+- **B.** The 401 triggers the OAuth flow; authenticate via /mcp, after which tokens are stored in the OS keychain and auto-refreshed
+- **C.** Switch to stdio
+- **D.** Disable the server permanently
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** For remote servers, a 401/403 triggers OAuth; you authenticate through /mcp and tokens live in the keychain with auto-refresh. Hardcoding secrets or switching transport is wrong.
+
+_Source:_ <https://code.claude.com/docs/en/mcp>
+
+</details>
+
+### D2-24 · L301
+
+*Scenario:* Several MCP servers expose hundreds of tools combined, and you're worried about context cost every turn.
+
+**Best approach? (Task 2.4)**
+
+- **A.** Mark every server alwaysLoad: true
+- **B.** Rely on Tool Search (default): only tool names + server instructions load, and Claude searches for tools on demand; reserve alwaysLoad for a few critical servers
+- **C.** Disable all but one server
+- **D.** Paste the tool list into CLAUDE.md
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Tool Search keeps only tool names/instructions in context and fetches tools on demand, bounding cost. alwaysLoad forces a server's tools into every turn — use it sparingly for critical servers, not everywhere.
+
+_Source:_ <https://code.claude.com/docs/en/mcp>
+
+</details>
+
+### D2-25 · L201
+
+*Scenario:* A coordinator keeps retrying a search that legitimately returned zero results, wasting calls.
+
+**Root cause? (Task 2.2)**
+
+- **A.** The model is non-deterministic
+- **B.** The recovery logic treats a valid empty result (isError:false, results:[]) as a failure; it must distinguish 'looked, found nothing' from 'couldn't look'
+- **C.** The search tool is broken
+- **D.** max_tokens is too low
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** A valid empty result is a successful answer, not an error. Retrying it forever means the recovery logic conflates empty-success with access failure — the same isError distinction, seen from the caller side.
+
+_Source:_ <https://code.claude.com/docs/en/mcp>
+
+_Adapted from:_ OlivierAlter (rewritten)
+
+</details>
+
+### D2-26 · L201
+
+*Scenario:* A document-analysis agent must locate files by name pattern, search their contents for a symbol, and then open one file fully.
+
+**Correct built-in tools, in order? (Task 2.5)**
+
+- **A.** Bash find, Bash grep, Bash cat
+- **B.** Glob to match paths, Grep to search contents, Read to open the file
+- **C.** Read everything, then filter
+- **D.** Edit each candidate to inspect it
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Glob matches file paths, Grep searches contents, and Read opens a specific file — the purpose-built tools for locate→search→read. Shelling out to find/grep/cat bypasses the optimized tools; reading everything wastes context; Edit isn't for inspection.
+
+_Source:_ <https://code.claude.com/docs/en/settings>
 
 </details>
 
@@ -1047,6 +1605,280 @@ _Adapted from:_ timothywarner (rewritten)
 
 </details>
 
+### D3-16 · L201
+
+*Scenario:* Your CLAUDE.md has grown unwieldy and mixes unrelated topics, but all of it is genuinely always-relevant.
+
+**Best way to keep it modular? (Task 3.1)**
+
+- **A.** Put everything in one long file and accept it
+- **B.** Split it into focused files and pull them in with @path imports (up to depth 4)
+- **C.** Move it all into skills
+- **D.** Duplicate sections into per-directory CLAUDE.md files
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** CLAUDE.md supports @path imports, so you can keep always-on content modular across focused files without bloating one document. Moving always-relevant facts to skills would make them load-on-demand (wrong for always-on); duplication invites drift.
+
+_Source:_ <https://code.claude.com/docs/en/memory>
+
+</details>
+
+### D3-17 · L101
+
+*Scenario:* A teammate has a legacy .claude/commands/deploy.md and asks whether to migrate it to a skill.
+
+**What's the correct understanding? (Task 3.2)**
+
+- **A.** Slash commands and skills are unrelated systems
+- **B.** Custom commands were merged into skills; both .claude/commands/deploy.md and .claude/skills/deploy/SKILL.md create /deploy, with skills the current form
+- **C.** Legacy commands no longer work at all
+- **D.** Skills can't create slash commands
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Custom slash commands were merged into skills. The legacy commands path still works and produces the same /command, but skills (SKILL.md) are the current, more capable form (frontmatter, progressive disclosure, invocation control).
+
+_Source:_ <https://code.claude.com/docs/en/skills>
+
+</details>
+
+### D3-18 · L201
+
+*Scenario:* In a monorepo, the api package and the web package need different conventions, and you want each to apply automatically when working in that package.
+
+**Best mechanism? (Task 3.1 / 3.3)**
+
+- **A.** One root CLAUDE.md with both sets of rules
+- **B.** Nested CLAUDE.md files per package (and/or .claude/rules with paths globs) so conventions load by location
+- **C.** A single skill devs invoke per package
+- **D.** Separate repos
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Memory loads by walking the directory tree, so per-package CLAUDE.md files (or path-scoped rules) apply the right conventions automatically based on where you're working. A combined root file applies everything everywhere.
+
+_Source:_ <https://code.claude.com/docs/en/memory>
+
+</details>
+
+### D3-19 · L201
+
+*Scenario:* You're integrating a third-party API whose data model and edge cases you don't fully understand yet, touching several files.
+
+**Best mode? (Task 3.4)**
+
+- **A.** Direct execution with detailed upfront specs
+- **B.** Plan mode — explore the API and codebase and design the integration before editing
+- **C.** Direct execution, switching to plan mode only if it gets complex
+- **D.** Direct incremental edits
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Unknowns plus multi-file impact call for plan mode: explore and agree a design before making changes. The complexity is already known to exist, so don't wait for it to surface mid-edit.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+_Adapted from:_ timothywarner (rewritten)
+
+</details>
+
+### D3-20 · L201
+
+*Scenario:* After two rounds of describing the desired API-response transformation in prose, the output is still wrong on nesting and timestamp formatting.
+
+**Best next iteration technique? (Task 3.5)**
+
+- **A.** Rewrite the prose requirements yet again
+- **B.** Provide 2–3 concrete input→output examples of the exact transformation
+- **C.** Ask Claude to explain its current understanding
+- **D.** Increase max_tokens
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Concrete input/output examples remove the ambiguity that prose keeps leaving — showing exactly how nesting and timestamps should look. It's the fastest way past repeated prose misunderstandings.
+
+_Source:_ <https://platform.claude.com/docs>
+
+_Adapted from:_ timothywarner (rewritten)
+
+</details>
+
+### D3-21 · L301
+
+*Scenario:* An iterative review tool needs Claude to request related files mid-analysis (via tool calls). A manager suggests moving it to the Message Batches API for cost savings.
+
+**Primary limitation? (Task 3.6)**
+
+- **A.** Batch lacks correlation IDs
+- **B.** The asynchronous batch model can't execute a tool mid-request and feed results back for Claude to continue — it's incompatible with iterative tool calling
+- **C.** Batch doesn't support tool definitions at all
+- **D.** The 24h latency would otherwise be fine
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Fire-and-forget batching can't intercept a tool call, run it, and return the result for the model to continue — fundamentally at odds with multi-round, tool-using review. (Latency is a separate issue.)
+
+_Source:_ <https://platform.claude.com/docs>
+
+_Adapted from:_ timothywarner (rewritten)
+
+</details>
+
+### D3-22 · L301
+
+*Scenario:* Three CI jobs: (1) blocking pre-merge style checks devs wait on, (2) weekly security audits, (3) nightly test generation. The Batches API gives ~50% savings but up to 24h.
+
+**Correct mapping? (Task 3.6)**
+
+- **A.** Batch all three with polling
+- **B.** Synchronous for the blocking style checks; Batch for the weekly audit and nightly test-gen
+- **C.** Synchronous for all three
+- **D.** Batch only the weekly audit
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Blocking, waited-on checks need synchronous calls; scheduled jobs (weekly audit, nightly test-gen) tolerate the 24h window and capture the savings. Match the API to each job's latency requirement.
+
+_Source:_ <https://platform.claude.com/docs>
+
+_Adapted from:_ timothywarner (rewritten)
+
+</details>
+
+### D3-23 · L201
+
+*Scenario:* The same skill name exists at both project scope (.claude/skills/) and your personal scope (~/.claude/skills/).
+
+**Which runs, and what's the overall precedence? (Task 3.2)**
+
+- **A.** The project one always wins
+- **B.** The personal one wins; overall precedence is Enterprise > Personal > Project (plugins namespaced separately)
+- **C.** They merge
+- **D.** It errors until you rename one
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Personal skills override same-named project skills; enterprise-managed skills override both. Knowing this precedence lets you safely customize a team skill for yourself.
+
+_Source:_ <https://code.claude.com/docs/en/skills>
+
+</details>
+
+### D3-24 · L301
+
+*Scenario:* Security wants a set of behavioral guidelines that every developer's Claude Code loads and that individuals cannot remove.
+
+**Best mechanism? (Task 3.1 / governance)**
+
+- **A.** A project CLAUDE.md
+- **B.** A managed (enterprise) CLAUDE.md deployed via managed settings — it loads org-wide and cannot be excluded
+- **C.** A README
+- **D.** A personal CLAUDE.md template
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** A managed CLAUDE.md (the claudeMd managed key) ships org-wide and can't be excluded by users — the right tool for non-removable guidance. (Note it's still soft behavioral guidance; for hard blocks use managed permission rules/hooks.)
+
+_Source:_ <https://code.claude.com/docs/en/settings> · <https://code.claude.com/docs/en/memory>
+
+</details>
+
+### D3-25 · L201
+
+*Scenario:* You're implementing a well-understood function whose edge cases you can enumerate, and you want high correctness with tight iteration.
+
+**Best iterative technique? (Task 3.5)**
+
+- **A.** The interview pattern
+- **B.** Test-driven iteration — write the edge-case tests first, then iterate code against them
+- **C.** Plan mode
+- **D.** Direct one-shot generation
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** When the edge cases are known, TDD gives a tight correctness loop. The interview pattern is for when requirements are unknown; plan mode is for large/architectural work.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+</details>
+
+### D3-26 · L201
+
+*Scenario:* You keep re-asking Claude, every turn, to explain its work in a teaching tone for a learning audience.
+
+**Best mechanism? (Task 3.2)**
+
+- **A.** Put 'always explain like a teacher' in CLAUDE.md
+- **B.** Set an output style (e.g. Explanatory/Learning) — it modifies the system prompt to change response voice/format
+- **C.** Add it to a skill
+- **D.** Add a hook
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Output styles change Claude's role/voice/format at the system-prompt level — the right tool for a standing response style. CLAUDE.md is a later soft instruction; a skill is a procedure; a hook is deterministic enforcement, not tone.
+
+_Source:_ <https://code.claude.com/docs/en/output-styles>
+
+</details>
+
+### D3-27 · L301
+
+*Scenario:* A headless CI run keeps stalling because agents hit permission prompts for shell and MCP commands they need.
+
+**Best fix? (Task 3.6)**
+
+- **A.** Run interactively in CI
+- **B.** Pre-configure the tool allowlist (permission rules / allowed tools) for the commands the run needs before starting; in claude -p there's no one to prompt
+- **C.** Set a longer timeout
+- **D.** Disable all permissions checks globally on every machine
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Non-interactive runs follow configured permission rules with no human to confirm, so pre-allow the exact commands the job needs. Running interactively defeats CI; globally disabling permissions is unsafe overkill.
+
+_Source:_ <https://code.claude.com/docs/en/headless> · <https://code.claude.com/docs/en/settings>
+
+</details>
+
+### D3-28 · L201
+
+*Scenario:* You have three things to encode: (a) a fact needed in every session, (b) a multi-step procedure used occasionally, (c) guidance that should apply only when editing files under /payments.
+
+**Correct homes? (Task 3.1 / 3.2 / 3.3)**
+
+- **A.** All three in CLAUDE.md
+- **B.** (a) CLAUDE.md, (b) a skill, (c) a .claude/rules file with a paths glob
+- **C.** All three as skills
+- **D.** (a) a hook, (b) CLAUDE.md, (c) a skill
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Always-needed fact → CLAUDE.md; occasional procedure → a skill (loads on demand); path-specific guidance → a .claude/rules file scoped with paths. Matching each need to the right mechanism is the core of Domain 3.
+
+_Source:_ <https://code.claude.com/docs/en/memory> · <https://code.claude.com/docs/en/skills>
+
+</details>
+
+### D3-29 · L201
+
+*Scenario:* A teammate worries that entering plan mode for a risky change might let Claude start editing before they approve.
+
+**What does plan mode guarantee? (Task 3.4)**
+
+- **A.** Nothing — it edits as it plans
+- **B.** Plan mode is read-only: Claude explores and proposes a plan, and you approve before any edits are made
+- **C.** It auto-applies the plan after 30 seconds
+- **D.** It only works in CI
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Plan mode keeps Claude in a read-only, propose-then-approve posture so you sign off before changes happen — ideal for risky or large work. That approval gate is exactly its value.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+</details>
+
 ---
 
 ## Prompt engineering & structured output (20%)
@@ -1366,6 +2198,162 @@ _Adapted from:_ timothywarner (rewritten)
 
 </details>
 
+### D4-16 · L201
+
+*Scenario:* A review prompt says 'flag important issues.' Output is inconsistent — sometimes trivial nits, sometimes only crashes.
+
+**Root-cause fix? (Task 4.1)**
+
+- **A.** Add 'be consistent' to the prompt
+- **B.** Replace 'important' with an explicit categorical definition (which issue types count as important, which to skip)
+- **C.** Lower the temperature to 0
+- **D.** Run two passes and intersect
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** 'Important' has no operational meaning, so the model guesses differently each time. Defining the categories explicitly makes the decision rule precise and consistent. Temperature and pass-intersection don't supply the missing definition.
+
+_Source:_ <https://platform.claude.com/docs>
+
+</details>
+
+### D4-17 · L201
+
+*Scenario:* An agent sometimes picks the wrong tool on ambiguous requests ('help with my recent purchase'). You decide to add few-shot examples.
+
+**Most effective example design? (Task 4.2)**
+
+- **A.** 10–15 examples of clear, unambiguous requests
+- **B.** 4–6 examples targeted at the ambiguous cases, each with a rationale for why one tool was chosen over plausible alternatives
+- **C.** Group all examples by tool
+- **D.** One example per tool
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Targeting the actual failure mode — ambiguous requests — with rationale teaches the comparative decision the model is getting wrong. Generic, unambiguous examples don't address the hard cases.
+
+_Source:_ <https://platform.claude.com/docs>
+
+_Adapted from:_ paullarionov (rewritten)
+
+</details>
+
+### D4-18 · L301
+
+*Scenario:* Outputs use a strict JSON schema via tool use, yet a nested line-items array sometimes contains entries that violate a business rule (negative quantities).
+
+**Why, and the fix? (Task 4.3 / 4.4)**
+
+- **A.** The schema isn't strict enough; set strict: true
+- **B.** Schemas enforce structure/types, not business rules — add application-layer validation (and retry) for semantic constraints like non-negative quantities
+- **C.** Switch to prompt-only JSON
+- **D.** Use tool_choice: "any"
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** A schema can require an array of numbers but not that each is non-negative or internally consistent. Business rules are semantic and belong in a validation layer with a retry loop on failure.
+
+_Source:_ <https://platform.claude.com/docs>
+
+</details>
+
+### D4-19 · L201
+
+*Scenario:* An extraction sometimes returns a category value outside the allowed enum.
+
+**Most effective feedback-loop fix? (Task 4.4)**
+
+- **A.** Re-run the whole extraction at temperature 0
+- **B.** Validate against the enum and, on failure, send a targeted retry that includes the invalid value and the list of allowed values
+- **C.** Remove the enum constraint
+- **D.** Add max_tokens
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** A precise validate-and-retry — echoing the invalid value and the allowed set — corrects the specific error cheaply and reliably, far better than a blind full re-run or dropping the constraint.
+
+_Source:_ <https://platform.claude.com/docs>
+
+</details>
+
+### D4-20 · L301
+
+*Scenario:* A workload has a strict real-time SLA (sub-second user-facing responses). A manager suggests the Batches API for its 50% cost savings.
+
+**Best evaluation? (Task 4.5)**
+
+- **A.** Use Batches; the savings are worth it
+- **B.** Don't batch it — the Batches API can take up to 24h and has no latency SLA; keep it synchronous
+- **C.** Batch it with aggressive polling
+- **D.** Batch half the requests
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Batch processing trades latency for cost (up to 24h, no SLA), so it's unusable for real-time, user-facing work. Reserve batching for latency-tolerant jobs.
+
+_Source:_ <https://platform.claude.com/docs>
+
+</details>
+
+### D4-21 · L301
+
+*Scenario:* A generator dismisses real bugs during generation (its reasoning shows it). A teammate proposes adding extended thinking to the generation step to catch them.
+
+**Why won't that reliably work, and what does? (Task 4.6)**
+
+- **A.** Extended thinking always fixes it
+- **B.** The bias is intrinsic to reviewing one's own work; use an independent second instance that reviews without the generator's reasoning
+- **C.** Add self-review instructions to the same prompt
+- **D.** Increase the context window
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** More thinking in the same context still rationalizes the same way (confirmation bias). A separate, independent reviewer without the generation reasoning is the structural fix — the model analog of peer review.
+
+_Source:_ <https://platform.claude.com/docs>
+
+_Adapted from:_ timothywarner (rewritten)
+
+</details>
+
+### D4-22 · L201
+
+*Scenario:* A vague-criteria prompt under-performs; a teammate insists the fix is to move the instruction to the very top of the prompt.
+
+**Best response? (Task 4.1)**
+
+- **A.** Agree — position is the main lever here
+- **B.** Position isn't the root cause; the criteria are vague — define explicit categorical criteria regardless of position
+- **C.** Move it to the end instead
+- **D.** Duplicate it at top and bottom
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Reordering a vague instruction doesn't make it precise. The fix is explicit, categorical criteria; position is a minor factor next to a missing definition.
+
+_Source:_ <https://platform.claude.com/docs>
+
+</details>
+
+### D4-23 · L201
+
+*Scenario:* A downstream system needs to parse Claude's output programmatically, and prompt-only 'return JSON' occasionally yields prose or malformed JSON.
+
+**Most reliable design? (Task 4.3)**
+
+- **A.** Stronger prompt wording
+- **B.** Tool use with a JSON schema (in the CLI, --output-format json with --json-schema) to enforce well-formed, parseable output
+- **C.** Post-process prose with regex
+- **D.** Raise temperature
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Enforce structure at the API/CLI level with tool use + schema (or --output-format json/--json-schema) so downstream parsing is reliable. Prompt wording and regex on prose stay fragile.
+
+_Source:_ <https://platform.claude.com/docs> · <https://code.claude.com/docs/en/headless>
+
+</details>
+
 ---
 
 ## Context management & reliability (15%)
@@ -1640,6 +2628,187 @@ _Adapted from:_ hamzafarooq/timothywarner (rewritten)
 _Source:_ <https://code.claude.com/docs/en/sub-agents>
 
 _Adapted from:_ OlivierAlter (rewritten)
+
+</details>
+
+### D5-14 · L301
+
+*Scenario:* A teammate proposes fixing lost-detail problems by editing the summarization prompt to 'always preserve numbers and dates verbatim.'
+
+**Why is a structured facts block better? (Task 5.1)**
+
+- **A.** It isn't; the prompt tweak is equivalent
+- **B.** Summarization is inherently lossy and the instruction will eventually be ignored; a structured 'case facts' block kept outside the summarized history guarantees the specifics persist
+- **C.** Because it uses fewer tokens
+- **D.** Because it disables summarization entirely
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Telling a lossy process to be lossless is unreliable. Holding critical facts in a structured block outside the summarized history keeps them present every turn regardless of how history is compressed.
+
+_Source:_ <https://code.claude.com/docs/en/costs>
+
+_Adapted from:_ hamzafarooq (rewritten)
+
+</details>
+
+### D5-15 · L301
+
+*Scenario:* Research subagents return verbose reasoning and full source text; the coordinator hits context limits and synthesis degrades.
+
+**Most effective fix? (Task 5.3 / 5.4)**
+
+- **A.** Increase the coordinator's max_tokens
+- **B.** Have subagents return structured data (key facts, citations, relevance scores) instead of verbose prose, so only distilled conclusions cross the boundary
+- **C.** Add an intermediate summarization agent
+- **D.** Reduce the number of subagents
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Fix the bloat at the source: each subagent's reasoning should stay in its own context, and only structured conclusions should reach the coordinator. A summarizer adds a hop; fewer subagents loses coverage; max_tokens just delays the wall.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+_Adapted from:_ hamzafarooq/timothywarner (rewritten)
+
+</details>
+
+### D5-16 · L301
+
+*Scenario:* A web-search subagent returns 3 of 5 requested categories (two timed out); synthesis must still produce a report.
+
+**Best error-propagation strategy? (Task 5.3)**
+
+- **A.** Synthesize on the successes and don't mention the gaps
+- **B.** Structure the output with coverage annotations marking well-supported conclusions vs areas with missing data
+- **C.** Fail the whole synthesis and retry everything
+- **D.** Silently retry the timeouts inside synthesis
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Graceful degradation with coverage annotations preserves completed work while transparently flagging gaps, so downstream confidence is informed. Hiding gaps misleads; failing everything discards good results.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+_Adapted from:_ timothywarner (rewritten)
+
+</details>
+
+### D5-17 · L301
+
+*Scenario:* A support agent resolves only 55% first-contact: it escalates simple cases and tries complex policy-exception cases on its own.
+
+**Best way to improve escalation calibration? (Task 5.5)**
+
+- **A.** Have it self-rate confidence 1–10 and route below a threshold
+- **B.** Add explicit escalation criteria to the prompt with few-shot examples of escalate-vs-resolve
+- **C.** Add sentiment analysis to trigger escalation
+- **D.** Train a separate classifier
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** The root cause is unclear decision boundaries; explicit criteria plus few-shot examples fix that directly with no new infrastructure. Self-reported confidence and sentiment are unreliable triggers; a classifier is heavier than needed as a first step.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+_Adapted from:_ timothywarner (rewritten)
+
+</details>
+
+### D5-18 · L301
+
+*Scenario:* A synthesis must report on a topic where the available sources are thin and partly uncertain.
+
+**Best handling? (Task 5.6)**
+
+- **A.** State conclusions confidently to be useful
+- **B.** Annotate uncertainty and coverage — distinguish well-supported claims from weakly-supported ones, with sources
+- **C.** Omit the uncertain parts silently
+- **D.** Average conflicting figures into one number
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Faithful synthesis surfaces confidence and coverage so the reader can calibrate trust. Overstating, omitting, or averaging all destroy information the downstream decision needs.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+</details>
+
+### D5-19 · L201
+
+*Scenario:* A user request has two reasonable interpretations that would lead to very different (and partly irreversible) actions.
+
+**Best behavior? (Task 5.2)**
+
+- **A.** Pick the more likely interpretation and proceed
+- **B.** Ask one clarifying question to resolve the ambiguity before acting
+- **C.** Do both interpretations
+- **D.** Escalate to a human immediately
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** When interpretations diverge and actions are consequential, a single clarifying question is the cheap, safe move. Guessing risks the wrong irreversible action; doing both is wasteful/dangerous; immediate escalation is premature.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+</details>
+
+### D5-20 · L301
+
+*Scenario:* Three situations: (a) context is 80% full but all still valid; (b) context is full and partly stale; (c) findings must survive across several future sessions and possible crashes.
+
+**Correct tools? (Task 5.4)**
+
+- **A.** /compact for all three
+- **B.** (a) /compact, (b) new session with an injected summary, (c) a scratchpad file in the repo
+- **C.** A scratchpad file for all three
+- **D.** A bigger-context model for all three
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** /compact reclaims room when context is full-but-valid; a fresh session with a curated summary is right when context is stale; a scratchpad file persists findings across sessions and crashes. Each situation needs its own tool.
+
+_Source:_ <https://code.claude.com/docs/en/costs> · <https://code.claude.com/docs/en/memory>
+
+</details>
+
+### D5-21 · L301
+
+*Scenario:* A high-stakes extraction pipeline is mostly accurate but has a few document segments with much higher error rates; fully removing human review is risky.
+
+**Best human-review design? (Task 5.5)**
+
+- **A.** Remove human review everywhere to cut cost
+- **B.** Route only the low-confidence / high-error segments to human review (human-in-the-loop on the risky slice), automate the rest
+- **C.** Keep 100% human review forever
+- **D.** Review a random 1% sample
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Target human attention where the risk is — the segments with high error rates — using calibrated confidence to gate. That captures most of the automation savings while protecting against the catastrophic slice. A random sample misses the concentrated risk.
+
+_Source:_ <https://code.claude.com/docs/en/evals>
+
+</details>
+
+### D5-22 · L301
+
+*Scenario:* In a multi-agent run, one subagent throws an unhandled exception, which terminates it and dumps a raw failure to the coordinator, derailing the whole run.
+
+**Best reliability design? (Task 5.3)**
+
+- **A.** Let any exception crash the run so failures are visible
+- **B.** Recover locally where possible and otherwise propagate a structured error (type, what was attempted, partial results) so the coordinator can retry, route around it, or annotate coverage
+- **C.** Suppress the error and return empty success
+- **D.** Retry the entire subagent from scratch on any error
+
+<details><summary>Answer & explanation</summary>
+
+**Correct: B.** Resilient systems recover at the lowest level able to, and otherwise propagate structured error context so the coordinator can make a recovery decision. Crashing the run is brittle; empty-success hides failures; whole-subagent retries are expensive and discard good partial work.
+
+_Source:_ <https://code.claude.com/docs/en/sub-agents>
+
+_Adapted from:_ timothywarner/hamzafarooq (rewritten)
 
 </details>
 
