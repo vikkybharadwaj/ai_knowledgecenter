@@ -22,7 +22,7 @@ How to study for, and what to expect from, the **Claude Certified Architect — 
 ## The exam at a glance
 - **60 questions**, scenario-based multiple choice (single best answer), **120 minutes**.
 - Scaled score **100–1000**, **pass = 720**, **no negative marking**.
-- **4 of 6** production scenarios are drawn per sitting.
+- Questions are grounded in **6 production scenarios**; community sources report 4 are drawn per sitting (this "4 of 6" rule is *not* stated in the official guide — treat as community-reported).
 - Tests **architectural judgment under constraint**, not API/SDK memorization. Distractors
   are realistic and "almost right" — the skill is picking the *most sound* option and
   knowing *why the other three are wrong*.
@@ -36,6 +36,21 @@ How to study for, and what to expect from, the **Claude Certified Architect — 
 | 3 | Prompt engineering & structured output | **20%** | [harness/context/prompt](../../docs/claude-code-architecture/mental-model.html) |
 | 4 | Tool design & MCP integration | **18%** | [MCP](../../docs/claude-code-architecture/primitives/mcp.html) |
 | 5 | Context management & reliability | **15%** | [context engineering](../../docs/claude-code-architecture/mental-model.html#harness) |
+
+## The 30 task statements (official)
+Your coverage checklist — every question maps to one of these. (From the official exam guide.)
+
+**D1 · Agentic architecture & orchestration (7)** — 1.1 design agentic loops · 1.2 coordinator/subagent multi-agent systems · 1.3 subagent invocation, context passing, spawning · 1.4 multi-step workflows with enforcement & handoff · 1.5 Agent SDK hooks for tool-call interception & data normalization · 1.6 task-decomposition strategies · 1.7 session state, resumption & forking.
+
+**D2 · Tool design & MCP integration (5)** — 2.1 effective tool interfaces (descriptions & boundaries) · 2.2 structured error responses for MCP tools · 2.3 distribute tools across agents & configure tool choice · 2.4 integrate MCP servers · 2.5 use built-in tools (Read/Write/Edit/Bash/Grep/Glob).
+
+**D3 · Claude Code configuration & workflows (6)** — 3.1 CLAUDE.md hierarchy/scoping/modular org · 3.2 custom slash commands & skills · 3.3 path-specific rules for conditional loading · 3.4 plan mode vs direct execution · 3.5 iterative refinement techniques · 3.6 integrate into CI/CD.
+
+**D4 · Prompt engineering & structured output (6)** — 4.1 explicit criteria to cut false positives · 4.2 few-shot for consistency · 4.3 enforce structured output via tool use & JSON schemas · 4.4 validation/retry/feedback loops · 4.5 efficient batch processing · 4.6 multi-instance & multi-pass review.
+
+**D5 · Context management & reliability (6)** — 5.1 preserve critical info across long interactions · 5.2 escalation & ambiguity-resolution patterns · 5.3 error-propagation across multi-agent systems · 5.4 context in large-codebase exploration · 5.5 human-review workflows & confidence calibration · 5.6 information provenance & uncertainty in multi-source synthesis.
+
+**Out of scope:** model fine-tuning/training, API auth/billing/account management, language/framework implementation details, MCP server hosting/infrastructure.
 
 ## The 6 production scenarios
 The exam frames questions inside six recurring production settings. Recognize the setting,
