@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exam Prep — Claude Certified Architect (CCA-F) practice</title>
+<meta name="description" content="Scenario-based practice for the Claude Certified Architect — Foundations (CCA-F) exam: an interactive question bank weighted to the real 5-domain blueprint, with instant feedback and a 60-question exam mode scored out of 1000.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="mental-model.html">Mental model</a>
+    <a href="matrix.html">Comparison matrix</a>
+    <a href="decision.html">Decide</a>
+    <a href="exam-prep.html">Exam prep</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <section style="margin-top:30px">
+    <div class="eyebrow">Crack the CCA-F</div>
+    <h1>Exam prep — Claude Certified Architect (Foundations)</h1>
+    <p class="lede">Scenario-based practice that mirrors the real exam: a short production situation, then the single
+      <em>most architecturally sound</em> choice among four plausible options. Weighted to the official 5-domain
+      blueprint. Reviewed 2026-06-02.</p>
+  </section>
+
+  <section>
+    <h2>The exam at a glance</h2>
+    <div class="grid cols-4">
+      <div class="card"><h3>60 Qs</h3><p class="meta">scenario-based multiple choice</p></div>
+      <div class="card"><h3>120 min</h3><p class="meta">no negative marking</p></div>
+      <div class="card"><h3>720 / 1000</h3><p class="meta">scaled passing score</p></div>
+      <div class="card"><h3>4 of 6</h3><p class="meta">production scenarios per sitting</p></div>
+    </div>
+    <h3>Domain weighting</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Domain</th><th>Weight</th><th>Maps to (in this guide)</th></tr></thead>
+        <tbody>
+          <tr><td>Agentic architecture &amp; orchestration</td><td>27%</td><td><a href="primitives/subagents.html">subagents</a>, <a href="primitives/agent-teams.html">teams</a>, <a href="primitives/workflows.html">workflows</a>, <a href="primitives/agent-view.html">agent view</a></td></tr>
+          <tr><td>Claude Code config &amp; workflows</td><td>20%</td><td><a href="primitives/skills.html">skills</a>, <a href="primitives/hooks.html">hooks</a>, <a href="primitives/memory.html">memory</a>, <a href="primitives/policies.html">policies</a></td></tr>
+          <tr><td>Prompt engineering &amp; structured output</td><td>20%</td><td><a href="mental-model.html#harness">prompt/context/harness</a></td></tr>
+          <tr><td>Tool design &amp; MCP integration</td><td>18%</td><td><a href="primitives/mcp.html">MCP</a></td></tr>
+          <tr><td>Context management &amp; reliability</td><td>15%</td><td><a href="mental-model.html#harness">context engineering</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="meta">Blueprint per community study materials (see attribution below); not an official Anthropic publication.</p>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>Practice</h2>
+    <div id="quiz"></div>
+  </section>
+
+  <section>
+    <div class="callout"><span class="label">How to use this</span>
+      Work <strong>Practice set</strong> by domain first (instant feedback + explanations), then take a full
+      <strong>Exam mode</strong> run to simulate the 60-question / 720-to-pass experience and see your per-domain
+      breakdown. Read every explanation &mdash; the exam rewards knowing <em>why the other three options are wrong</em>.</div>
+  </section>
+
+  <section>
+    <h2>Sources &amp; attribution</h2>
+    <p>Questions here are <strong>original or adapted</strong>, grounded in the official
+      <a href="https://code.claude.com/docs">code.claude.com/docs</a> and informed by the community study banks below.
+      No real exam content is reproduced. Where a question is adapted from a permissively-licensed community bank, it is
+      attributed inline.</p>
+    <ul>
+      <li><a href="https://github.com/hamzafarooq/claude-certified-architect">hamzafarooq/claude-certified-architect</a> (MIT)</li>
+      <li><a href="https://github.com/timothywarner-org/claude-architect">timothywarner-org/claude-architect</a> (MIT)</li>
+      <li><a href="https://github.com/carolinacherry/claude-certified-architect">carolinacherry/claude-certified-architect</a> (MIT)</li>
+      <li><a href="https://github.com/daronyondem/claude-architect-exam-guide">daronyondem/claude-architect-exam-guide</a> (CC BY 4.0)</li>
+      <li>Referenced for coverage (not copied): <a href="https://github.com/OlivierAlter/Claude-Certified-Architect-Foundations-Certification-Exam">OlivierAlter</a>, <a href="https://github.com/paullarionov/claude-certified-architect">paullarionov</a>, <a href="https://github.com/dnacenta/claude-certified-architect">dnacenta</a>, <a href="https://claudecertifications.com/claude-certified-architect">claudecertifications.com</a></li>
+    </ul>
+    <p class="meta">Markdown companion (the full bank as text): <a href="../../knowledge/10-cross-cutting/cca-f-exam-question-bank.md">knowledge/10-cross-cutting/cca-f-exam-question-bank.md</a></p>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>Claude Code Architecture field guide · exam prep · reviewed 2026-06-02 · <a href="index.html">home</a> ·
+     not affiliated with or endorsed by Anthropic.</p>
+</footer>
+<script src="assets/questions.js"></script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>
