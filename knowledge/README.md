@@ -15,6 +15,7 @@ that says what belongs there and indexes its files.
 | 07 | [Safety & Security](07-safety-and-security/) | Guardrails, prompt injection, PII, jailbreaks, red-teaming |
 | 08 | [Product & UX](08-product-and-ux/) | AI UX patterns, trust, latency UX, graceful failure, human-in-the-loop |
 | 09 | [Tooling & SDKs](09-tooling-and-sdks/) | Anthropic/OpenAI SDKs, frameworks, agent harnesses, dev tooling |
+| 10 | [Cross-Cutting](10-cross-cutting/) | Mental models & guides that span multiple categories (e.g. Claude Code architecture, harness/context/prompt) |
 
 ## How to use
 - Add a distilled note to the right category file, in your own words.

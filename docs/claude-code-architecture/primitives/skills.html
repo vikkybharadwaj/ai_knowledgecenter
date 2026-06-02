@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skills — reusable instructions loaded on demand (and what "routines" means)</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../mental-model.html">Mental model</a>
+    <a href="../matrix.html">Comparison matrix</a>
+    <a href="../decision.html">Decide what to use</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <section style="margin-top:26px">
+    <p class="meta"><a href="../index.html">Home</a> › Skills</p>
+    <div class="pill-row"><span class="badge l201">201 · Extend</span> <span class="badge">Soft · model-mediated</span> <span class="badge ga">GA</span></div>
+    <h1>Skills <span class="meta" style="font-size:1rem">(&amp; what &ldquo;routines&rdquo; really means)</span></h1>
+    <p class="lede">Reusable instructions, procedures, and optional scripts &mdash; packaged in a folder, loaded
+      <strong>on demand</strong>. The most flexible way to extend a session. If you&rsquo;ve heard the word
+      &ldquo;routines,&rdquo; this is almost certainly what you meant.</p>
+  </section>
+
+  <section>
+    <p class="analogy"><strong>Analogy —</strong> a <strong>recipe card in a binder</strong>. Its <em>title</em> is always
+      visible on the spine (cheap), but you only pull the full card when you&rsquo;re cooking that dish. The model does the
+      cooking with tools it already has &mdash; the card just tells it how.</p>
+  </section>
+
+  <div class="callout key"><span class="label">&ldquo;Routines&rdquo; is not an official term</span>
+    Zero hits in the docs. A <em>saved, repeatable procedure</em> = a skill (custom slash commands were merged into
+    skills). <em>Orchestration across many agents</em> = a <a href="workflows.html">dynamic workflow</a>. A
+    <em>default voice/format</em> = an output style.</div>
+
+  <section>
+    <h2>Mechanism — progressive disclosure</h2>
+    <p>A skill is a directory with a <code>SKILL.md</code> (YAML frontmatter + markdown body). The folder name becomes
+      the <code>/command</code>. The design principle is <strong>progressive disclosure</strong>:</p>
+    <div class="flow">
+      <div class="step"><span class="n">always</span><br><strong>name + description</strong><br><span class="meta">~tiny cost, sits in context so Claude knows the skill exists</span></div>
+      <div class="step"><span class="n">on invoke</span><br><strong>the body</strong><br><span class="meta">full instructions load only when used or matched</span></div>
+      <div class="step"><span class="n">if referenced</span><br><strong>scripts / reference files</strong><br><span class="meta">loaded/executed only when the body points to them</span></div>
+    </div>
+    <details class="acc"><summary>Key frontmatter &amp; who can invoke</summary><div class="acc-body">
+      <p><code>description</code> (drives auto-invocation), <code>allowed-tools</code> (pre-approve tools while active),
+        <code>disable-model-invocation</code>, <code>user-invocable</code>, <code>context: fork</code> + <code>agent</code>
+        (run in a subagent), <code>model</code>, <code>effort</code>, <code>paths</code> (glob-gated).</p>
+      <ul>
+        <li><strong>Both (default):</strong> you type <code>/name</code> OR Claude auto-loads by description.</li>
+        <li><strong>User-only</strong> (<code>disable-model-invocation: true</code>): for side-effecting actions like <code>/deploy</code>.</li>
+        <li><strong>Model-only</strong> (<code>user-invocable: false</code>): passive background knowledge.</li>
+      </ul>
+      <p>Dynamic context: <code>!`cmd`</code> runs a shell command <em>before</em> Claude sees the body and inlines the
+        output. Substitutions: <code>$ARGUMENTS</code>, <code>${CLAUDE_SKILL_DIR}</code>, <code>${CLAUDE_SESSION_ID}</code>.</p>
+    </div></details>
+    <p class="meta">Lives at <code>.claude/skills/&lt;name&gt;/SKILL.md</code> (project, committed) or
+      <code>~/.claude/skills/</code> (personal). Precedence: Enterprise &gt; Personal &gt; Project; plugins namespaced.</p>
+  </section>
+
+  <section>
+    <h2>When to reach for it</h2>
+    <div class="usewhen"><span class="ic">✓</span><div>You paste the same checklist/procedure a third time.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>A CLAUDE.md section has become a <em>procedure</em> rather than a fact &mdash; move it out so it costs nothing until used.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>You want a reusable <code>/command</code> shared with the team via the repo.</div></div>
+    <h3>When <em>not</em> to</h3>
+    <div class="usewhen no"><span class="ic">✕</span><div>A must-run guardrail → <a href="hooks.html">hook</a> (skills are discretionary).</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>An always-needed fact → <a href="memory.html">CLAUDE.md</a>.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>Reaching an external system → <a href="mcp.html">MCP</a> (a skill only knows <em>how</em> to use tools that already exist).</div></div>
+  </section>
+
+  <section>
+    <h2>Best practices</h2>
+    <div class="usewhen"><span class="ic">★</span><div>Front-load the <code>description</code> with the use case + trigger keywords &mdash; a weak description means the skill never fires.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Keep <code>SKILL.md</code> under ~500 lines; push API specs/examples into referenced files (progressive disclosure).</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Set <code>disable-model-invocation: true</code> for anything with side effects (deploy, commit, send).</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Reference bundled scripts via <code>${CLAUDE_SKILL_DIR}</code> so paths resolve at any scope.</div></div>
+  </section>
+
+  <div class="callout warn-c"><span class="label">Security</span>
+    <code>allowed-tools</code> <em>grants</em> permission silently while the skill is active, and the <code>!`...`</code>
+    shell injection runs arbitrary commands. Review project skills before trusting a repo. Org-wide kill switch:
+    <code>"disableSkillShellExecution": true</code>.</div>
+
+  <section><h2>Sources</h2>
+    <ul><li><a href="https://code.claude.com/docs/en/skills">Skills</a> ·
+      <a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Agent Skills (engineering)</a> ·
+      <a href="https://agentskills.io">Agent Skills standard</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><p>Reviewed 2026-06-02 · <a href="../matrix.html">back to the matrix</a></p></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

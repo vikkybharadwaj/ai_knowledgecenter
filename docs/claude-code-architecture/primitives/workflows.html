@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dynamic workflows — orchestration as code (+ ultracode)</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../mental-model.html">Mental model</a>
+    <a href="../matrix.html">Comparison matrix</a>
+    <a href="../decision.html">Decide what to use</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <section style="margin-top:26px">
+    <p class="meta"><a href="../index.html">Home</a> › Dynamic workflows</p>
+    <div class="pill-row"><span class="badge l301">301 · Orchestrate</span> <span class="badge">The plan lives in a script</span> <span class="badge preview">research preview · v2.1.154+</span></div>
+    <h1>Dynamic workflows <span class="meta" style="font-size:1rem">(+ ultracode)</span></h1>
+    <p class="lede">A JavaScript script <strong>Claude writes</strong> that orchestrates subagents at scale &mdash; dozens to
+      hundreds &mdash; runs in the background, cross-checks its own findings, and returns only the synthesis. The plan moves
+      <strong>into code</strong>, so your context window only ever sees the final answer.</p>
+  </section>
+
+  <section>
+    <p class="analogy"><strong>Analogy —</strong> the difference between a manager personally briefing each worker
+      (<a href="agent-teams.html">agent teams</a>) and writing a <strong>build pipeline / assembly line</strong> that
+      dispatches, gates, and merges work automatically. The pipeline is readable, rerunnable, and doesn&rsquo;t hold the
+      whole job in its head.</p>
+  </section>
+
+  <div class="callout key"><span class="label">Why it&rsquo;s genuinely different</span>
+    With subagents, skills, and teams, <em>Claude</em> is the orchestrator and every result lands in a context window.
+    A workflow script holds the loop, branching, and intermediate results itself &mdash; so you get <strong>more agents
+    without context bloat</strong>, plus a repeatable quality pattern (independent agents <em>adversarially review</em>
+    each other&rsquo;s findings before anything is reported).</div>
+
+  <section>
+    <h2>Mechanism</h2>
+    <p>You describe the task; Claude writes a script; a runtime executes it in an <strong>isolated environment</strong>,
+      separate from your conversation, while the session stays responsive. Intermediate results live in
+      <strong>script variables</strong>, not context. Every run writes its script under
+      <code>~/.claude/projects/</code> so you can read, diff, edit, or re-launch it.</p>
+    <div class="flow">
+      <div class="step"><span class="n">describe</span><br>You ask, using the word <strong>workflow</strong> (or run a saved one).</div>
+      <div class="step"><span class="n">approve</span><br>Claude shows the planned phases; you approve before it runs.</div>
+      <div class="step"><span class="n">run + watch</span><br><code>/workflows</code> opens a live progress view (phases, agent counts, tokens).</div>
+      <div class="step"><span class="n">report</span><br>One cited synthesis lands in your session; failed-cross-check claims filtered out.</div>
+    </div>
+    <details class="acc"><summary>Limits, saving &amp; turning it off</summary><div class="acc-body">
+      <p>Up to <strong>16 concurrent</strong> agents (fewer on limited CPUs), <strong>1,000 total</strong> per run. No
+        mid-run user input (only agent permission prompts pause it). Resumable within the same session. Save a good run&rsquo;s
+        script with <code>s</code> in <code>/workflows</code> → it becomes a <code>/command</code>
+        (<code>.claude/workflows/</code> or <code>~/.claude/workflows/</code>). Disable via <code>/config</code>,
+        <code>"disableWorkflows": true</code>, or <code>CLAUDE_CODE_DISABLE_WORKFLOWS=1</code>.</p>
+    </div></details>
+    <details class="acc"><summary>ultracode</summary><div class="acc-body">
+      <p><code>ultracode</code> = <code>xhigh</code> reasoning <strong>+</strong> automatic workflow orchestration. With it
+        on, Claude decides when a task warrants a workflow without you asking &mdash; one request can become several
+        workflows in a row (understand → change → verify). Session-only; reset with <code>/effort high</code>. Available
+        only on models that support <code>xhigh</code> (Opus 4.8/4.7).</p>
+    </div></details>
+  </section>
+
+  <section>
+    <h2>When to reach for it</h2>
+    <div class="usewhen"><span class="ic">✓</span><div>A task needs more agents than one conversation can coordinate: codebase-wide bug sweep, 500-file migration, security audit.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>A research question whose sources must be cross-checked against each other.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>A hard plan worth drafting from several independent angles before committing.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>You want the orchestration codified as a script you can read and rerun. Try <code>/deep-research</code> first to see one in action.</div></div>
+    <h3>When <em>not</em> to</h3>
+    <div class="usewhen no"><span class="ic">✕</span><div>A handful of deep peers that must discuss → <a href="agent-teams.html">agent teams</a>.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>Quick, interactive, single-thread work → just one session.</div></div>
+  </section>
+
+  <section>
+    <h2>Best practices</h2>
+    <div class="usewhen"><span class="ic">★</span><div>Trial on a small slice (one directory, a narrow question) to gauge spend before the full run.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Pre-add the shell/MCP commands agents need to your allowlist so the run doesn&rsquo;t stall on prompts.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Route shallow stages to a cheaper model; keep the strong model for synthesis.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Save runs that work as <code>/commands</code> for repeatable processes (e.g. a per-branch review).</div></div>
+  </section>
+
+  <div class="callout"><span class="label">Proof point</span>
+    Jarred Sumner used dynamic workflows to port <strong>Bun from Zig to Rust</strong> &mdash; ~750k lines, 99.8% of the
+    test suite passing, 11 days first-commit-to-merge. Anthropic&rsquo;s framing: <em>&ldquo;a harness for every task&rdquo;</em>;
+    quarter-long work in days.</div>
+
+  <section><h2>Sources</h2>
+    <ul><li><a href="https://code.claude.com/docs/en/workflows">Dynamic workflows (docs)</a> ·
+      <a href="https://claude.com/blog/introducing-dynamic-workflows-in-claude-code">Announcement</a> ·
+      <a href="https://www.anthropic.com/news/claude-opus-4-8">Opus 4.8 launch</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><p>Reviewed 2026-06-02 · <a href="../matrix.html">back to the matrix</a></p></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

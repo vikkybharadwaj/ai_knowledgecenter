@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MCP — Model Context Protocol</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../mental-model.html">Mental model</a>
+    <a href="../matrix.html">Comparison matrix</a>
+    <a href="../decision.html">Decide what to use</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <section style="margin-top:26px">
+    <p class="meta"><a href="../index.html">Home</a> › MCP</p>
+    <div class="pill-row"><span class="badge l201">201 · Extend</span> <span class="badge">Tools model-invoked</span> <span class="badge ga">GA</span> <span class="badge">open standard · 2024-11-25</span></div>
+    <h1>MCP — Model Context Protocol</h1>
+    <p class="lede">An open standard for connecting AI tools to external systems. An MCP <em>server</em> gives Claude new
+      <strong>tools, resources, and prompts</strong> so it can read and act on systems directly instead of you pasting
+      data in.</p>
+  </section>
+
+  <section>
+    <p class="analogy"><strong>Analogy —</strong> MCP is a <strong>universal power socket (USB-C) for tools</strong>. Instead
+      of a custom adapter per device, every system that speaks MCP plugs into any client that speaks MCP &mdash; solving
+      the &ldquo;N×M&rdquo; integration problem. If a <a href="skills.html">skill</a> is <em>know-how</em>, MCP is a <em>hand</em>.</p>
+  </section>
+
+  <section>
+    <h2>Mechanism</h2>
+    <p>An MCP <strong>client</strong> (Claude Code) connects to one or more <strong>servers</strong>, each exposing three
+      primitives:</p>
+    <div class="grid cols-3">
+      <div class="card"><h3>Tools</h3><p>Actions Claude can call (model-invoked).</p></div>
+      <div class="card"><h3>Resources</h3><p>Data referenced with <code>@server:protocol://path</code> (user-invoked).</p></div>
+      <div class="card"><h3>Prompts</h3><p>Surfaced as <code>/mcp__server__name</code> slash commands.</p></div>
+    </div>
+    <details class="acc"><summary>Transports &amp; install</summary><div class="acc-body">
+      <p><strong>HTTP</strong> (recommended for remote; supports OAuth) · <strong>stdio</strong> (local process) ·
+        <strong>SSE</strong> (deprecated — use HTTP) · <strong>WebSocket</strong> (push events, header-auth only).</p>
+      <pre>claude mcp add --transport http  &lt;name&gt; &lt;url&gt;
+claude mcp add --transport stdio &lt;name&gt; -- &lt;cmd&gt; [args]
+claude mcp list | get | remove</pre>
+      <p><strong>Tool Search</strong> (on by default): only tool <em>names</em> + server instructions load at start; Claude
+        searches for tools on demand to keep context low (needs Sonnet 4+/Opus 4+). Mark a server
+        <code>alwaysLoad: true</code> to keep its tools always in context.</p>
+    </div></details>
+    <details class="acc"><summary>Config scopes</summary><div class="acc-body">
+      <table>
+        <thead><tr><th>Scope</th><th>Shared?</th><th>Stored in</th></tr></thead>
+        <tbody>
+          <tr><td>Local (default)</td><td>No</td><td><code>~/.claude.json</code></td></tr>
+          <tr><td>Project</td><td>Yes (commit)</td><td><code>.mcp.json</code> at repo root</td></tr>
+          <tr><td>User</td><td>No</td><td><code>~/.claude.json</code></td></tr>
+        </tbody>
+      </table>
+      <p>Note: MCP &ldquo;local scope&rdquo; lives in <code>~/.claude.json</code>, <em>not</em> <code>.claude/settings.local.json</code>.</p>
+    </div></details>
+  </section>
+
+  <section>
+    <h2>When to reach for it</h2>
+    <div class="usewhen"><span class="ic">✓</span><div>You keep copying data into chat from a system Claude can&rsquo;t see (Jira, Sentry, a DB, GitHub).</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>You want Claude to <em>act</em> on an external system, not just read about it.</div></div>
+    <h3>When <em>not</em> to</h3>
+    <div class="usewhen no"><span class="ic">✕</span><div>The need is a procedure using tools Claude already has → a <a href="skills.html">skill</a>.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>You don&rsquo;t trust the server &mdash; don&rsquo;t connect it (see security).</div></div>
+  </section>
+
+  <section>
+    <h2>Best practices</h2>
+    <div class="usewhen"><span class="ic">★</span><div>Use HTTP for remote (widest support + OAuth); treat SSE as deprecated.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Choose scope deliberately: Project (committed) for team servers; Local for anything carrying personal credentials.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Keep credentials out of config &mdash; use OAuth via <code>/mcp</code> or env-var expansion; secrets land in the OS keychain.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Pair with a skill that encodes <em>how</em> to use the server well.</div></div>
+  </section>
+
+  <div class="callout warn-c"><span class="label">Security — heightened vs skills</span>
+    MCP crosses an external trust boundary, so <strong>prompt injection</strong> is the headline risk: a server that
+    fetches outside content can smuggle instructions. Docs: <em>&ldquo;verify you trust each server before connecting it.&rdquo;</em>
+    Project-scoped servers require explicit approval; enterprises restrict via <code>allowedMcpServers</code>/<code>deniedMcpServers</code>.</div>
+
+  <section><h2>Sources</h2>
+    <ul><li><a href="https://code.claude.com/docs/en/mcp">MCP in Claude Code</a> ·
+      <a href="https://www.anthropic.com/news/model-context-protocol">Introducing MCP</a> ·
+      <a href="https://modelcontextprotocol.io/introduction">modelcontextprotocol.io</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><p>Reviewed 2026-06-02 · <a href="../matrix.html">back to the matrix</a></p></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Policies — managed settings &amp; permission rules</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../mental-model.html">Mental model</a>
+    <a href="../matrix.html">Comparison matrix</a>
+    <a href="../decision.html">Decide what to use</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <section style="margin-top:26px">
+    <p class="meta"><a href="../index.html">Home</a> › Policies</p>
+    <div class="pill-row"><span class="badge l301">301 · Governance</span> <span class="badge det">Hard · client-enforced</span> <span class="badge ga">GA</span></div>
+    <h1>Policies — managed settings &amp; permission rules</h1>
+    <p class="lede">Governance the client enforces <strong>regardless of what the model decides</strong>. This is the hard
+      counterpart to <a href="memory.html">conventions</a> &mdash; and the thing people most often confuse with them.</p>
+  </section>
+
+  <section>
+    <p class="analogy"><strong>Analogy —</strong> <a href="memory.html">conventions</a> are the employee handbook;
+      <strong>policies are the building&rsquo;s keycard system and the firewall</strong>. The handbook asks; the keycard
+      enforces. You don&rsquo;t secure a server room with a memo.</p>
+  </section>
+
+  <section>
+    <h2>Two layers, both hard</h2>
+    <h3>Permission rules</h3>
+    <p>Declarative <code>allow</code> / <code>ask</code> / <code>deny</code> patterns in <code>settings.json</code>.
+      Evaluated <strong>deny → ask → allow, first match wins</strong>. Config, not code &mdash; that&rsquo;s what separates them
+      from <a href="hooks.html">hooks</a>.</p>
+    <pre>"permissions": {
+  "deny":  ["Read(./.env)", "Bash(curl *)"],
+  "ask":   ["Bash(git push *)"],
+  "allow": ["Bash(npm run test*)"],
+  "defaultMode": "acceptEdits"
+}</pre>
+    <h3>Managed settings (the enterprise policy layer)</h3>
+    <p>Admin-deployed <code>managed-settings.json</code> at the <strong>highest precedence</strong> &mdash; cannot be
+      overridden by user, project, or local settings. Permission rule arrays <em>merge</em> across scopes; most other
+      keys override by priority.</p>
+    <details class="acc"><summary>Locations &amp; managed-only keys</summary><div class="acc-body">
+      <p>macOS <code>/Library/Application Support/ClaudeCode/managed-settings.json</code> ·
+        Linux/WSL <code>/etc/claude-code/managed-settings.json</code> ·
+        Windows <code>C:\Program Files\ClaudeCode\managed-settings.json</code> or <code>HKLM\SOFTWARE\Policies\ClaudeCode</code>.</p>
+      <p>Managed-only keys: <code>allowManagedPermissionRulesOnly</code>, <code>allowManagedHooksOnly</code>,
+        <code>allowManagedMcpServersOnly</code>, <code>forceLoginOrgUUID</code>, <code>availableModels</code>,
+        <code>allowedMcpServers</code>/<code>deniedMcpServers</code>, <code>claudeMd</code>, <code>sandbox.enabled</code>,
+        <code>disableWorkflows</code>.</p>
+    </div></details>
+    <div class="callout"><span class="label">Subtle but exam-relevant</span>
+      A managed <code>claudeMd</code> key injects behavioral guidance org-wide &mdash; but it&rsquo;s still <em>soft</em> guidance
+      shipped through the hard layer. Managed <em>settings</em> (deny rules, sandbox) are the technical enforcement.
+      Same delivery, different nature.</div>
+  </section>
+
+  <section>
+    <h2>When to reach for it</h2>
+    <div class="usewhen"><span class="ic">✓</span><div>Something must be <em>blocked or required</em> for everyone, always (secrets, destructive commands).</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>Silence prompts on safe, recurring commands (<code>allow</code>) or force a prompt on risky ones (<code>ask</code>).</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>Org-wide: pin available models, restrict MCP servers, force login org, enable sandbox.</div></div>
+    <h3>When <em>not</em> to</h3>
+    <div class="usewhen no"><span class="ic">✕</span><div>Soft style preferences → <a href="memory.html">CLAUDE.md</a>.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>Logic config can&rsquo;t express (inspect file contents, call an API to decide) → a <a href="hooks.html">PreToolUse hook</a>.</div></div>
+  </section>
+
+  <section>
+    <h2>Best practices</h2>
+    <div class="usewhen"><span class="ic">★</span><div><code>deny</code> secrets and destructive commands first; deny always wins.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Controlling models takes three keys together: <code>availableModels</code> + <code>model</code> + <code>ANTHROPIC_DEFAULT_*_MODEL</code> (the model setting alone is only the initial selection, not enforcement).</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Use <code>allowManagedPermissionRulesOnly</code> to stop users adding their own allowlist entries.</div></div>
+  </section>
+
+  <section><h2>Sources</h2>
+    <ul><li><a href="https://code.claude.com/docs/en/settings">Settings &amp; managed settings</a></li>
+    <li><a href="https://code.claude.com/docs/en/permission-modes">Permission modes</a></li>
+    <li><a href="https://code.claude.com/docs/en/server-managed-settings">Server-managed settings</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><p>Reviewed 2026-06-02 · <a href="../matrix.html">back to the matrix</a></p></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

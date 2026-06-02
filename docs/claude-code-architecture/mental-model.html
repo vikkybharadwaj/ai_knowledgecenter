@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Mental Model — Claude Code Architecture</title>
+<meta name="description" content="The mental model that organizes every Claude Code primitive: prompt ⊂ context ⊂ harness, the soft/hard axis, the who-holds-the-plan axis, and how subagents, teams, workflows, worktrees and agent view nest.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="mental-model.html">Mental model</a>
+    <a href="matrix.html">Comparison matrix</a>
+    <a href="decision.html">Decide what to use</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <div class="layout">
+    <aside class="toc">
+      <a href="#harness">Prompt ⊂ context ⊂ harness</a>
+      <a href="#four">The four levers</a>
+      <a href="#axes">The two axes</a>
+      <a href="#nesting">How it all nests</a>
+      <a href="#coordination">The coordination spectrum</a>
+      <a href="#workflow-demo">A workflow in miniature</a>
+    </aside>
+
+    <div>
+    <section style="margin-top:30px">
+      <div class="eyebrow">The conceptual backbone</div>
+      <h1>The mental model</h1>
+      <p class="lede">If you only internalize one page, make it this one. Everything else &mdash; skills, hooks, MCP,
+        teams, workflows &mdash; is a special case of the structure below. Reviewed 2026-06-02.</p>
+    </section>
+
+    <!-- HARNESS -->
+    <section id="harness">
+      <h2>Prompt ⊂ Context ⊂ Harness</h2>
+      <p>Three nested levels of control over a model, each a bigger unit of work than the last. This is the frame the
+        rest of Claude Code hangs off. (Migrated from the Tide visual doc; this is now its canonical home.)</p>
+
+      <div class="flow" style="margin:22px 0">
+        <div class="step"><span class="n">① the message</span><br><strong>Prompt engineering</strong><br>
+          <span class="meta">Compose one best input: role, context, instructions, examples, format. Send → refine the weakest ingredient → repeat.</span></div>
+        <div class="step"><span class="n">② the memory</span><br><strong>Context engineering</strong><br>
+          <span class="meta">A finite budget. A curator <em>selects, compresses, drops</em> so only what matters reaches the model each step.</span></div>
+        <div class="step"><span class="n">③ the machine</span><br><strong>Harness engineering</strong><br>
+          <span class="meta">The outer loop: <strong>Gather → Act → Verify → retry</strong>. Contains the other two inside its Gather/Act steps.</span></div>
+      </div>
+
+      <details class="acc" open>
+        <summary>The harness loop, zone by zone</summary>
+        <div class="acc-body">
+          <p><strong>① GATHER</strong> — the context-engineering zone. A curator fills a finite context window from: the
+            user request, memory (CLAUDE.md, sessions), prior tool outputs, retrieved docs.</p>
+          <p><strong>② ACT</strong> — the prompt-engineering zone. Assemble one prompt → run inference → branch to
+            <em>tools</em> (exec, fetch, MCP) or <em>subagents</em> (specialists).</p>
+          <p><strong>③ VERIFY</strong> — a verifier (tests, LLM-as-judge) checks the result. Pass → final answer.
+            Fail → retry: re-run gather → act → verify with updated context.</p>
+        </div>
+      </details>
+
+      <div class="callout key">
+        <span class="label">Why this matters — it tells you where a bug lives</span>
+        Bad single answer → fix the <strong>prompt</strong>. Model forgetting or drowning in irrelevant tokens → fix
+        <strong>context</strong> (the curator). Agent does the right thing once but can&rsquo;t recover, loop, or self-check →
+        fix the <strong>harness</strong> (verify + retry). Maps straight onto Claude Code: CLAUDE.md + session = memory,
+        the curated window = gather, tool/subagent calls = act, tests/judges = verify.
+      </div>
+    </section>
+
+    <!-- FOUR LEVERS -->
+    <section id="four">
+      <h2>Every primitive pulls one of four levers</h2>
+      <p>Once you see Claude Code as a harness around a model, each feature is just a way to change one of these:</p>
+      <div class="grid cols-2">
+        <div class="card"><h3>① What the model <span class="tip" data-tip="Instructions and context. The model reads them and may comply.">knows</span></h3>
+          <p>Soft context &amp; instructions.</p><p class="meta">CLAUDE.md · rules files · skills · output styles · effort</p></div>
+        <div class="card"><h3>② What the model <span class="tip" data-tip="The tools and external systems available.">can reach</span></h3>
+          <p>Tools &amp; external systems.</p><p class="meta">built-in tools · MCP servers</p></div>
+        <div class="card"><h3>③ What is <span class="tip" data-tip="Client-enforced. Independent of the model's choices.">guaranteed</span></h3>
+          <p>Deterministic enforcement.</p><p class="meta">hooks · permission rules · managed policies</p></div>
+        <div class="card"><h3>④ How work is <span class="tip" data-tip="From one prompt to hundreds of agents.">coordinated</span></h3>
+          <p>Single-thread → fleet.</p><p class="meta">subagents · agent view · agent teams · workflows · worktrees</p></div>
+      </div>
+    </section>
+
+    <!-- AXES -->
+    <section id="axes">
+      <h2>The two axes that separate everything</h2>
+
+      <h3>Axis 1 — Soft vs Hard</h3>
+      <p>Does the model <em>choose</em> to follow it, or does the client <em>enforce</em> it no matter what?</p>
+      <div class="flow">
+        <div class="step"><strong>Soft</strong><br><span class="meta">CLAUDE.md, rules files, skills, output styles, effort, MCP tool choice. Guidance — the model may ignore it.</span></div>
+        <div class="step"><strong>Hard</strong><br><span class="meta">Hooks, permission rules, managed settings. Runs or blocks regardless of the model. The only real guardrails.</span></div>
+      </div>
+
+      <h3 style="margin-top:30px">Axis 2 — Who holds the plan</h3>
+      <p>The single best discriminator among the coordination primitives. As you move right, more runs in parallel and
+        you watch each step less.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Who decides what runs next</th><th>Primitive</th><th>Where intermediate results live</th></tr></thead>
+          <tbody>
+            <tr><td>You, in one prompt</td><td>Prompt engineering</td><td>The single response</td></tr>
+            <tr><td>The model, across one session</td><td>One session / context engineering</td><td>The context window</td></tr>
+            <tr><td>The model, delegating turn-by-turn</td><td>Subagents</td><td>Each subagent&rsquo;s own context; summary returns</td></tr>
+            <tr><td>You, supervising many sessions</td><td>Agent view</td><td>Each session&rsquo;s transcript + worktree</td></tr>
+            <tr><td>A lead agent, turn-by-turn</td><td>Agent teams</td><td>A shared task list + mailbox</td></tr>
+            <tr><td>A script the runtime executes</td><td>Dynamic workflows</td><td>Script variables (not a context window)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="meta">Adapted from the official <a href="https://code.claude.com/docs/en/workflows">&ldquo;who holds the plan&rdquo;</a> table.</p>
+    </section>
+
+    <!-- NESTING -->
+    <section id="nesting">
+      <h2>How it all nests</h2>
+      <p>These aren&rsquo;t nine flat options &mdash; they stack. Reading inside-out:</p>
+      <pre>managed policies            ← hard ceiling over everything (org governance)
+└── harness (one session)   ← Gather → Act → Verify loop
+    ├── memory / CLAUDE.md   ← soft context in Gather
+    ├── skills               ← procedures pulled into Act on demand
+    ├── MCP servers          ← extra tools available in Act
+    ├── hooks                ← deterministic code at lifecycle events
+    └── subagents            ← delegated workers (own context, summary returns)
+
+  ...and when one session isn't enough:
+    agent view   = you supervising MANY of these sessions
+    agent teams  = a LEAD session coordinating PEER sessions that message
+    workflows    = a SCRIPT spawning dozens–hundreds of subagents
+    worktrees    = git isolation UNDER all of the above (so files don't collide)</pre>
+      <div class="callout">
+        <span class="label">Three things people mix up</span>
+        <strong>Subagent</strong> = a worker <em>inside</em> one session (can&rsquo;t spawn its own subagents).
+        <strong>Agent team teammate / agent-view session</strong> = a <em>full</em> session.
+        <strong>Worktree</strong> = not an agent at all — a git directory that keeps parallel sessions from editing the same files.
+      </div>
+    </section>
+
+    <!-- COORDINATION SPECTRUM -->
+    <section id="coordination">
+      <h2>The coordination spectrum — three questions</h2>
+      <p>When a job is too big for one session, the docs reduce the choice to three questions
+        (<a href="https://code.claude.com/docs/en/agents">agents</a>):</p>
+      <div class="grid cols-3">
+        <div class="card"><h3>Who coordinates?</h3>
+          <p>You → <strong>agent view</strong>. The model in one session → <strong>subagents</strong>.
+            A lead model → <strong>agent teams</strong>. A script → <strong>workflows</strong>.</p></div>
+        <div class="card"><h3>Do workers talk to each other?</h3>
+          <p>No, report up → <strong>subagents / agent view</strong>. Yes, peer-to-peer → <strong>agent teams</strong>.</p></div>
+        <div class="card"><h3>Do they touch the same files?</h3>
+          <p>If yes → isolate with <strong>worktrees</strong> (automatic under agent view; manual partition for teams).</p></div>
+      </div>
+    </section>
+
+    <!-- WORKFLOW DEMO -->
+    <section id="workflow-demo">
+      <h2>A dynamic workflow in miniature — how this guide was researched</h2>
+      <p>You wanted to <em>see</em> the workflow pattern, not just read about it. A
+        <a href="https://code.claude.com/docs/en/workflows">dynamic workflow</a> moves the plan <strong>into code</strong>:
+        a script fans work out to many subagents, holds the intermediate results in variables, cross-checks them, and
+        returns only the synthesis. This guide was built with exactly that shape &mdash; here is the &ldquo;script&rdquo; that was
+        effectively run:</p>
+      <pre>// pseudo-workflow: research the Claude Code primitives
+const slices = [
+  "parallel surfaces: subagents, agent view, agent teams, worktrees",
+  "skills + MCP: mechanism, invocation, security",
+  "terminology: hooks vs rules, conventions vs policies, 'routines'",
+  "curriculum + leveling + announcement dates",
+];
+
+// PHASE 1 — fan out (parallel, isolated context each)
+const findings = await Promise.all(
+  slices.map(s => agent({ task: s, sources: "code.claude.com/docs only" }))
+);
+
+// PHASE 2 — cross-check (claims that disagree get dropped or flagged)
+const verified = crossCheck(findings);   // e.g. "routines" → 0 hits → flagged non-canonical
+
+// PHASE 3 — synthesize (only the answer reaches the main context)
+return synthesize(verified);             // → this field guide</pre>
+      <div class="callout tip-c">
+        <span class="label">The payoff</span>
+        Four research streams ran in parallel; their raw output never touched the writing context &mdash; only the
+        cross-checked synthesis did. That&rsquo;s the whole value proposition of workflows: <strong>more agents without
+        more context bloat, plus a built-in quality gate.</strong> The real feature does this with up to 16 concurrent
+        agents (1,000 cap) and a watchable progress view; here it was emulated with parallel subagents.
+      </div>
+      <p><a href="primitives/workflows.html">→ Full dynamic-workflows deep dive</a></p>
+    </section>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap">
+  <p>Claude Code Architecture field guide · reviewed 2026-06-02 · <a href="index.html">home</a> ·
+     harness/context/prompt model migrated from the Tide visual docs.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
