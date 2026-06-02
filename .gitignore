@@ -1,0 +1,23 @@
+# Working / scratch
+NOTES.md
+*.local.md
+.scratch/
+tmp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Env / secrets (should never be here anyway)
+.env
+.env.*
+*.key
+*.pem
+
+# Node (in case a snippet brings deps)
+node_modules/
