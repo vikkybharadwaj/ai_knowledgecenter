@@ -1,55 +1,25 @@
 /* AI Knowledge Center — hub logic.
-   To add a learning module later, append one entry to MODULES and it
-   renders automatically (grouped by status). Theme key "cca-theme" is
-   shared with the module sub-sites so dark/light stays in sync. */
+   To add a topic later, append one entry to MODULES and it renders
+   automatically (live ones first, then the roadmap). Dark-only, no theme
+   toggle — the visual system matches the portfolio (JetBrains Mono / green→blue). */
 
 (function () {
-  // ---- shared theme ----
-  var KEY = "cca-theme";
-  var saved = localStorage.getItem(KEY);
-  if (saved) document.documentElement.setAttribute("data-theme", saved);
-  document.addEventListener("DOMContentLoaded", function () {
-    var btn = document.querySelector(".theme-toggle");
-    if (btn) {
-      var label = function () {
-        var dark = document.documentElement.getAttribute("data-theme") !== "light";
-        btn.textContent = dark ? "☀ Light" : "☾ Dark";
-      };
-      label();
-      btn.addEventListener("click", function () {
-        var dark = document.documentElement.getAttribute("data-theme") !== "light";
-        var next = dark ? "light" : "dark";
-        document.documentElement.setAttribute("data-theme", next);
-        localStorage.setItem(KEY, next); label();
-      });
-    }
-    renderModules();
-  });
+  document.addEventListener("DOMContentLoaded", renderModules);
 
-  // ---- the registry: ONE place to add modules ----
+  // ---- the registry: ONE place to add topics ----
   var MODULES = [
     {
       status: "live", icon: "🧭",
       title: "Claude Code Architecture",
       tagline: "One mental model for every Claude Code primitive — skills, hooks, MCP, subagents, agent teams, dynamic workflows, agent view, worktrees, conventions, policies — plus a decision ladder and a full CCA-F exam-prep system.",
       href: "claude-code-architecture/index.html",
-      chips: ["10 primitives", "101/201/301", "136-question exam prep"],
+      chips: ["10 primitives", "101 / 201 / 301", "136-question exam prep"],
       links: [
         { label: "Mental model", href: "claude-code-architecture/mental-model.html" },
         { label: "Comparison matrix", href: "claude-code-architecture/matrix.html" },
         { label: "Decide what to use", href: "claude-code-architecture/decision.html" },
-        { label: "Exam prep", href: "claude-code-architecture/exam-prep.html" },
-        { label: "Scenarios", href: "claude-code-architecture/scenarios.html" }
-      ]
-    },
-    {
-      status: "live", icon: "🪜",
-      title: "Harness · Context · Prompt Engineering",
-      tagline: "The three nested levels of control over an LLM — the frame the whole stack hangs off. Where a bug lives tells you which level to fix.",
-      href: "claude-code-architecture/mental-model.html#harness",
-      chips: ["mental model"],
-      links: [
-        { label: "Read it", href: "claude-code-architecture/mental-model.html#harness" }
+        { label: "Scenarios", href: "claude-code-architecture/scenarios.html" },
+        { label: "Exam prep", href: "claude-code-architecture/exam-prep.html" }
       ]
     },
     { status: "building", icon: "✍️", title: "Prompting & Context Engineering",
@@ -64,12 +34,12 @@
       tagline: "Prompt injection, guardrails, PII, red-teaming — the trust boundary around every agent." }
   ];
 
-  function el(t, c, h) { var e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; }
   function esc(s) { return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
   function card(m) {
     var live = m.status === "live";
-    var c = el(live ? "a" : "div", "module " + (live ? "live" : "soon"));
+    var c = document.createElement(live ? "a" : "div");
+    c.className = "module " + (live ? "live" : "soon");
     if (live) c.href = m.href;
     var chips = (m.chips || []).map(function (x) { return "<span class='chip'>" + esc(x) + "</span>"; }).join(" ");
     var top = "<span class='accentbar'></span><div class='topline'><span class='icon'>" + esc(m.icon || "•") +
@@ -79,7 +49,7 @@
     var foot = "";
     if (live) {
       var ml = (m.links || []).map(function (l) { return "<a href='" + esc(l.href) + "'>" + esc(l.label) + "</a>"; }).join("");
-      foot = (ml ? "<div class='mlinks'>" + ml + "</div>" : "") + "<div class='go'>Open module →</div>";
+      foot = (ml ? "<div class='mlinks'>" + ml + "</div>" : "") + "<div class='go'><span class='grad'>Open topic →</span></div>";
     } else {
       foot = "<div class='go' style='color:var(--text-dim)'>" + (m.status === "building" ? "Hydrating soon" : "On the roadmap") + "</div>";
     }

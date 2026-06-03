@@ -1,30 +1,8 @@
 /* Claude Code Architecture site — shared interactions.
-   Vanilla JS, no dependencies. Theme persistence, TOC scroll-spy,
-   nav active-state, and keyboard-accessible tooltips. */
+   Vanilla JS, no dependencies. TOC scroll-spy, nav active-state,
+   and keyboard-accessible tooltips. Dark-only (no theme toggle). */
 
 (function () {
-  // ---- theme toggle (persisted) ----
-  var KEY = "cca-theme";
-  var saved = localStorage.getItem(KEY);
-  if (saved) document.documentElement.setAttribute("data-theme", saved);
-
-  function wireTheme() {
-    var btn = document.querySelector(".theme-toggle");
-    if (!btn) return;
-    function label() {
-      var dark = document.documentElement.getAttribute("data-theme") !== "light";
-      btn.textContent = dark ? "☀ Light" : "☾ Dark";
-    }
-    label();
-    btn.addEventListener("click", function () {
-      var dark = document.documentElement.getAttribute("data-theme") !== "light";
-      var next = dark ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem(KEY, next);
-      label();
-    });
-  }
-
   // ---- highlight current page in top nav ----
   function wireNav() {
     var here = location.pathname.split("/").pop() || "index.html";
@@ -64,6 +42,6 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    wireTheme(); wireNav(); wireToc(); wireTips();
+    wireNav(); wireToc(); wireTips();
   });
 })();
