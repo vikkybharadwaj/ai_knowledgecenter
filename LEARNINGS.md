@@ -11,6 +11,25 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-02  Added a `knowledge/10-cross-cutting/` category for topics that span multiple
+            folders, plus an interactive HTML field guide at `docs/claude-code-architecture/`
+            covering the Claude Code primitives (skills, hooks, MCP, subagents, agent teams,
+            dynamic workflows, agent view, worktrees, conventions, policies). Key clarifications
+            worth remembering: **conventions (CLAUDE.md) ≠ policies (managed settings)** —
+            soft vs hard enforcement; **"routines" is not an official Claude Code term**
+            (→ skills / workflows / output styles); **rules ≠ hooks** — three things wear
+            "rule" (hooks = code that runs, permission rules = config, `.claude/rules/` = memory).
+            [→ knowledge/10-cross-cutting/claude-code-architecture.md]
+
+2026-06-02  TIDE REMOVAL CHECKLIST (couldn't be done from this session — the `tide` repo is
+            out of scope here). The harness-vs-context content now has its canonical home at
+            `knowledge/10-cross-cutting/harness-vs-context-engineering.md` + the HTML mental-model
+            page. To finish the migration, in the **tide** repo: (1) delete
+            `harness-vs-context-engineering.html`; (2) remove any nav links/cards pointing to it
+            (check `operating-system.html` and any index/landing page); (3) optionally add a
+            redirect or a note pointing to the AI Knowledge Center copy. The `operating-system.html`
+            page can stay in Tide unless you want it centralized too.
+
 2026-06-02  Imported 5 AI reference diagrams from `~/Documents` as distilled notes
             (kept the source image next to each). Mental model worth internalizing:
             **prompt ⊂ context ⊂ harness** engineering — where a bug lives tells you

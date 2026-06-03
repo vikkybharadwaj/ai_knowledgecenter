@@ -34,6 +34,17 @@ instead of re-learning the same things in each one.
 7. **Safety & Security** — guardrails, prompt injection, PII, red-teaming
 8. **Product & UX** — AI product UX patterns, trust, latency UX, failure modes
 9. **Tooling & SDKs** — Anthropic/OpenAI SDKs, frameworks, dev tooling
+10. **Cross-Cutting** — mental models & guides that span multiple categories
+
+### Interactive docs
+
+Some knowledge is also published as small interactive HTML sites under [`docs/`](docs/)
+(hostable on GitHub Pages):
+
+- [`docs/claude-code-architecture/`](docs/claude-code-architecture/index.html) — a clickable
+  field guide to the Claude Code primitives (skills, hooks, MCP, subagents, agent teams,
+  dynamic workflows, agent view, worktrees, conventions, policies) with a comparison matrix
+  and 101/201/301 leveling. Markdown companion: [`knowledge/10-cross-cutting/`](knowledge/10-cross-cutting/).
 
 ---
 

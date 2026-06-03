@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Worktrees + Agent view — isolate and supervise many sessions</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../mental-model.html">Mental model</a>
+    <a href="../matrix.html">Comparison matrix</a>
+    <a href="../decision.html">Decide what to use</a>
+    <a href="../exam-prep.html">Exam prep</a>
+    <a href="../scenarios.html">Scenarios</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <section style="margin-top:26px">
+    <p class="meta"><a href="../index.html">Home</a> › Worktrees + Agent view</p>
+    <div class="pill-row"><span class="badge l301">301 · Orchestrate</span> <span class="badge">Coordinated by you</span> <span class="badge preview">agent view: preview · v2.1.139+</span></div>
+    <h1>Worktrees + Agent view</h1>
+    <p class="lede">Two cooperating pieces: <strong>worktrees</strong> are the git isolation that keeps parallel sessions
+      from editing the same files; <strong>agent view</strong> is the one screen to dispatch and supervise many
+      independent background sessions. Bundled here because agent view auto-uses worktrees underneath.</p>
+  </section>
+
+  <section>
+    <p class="analogy"><strong>Analogy —</strong> worktrees are <strong>separate workbenches</strong> so two people aren&rsquo;t
+      sanding the same plank; agent view is the <strong>air-traffic control tower</strong> &mdash; you see every flight,
+      step in only when one needs you.</p>
+  </section>
+
+  <section>
+    <h2>Worktrees — the isolation mechanism</h2>
+    <p>A separate working directory with its own files and branch, sharing the repo&rsquo;s history. It holds no plan &mdash; it
+      just isolates edits. It&rsquo;s the layer <em>under</em> agent view, subagent <code>isolation: worktree</code>, and
+      desktop parallel sessions.</p>
+    <pre>claude --worktree my-feature     # own checkout at .claude/worktrees/my-feature
+claude --worktree "#1234"        # from a PR → .claude/worktrees/pr-1234</pre>
+    <details class="acc"><summary>Lifecycle &amp; gotchas</summary><div class="acc-body">
+      <p>Defaults to branching from <code>origin/HEAD</code> (&ldquo;fresh&rdquo;); set <code>worktree.baseRef: "head"</code> for
+        local HEAD. Add <code>.claude/worktrees/</code> to <code>.gitignore</code>; use <code>.worktreeinclude</code> to
+        copy gitignored files like <code>.env</code> into each new worktree. Clean trees auto-remove on exit; dirty ones
+        prompt keep-or-remove. Re-init your dev env (install deps) in each worktree.</p>
+    </div></details>
+  </section>
+
+  <section>
+    <h2>Agent view — the supervision dashboard</h2>
+    <p>Open with <code>claude agents</code>. Each dispatched session is an autonomous full conversation; agent view is the
+      board showing what&rsquo;s running, what needs input, and what&rsquo;s done. <strong>You</strong> hold the plan &mdash; there&rsquo;s
+      no automated cross-row coordinator (that&rsquo;s what <a href="agent-teams.html">agent teams</a> are for).</p>
+    <details class="acc"><summary>Dispatch, supervise, resumability</summary><div class="acc-body">
+      <p>Dispatch from the input box (each Enter = a new session), from inside a session with <code>/background</code>, or
+        via shell <code>claude --bg "&lt;prompt&gt;"</code>. Each session edits in its own worktree under
+        <code>.claude/worktrees/</code>.</p>
+      <p>Strong resumability: sessions run under a per-user <strong>supervisor process</strong> independent of any
+        terminal &mdash; close the view and work continues; survives machine sleep. Pin with <code>Ctrl+T</code> to keep
+        idle sessions alive. Peek with <code>Space</code>, attach with <code>Enter</code>. Each session consumes quota
+        independently (10 sessions ≈ 10× quota).</p>
+    </div></details>
+  </section>
+
+  <section>
+    <h2>When to reach for it</h2>
+    <div class="usewhen"><span class="ic">✓</span><div>Several <em>independent</em> tasks you can hand off and review later (a bugfix + a PR review + a flaky-test investigation as three rows).</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>Any time parallel sessions you drive yourself would otherwise collide on files → worktrees.</div></div>
+    <h3>When <em>not</em> to</h3>
+    <div class="usewhen no"><span class="ic">✕</span><div>Sessions must coordinate or message each other → <a href="agent-teams.html">agent teams</a>.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>Single iterative task needing your constant attention → stay in one session.</div></div>
+  </section>
+
+  <section>
+    <h2>Best practices</h2>
+    <div class="usewhen"><span class="ic">★</span><div>Scope the list to a project with <code>claude agents --cwd</code>; pre-set defaults (<code>--model</code>, <code>--effort</code>, <code>--permission-mode</code>).</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Merge/push before deleting a session &mdash; deletion removes its worktree <em>including uncommitted changes</em>.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Distinguish <code>/agents</code> (in-session subagent panel) from <code>claude agents</code> (the agent-view dashboard) &mdash; similar names, different features.</div></div>
+  </section>
+
+  <section><h2>Sources</h2>
+    <ul><li><a href="https://code.claude.com/docs/en/agent-view">Agent view</a> · <a href="https://code.claude.com/docs/en/worktrees">Worktrees</a> · <a href="https://code.claude.com/docs/en/agents">Run agents in parallel</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><p>Reviewed 2026-06-02 · <a href="../matrix.html">back to the matrix</a></p></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

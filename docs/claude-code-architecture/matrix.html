@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Comparison Matrix — Claude Code primitives</title>
+<meta name="description" content="One matrix comparing Claude Code's primitives across enforcement, who holds the plan, scale, level and when to use — plus 101/201/301 leveling, breadth vs depth, and terminology corrections.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="mental-model.html">Mental model</a>
+    <a href="matrix.html">Comparison matrix</a>
+    <a href="decision.html">Decide what to use</a>
+    <a href="exam-prep.html">Exam prep</a>
+    <a href="scenarios.html">Scenarios</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <div class="layout">
+    <aside class="toc">
+      <a href="#matrix">The matrix</a>
+      <a href="#levels">101 / 201 / 301</a>
+      <a href="#breadth">Breadth vs depth</a>
+      <a href="#enforcement">Soft vs hard</a>
+      <a href="#terms">Terminology fixes</a>
+      <a href="#sources">Sources</a>
+    </aside>
+
+    <div>
+    <section style="margin-top:30px">
+      <div class="eyebrow">Bookmark this page</div>
+      <h1>The comparison matrix</h1>
+      <p class="lede">The one table to return to whenever a new feature lands and you&rsquo;re not sure where it fits.
+        Read a row left-to-right to understand a primitive; read a column top-to-bottom to compare them on one
+        dimension. Reviewed 2026-06-02.</p>
+    </section>
+
+    <!-- MAIN MATRIX -->
+    <section id="matrix">
+      <h2>All nine primitives, side by side</h2>
+      <p>&ldquo;Soft&rdquo; = the model chooses whether to follow it. &ldquo;Hard&rdquo; = the client enforces it regardless of the model.
+        &ldquo;Who holds the plan&rdquo; is the single best discriminator for the coordination primitives.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Primitive</th>
+              <th>What it is</th>
+              <th>Level</th>
+              <th>Enforce&shy;ment</th>
+              <th>Who holds the plan / invokes</th>
+              <th>Where it lives</th>
+              <th>Scale</th>
+              <th>Reach for it when&hellip;</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="primitives/memory.html"><strong>Conventions</strong></a><br><span class="meta">CLAUDE.md / .claude/rules</span></td>
+              <td>Markdown facts &amp; conventions the model reads every session.</td>
+              <td><span class="badge l101">101</span></td>
+              <td class="cell-warn">Soft</td>
+              <td>You write it; model reads &amp; <em>may</em> follow.</td>
+              <td><code>./CLAUDE.md</code>, <code>~/.claude/CLAUDE.md</code>, <code>.claude/rules/*.md</code></td>
+              <td>1 session</td>
+              <td>Claude keeps getting a fact/convention wrong.</td>
+              <td><span class="badge ga">GA</span></td>
+            </tr>
+            <tr>
+              <td><a href="primitives/policies.html"><strong>Policies</strong></a><br><span class="meta">managed settings + permission rules</span></td>
+              <td>Admin/config governance: allow / ask / deny, sandbox, forced model.</td>
+              <td><span class="badge l301">301</span></td>
+              <td class="cell-good">Hard</td>
+              <td>Client enforces; model can&rsquo;t override.</td>
+              <td><code>managed-settings.json</code>, <code>settings.json</code> &rarr; <code>permissions</code></td>
+              <td>Fleet / org</td>
+              <td>Something must be <em>blocked or required</em> for everyone, always.</td>
+              <td><span class="badge ga">GA</span></td>
+            </tr>
+            <tr>
+              <td><a href="primitives/hooks.html"><strong>Hooks</strong></a></td>
+              <td>Your shell/HTTP/prompt command, fired automatically on lifecycle events.</td>
+              <td><span class="badge l201">201</span></td>
+              <td class="cell-good">Hard</td>
+              <td>Event fires it; runs deterministically.</td>
+              <td><code>settings.json</code> &rarr; <code>hooks</code> (event&rarr;matcher&rarr;handler)</td>
+              <td>1 session</td>
+              <td>You want something to happen <em>every time</em>, guaranteed (lint, block, log).</td>
+              <td><span class="badge ga">GA</span></td>
+            </tr>
+            <tr>
+              <td><a href="primitives/skills.html"><strong>Skills</strong></a><br><span class="meta">the real &ldquo;routines&rdquo;</span></td>
+              <td>Reusable instructions/procedures + optional scripts, loaded on demand.</td>
+              <td><span class="badge l201">201</span></td>
+              <td class="cell-warn">Soft</td>
+              <td>You via <code>/name</code>, or model auto-loads by description.</td>
+              <td><code>.claude/skills/&lt;name&gt;/SKILL.md</code>, <code>~/.claude/skills/</code></td>
+              <td>1 session</td>
+              <td>You paste the same procedure/checklist repeatedly.</td>
+              <td><span class="badge ga">GA</span></td>
+            </tr>
+            <tr>
+              <td><a href="primitives/mcp.html"><strong>MCP</strong></a></td>
+              <td>A protocol; servers expose new tools, resources &amp; prompts from external systems.</td>
+              <td><span class="badge l201">201</span></td>
+              <td class="cell-warn">Soft<span class="meta"> (tools model-invoked)</span></td>
+              <td>Model calls the tools when relevant.</td>
+              <td><code>.mcp.json</code> (project), <code>~/.claude.json</code> (local/user)</td>
+              <td>1 session</td>
+              <td>You copy data into chat from a system Claude can&rsquo;t see.</td>
+              <td><span class="badge ga">GA</span></td>
+            </tr>
+            <tr>
+              <td><a href="primitives/subagents.html"><strong>Subagents</strong></a></td>
+              <td>Delegated worker in its own fresh context; only a summary returns.</td>
+              <td><span class="badge l201">201</span></td>
+              <td class="cell-warn">Soft</td>
+              <td><strong>The main conversation</strong>, turn by turn.</td>
+              <td><code>.claude/agents/*.md</code>; <code>/agents</code></td>
+              <td>A few per turn</td>
+              <td>A side task would flood your context; or you want a restricted tool profile.</td>
+              <td><span class="badge ga">GA</span></td>
+            </tr>
+            <tr>
+              <td><a href="primitives/agent-teams.html"><strong>Agent teams</strong></a></td>
+              <td>A lead + peer sessions that share a task list and message each other.</td>
+              <td><span class="badge l301">301</span></td>
+              <td class="cell-warn">Soft</td>
+              <td><strong>The lead agent</strong> (+ peers self-claim tasks).</td>
+              <td>env flag <code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code>; created in natural language</td>
+              <td>3&ndash;5 peers (rec.)</td>
+              <td>Parallel work where the workers need to <em>talk to each other</em>.</td>
+              <td><span class="badge exp">experimental</span><br><span class="meta">v2.1.32+</span></td>
+            </tr>
+            <tr>
+              <td><a href="primitives/workflows.html"><strong>Dynamic workflows</strong></a></td>
+              <td>A JS script Claude writes that orchestrates many subagents &amp; cross-checks results.</td>
+              <td><span class="badge l301">301</span></td>
+              <td class="cell-warn">Soft</td>
+              <td><strong>The script</strong> &mdash; the plan lives in code, not a context window.</td>
+              <td>script under <code>~/.claude/projects/</code>; <code>/workflows</code>; <code>ultracode</code></td>
+              <td>Dozens&ndash;100s<br><span class="meta">(16 concurrent, 1,000 cap)</span></td>
+              <td>A task needs more agents than one conversation can coordinate.</td>
+              <td><span class="badge preview">research preview</span><br><span class="meta">v2.1.154+</span></td>
+            </tr>
+            <tr>
+              <td><a href="primitives/agent-view.html"><strong>Worktrees + Agent view</strong></a></td>
+              <td>Git checkout isolation per session + a dashboard to dispatch &amp; watch many sessions.</td>
+              <td><span class="badge l301">301</span></td>
+              <td class="cell-warn">Soft<span class="meta"> (worktree = mechanism)</span></td>
+              <td><strong>You</strong> &mdash; hand off independent sessions, check back.</td>
+              <td><code>claude agents</code>; <code>claude --worktree</code>; <code>.claude/worktrees/</code></td>
+              <td>Many sessions</td>
+              <td>Several independent tasks you can hand off and review later.</td>
+              <td><span class="badge preview">preview</span><br><span class="meta">v2.1.139+</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="meta">Versions/status as of 2026-06-02 and move fast &mdash; re-check the linked docs before relying on a preview flag.</p>
+    </section>
+
+    <!-- LEVELS -->
+    <section id="levels">
+      <h2>101 / 201 / 301 leveling</h2>
+      <p>The same nine, arranged as a learning path. Each level adds capability <em>and</em> conceptual load. Master a
+        level before reaching up &mdash; most real problems are solved at 101/201.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Level</th><th>Goal</th><th>Primitives</th><th>What changes</th><th>The trigger to level up</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge l101">101</span><br>Foundations</td>
+              <td>Drive <strong>one session</strong> well.</td>
+              <td>CLAUDE.md / memory · slash commands · the Explore→Plan→Code→Commit loop</td>
+              <td>You shape soft context; no parallelism, near-zero new concepts.</td>
+              <td>You keep re-typing a prompt, or pasting a multi-step playbook.</td>
+            </tr>
+            <tr>
+              <td><span class="badge l201">201</span><br>Extend a session</td>
+              <td>Customize, connect, guarantee, and delegate &mdash; still within one session.</td>
+              <td>Skills · MCP · Hooks · Subagents</td>
+              <td>You add know-how, external reach, hard guarantees, and isolated delegation.</td>
+              <td>Subagents hit context limits, or need to communicate.</td>
+            </tr>
+            <tr>
+              <td><span class="badge l301">301</span><br>Orchestrate at scale</td>
+              <td>Coordinate <strong>many agents</strong> and govern across repos.</td>
+              <td>Agent teams · Dynamic workflows · Worktrees + Agent view · plugins · policies</td>
+              <td>The plan leaves your single context &mdash; into a lead, a script, or many sessions; plus org governance.</td>
+              <td>&mdash; (top of the ladder; here you optimize cost &amp; trust)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- BREADTH / DEPTH -->
+    <section id="breadth">
+      <h2>Breadth vs depth</h2>
+      <p>Two different kinds of scaling. <strong>Breadth</strong> = how many things run in parallel.
+        <strong>Depth</strong> = how much sustained, single-thread reasoning &amp; shared context a unit of work keeps.
+        Picking the wrong axis is the most common mistake: people reach for agent teams (breadth) when they needed one
+        deep session (depth), and vice-versa.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Primitive</th><th>Breadth (parallelism)</th><th>Depth (sustained context)</th><th>Sweet spot</th></tr></thead>
+          <tbody>
+            <tr><td><strong>One session</strong></td>
+              <td><div class="bar"><span style="width:8%"></span></div></td>
+              <td><div class="bar"><span style="width:95%"></span></div></td>
+              <td>Iterative, interconnected work that needs full shared context.</td></tr>
+            <tr><td><strong>Subagents</strong></td>
+              <td><div class="bar"><span style="width:35%"></span></div></td>
+              <td><div class="bar"><span style="width:45%"></span></div></td>
+              <td>A few isolated side-quests whose summaries feed the main thread.</td></tr>
+            <tr><td><strong>Agent teams</strong></td>
+              <td><div class="bar"><span style="width:55%"></span></div></td>
+              <td><div class="bar"><span style="width:70%"></span></div></td>
+              <td>A handful of deep, long-running peers that must coordinate.</td></tr>
+            <tr><td><strong>Agent view</strong></td>
+              <td><div class="bar"><span style="width:70%"></span></div></td>
+              <td><div class="bar"><span style="width:60%"></span></div></td>
+              <td>Many independent full sessions you supervise loosely.</td></tr>
+            <tr><td><strong>Dynamic workflows</strong></td>
+              <td><div class="bar"><span style="width:100%"></span></div></td>
+              <td><div class="bar"><span style="width:30%"></span></div></td>
+              <td>Massive fan-out of shallow, well-scoped tasks + cross-check.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout tip-c">
+        <span class="label">Rule of thumb</span>
+        If the units of work <em>don&rsquo;t need each other&rsquo;s context</em> → push for breadth (workflows / agent view).
+        If they <em>do</em> → keep depth (one session, or a small agent team that talks).
+      </div>
+    </section>
+
+    <!-- ENFORCEMENT -->
+    <section id="enforcement">
+      <h2>The soft / hard split (memorize this for the exam)</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>Soft · model-mediated</h3>
+          <p>The model reads it and <em>tries</em> to comply. No guarantee. Great for guidance, terrible for guardrails.</p>
+          <p class="meta">CLAUDE.md · <code>.claude/rules/</code> · skills · output styles · effort level · MCP tool choice</p>
+        </div>
+        <div class="card">
+          <h3>Hard · client-enforced</h3>
+          <p>Happens (or is blocked) <em>regardless</em> of what the model decides. The only real guardrails.</p>
+          <p class="meta">hooks (esp. <code>PreToolUse</code>) · permission rules (allow/ask/deny) · managed settings</p>
+        </div>
+      </div>
+      <div class="callout warn-c">
+        <span class="label">The trap</span>
+        Writing &ldquo;never run <code>curl</code>&rdquo; in CLAUDE.md is a <em>request</em>. To actually block it, use a
+        <code>permissions.deny</code> rule or a <code>PreToolUse</code> hook. Soft text cannot enforce; only the client can.
+      </div>
+    </section>
+
+    <!-- TERMINOLOGY -->
+    <section id="terms">
+      <h2>Terminology corrections (the three you flagged)</h2>
+      <p>You suspected some of these were the same thing with different names. Two of three are <strong>not</strong> &mdash;
+        and one isn&rsquo;t an official term at all.</p>
+
+      <h3>&ldquo;Conventions or policies &mdash; same thing?&rdquo; &rarr; <span class="cell-bad">No.</span></h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>Conventions (CLAUDE.md)</th><th>Policies (managed settings)</th></tr></thead>
+          <tbody>
+            <tr><td>What</td><td>Markdown you write that Claude reads</td><td>Admin-deployed config the client enforces</td></tr>
+            <tr><td>Enforcement</td><td class="cell-warn">Soft &mdash; no compliance guarantee</td><td class="cell-good">Hard &mdash; cannot be overridden</td></tr>
+            <tr><td>Example</td><td>&ldquo;Use 2-space indentation&rdquo;</td><td><code>permissions.deny: ["Bash(curl *)"]</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="meta">Docs say it verbatim: <em>&ldquo;Settings rules are enforced by the client regardless of what Claude decides
+        to do. CLAUDE.md instructions shape Claude&rsquo;s behavior but are not a hard enforcement layer.&rdquo;</em>
+        (<a href="https://code.claude.com/docs/en/memory">memory</a>, <a href="https://code.claude.com/docs/en/settings">settings</a>)</p>
+
+      <h3>&ldquo;Routines&rdquo; &rarr; <span class="cell-warn">Not an official Claude Code term.</span></h3>
+      <p>Zero hits in the docs. Map what you mean to a real primitive:</p>
+      <div class="usewhen"><span class="ic">→</span><div>A saved, repeatable procedure → a <a href="primitives/skills.html"><strong>skill</strong></a> (custom slash commands were merged into skills).</div></div>
+      <div class="usewhen"><span class="ic">→</span><div>Orchestrated multi-step planning across many agents → a <a href="primitives/workflows.html"><strong>dynamic workflow</strong></a> (what <code>ultracode</code> triggers).</div></div>
+      <div class="usewhen"><span class="ic">→</span><div>A default voice/format every turn → an <strong>output style</strong>.</div></div>
+
+      <h3>&ldquo;Rules or hooks &mdash; all the same?&rdquo; &rarr; <span class="cell-bad">No &mdash; three things wear the word &ldquo;rule.&rdquo;</span></h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Term</th><th>What it actually is</th><th>Nature</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Hooks</strong></td><td>Your code, run on a lifecycle event (<code>PreToolUse</code>&hellip;)</td><td class="cell-good">Deterministic code that <em>runs</em></td></tr>
+            <tr><td><strong>Permission rules</strong></td><td><code>allow</code>/<code>ask</code>/<code>deny</code> strings in <code>settings.json</code></td><td class="cell-good">Declarative config (deterministic), not code</td></tr>
+            <tr><td><strong>Project rules</strong></td><td><code>.claude/rules/*.md</code> &mdash; path-scoped CLAUDE.md-style memory</td><td class="cell-warn">Soft guidance (just modular memory)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="meta">A hook is the only one that <em>executes your code</em>. A permission rule is config the client evaluates.
+        A <code>.claude/rules/</code> file is just memory. Docs: <em>&ldquo;To block an action regardless of what Claude decides,
+        use a PreToolUse hook.&rdquo;</em> (<a href="https://code.claude.com/docs/en/hooks">hooks</a>)</p>
+    </section>
+
+    <section id="sources">
+      <h2>Sources</h2>
+      <ul>
+        <li><a href="https://code.claude.com/docs/en/features-overview">Extend Claude Code — features overview &amp; trigger ladder</a></li>
+        <li><a href="https://code.claude.com/docs/en/agents">Run agents in parallel</a> · <a href="https://code.claude.com/docs/en/workflows">Dynamic workflows</a></li>
+        <li><a href="https://code.claude.com/docs/en/sub-agents">Subagents</a> · <a href="https://code.claude.com/docs/en/agent-teams">Agent teams</a> · <a href="https://code.claude.com/docs/en/agent-view">Agent view</a> · <a href="https://code.claude.com/docs/en/worktrees">Worktrees</a></li>
+        <li><a href="https://code.claude.com/docs/en/skills">Skills</a> · <a href="https://code.claude.com/docs/en/mcp">MCP</a> · <a href="https://code.claude.com/docs/en/hooks">Hooks</a> · <a href="https://code.claude.com/docs/en/memory">Memory</a> · <a href="https://code.claude.com/docs/en/settings">Settings</a></li>
+      </ul>
+    </section>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap">
+  <p>Claude Code Architecture field guide · reviewed 2026-06-02 · <a href="index.html">home</a></p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

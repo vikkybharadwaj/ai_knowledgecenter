@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hooks — deterministic automation on lifecycle events</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../mental-model.html">Mental model</a>
+    <a href="../matrix.html">Comparison matrix</a>
+    <a href="../decision.html">Decide what to use</a>
+    <a href="../exam-prep.html">Exam prep</a>
+    <a href="../scenarios.html">Scenarios</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <section style="margin-top:26px">
+    <p class="meta"><a href="../index.html">Home</a> › Hooks</p>
+    <div class="pill-row"><span class="badge l201">201 · Extend</span> <span class="badge det">Hard · deterministic</span> <span class="badge ga">GA</span></div>
+    <h1>Hooks</h1>
+    <p class="lede">Your own code, run automatically at lifecycle events. The <strong>hard-enforcement escape hatch</strong>:
+      an instruction in CLAUDE.md is a request; a hook is a guarantee.</p>
+  </section>
+
+  <section>
+    <p class="analogy"><strong>Analogy —</strong> <strong>CI hooks / git pre-commit hooks for the agent</strong>. They fire
+      on an event whether or not anyone remembers to ask. A linter that runs after every write doesn&rsquo;t depend on the
+      model choosing to lint.</p>
+  </section>
+
+  <section>
+    <h2>Mechanism</h2>
+    <p>Configured under the <code>"hooks"</code> key in <code>settings.json</code>, three levels deep:
+      <strong>event → matcher group → handler</strong>. Handler <code>type</code> is <code>command</code> (deterministic
+      shell), <code>http</code>, <code>mcp_tool</code>, <code>prompt</code>, or <code>agent</code> (experimental).</p>
+    <p>Command hooks receive JSON on <strong>stdin</strong> and signal via <strong>exit codes</strong>: <code>0</code> =
+      success (stdout JSON processed as a decision), <code>2</code> = <strong>blocking error</strong> (stderr fed back to
+      Claude, action blocked), any other = non-blocking.</p>
+    <pre>"hooks": {
+  "PreToolUse": [{
+    "matcher": "Bash",
+    "hooks": [{ "type": "command", "command": "./guard.sh" }]
+  }],
+  "PostToolUse": [{
+    "matcher": "Edit|Write",
+    "hooks": [{ "type": "command", "command": "prettier --write \"$CLAUDE_FILE\"" }]
+  }]
+}</pre>
+    <details class="acc"><summary>Event names &amp; the deny decision</summary><div class="acc-body">
+      <p><code>SessionStart</code>, <code>UserPromptSubmit</code>, <code>PreToolUse</code>, <code>PostToolUse</code>,
+        <code>PostToolUseFailure</code>, <code>Stop</code>, <code>SubagentStart/Stop</code>,
+        <code>InstructionsLoaded</code>, <code>PreCompact/PostCompact</code>, and the team events
+        <code>TeammateIdle</code>/<code>TaskCreated</code>/<code>TaskCompleted</code>.</p>
+      <p><code>PreToolUse</code> can return <code>hookSpecificOutput.permissionDecision: "deny" | "allow" | "ask" | "defer"</code>.
+        The <code>if</code> field accepts permission-rule syntax (e.g. <code>"Bash(git push *)"</code>) so you don&rsquo;t spawn
+        a process you don&rsquo;t need. Output capped at 10,000 chars; default timeout 600s (UserPromptSubmit 30s).</p>
+    </div></details>
+  </section>
+
+  <section>
+    <h2>When to reach for it</h2>
+    <div class="usewhen"><span class="ic">✓</span><div>You want something to happen <em>every time</em>, guaranteed &mdash; format on save, log every command, block a pattern.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>A guardrail that must hold even if the model &ldquo;decides&rdquo; otherwise → <code>PreToolUse</code> with a deny decision.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>Quality gates on agent teams (exit code 2 on <code>TaskCompleted</code>).</div></div>
+    <h3>When <em>not</em> to</h3>
+    <div class="usewhen no"><span class="ic">✕</span><div>Simple block/allow by command pattern → a <a href="policies.html">permission rule</a> is lighter (no process spawned).</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>Guidance the model should consider but can adapt → <a href="memory.html">CLAUDE.md</a> or a <a href="skills.html">skill</a>.</div></div>
+  </section>
+
+  <section>
+    <h2>Best practices</h2>
+    <div class="usewhen"><span class="ic">★</span><div>Keep command hooks deterministic and idempotent &mdash; they may run often.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Use the <code>if</code> field to avoid firing on irrelevant tool calls.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Inspect what&rsquo;s active with <code>/hooks</code>; remember managed settings can force or restrict them.</div></div>
+  </section>
+
+  <div class="callout warn-c"><span class="label">Hooks ≠ rules</span>
+    A hook <em>runs your code</em>. A &ldquo;permission rule&rdquo; is config. A <code>.claude/rules/</code> file is just memory.
+    Three different things wear the word &ldquo;rule&rdquo; &mdash; see the <a href="../matrix.html#terms">corrections</a>.</div>
+
+  <section><h2>Sources</h2>
+    <ul><li><a href="https://code.claude.com/docs/en/hooks">Hooks reference</a> · <a href="https://code.claude.com/docs/en/hooks-guide">Hooks guide</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><p>Reviewed 2026-06-02 · <a href="../matrix.html">back to the matrix</a></p></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

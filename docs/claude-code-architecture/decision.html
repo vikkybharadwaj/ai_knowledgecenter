@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decide What To Use — Claude Code Architecture</title>
+<meta name="description" content="A trigger ladder and decision flow for choosing between CLAUDE.md, skills, hooks, MCP, subagents, agent teams, dynamic workflows and agent view.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="mental-model.html">Mental model</a>
+    <a href="matrix.html">Comparison matrix</a>
+    <a href="decision.html">Decide what to use</a>
+    <a href="exam-prep.html">Exam prep</a>
+    <a href="scenarios.html">Scenarios</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <div class="layout">
+    <aside class="toc">
+      <a href="#ladder">The trigger ladder</a>
+      <a href="#flow">Decision flow</a>
+      <a href="#pairs">Confusable pairs</a>
+      <a href="#cost">Cost &amp; trust</a>
+    </aside>
+
+    <div>
+    <section style="margin-top:30px">
+      <div class="eyebrow">&ldquo;Which do I reach for now?&rdquo;</div>
+      <h1>Decide what to use</h1>
+      <p class="lede">Don&rsquo;t design your setup up front. Add a primitive the moment a concrete trigger appears &mdash;
+        this is Anthropic&rsquo;s own guidance (<a href="https://code.claude.com/docs/en/features-overview">features overview</a>).
+        Reviewed 2026-06-02.</p>
+    </section>
+
+    <!-- LADDER -->
+    <section id="ladder">
+      <h2>The trigger ladder</h2>
+      <p>Start at the top with CLAUDE.md. Each row is a real symptom and the primitive that resolves it.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>When you notice&hellip;</th><th>Reach for</th><th>Level</th></tr></thead>
+          <tbody>
+            <tr><td>Claude got a convention wrong twice</td><td><a href="primitives/memory.html"><strong>CLAUDE.md</strong></a></td><td><span class="badge l101">101</span></td></tr>
+            <tr><td>You keep typing the same prompt</td><td><a href="primitives/skills.html">a user-invocable <strong>skill</strong></a></td><td><span class="badge l201">201</span></td></tr>
+            <tr><td>You&rsquo;ve pasted the same playbook a third time</td><td><a href="primitives/skills.html">a <strong>skill</strong></a></td><td><span class="badge l201">201</span></td></tr>
+            <tr><td>You copy data from a tab/system Claude can&rsquo;t see</td><td><a href="primitives/mcp.html">an <strong>MCP server</strong></a></td><td><span class="badge l201">201</span></td></tr>
+            <tr><td>A side task floods your conversation with output</td><td><a href="primitives/subagents.html">a <strong>subagent</strong></a></td><td><span class="badge l201">201</span></td></tr>
+            <tr><td>You want something to happen <em>every time</em>, without asking</td><td><a href="primitives/hooks.html">a <strong>hook</strong></a></td><td><span class="badge l201">201</span></td></tr>
+            <tr><td>Subagents hit context limits, or need to talk to each other</td><td><a href="primitives/agent-teams.html"><strong>agent teams</strong></a></td><td><span class="badge l301">301</span></td></tr>
+            <tr><td>A job needs more agents than one conversation can coordinate</td><td><a href="primitives/workflows.html">a <strong>dynamic workflow</strong></a></td><td><span class="badge l301">301</span></td></tr>
+            <tr><td>You&rsquo;re juggling several independent tasks at once</td><td><a href="primitives/agent-view.html"><strong>agent view</strong></a> (+ worktrees)</td><td><span class="badge l301">301</span></td></tr>
+            <tr><td>A second repo needs the same setup</td><td>a <strong>plugin</strong></td><td><span class="badge l301">301</span></td></tr>
+            <tr><td>Something must be blocked/required across the org</td><td><a href="primitives/policies.html"><strong>managed policy</strong></a></td><td><span class="badge l301">301</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- FLOW -->
+    <section id="flow">
+      <h2>Decision flow</h2>
+
+      <h3>Is it about <em>knowing</em>, <em>reaching</em>, <em>guaranteeing</em>, or <em>coordinating</em>?</h3>
+      <div class="grid cols-2">
+        <div class="card"><h3>Knowing / behaving</h3>
+          <div class="usewhen"><span class="ic">→</span><div>A <em>fact</em> Claude needs always → <strong>CLAUDE.md</strong></div></div>
+          <div class="usewhen"><span class="ic">→</span><div>A <em>procedure</em> used sometimes → <strong>skill</strong></div></div>
+          <div class="usewhen"><span class="ic">→</span><div>Path-specific guidance → <strong>.claude/rules/</strong></div></div>
+          <div class="usewhen"><span class="ic">→</span><div>A default voice/format → <strong>output style</strong></div></div>
+        </div>
+        <div class="card"><h3>Reaching out</h3>
+          <div class="usewhen"><span class="ic">→</span><div>Connect an external system / live data → <strong>MCP</strong></div></div>
+          <div class="usewhen no"><span class="ic">✕</span><div>Don&rsquo;t use a skill to <em>reach</em> a system; a skill only knows <em>how</em> to use tools Claude already has.</div></div>
+        </div>
+        <div class="card"><h3>Guaranteeing</h3>
+          <div class="usewhen"><span class="ic">→</span><div>Block/allow a tool call by pattern → <strong>permission rule</strong></div></div>
+          <div class="usewhen"><span class="ic">→</span><div>Run your own code on an event → <strong>hook</strong></div></div>
+          <div class="usewhen"><span class="ic">→</span><div>Enforce across everyone → <strong>managed policy</strong></div></div>
+          <div class="usewhen no"><span class="ic">✕</span><div>Never rely on CLAUDE.md text for a guardrail &mdash; it&rsquo;s soft.</div></div>
+        </div>
+        <div class="card"><h3>Coordinating</h3>
+          <div class="usewhen"><span class="ic">→</span><div>Offload a noisy side task → <strong>subagent</strong></div></div>
+          <div class="usewhen"><span class="ic">→</span><div>Peers that must talk → <strong>agent team</strong></div></div>
+          <div class="usewhen"><span class="ic">→</span><div>Massive fan-out + cross-check → <strong>dynamic workflow</strong></div></div>
+          <div class="usewhen"><span class="ic">→</span><div>Many independent sessions you supervise → <strong>agent view</strong></div></div>
+        </div>
+      </div>
+
+      <div class="callout key">
+        <span class="label">The 80% answer</span>
+        Most days you live at <span class="badge l101">101</span>/<span class="badge l201">201</span>: a good CLAUDE.md,
+        a couple of skills, one or two MCP servers, a formatting hook. Reach into <span class="badge l301">301</span>
+        (teams, workflows, agent view) only when a single session genuinely can&rsquo;t hold the work &mdash; they cost
+        substantially more tokens.
+      </div>
+    </section>
+
+    <!-- CONFUSABLE PAIRS -->
+    <section id="pairs">
+      <h2>Confusable pairs — pick correctly</h2>
+
+      <details class="acc"><summary>Skill vs Subagent</summary><div class="acc-body">
+        <p>A <strong>skill</strong> adds instructions to <em>your</em> context window (shareable know-how, no isolation).
+          A <strong>subagent</strong> runs in a <em>separate</em> window and returns only a summary (isolation + a
+          different tool/permission profile). Re-pasting a procedure? Skill. Drowning in a side task&rsquo;s output? Subagent.</p>
+      </div></details>
+
+      <details class="acc"><summary>Hook vs Skill</summary><div class="acc-body">
+        <p>A <strong>hook</strong> is deterministic &mdash; guaranteed to run on its event. A <strong>skill</strong> is
+          interpreted by the model and may or may not fire. <em>Put guardrails in hooks, knowledge in skills.</em></p>
+      </div></details>
+
+      <details class="acc"><summary>MCP vs Skill</summary><div class="acc-body">
+        <p><strong>MCP</strong> is the <em>connection</em> (new tools/data). A <strong>skill</strong> is the
+          <em>knowledge of how to use them well</em>. They combine: an MCP server reaches your DB/Jira; a skill encodes
+          the team&rsquo;s procedure for using them.</p>
+      </div></details>
+
+      <details class="acc"><summary>Subagent vs Agent team</summary><div class="acc-body">
+        <p>Subagents report <em>up</em> and don&rsquo;t talk to each other; cheaper, simpler. Agent teams are <em>peer</em>
+          sessions that share a task list and message each other; more powerful, more expensive. The docs name the exact
+          transition: <em>&ldquo;if you&rsquo;re running parallel subagents but hitting context limits, or your subagents need to
+          communicate, agent teams are the natural next step.&rdquo;</em></p>
+      </div></details>
+
+      <details class="acc"><summary>Agent teams vs Dynamic workflows</summary><div class="acc-body">
+        <p>Both run many agents. In a <strong>team</strong>, a <em>lead model</em> holds the plan turn-by-turn and peers
+          can discuss &mdash; good for a handful of deep, collaborating workers. In a <strong>workflow</strong>, a
+          <em>script</em> holds the plan &mdash; good for dozens-to-hundreds of well-scoped tasks with a repeatable,
+          cross-checked quality pattern and no context bloat.</p>
+      </div></details>
+
+      <details class="acc"><summary>Agent view vs Agent teams</summary><div class="acc-body">
+        <p><strong>Agent view</strong> is a <em>dashboard</em> for many independent sessions <em>you</em> coordinate
+          (they don&rsquo;t talk). <strong>Agent teams</strong> is the <em>model</em> coordinating peers that <em>do</em> talk.
+          Worktrees sit under both as the file-isolation mechanism.</p>
+      </div></details>
+    </section>
+
+    <!-- COST -->
+    <section id="cost">
+      <h2>Cost &amp; trust checklist before going parallel</h2>
+      <div class="usewhen"><span class="ic">✓</span><div>Each parallel session/agent burns its own quota &mdash; 10 agents ≈ 10× the tokens.</div></div>
+      <div class="usewhen"><span class="ic">✓</span><div>Trial a workflow on <em>one directory</em> before unleashing it on the whole repo.</div></div>
+      <div class="usewhen"><span class="ic">✓</span><div>Route shallow stages to a cheaper model; keep the strong model for synthesis.</div></div>
+      <div class="usewhen"><span class="ic">✓</span><div>Partition files (or use worktrees) so parallel writers never collide.</div></div>
+      <div class="usewhen"><span class="ic">✓</span><div>Trust boundary: review any MCP server and any project skill before trusting a repo &mdash; both can grant access or inject instructions.</div></div>
+    </section>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap">
+  <p>Claude Code Architecture field guide · reviewed 2026-06-02 · <a href="index.html">home</a> ·
+     trigger ladder from <a href="https://code.claude.com/docs/en/features-overview">features overview</a>.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conventions — CLAUDE.md &amp; rules files</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../mental-model.html">Mental model</a>
+    <a href="../matrix.html">Comparison matrix</a>
+    <a href="../decision.html">Decide what to use</a>
+    <a href="../exam-prep.html">Exam prep</a>
+    <a href="../scenarios.html">Scenarios</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <section style="margin-top:26px">
+    <p class="meta"><a href="../index.html">Home</a> › Conventions</p>
+    <div class="pill-row"><span class="badge l101">101 · Foundations</span> <span class="badge">Soft · model-mediated</span> <span class="badge ga">GA</span></div>
+    <h1>Conventions — CLAUDE.md &amp; rules files</h1>
+    <p class="lede">Persistent markdown instructions Claude loads every session. The first thing you reach for, and the
+      thing most problems actually need. <strong>Soft</strong>: Claude reads it and tries to comply, but there is no
+      guarantee.</p>
+  </section>
+
+  <section>
+    <p class="analogy"><strong>Analogy —</strong> the <strong>onboarding doc &amp; house style guide</strong> you hand a new
+      teammate. They&rsquo;ll read it and mostly follow it; they won&rsquo;t always. For anything that <em>must</em> happen, you
+      need a lock on the door (a <a href="hooks.html">hook</a>) or a company policy (a <a href="policies.html">managed
+      policy</a>), not a style guide.</p>
+  </section>
+
+  <section>
+    <h2>Mechanism</h2>
+    <p>Plain markdown, concatenated by walking up the directory tree (broad → specific) and loaded as a
+      <strong>user message after the system prompt</strong> &mdash; not as enforced config. Supports <code>@path</code>
+      imports (max depth 4) and modular <code>.claude/rules/*.md</code> files (optionally path-scoped via
+      <code>paths:</code> frontmatter).</p>
+    <details class="acc"><summary>Load order (broad → specific)</summary><div class="acc-body">
+      <pre>managed CLAUDE.md   (org, can't be excluded)
+~/.claude/CLAUDE.md (you, all projects)
+./CLAUDE.md  or  ./.claude/CLAUDE.md   (project, committed)
+./CLAUDE.local.md   (local, gitignore it)</pre>
+      <p>Auto-memory: Claude-written notes at <code>~/.claude/projects/&lt;project&gt;/memory/MEMORY.md</code> (first 200
+        lines / 25KB loaded each session; v2.1.59+, on by default; toggle <code>autoMemoryEnabled</code>).</p>
+    </div></details>
+  </section>
+
+  <section>
+    <h2>When to reach for it</h2>
+    <div class="usewhen"><span class="ic">✓</span><div>A <em>fact</em> Claude needs every session: build/test commands, project layout, naming conventions.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>Claude got the same convention wrong twice.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>Path-specific guidance (e.g. rules for <code>/api</code> only) → a <code>.claude/rules/</code> file.</div></div>
+    <h3>When <em>not</em> to</h3>
+    <div class="usewhen no"><span class="ic">✕</span><div>A guardrail that must hold → use a <a href="hooks.html">hook</a> or <a href="policies.html">permission rule</a>; CLAUDE.md can&rsquo;t enforce.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>A multi-step <em>procedure</em> used occasionally → move it to a <a href="skills.html">skill</a> (loads on demand, saves context).</div></div>
+  </section>
+
+  <section>
+    <h2>Best practices</h2>
+    <div class="usewhen"><span class="ic">★</span><div>Keep it under ~200 lines. Every line is a recurring token cost on every turn.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Be concrete and verifiable: &ldquo;use 2-space indentation,&rdquo; not &ldquo;write clean code.&rdquo;</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Push procedures into skills, path-specific notes into <code>.claude/rules/</code>, hard rules into hooks.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Run <code>/init</code> to scaffold one; <code>/memory</code> to edit; <code>#</code> at the start of a message to append a memory.</div></div>
+  </section>
+
+  <div class="callout warn-c"><span class="label">The #1 misconception</span>
+    Conventions are <strong>not</strong> the same as <a href="policies.html">policies</a>. CLAUDE.md shapes behavior
+    softly; managed settings enforce it hard. See the <a href="../matrix.html#terms">terminology corrections</a>.</div>
+
+  <section><h2>Sources</h2>
+    <ul><li><a href="https://code.claude.com/docs/en/memory">Memory &amp; CLAUDE.md</a></li>
+    <li><a href="https://code.claude.com/docs/en/features-overview">Features overview</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><p>Reviewed 2026-06-02 · <a href="../matrix.html">back to the matrix</a></p></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

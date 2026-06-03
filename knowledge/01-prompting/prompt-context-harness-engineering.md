@@ -56,6 +56,8 @@ Maps directly onto how Claude Code itself works: CLAUDE.md + session = memory,
 the curated context window = gather, tool/subagent calls = act, tests/judges = verify.
 
 ## Related
+- [`harness-vs-context-engineering`](../10-cross-cutting/harness-vs-context-engineering.md) — **canonical narrative home** for this model (migrated from the Tide visual docs)
+- [`claude-code-architecture`](../10-cross-cutting/claude-code-architecture.md) — how every Claude Code primitive maps onto this loop
 - [`agentic-ai-reference-architecture`](../04-agents-and-tool-use/agentic-ai-reference-architecture.md) — the full system view of the same loop
 - [`claude-code-multi-agent-development`](../04-agents-and-tool-use/claude-code-multi-agent-development.md) — sub-agents in the ACT step
 - patterns: [`../../patterns/prompts`](../../patterns/prompts)

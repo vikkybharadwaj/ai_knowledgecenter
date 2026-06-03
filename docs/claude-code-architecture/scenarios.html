@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The 6 Scenarios — CCA-F scenario walkthroughs</title>
+<meta name="description" content="Work the six production scenarios the Claude Certified Architect exam is built on: each scenario's setting, the task statements it emphasizes, its high-yield failure modes, and worked mini-cases.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="mental-model.html">Mental model</a>
+    <a href="matrix.html">Comparison matrix</a>
+    <a href="decision.html">Decide</a>
+    <a href="exam-prep.html">Exam prep</a>
+    <a href="scenarios.html">Scenarios</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <div class="layout">
+    <aside class="toc">
+      <a href="#how">How to use this</a>
+      <a href="#s1">1 · Customer support</a>
+      <a href="#s2">2 · Code generation</a>
+      <a href="#s3">3 · Multi-agent research</a>
+      <a href="#s4">4 · Developer productivity</a>
+      <a href="#s5">5 · CI/CD</a>
+      <a href="#s6">6 · Data extraction</a>
+    </aside>
+
+    <div>
+    <section style="margin-top:30px">
+      <div class="eyebrow">The exam is scenario-grounded</div>
+      <h1>The 6 production scenarios</h1>
+      <p class="lede">Every CCA-F question lives inside one of six production settings. If you can recognize the
+        setting and recall its failure modes, half the work is done. For each: the setup, the task statements it leans
+        on, the high-yield traps, and worked mini-cases (click to reveal the reasoning). Reviewed 2026-06-02.</p>
+    </section>
+
+    <section id="how">
+      <div class="callout key"><span class="label">The drill</span>
+        Read the failure modes until the &ldquo;situation → fix&rdquo; mapping is automatic. Then work the mini-cases
+        <em>before</em> revealing the answer. Cross-reference the <a href="exam-prep.html">quiz</a> (filter by domain) and
+        the <a href="../../knowledge/10-cross-cutting/cca-f-study-guide.md">cram sheet</a>.</div>
+    </section>
+
+    <!-- SCENARIO 1 -->
+    <section id="s1">
+      <h2>1 · Customer Support Resolution Agent</h2>
+      <p>An agent resolves returns, billing disputes, and account issues through MCP tools
+        (<code>get_customer</code>, <code>lookup_order</code>, <code>process_refund</code>, <code>escalate_to_human</code>).</p>
+      <div class="pill-row"><span class="badge l201">emphasizes D1</span><span class="badge l201">D2</span><span class="badge l201">D5</span></div>
+      <h3>High-yield failure modes</h3>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Tool-ordering / verification skipped</strong> → programmatic prerequisite gate or PreToolUse hook (deterministic, not a prompt).</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Monetary rule (approval over $500)</strong> → PreToolUse hook intercepts and blocks; never trust prompt wording.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Ambiguous identity (multiple name matches)</strong> → ask for one more identifier before acting.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Explicit human request</strong> → escalate immediately, no investigation first. (Sentiment alone is not a trigger.)</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Specific facts lost over many turns</strong> → persistent &ldquo;case facts&rdquo; block re-injected every turn.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Genuine policy gap</strong> (e.g. competitor price-match not in policy) → escalate for interpretation; don&rsquo;t invent policy.</div></div>
+
+      <details class="acc"><summary>Mini-case: the double refund</summary><div class="acc-body">
+        <p>Retries on transient API failures occasionally cause double charges — the server processed the first request
+          before the client timed out. Which fix is <em>complete</em>?</p>
+        <p><strong>Answer:</strong> Both <em>error classification</em> AND <em>idempotency keys</em> — neither alone suffices.
+          Classification won&rsquo;t undo a duplicate that already processed; idempotency alone won&rsquo;t retry a request that never
+          arrived. Use an idempotency key (hash of operation + customer + amount) <em>and</em> classify errors before retrying.</p>
+      </div></details>
+      <details class="acc"><summary>Mini-case: which escalation is justified?</summary><div class="acc-body">
+        <p>After looking up the customer and order, which is the <em>most</em> justified <code>escalate_to_human</code> trigger?</p>
+        <p><strong>Answer:</strong> A competitor price-match request when policy allows own-site matching within 14 days but is
+          <em>silent</em> on competitors. That&rsquo;s a real policy gap requiring human judgment — the agent must not fabricate policy.
+          A &ldquo;change my mind&rdquo; cancel or a combined billing+return question are within the agent&rsquo;s competence.</p>
+      </div></details>
+    </section>
+
+    <!-- SCENARIO 2 -->
+    <section id="s2">
+      <h2>2 · Code Generation with Claude Code</h2>
+      <p>Generating, refactoring, debugging, and documenting code in Claude Code — using slash commands/skills,
+        CLAUDE.md, plan mode, and built-in tools.</p>
+      <div class="pill-row"><span class="badge l201">emphasizes D3</span><span class="badge l201">D5</span></div>
+      <h3>High-yield failure modes</h3>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Teammate doesn&rsquo;t see your standards</strong> → they were in <code>~/.claude/CLAUDE.md</code> (user scope, not committed). Move to project <code>CLAUDE.md</code>.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Bloated 400-line CLAUDE.md</strong> → keep always-on standards in CLAUDE.md; move workflow-specific guidance to skills.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Conventions only when editing certain files</strong> → <code>.claude/rules/</code> with a <code>paths:</code> glob.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Large restructure / many files</strong> → plan mode. <strong>Trivial change</strong> → direct execution (don&rsquo;t over-ceremony).</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Verbose skill floods context</strong> → <code>context: fork</code> frontmatter.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Stale prior-session findings</strong> → new session + injected structured summary; note what changed.</div></div>
+
+      <details class="acc"><summary>Mini-case: the unfamiliar caching task</summary><div class="acc-body">
+        <p>A developer who doesn&rsquo;t know cache-invalidation or stampede prevention asks Claude to implement Redis caching
+          right now. Best technique to surface concerns first?</p>
+        <p><strong>Answer:</strong> The <em>interview pattern</em> — have Claude ask targeted questions to surface design
+          considerations (TTL, invalidation, stampede protection) the developer doesn&rsquo;t know to specify. Plan mode explores
+          implementation but not unstated requirements; TDD assumes you already know the edge cases.</p>
+      </div></details>
+      <details class="acc"><summary>Mini-case: personalize a shared command</summary><div class="acc-body">
+        <p>A dev wants to tweak the team&rsquo;s shared <code>/commit</code> skill just for themselves.</p>
+        <p><strong>Answer:</strong> Create a personal <code>~/.claude/skills/commit/SKILL.md</code> with the same name —
+          personal skills take precedence over same-named project skills, so the team&rsquo;s version is untouched.</p>
+      </div></details>
+    </section>
+
+    <!-- SCENARIO 3 -->
+    <section id="s3">
+      <h2>3 · Multi-Agent Research System</h2>
+      <p>A coordinator delegates to web-search, document-analysis, and synthesis subagents, producing a cited report.</p>
+      <div class="pill-row"><span class="badge l301">emphasizes D1</span><span class="badge l301">D2</span><span class="badge l301">D5</span></div>
+      <h3>High-yield failure modes</h3>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Narrow/incomplete coverage</strong> → the coordinator&rsquo;s <em>decomposition</em> was too narrow (not a synthesis or search bug).</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Duplicate work, 2× tokens</strong> → partition scope in the coordinator <em>before</em> delegating.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Keep the coordinator as hub</strong> → observability, consistent error handling, controlled context flow. Don&rsquo;t let subagents talk directly.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Context bloat at synthesis</strong> → subagents return <em>structured</em> facts/citations, not verbose prose.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Partial results (some sources failed)</strong> → coverage annotations (well-supported vs gap), not discard-or-halt.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Conflicting sources</strong> → present both with attribution, annotate the conflict; never average. Preserve claim→source mappings.</div></div>
+
+      <details class="acc"><summary>Mini-case: parallel vs sequential</summary><div class="acc-body">
+        <p>The coordinator needs the web-search and document-analysis subagents to run at the same time. How?</p>
+        <p><strong>Answer:</strong> Emit <em>multiple Task/Agent calls within a single response</em>. Separate turns run them
+          sequentially; <code>fork_session</code> is for branching your own exploration, not fanning out worker types.</p>
+      </div></details>
+      <details class="acc"><summary>Mini-case: three search outcomes</summary><div class="acc-body">
+        <p>Web search returns: academic = 15 papers; industry = &ldquo;0 results&rdquo;; patent = &ldquo;connection timeout.&rdquo; How should
+          the subagent report this?</p>
+        <p><strong>Answer:</strong> Return all three <em>distinctly</em> — academic = success; industry = valid empty result
+          (<code>isError:false</code>); patent = <code>isError:true</code> with structured error context. Each demands a
+          different coordinator response (accept / accept / consider-retry). Combining or silently retrying hides the signal.</p>
+      </div></details>
+    </section>
+
+    <!-- SCENARIO 4 -->
+    <section id="s4">
+      <h2>4 · Developer Productivity with Claude</h2>
+      <p>An agent explores unfamiliar/legacy codebases, generates boilerplate, and automates tasks with built-in tools
+        and MCP.</p>
+      <div class="pill-row"><span class="badge l201">emphasizes D1</span><span class="badge l201">D2</span><span class="badge l201">D3</span></div>
+      <h3>High-yield failure modes</h3>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Discovery floods context</strong> → use the read-only <strong>Explore</strong> subagent (or a forked skill) to map and summarize.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Over-broad tool abused</strong> (general <code>fetch_url</code> doing ad-hoc search) → replace with a constrained, validating tool (least privilege).</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Too many tools on one agent</strong> → ~4–5 per agent; split across subagents.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Shared MCP server, per-dev secrets</strong> → project <code>.mcp.json</code> with <code>${ENV}</code> expansion.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Heterogeneous tool output formats</strong> → a PostToolUse hook normalizes results before the model sees them (works even for unmodifiable third-party MCP tools).</div></div>
+
+      <details class="acc"><summary>Mini-case: normalizing third-party output</summary><div class="acc-body">
+        <p>Tools return timestamps in Unix, ISO 8601, and numeric status codes; some are third-party MCP servers you
+          can&rsquo;t modify. Most maintainable normalization?</p>
+        <p><strong>Answer:</strong> A <strong>PostToolUse hook</strong> — a single deterministic interception point that
+          transforms <em>all</em> tool outputs (including unmodifiable third-party data) in code, rather than relying on the
+          model to interpret mixed formats or wrapping every tool by hand.</p>
+      </div></details>
+    </section>
+
+    <!-- SCENARIO 5 -->
+    <section id="s5">
+      <h2>5 · Claude Code for Continuous Integration (CI/CD)</h2>
+      <p>Automated code review, test generation, and PR feedback inside a pipeline.</p>
+      <div class="pill-row"><span class="badge l201">emphasizes D3</span><span class="badge l201">D4</span></div>
+      <h3>High-yield failure modes</h3>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>CI hangs on input</strong> → the <code>-p</code> / <code>--print</code> headless flag.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Prose output, need structured</strong> → <code>--output-format json</code> + <code>--json-schema</code>, then post via API.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Duplicate comments on re-review</strong> → include prior findings in context; report only new/unresolved.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>14-file PR, inconsistent depth</strong> → attention dilution; per-file passes + a separate integration pass.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Noisy false positives</strong> → explicit categorical criteria; temporarily disable a contaminating category.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Batch API choice</strong> → batch the non-blocking job (nightly), keep blocking checks synchronous; resubmit only failures via <code>custom_id</code>.</div></div>
+
+      <details class="acc"><summary>Mini-case: subtle bugs slip through</summary><div class="acc-body">
+        <p>Subtle bugs are only caught in human review; the generator&rsquo;s reasoning shows it considered and dismissed them.
+          A same-session self-review didn&rsquo;t help. Best architecture?</p>
+        <p><strong>Answer:</strong> A separate, <em>independent</em> review instance with no access to the generator&rsquo;s
+          reasoning — fresh eyes avoid the confirmation bias of reviewing one&rsquo;s own rationalizations. (Task 4.6: multi-instance review.)</p>
+      </div></details>
+    </section>
+
+    <!-- SCENARIO 6 -->
+    <section id="s6">
+      <h2>6 · Structured Data Extraction</h2>
+      <p>Extracting from unstructured documents, validating against JSON schemas, maintaining high accuracy at scale.</p>
+      <div class="pill-row"><span class="badge l201">emphasizes D4</span><span class="badge l201">D5</span></div>
+      <h3>High-yield failure modes</h3>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>JSON syntax errors under load</strong> → tool use with a JSON schema (forces syntax).</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Sums/dates wrong despite schema</strong> → schema = syntax, not semantics; add validation + retry.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>&ldquo;Required&rdquo; field often absent</strong> → fabrication factory; make it optional/nullable.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Inline content missed</strong> (no header) → 2–4 few-shot examples covering inline vs headered forms.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>Format-only error</strong> (e.g. date format) → targeted validate-and-retry with the specific error, not a full re-run.</div></div>
+      <div class="usewhen"><span class="ic">▸</span><div><strong>96% aggregate accuracy</strong> → stratify by type/field before trusting it; calibrate any confidence score against labeled data.</div></div>
+
+      <details class="acc"><summary>Mini-case: the tax_id trap</summary><div class="acc-body">
+        <p>40% of invoices have a <code>tax_id</code>, 60% don&rsquo;t. You mark it a required string. What happens on the 60%?</p>
+        <p><strong>Answer:</strong> The model <em>fabricates</em> a value to satisfy the required constraint. Fix: make it
+          optional/nullable so the model can honestly return null. &ldquo;Required fields are fabrication factories.&rdquo;</p>
+      </div></details>
+      <details class="acc"><summary>Mini-case: removing human review</summary><div class="acc-body">
+        <p>The pipeline reports 96% accuracy over 10,000 invoices; the team wants to drop human review. First validation step?</p>
+        <p><strong>Answer:</strong> <em>Stratify</em> accuracy by document type and field segment. An aggregate can hide a
+          catastrophic per-segment rate (99.9% on digital, 40% on handwritten still averages ~96%). Confirm consistency
+          before removing the human.</p>
+      </div></details>
+    </section>
+
+    <section>
+      <div class="callout tip-c"><span class="label">Next</span>
+        Now run the <a href="exam-prep.html">practice quiz</a> in exam mode and watch the per-domain breakdown — your
+        weak scenario will show up as a weak domain.</div>
+    </section>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap">
+  <p>Claude Code Architecture field guide · the 6 scenarios · reviewed 2026-06-02 · <a href="index.html">home</a> ·
+     not affiliated with or endorsed by Anthropic.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

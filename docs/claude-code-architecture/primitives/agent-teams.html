@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent teams — coordinated peer sessions</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../mental-model.html">Mental model</a>
+    <a href="../matrix.html">Comparison matrix</a>
+    <a href="../decision.html">Decide what to use</a>
+    <a href="../exam-prep.html">Exam prep</a>
+    <a href="../scenarios.html">Scenarios</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <section style="margin-top:26px">
+    <p class="meta"><a href="../index.html">Home</a> › Agent teams</p>
+    <div class="pill-row"><span class="badge l301">301 · Orchestrate</span> <span class="badge">Coordinated by a lead agent</span> <span class="badge exp">experimental · off by default · v2.1.32+</span></div>
+    <h1>Agent teams</h1>
+    <p class="lede">Multiple full Claude sessions working together: one <strong>lead</strong> coordinates and synthesizes;
+      <strong>teammates</strong> work in their own context windows and <strong>message each other</strong> via a shared
+      task list. The step up from subagents when workers must talk.</p>
+  </section>
+
+  <section>
+    <p class="analogy"><strong>Analogy —</strong> a <strong>small project squad with a tech lead</strong>. Unlike interns
+      running solo errands (<a href="subagents.html">subagents</a>), these peers share a kanban board, pick up tasks,
+      and DM each other when one&rsquo;s work depends on another&rsquo;s.</p>
+  </section>
+
+  <section>
+    <h2>Mechanism</h2>
+    <p>The <strong>lead</strong> (fixed for the team&rsquo;s life) creates tasks, assigns them, and synthesizes; teammates can
+      also <strong>self-claim</strong> the next unblocked task, and you can message any teammate directly. Coordination
+      lives in a shared <strong>task list</strong> (<code>~/.claude/tasks/{team}/</code>) and a <strong>mailbox</strong>.
+      Each teammate has a fully independent context window.</p>
+    <pre># enable (settings.json env or shell)
+CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+
+# then, in natural language:
+"Create an agent team to review this PR from three angles."</pre>
+    <details class="acc"><summary>Scale, display modes &amp; limits</summary><div class="acc-body">
+      <p>Recommended <strong>3&ndash;5 teammates</strong>, ~5&ndash;6 tasks each. No nested teams; one team per lead. Token cost
+        scales linearly (each teammate is a separate Claude instance).</p>
+      <p>Display via <code>teammateMode</code>: <code>in-process</code> (any terminal), <code>tmux</code>/split-panes
+        (needs tmux or iTerm2; <em>not</em> VS Code terminal / Windows Terminal / Ghostty), <code>auto</code>.</p>
+      <p><strong>Resumability is weak:</strong> <code>/resume</code> and <code>/rewind</code> don&rsquo;t restore in-process
+        teammates &mdash; after resume, tell the lead to spawn new ones.</p>
+    </div></details>
+  </section>
+
+  <section>
+    <h2>When to reach for it</h2>
+    <div class="usewhen"><span class="ic">✓</span><div>Parallel work with real value: multi-lens PR review, independent modules, competing debugging hypotheses, cross-layer changes (frontend/backend/tests).</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>Subagents hit context limits, or need to communicate &mdash; the documented transition point.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>Start with non-code research/review tasks to get a feel for it.</div></div>
+    <h3>When <em>not</em> to</h3>
+    <div class="usewhen no"><span class="ic">✕</span><div>Sequential tasks, same-file edits, or many dependencies → one session or subagents (cheaper).</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>Workers don&rsquo;t need to talk → <a href="subagents.html">subagents</a>.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>Dozens-to-hundreds of well-scoped tasks → a <a href="workflows.html">dynamic workflow</a>.</div></div>
+  </section>
+
+  <section>
+    <h2>Best practices</h2>
+    <div class="usewhen"><span class="ic">★</span><div>Give each teammate enough context in the spawn prompt &mdash; they load CLAUDE.md/MCP/skills but <em>not</em> the lead&rsquo;s conversation history.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Partition files so no two teammates edit the same one (teams do <em>not</em> auto-isolate with worktrees).</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Tell the lead to <em>wait</em> for teammates rather than doing the work itself.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Use <code>TeammateIdle</code>/<code>TaskCompleted</code> hooks as quality gates; always clean up via the lead.</div></div>
+  </section>
+
+  <section><h2>Sources</h2>
+    <ul><li><a href="https://code.claude.com/docs/en/agent-teams">Agent teams</a> · <a href="https://code.claude.com/docs/en/costs">Agent team token costs</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><p>Reviewed 2026-06-02 · <a href="../matrix.html">back to the matrix</a></p></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

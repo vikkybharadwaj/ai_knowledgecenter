@@ -1,0 +1,68 @@
+---
+title: Harness vs Context vs Prompt Engineering
+tags: [prompting, context-engineering, harness, agents, cross-cutting]
+added: 2026-06-02
+reviewed: 2026-06-02
+source: migrated canonical home (was a Tide visual doc: /tide/harness-vs-context-engineering.html)
+interactive: ../../docs/claude-code-architecture/mental-model.html#harness
+---
+
+# Harness vs Context vs Prompt Engineering
+
+> **Canonical home.** This content previously lived as a visual page in the Tide repo
+> (`/tide/harness-vs-context-engineering.html`). It now lives here in the AI Knowledge
+> Center, and is rendered interactively on the
+> [mental-model page](../../docs/claude-code-architecture/mental-model.html#harness) of the
+> Claude Code Architecture site. See the Tide-removal checklist in `LEARNINGS.md`.
+
+## TL;DR
+Three nested levels of control over an LLM, each a bigger unit of work than the last.
+**Prompt engineering** shapes one input. **Context engineering** manages what stays in
+the window across steps. **Harness engineering** wraps the whole gather → act → verify
+loop — and contains the other two inside it.
+
+```
+prompt  ⊂  context  ⊂  harness
+(message)  (memory)   (machine)
+```
+
+## The three levels
+
+### 1. Prompt engineering — *the message* (unit: one input)
+Compose a single best input from five ingredients, send it, then refine the weakest
+ingredient and repeat.
+- **Role · Context · Instructions · Examples · Format**
+- Loop: `compose → send → generate → refine the weakest ingredient`.
+
+### 2. Context engineering — *the memory* (unit: what stays in the window, step by step)
+You have a **finite context budget**. A *curator* selects, compresses, and drops material
+so only what matters reaches the model each step.
+- Inputs to curate: user query, system prompt, retrieved docs, tool outputs, memory, prior turns.
+- Flow: `gather → curate (select/compress/drop) → feed → inference → step output`.
+- After each step, **update the working set**: new outputs become context for the next step.
+
+### 3. Harness engineering — *the machine* (unit: the whole loop)
+The outer machine with three zones; prompt and context engineering **live inside its
+Gather/Act steps**.
+- **① GATHER** — context-engineering zone: curator + finite context window. Sources: user
+  request, memory (CLAUDE.md, sessions), prior tool outputs, retrieved docs.
+- **② ACT** — prompt-engineering zone: assemble one prompt → inference → branch to **tools**
+  (exec, fetch, MCP) or **subagents** (specialists).
+- **③ VERIFY** — a verifier (tests, LLM-as-judge) checks the result. Pass → final response.
+  Fail → **retry: re-run gather → act → verify with updated context.**
+
+## Why it matters — it tells you where a bug lives
+- Bad single answer → fix the **prompt**.
+- Model forgetting / drowning in irrelevant tokens → fix **context** (the curator).
+- Agent does the right thing once but can't recover, loop, or self-check → fix the
+  **harness** (verify + retry).
+
+Maps directly onto Claude Code: CLAUDE.md + session = memory; the curated context window =
+gather; tool/subagent calls = act; tests/judges = verify. This is the frame the whole
+[Claude Code primitive set](claude-code-architecture.md) hangs off — every primitive is a
+way to tune one zone of this loop.
+
+## Related
+- [Claude Code Architecture — field guide](claude-code-architecture.md) — how every primitive maps onto this loop
+- [`../01-prompting/prompt-context-harness-engineering`](../01-prompting/prompt-context-harness-engineering.md) — the original diagram note
+- [`../04-agents-and-tool-use/agentic-ai-reference-architecture`](../04-agents-and-tool-use/agentic-ai-reference-architecture.md) — the full system view

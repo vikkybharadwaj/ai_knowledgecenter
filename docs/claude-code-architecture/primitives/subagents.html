@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subagents — delegated workers in their own context</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../mental-model.html">Mental model</a>
+    <a href="../matrix.html">Comparison matrix</a>
+    <a href="../decision.html">Decide what to use</a>
+    <a href="../exam-prep.html">Exam prep</a>
+    <a href="../scenarios.html">Scenarios</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <section style="margin-top:26px">
+    <p class="meta"><a href="../index.html">Home</a> › Subagents</p>
+    <div class="pill-row"><span class="badge l201">201 · Extend</span> <span class="badge">Coordinated by the main session</span> <span class="badge ga">GA</span></div>
+    <h1>Subagents</h1>
+    <p class="lede">A specialized worker the main conversation spawns to run a side task in its own <strong>fresh context
+      window</strong>; only a summary returns. The first form of parallelism &mdash; still inside one session.</p>
+  </section>
+
+  <section>
+    <p class="analogy"><strong>Analogy —</strong> handing an <strong>intern a self-contained errand</strong>: &ldquo;go read these
+      50 log files and tell me the one error that matters.&rdquo; They do the messy work elsewhere; you get the one-line
+      answer, not the 50 files in your lap.</p>
+  </section>
+
+  <section>
+    <h2>Mechanism</h2>
+    <p>Markdown files with YAML frontmatter. The main conversation reads each subagent&rsquo;s <code>description</code>,
+      delegates, and decides what runs next. The subagent works in an isolated window; <strong>only its final summary</strong>
+      returns to the caller. Subagents <strong>cannot spawn other subagents</strong> (no nesting).</p>
+    <pre>---
+name: log-triage
+description: Use proactively to scan logs and report the single root-cause error.
+tools: Read, Grep, Bash
+model: haiku
+isolation: worktree   # optional: own git checkout
+---
+You are a log triage specialist. ...</pre>
+    <details class="acc"><summary>Built-ins, scopes &amp; resumability</summary><div class="acc-body">
+      <p>Built-ins: <strong>Explore</strong> (Haiku, read-only search), <strong>Plan</strong> (read-only, plan mode),
+        <strong>general-purpose</strong> (all tools). Scopes by priority: managed &gt; <code>--agents</code> CLI &gt;
+        <code>.claude/agents/</code> (project) &gt; <code>~/.claude/agents/</code> (user) &gt; plugin. Manage with <code>/agents</code>.</p>
+      <p>Foreground = blocking; background = concurrent. A subagent can be resumed and retains its history. Transcripts
+        persist separately from the main conversation, so they survive its compaction.</p>
+    </div></details>
+  </section>
+
+  <section>
+    <h2>When to reach for it</h2>
+    <div class="usewhen"><span class="ic">✓</span><div>A side task would flood your context with output you won&rsquo;t reference again (search, logs, doc fetches).</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>You want a restricted tool/permission profile, or to route to a cheaper model (Haiku) for cost.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>Work is self-contained and only the summary matters.</div></div>
+    <h3>When <em>not</em> to</h3>
+    <div class="usewhen no"><span class="ic">✕</span><div>Frequent back-and-forth or iterative refinement &mdash; the fresh-context re-gather is wasteful.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>Workers need to talk to each other → <a href="agent-teams.html">agent teams</a>.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>Reusable prompt for the <em>main</em> context (no isolation needed) → a <a href="skills.html">skill</a>.</div></div>
+  </section>
+
+  <section>
+    <h2>Best practices</h2>
+    <div class="usewhen"><span class="ic">★</span><div>One focused task per subagent.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Write a detailed <code>description</code> (add &ldquo;use proactively&rdquo;) &mdash; Claude uses it to decide delegation.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Restrict <code>tools</code> for focus and safety; check project subagents into version control.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Use <code>isolation: worktree</code> when a subagent edits files in parallel with others.</div></div>
+  </section>
+
+  <div class="callout"><span class="label">The transition point</span>
+    Running parallel subagents but hitting context limits, or needing them to communicate? That&rsquo;s the documented
+    signal to graduate to <a href="agent-teams.html">agent teams</a> or a <a href="workflows.html">workflow</a>.</div>
+
+  <section><h2>Sources</h2>
+    <ul><li><a href="https://code.claude.com/docs/en/sub-agents">Subagents</a> · <a href="https://code.claude.com/docs/en/agents">Run agents in parallel</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><p>Reviewed 2026-06-02 · <a href="../matrix.html">back to the matrix</a></p></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>
