@@ -11,6 +11,14 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-02  Turned `docs/` into a hosted AI Knowledge Center. `docs/index.html` is a landing
+            hub driven by a module registry (`docs/assets/modules.js`) — add a module by
+            appending one entry. Added `.nojekyll` (plain static HTML, no Jekyll). GitHub
+            Pages can't be enabled via API/git — it's a one-time manual toggle:
+            Settings → Pages → Deploy from a branch → `main` + `/docs`. Live URL:
+            https://vikkybharadwaj.github.io/ai_knowledgecenter/ . Sub-sites and the hub
+            share the `cca-theme` localStorage key so dark/light stays in sync.
+
 2026-06-02  Added a `knowledge/10-cross-cutting/` category for topics that span multiple
             folders, plus an interactive HTML field guide at `docs/claude-code-architecture/`
             covering the Claude Code primitives (skills, hooks, MCP, subagents, agent teams,

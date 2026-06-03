@@ -36,15 +36,22 @@ instead of re-learning the same things in each one.
 9. **Tooling & SDKs** — Anthropic/OpenAI SDKs, frameworks, dev tooling
 10. **Cross-Cutting** — mental models & guides that span multiple categories
 
-### Interactive docs
+### Interactive site → **[live AI Knowledge Center](https://vikkybharadwaj.github.io/ai_knowledgecenter/)**
 
-Some knowledge is also published as small interactive HTML sites under [`docs/`](docs/)
-(hostable on GitHub Pages):
+The hub lives in [`docs/`](docs/) and is published with GitHub Pages. The landing page
+([`docs/index.html`](docs/index.html)) is a module registry — add a module by appending one
+entry to [`docs/assets/modules.js`](docs/assets/modules.js) and it renders automatically.
 
-- [`docs/claude-code-architecture/`](docs/claude-code-architecture/index.html) — a clickable
+- **Module: [Claude Code Architecture](https://vikkybharadwaj.github.io/ai_knowledgecenter/claude-code-architecture/)**
+  ([`docs/claude-code-architecture/`](docs/claude-code-architecture/index.html)) — a clickable
   field guide to the Claude Code primitives (skills, hooks, MCP, subagents, agent teams,
-  dynamic workflows, agent view, worktrees, conventions, policies) with a comparison matrix
-  and 101/201/301 leveling. Markdown companion: [`knowledge/10-cross-cutting/`](knowledge/10-cross-cutting/).
+  dynamic workflows, agent view, worktrees, conventions, policies) with a comparison matrix,
+  101/201/301 leveling, a decision ladder, the 6 scenario walkthroughs, and a 136-question
+  CCA-F exam-prep quiz. Markdown companion: [`knowledge/10-cross-cutting/`](knowledge/10-cross-cutting/).
+
+**Enabling Pages (one-time):** repo **Settings → Pages → Build and deployment → Source:
+*Deploy from a branch* → Branch: `main`, folder: `/docs` → Save.** The site then rebuilds on
+every push to `main`.
 
 ---
 
