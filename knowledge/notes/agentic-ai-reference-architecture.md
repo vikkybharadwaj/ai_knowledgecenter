@@ -1,8 +1,16 @@
 ---
 title: Agentic AI System — Reference Architecture
+slug: agentic-ai-reference-architecture
+kind: concept
+spine_layer: patterns
 tags: [agents, orchestration, architecture, observability, memory]
-added: 2026-06-02
-source: diagram (saved from Documents, original author unknown)
+connections:
+  - { to: harness-vs-context-engineering, type: builds-on, why: "The production system view of the same gather→act→verify loop each agent runs." }
+  - { to: claude-code-multi-agent-development, type: used-with, why: "Multi-agent methods realize the Agent Layer (3) of this blueprint." }
+source: { url: null, author: "diagram saved from Documents (original author unknown)", retrieved: 2026-06-02 }
+date: 2026-06-02
+depth: evergreen
+claude_specific: false
 ---
 
 # Agentic AI System — Reference Architecture
@@ -44,8 +52,8 @@ request end-to-end? Is there a fallback and a circuit breaker? Where do guardrai
 and PII protection sit? Layer 9 (model gateway, secrets, cost mgmt) is the shared
 infra worth standardizing across products.
 
-## Related
-- [`model-context-protocol`](model-context-protocol.md) — standardizes the Tools & Integrations layer (4)
-- [`claude-code-multi-agent-development`](claude-code-multi-agent-development.md) — concrete multi-agent patterns for layer 3
-- [`prompt-context-harness-engineering`](../01-prompting/prompt-context-harness-engineering.md) — the inner gather→act→verify loop each agent runs
-- cross-links: observability/cost → [`../06-infra-cost-latency`](../06-infra-cost-latency), guardrails/PII → [`../07-safety-and-security`](../07-safety-and-security)
+## Connections
+*Typed links — the concept graph is built from the `connections:` frontmatter above.*
+- **builds-on** → [Harness vs Context vs Prompt Engineering](harness-vs-context-engineering.md) — the inner gather→act→verify loop each agent runs.
+- **used-with** → [Claude Code — Multi-Agent Development](claude-code-multi-agent-development.md) — concrete multi-agent patterns for the Agent Layer (3).
+- incoming: [Model Context Protocol](model-context-protocol.md) is **part-of** this (layer 4, Tools & Integrations).

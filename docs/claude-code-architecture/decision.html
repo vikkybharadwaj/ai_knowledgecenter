@@ -46,19 +46,19 @@
       <p>Start at the top with CLAUDE.md. Each row is a real symptom and the primitive that resolves it.</p>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>When you notice&hellip;</th><th>Reach for</th><th>Level</th></tr></thead>
+          <thead><tr><th>When you notice&hellip;</th><th>Reach for</th><th>Coordination</th></tr></thead>
           <tbody>
-            <tr><td>Claude got a convention wrong twice</td><td><a href="primitives/memory.html"><strong>CLAUDE.md</strong></a></td><td><span class="badge l101">101</span></td></tr>
-            <tr><td>You keep typing the same prompt</td><td><a href="primitives/skills.html">a user-invocable <strong>skill</strong></a></td><td><span class="badge l201">201</span></td></tr>
-            <tr><td>You&rsquo;ve pasted the same playbook a third time</td><td><a href="primitives/skills.html">a <strong>skill</strong></a></td><td><span class="badge l201">201</span></td></tr>
-            <tr><td>You copy data from a tab/system Claude can&rsquo;t see</td><td><a href="primitives/mcp.html">an <strong>MCP server</strong></a></td><td><span class="badge l201">201</span></td></tr>
-            <tr><td>A side task floods your conversation with output</td><td><a href="primitives/subagents.html">a <strong>subagent</strong></a></td><td><span class="badge l201">201</span></td></tr>
-            <tr><td>You want something to happen <em>every time</em>, without asking</td><td><a href="primitives/hooks.html">a <strong>hook</strong></a></td><td><span class="badge l201">201</span></td></tr>
-            <tr><td>Subagents hit context limits, or need to talk to each other</td><td><a href="primitives/agent-teams.html"><strong>agent teams</strong></a></td><td><span class="badge l301">301</span></td></tr>
-            <tr><td>A job needs more agents than one conversation can coordinate</td><td><a href="primitives/workflows.html">a <strong>dynamic workflow</strong></a></td><td><span class="badge l301">301</span></td></tr>
-            <tr><td>You&rsquo;re juggling several independent tasks at once</td><td><a href="primitives/agent-view.html"><strong>agent view</strong></a> (+ worktrees)</td><td><span class="badge l301">301</span></td></tr>
-            <tr><td>A second repo needs the same setup</td><td>a <strong>plugin</strong></td><td><span class="badge l301">301</span></td></tr>
-            <tr><td>Something must be blocked/required across the org</td><td><a href="primitives/policies.html"><strong>managed policy</strong></a></td><td><span class="badge l301">301</span></td></tr>
+            <tr><td>Claude got a convention wrong twice</td><td><a href="primitives/memory.html"><strong>CLAUDE.md</strong></a></td><td><span class="badge l101">Foundations</span></td></tr>
+            <tr><td>You keep typing the same prompt</td><td><a href="primitives/skills.html">a user-invocable <strong>skill</strong></a></td><td><span class="badge l201">Extend</span></td></tr>
+            <tr><td>You&rsquo;ve pasted the same playbook a third time</td><td><a href="primitives/skills.html">a <strong>skill</strong></a></td><td><span class="badge l201">Extend</span></td></tr>
+            <tr><td>You copy data from a tab/system Claude can&rsquo;t see</td><td><a href="primitives/mcp.html">an <strong>MCP server</strong></a></td><td><span class="badge l201">Extend</span></td></tr>
+            <tr><td>A side task floods your conversation with output</td><td><a href="primitives/subagents.html">a <strong>subagent</strong></a></td><td><span class="badge l201">Extend</span></td></tr>
+            <tr><td>You want something to happen <em>every time</em>, without asking</td><td><a href="primitives/hooks.html">a <strong>hook</strong></a></td><td><span class="badge l201">Extend</span></td></tr>
+            <tr><td>Subagents hit context limits, or need to talk to each other</td><td><a href="primitives/agent-teams.html"><strong>agent teams</strong></a></td><td><span class="badge l301">Orchestrate</span></td></tr>
+            <tr><td>A job needs more agents than one conversation can coordinate</td><td><a href="primitives/workflows.html">a <strong>dynamic workflow</strong></a></td><td><span class="badge l301">Orchestrate</span></td></tr>
+            <tr><td>You&rsquo;re juggling several independent tasks at once</td><td><a href="primitives/agent-view.html"><strong>agent view</strong></a> (+ worktrees)</td><td><span class="badge l301">Orchestrate</span></td></tr>
+            <tr><td>A second repo needs the same setup</td><td>a <strong>plugin</strong></td><td><span class="badge l301">Orchestrate</span></td></tr>
+            <tr><td>Something must be blocked/required across the org</td><td><a href="primitives/policies.html"><strong>managed policy</strong></a></td><td><span class="badge l301">Orchestrate</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -96,10 +96,10 @@
 
       <div class="callout key">
         <span class="label">The 80% answer</span>
-        Most days you live at <span class="badge l101">101</span>/<span class="badge l201">201</span>: a good CLAUDE.md,
-        a couple of skills, one or two MCP servers, a formatting hook. Reach into <span class="badge l301">301</span>
-        (teams, workflows, agent view) only when a single session genuinely can&rsquo;t hold the work &mdash; they cost
-        substantially more tokens.
+        Most days you live in the <span class="badge l101">Foundations</span> / <span class="badge l201">Extend</span>
+        groups: a good CLAUDE.md, a couple of skills, one or two MCP servers, a formatting hook. Reach into
+        <span class="badge l301">Orchestrate</span> (teams, workflows, agent view) only when a single session genuinely
+        can&rsquo;t hold the work &mdash; they cost substantially more tokens.
       </div>
     </section>
 

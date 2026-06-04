@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge — the concept graph · AI Knowledge Center</title>
+<meta name="description" content="A self-organizing, dot-connected knowledge base for the Claude tech stack: every concept wired to the others by typed links and laid out on one evolving spine. Go broad or deep at will.">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="../index.html"><span class="dot"></span> AI Knowledge Center · Knowledge</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/maps/big-picture.md" target="_blank" rel="noopener">Big picture</a>
+    <a href="../claude-code-architecture/index.html">Exam prep</a>
+    <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/tree/main/knowledge" target="_blank" rel="noopener">GitHub</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+  <section class="hero" style="padding:42px 0 14px">
+    <div class="eyebrow">One connected brain · not a filing cabinet</div>
+    <h1>The knowledge graph.</h1>
+    <p class="sub">Every note is one atomic idea, wired to its neighbours by <strong>typed connections</strong> and
+      placed on a single evolving <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/maps/big-picture.md" target="_blank" rel="noopener">spine</a>.
+      Hover a node to see how it connects; click to open the note. <strong>Go broad</strong> across the map or
+      <strong>go deep</strong> into any idea — in any order.</p>
+    <div class="cta-row" style="margin-top:8px">
+      <a class="btn primary" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/maps/big-picture.md" target="_blank" rel="noopener">Read the Big Picture →</a>
+      <a class="btn" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/README.md" target="_blank" rel="noopener">Home note</a>
+    </div>
+  </section>
+
+  <section style="margin:18px 0 40px">
+    <div class="controls">
+      <button id="layout-toggle" class="theme-toggle">Layout: Spine ▾</button>
+      <select id="tag-filter" class="theme-toggle"><option value="">All tags</option></select>
+      <div id="legend" class="legend"></div>
+    </div>
+    <div class="graph-wrap">
+      <canvas id="graph"></canvas>
+      <aside id="node-panel"></aside>
+    </div>
+    <p class="meta" style="color:var(--text-dim);font-size:13px;margin-top:8px">
+      Drag nodes to rearrange · toggle <strong>Spine</strong> (layered by stack) ↔ <strong>Free</strong> (force layout) ·
+      filter by tag. Node size = number of connections.</p>
+  </section>
+
+  <section id="all-notes" style="margin-bottom:60px">
+    <div class="section-head"><h2>All notes, by spine layer</h2><span class="count" id="note-count"></span></div>
+    <div id="layer-list"></div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p><strong>AI Knowledge Center — Knowledge view.</strong> Notes live as markdown in
+    <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/tree/main/knowledge/notes" target="_blank" rel="noopener">knowledge/notes</a>;
+    this graph is generated from their frontmatter by <code>scripts/build-index.py</code>. Add one with
+    <code>/land</code> and it wires itself in.</p>
+</footer>
+
+<script src="../assets/knowledge.js"></script>
+<script src="../assets/graph.js"></script>
+<script>
+/* shared theme toggle (key shared across the whole site) + notes-by-layer list */
+(function () {
+  // shared theme (the real toggle lives in the topbar; #layout-toggle/#tag-filter just borrow its styling)
+  var KEY = "cca-theme", saved = localStorage.getItem(KEY);
+  if (saved) document.documentElement.setAttribute("data-theme", saved);
+  var tbtn = document.querySelector("header .theme-toggle");
+  if (tbtn) {
+    var lab = function () {
+      var d = document.documentElement.getAttribute("data-theme") !== "light";
+      tbtn.textContent = d ? "☀ Light" : "☾ Dark";
+    };
+    lab();
+    tbtn.addEventListener("click", function () {
+      var next = document.documentElement.getAttribute("data-theme") !== "light" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem(KEY, next); lab();
+    });
+  }
+
+  var D = window.KC_DATA; if (!D) return;
+  var host = document.getElementById("layer-list");
+  var depthRank = { evergreen: "🌳", budding: "🌿", seedling: "🌱" };
+  var html = "";
+  D.layers.forEach(function (layer) {
+    var ns = D.nodes.filter(function (n) { return n.layer === layer; });
+    if (!ns.length) {
+      html += "<div class='layer empty'><h3>" + (D.layerLabels[layer] || layer) + "</h3>" +
+              "<p class='meta'>— no notes yet (a gap to fill on the way to CCA-F)</p></div>";
+      return;
+    }
+    html += "<div class='layer'><h3>" + (D.layerLabels[layer] || layer) + " <span class='ct'>" + ns.length + "</span></h3><ul>";
+    ns.forEach(function (n) {
+      html += "<li><a href='" + n.url + "' target='_blank' rel='noopener'>" + (depthRank[n.depth] || "") + " " + n.title + "</a> " +
+              "<span class='tg'>" + (n.tags || []).slice(0, 4).map(function (t) { return "#" + t; }).join(" ") + "</span></li>";
+    });
+    html += "</ul></div>";
+  });
+  host.innerHTML = html;
+  var cnt = document.getElementById("note-count");
+  if (cnt) cnt.textContent = D.nodes.length + " notes · " + D.edges.length + " connections";
+})();
+</script>
+</body>
+</html>

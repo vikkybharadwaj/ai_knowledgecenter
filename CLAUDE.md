@@ -1,50 +1,73 @@
 # AI Knowledge Center — working instructions
 
-This repo is a **personal knowledge base for building AI products**. It is NOT an
-application — there is no app to run, no server, no build. Your job here is to help
-**capture, distill, organize, and retrieve knowledge**, and to keep reusable assets
-clean enough to drop into other repos.
+This repo is a **personal, self-organizing knowledge base for the Claude tech stack**. It is NOT an
+application — no app to run, no build, no tests. Your job is to help **capture, distill, and — above
+all — CONNECT** knowledge into one evolving mental-model map, and to keep the two public views clean.
 
-## What this repo is for
-- Accumulating AI-product knowledge over time (articles, lessons, patterns).
-- Producing **portable** assets (prompts, snippets, configs, templates) that get
-  copied into other AI product repos (e.g. Tide).
-- Being a fast, well-indexed reference — findability matters more than volume.
+## The one rule: connect the dots
+This base exists to fight knowledge silos. **Every note must be wired into the bigger picture** — typed
+connections to its neighbours and a place on the spine. A note that connects to nothing is a failure,
+not a draft. Structure **emerges** from those connections; it is never imposed up front.
 
-## Structure (see README.md for the full map)
-- `knowledge/<NN-topic>/` — distilled reference, in plain language, by topic.
-- `articles/` — one file per external source; use `articles/_TEMPLATE.md`.
-- `patterns/` — reusable assets to copy out: `prompts/`, `snippets/`, `configs/`, `templates/`.
-- `playbooks/` — step-by-step procedural guides.
-- `LEARNINGS.md` — dated, append-only log of hard-won lessons (newest at top).
+## The two views
+1. **Knowledge** — the self-organizing graph of atomic notes (this is the open-ended half).
+2. **Exam Prep** — the existing Claude Code Architecture exam system at `docs/claude-code-architecture/`
+   + its markdown companions in `exam-prep/`. Preserve it; don't reorganize it.
+
+## Structure
+- `knowledge/notes/<slug>.md` — **flat pool** of atomic notes (one idea each). No topic folders, no levels.
+- `knowledge/maps/big-picture.md` — the **spine + narrative synthesis** (the dot-connecting map). Keep it current.
+- `knowledge/maps/<topic>.md` — emergent Maps of Content; create one **only when a cluster earns it**.
+- `knowledge/README.md` — the **Home Note** (dashboard/entry). Hand-curated.
+- `exam-prep/` — markdown companions for the Exam view.
+- `docs/` — the site. `docs/assets/knowledge.js` is **generated** — never hand-edit it.
+- `.claude/skills/land/` — the `/land` ingestion skill. `.claude/hooks/validate-note.sh` — the note guard.
+- `scripts/build-index.py` — regenerates the graph data from note frontmatter.
+
+## Note schema (every note)
+```yaml
+---
+title: <idea as a claim/concept>
+slug: <kebab = filename>
+kind: concept                 # concept | scenario
+spine_layer: claude-code      # foundations | api | agent-sdk | claude-code | patterns | products
+tags: [mcp, tool-use]         # broad axis (site grouping)
+connections:                  # deep axis: >=1 for concepts; most-specific type + a why
+  - { to: <slug>, type: used-with, why: "<one sentence>" }
+source: { url: <or null>, author: <or null>, retrieved: YYYY-MM-DD }
+date: YYYY-MM-DD
+depth: seedling               # seedling | budding | evergreen (maturity, not a level)
+claude_specific: true
+---
+```
+Connection types: `builds-on · enables · alternative-to · used-with · part-of · contrasts-with · used-in`.
+Each note also carries a human-readable `## Connections` section mirroring the frontmatter.
+
+## How to add knowledge
+- Prefer the **`/land`** skill — it distills, files, connects, updates the map, regenerates the index,
+  and teaches where the idea fits. (See `.claude/skills/land/SKILL.md`.)
+- After any note change, **`python3 scripts/build-index.py`** to refresh the graph. Confirm **0 dropped
+  edges** and **no orphans**.
+- The validation hook will block a note with missing frontmatter or zero connections — heed it.
 
 ## Conventions
-- **Markdown-first.** Everything is `.md` unless it's literally a code/config asset.
-- **Plain language, in my own words.** Distill, don't dump. A good note explains
-  the *why* and *when to use*, not just *what*.
-- **One source per file** in `articles/`. Filename: `YYYY-MM-DD-short-slug.md`.
-- **Cross-link liberally.** Use relative links between knowledge files, articles,
-  and patterns so related ideas connect.
-- **Mark portability.** Anything reusable goes in `patterns/` with a header stating:
-  what it is, where it came from, model/SDK assumptions, and caveats.
-- **Keep indexes current.** When you add a file, add a one-line pointer to the
-  nearest `README.md` (the category index) so nothing gets orphaned.
-- **Attribution.** When knowledge comes from an article, link the `articles/` note.
-- **Date things.** Models, prices, and benchmarks go stale fast — always datestamp
-  claims that have a shelf life.
+- **Atomic & in your own words.** One idea per note; explain the *why* and *how to apply (consulting)*.
+- **Claude-specific.** Keep content tied to the Claude/Anthropic stack unless it's a genuinely
+  foundational cross-cutting model.
+- **Connect, don't dump.** 2–5 typed connections per note, each with a one-line reason.
+- **Datestamp** anything with a shelf life (models, prices, previews). **Cite** sources; never paste
+  full copyrighted text.
+- **Don't pre-build empty maps or folders.** Indexes emerge from accumulated notes.
 
 ## LEARNINGS loop
-When you discover something non-obvious while working here (a tool quirk, a better
-way to organize, a correction to an earlier note), **append a dated line to
-`LEARNINGS.md`** at the top — don't wait to be asked.
+When you discover something non-obvious about *organizing* this vault (a tool quirk, a better structure,
+a correction), append a dated line to the top of `LEARNINGS.md` — don't wait to be asked.
 
 ## Workflow
-- This repo has its own git history, independent of any other project. Normal git
-  workflow applies; nothing here is governed by another repo's hooks.
-- No typecheck/lint/tests — it's content. The bar is: clear, correct, well-indexed,
-  and cross-linked.
-- Conventional commits: `docs:`, `chore:`, `feat:` (e.g. a new playbook), `fix:`.
+- Independent git history. Conventional commits: `docs:`, `chore:`, `feat:`, `fix:`. Branch before
+  committing on `main`.
+- The site is published via GitHub Pages from `/docs`. No typecheck/lint/tests — the bar is: clear,
+  correct, **connected**, and well-indexed.
 
 ## Out of scope
-- Don't add secrets, API keys, or proprietary/employer-confidential material.
-- Don't paste full copyrighted articles — summarize + link the source.
+- No secrets/API keys or employer-confidential material. No full-article copies — summarize + link.

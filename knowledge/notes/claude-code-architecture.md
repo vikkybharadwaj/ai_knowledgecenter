@@ -1,9 +1,18 @@
 ---
 title: Claude Code Architecture — field guide to the primitives
+slug: claude-code-architecture
+kind: concept
+spine_layer: claude-code
 tags: [claude-code, agents, harness, skills, hooks, mcp, workflows, architecture]
-added: 2026-06-02
-reviewed: 2026-06-02
-source: code.claude.com/docs (+ dynamic-workflows announcement); distilled in-house
+connections:
+  - { to: harness-vs-context-engineering, type: builds-on, why: "Every Claude Code primitive exists to tune one zone of the gather→act→verify loop." }
+  - { to: model-context-protocol, type: used-with, why: "MCP is one of the nine primitives — the model's reach into external tools." }
+  - { to: claude-code-multi-agent-development, type: used-with, why: "Subagents, agent teams and worktrees are the 'coordinate work' primitives." }
+  - { to: dynamic-workflows-and-ultraplan, type: used-with, why: "Dynamic workflows are the script-orchestrates-many-agents primitive." }
+source: { url: "https://code.claude.com/docs", author: "code.claude.com/docs, distilled in-house", retrieved: 2026-06-02 }
+date: 2026-06-02
+depth: evergreen
+claude_specific: true
 interactive: ../../docs/claude-code-architecture/index.html
 ---
 
@@ -46,26 +55,25 @@ managed policies            ← hard ceiling over everything (org governance)
 ```
 
 ## The nine primitives (one line each)
-| Primitive | One line | Level | Enforcement |
-|---|---|---|---|
-| **Conventions** (CLAUDE.md / rules files) | Soft markdown guidance read every session | 101 | Soft |
-| **Policies** (managed settings + permission rules) | Client-enforced governance; can't be overridden | 301 | **Hard** |
-| **Hooks** | Your code, run on lifecycle events | 201 | **Hard** |
-| **Skills** | Reusable procedures loaded on demand (the real "routines") | 201 | Soft |
-| **MCP** | Protocol giving the model new tools & data | 201 | Tools model-invoked |
-| **Subagents** | Delegated worker; only a summary returns | 201 | Soft |
-| **Agent teams** | Lead + peer sessions that message each other | 301 | Soft |
-| **Dynamic workflows** | A script Claude writes that orchestrates many agents | 301 | Soft |
-| **Worktrees + Agent view** | Git isolation + a dashboard to supervise many sessions | 301 | Soft |
+| Primitive | One line | Enforcement |
+|---|---|---|
+| **Conventions** (CLAUDE.md / rules files) | Soft markdown guidance read every session | Soft |
+| **Policies** (managed settings + permission rules) | Client-enforced governance; can't be overridden | **Hard** |
+| **Hooks** | Your code, run on lifecycle events | **Hard** |
+| **Skills** | Reusable procedures loaded on demand (the real "routines") | Soft |
+| **MCP** | Protocol giving the model new tools & data | Tools model-invoked |
+| **Subagents** | Delegated worker; only a summary returns | Soft |
+| **Agent teams** | Lead + peer sessions that message each other | Soft |
+| **Dynamic workflows** | A script Claude writes that orchestrates many agents | Soft |
+| **Worktrees + Agent view** | Git isolation + a dashboard to supervise many sessions | Soft |
 
-## 101 / 201 / 301 (synthesized, not official labels)
-- **101 — drive one session well:** CLAUDE.md / memory, slash commands, the Explore→Plan→Code→Commit loop.
-- **201 — extend a session:** skills, MCP, hooks, subagents.
-- **301 — orchestrate at scale & govern:** agent teams, dynamic workflows, worktrees + agent view, plugins, policies.
-
-Anthropic's own advice: **start with CLAUDE.md and add each primitive when a concrete
-trigger appears** (see the trigger ladder on the site's Decide page). Anthropic publishes
-only one numbered course ("Claude Code 101"); the 101/201/301 split here is synthesized.
+## When to reach for each (free-form, not a ladder)
+There's no fixed order to learn these — go broad or deep as a real need appears. The one piece
+of sequencing advice that holds: **start with CLAUDE.md and add each primitive only when a concrete
+trigger shows up** (see the trigger ladder on the site's Decide page).
+- *Drive one session well:* CLAUDE.md / memory, slash commands, the Explore→Plan→Code→Commit loop.
+- *Extend a session:* skills, MCP, hooks, subagents.
+- *Orchestrate at scale & govern:* agent teams, dynamic workflows, worktrees + agent view, plugins, policies.
 
 ## Terminology corrections (common confusions)
 - **Conventions ≠ Policies.** CLAUDE.md is *soft* guidance; managed settings are *hard*,
@@ -88,7 +96,9 @@ only one numbered course ("Claude Code 101"); the 101/201/301 split here is synt
 - [Skills](https://code.claude.com/docs/en/skills) · [MCP](https://code.claude.com/docs/en/mcp) · [Hooks](https://code.claude.com/docs/en/hooks) · [Memory](https://code.claude.com/docs/en/memory) · [Settings](https://code.claude.com/docs/en/settings)
 - [Dynamic workflows announcement](https://claude.com/blog/introducing-dynamic-workflows-in-claude-code) · [Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
 
-## Related
-- [Harness vs Context vs Prompt Engineering](harness-vs-context-engineering.md) — the loop this all sits inside
-- [`../04-agents-and-tool-use/claude-code-multi-agent-development`](../04-agents-and-tool-use/claude-code-multi-agent-development.md)
-- [`../04-agents-and-tool-use/model-context-protocol`](../04-agents-and-tool-use/model-context-protocol.md)
+## Connections
+*Typed links — the concept graph is built from the `connections:` frontmatter above.*
+- **builds-on** → [Harness vs Context vs Prompt Engineering](harness-vs-context-engineering.md) — the loop every primitive plugs into.
+- **used-with** → [Model Context Protocol](model-context-protocol.md) — the model's reach into external tools.
+- **used-with** → [Claude Code — Multi-Agent Development](claude-code-multi-agent-development.md) — the "coordinate work" primitives.
+- **used-with** → [Dynamic Workflows & the Ultraplan loop](dynamic-workflows-and-ultraplan.md) — script-orchestrates-many-agents.

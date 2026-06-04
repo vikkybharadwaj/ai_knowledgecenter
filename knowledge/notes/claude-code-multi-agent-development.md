@@ -1,8 +1,16 @@
 ---
 title: Claude Code — Multi-Agent Development
+slug: claude-code-multi-agent-development
+kind: concept
+spine_layer: claude-code
 tags: [claude-code, agents, multi-agent, worktrees, subagents, orchestration]
-added: 2026-06-02
-source: slides by Alpha Clarity, LLC (@avthar — x.com/@avthar, youtube.com/@avtharai)
+connections:
+  - { to: claude-code-architecture, type: part-of, why: "Worktrees, subagents and agent teams are the 'coordinate work' primitives in the field guide." }
+  - { to: prompt-context-harness-engineering, type: builds-on, why: "Subagents run inside the harness ACT step." }
+source: { url: null, author: "slides by Alpha Clarity, LLC (@avthar)", retrieved: 2026-06-02 }
+date: 2026-06-02
+depth: budding
+claude_specific: true
 ---
 
 # Claude Code — Multi-Agent Development
@@ -47,7 +55,8 @@ on parallel sessions for work that's actually sequential. Watch the worktree
 footguns (#3 `.env` and #5 cleanup) — they map onto the harness/isolation behavior
 this very knowledge repo runs under.
 
-## Related
-- [`agentic-ai-reference-architecture`](agentic-ai-reference-architecture.md) — multi-agent patterns for the Agent Layer (3)
-- [`prompt-context-harness-engineering`](../01-prompting/prompt-context-harness-engineering.md) — subagents live in the harness ACT step
-- cross-links: harness/SDK specifics → [`../09-tooling-and-sdks`](../09-tooling-and-sdks)
+## Connections
+*Typed links — the concept graph is built from the `connections:` frontmatter above.*
+- **part-of** → [Claude Code Architecture](claude-code-architecture.md) — worktrees, subagents and agent teams are the "coordinate work" primitives.
+- **builds-on** → [Prompt vs Context vs Harness Engineering](prompt-context-harness-engineering.md) — subagents live in the harness ACT step.
+- **used-with** → [Agentic AI Reference Architecture](agentic-ai-reference-architecture.md) — multi-agent patterns for the Agent Layer (3).
