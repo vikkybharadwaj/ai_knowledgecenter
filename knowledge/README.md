@@ -26,7 +26,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 |------|-------|-------|
 | [Prompt vs Context vs Harness Engineering](notes/prompt-context-harness-engineering.md) | foundations | evergreen |
 | [Harness vs Context vs Prompt Engineering](notes/harness-vs-context-engineering.md) | foundations | evergreen |
-| [The Anatomy of an Agent Harness](notes/anatomy-of-an-agent-harness.md) | foundations | budding |
+| [The Anatomy of an Agent Harness](notes/anatomy-of-an-agent-harness.md) | foundations | evergreen |
 | [Claude Code Architecture — field guide](notes/claude-code-architecture.md) | claude-code | evergreen |
 | [Model Context Protocol (MCP)](notes/model-context-protocol.md) | claude-code | budding |
 | [Claude Code — Multi-Agent Development](notes/claude-code-multi-agent-development.md) | claude-code | budding |

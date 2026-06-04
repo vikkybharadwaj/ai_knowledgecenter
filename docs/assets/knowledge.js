@@ -47,12 +47,13 @@ window.KC_DATA = {
         "orchestration",
         "memory",
         "context-engineering",
-        "tool-use"
+        "tool-use",
+        "verification"
       ],
-      "depth": "budding",
+      "depth": "evergreen",
       "claudeSpecific": true,
       "url": "https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/notes/anatomy-of-an-agent-harness.md",
-      "connCount": 4
+      "connCount": 5
     },
     {
       "slug": "claude-code-architecture",
@@ -108,7 +109,7 @@ window.KC_DATA = {
       "depth": "evergreen",
       "claudeSpecific": true,
       "url": "https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/notes/dynamic-workflows-and-ultraplan.md",
-      "connCount": 4
+      "connCount": 5
     },
     {
       "slug": "harness-vs-context-engineering",
@@ -178,25 +179,31 @@ window.KC_DATA = {
       "from": "anatomy-of-an-agent-harness",
       "to": "harness-vs-context-engineering",
       "type": "builds-on",
-      "why": "The harness is the 'machine' level of that model; this note dissects the machine into its organs."
+      "why": "The article's prompt ⊂ context ⊂ harness framing is exactly this note; it then dissects the harness level into components."
     },
     {
       "from": "anatomy-of-an-agent-harness",
       "to": "claude-code-architecture",
       "type": "used-with",
-      "why": "Claude Code is a concrete, well-instrumented harness — its primitives map onto these organs."
+      "why": "Claude Code/Agent SDK is the canonical thin harness — most of the 12 components map onto its primitives."
     },
     {
       "from": "anatomy-of-an-agent-harness",
       "to": "agentic-ai-reference-architecture",
       "type": "used-with",
-      "why": "The nine-layer reference architecture is the production-grade view of the same anatomy."
+      "why": "The nine-layer reference architecture is the production-grade view of the same 12 components."
     },
     {
       "from": "anatomy-of-an-agent-harness",
       "to": "model-context-protocol",
       "type": "used-with",
-      "why": "Tools are one organ of the harness; MCP is how Claude exposes them to the loop."
+      "why": "Tools (component 2) are exposed to the harness via MCP."
+    },
+    {
+      "from": "anatomy-of-an-agent-harness",
+      "to": "dynamic-workflows-and-ultraplan",
+      "type": "used-with",
+      "why": "Subagent orchestration (component 11) — Fork/Teammate/Worktree — is the scripted-fan-out idea workflows generalize."
     },
     {
       "from": "claude-code-architecture",
