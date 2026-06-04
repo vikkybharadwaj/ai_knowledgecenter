@@ -1,9 +1,16 @@
 ---
 title: Harness vs Context vs Prompt Engineering
+slug: harness-vs-context-engineering
+kind: concept
+spine_layer: foundations
 tags: [prompting, context-engineering, harness, agents, cross-cutting]
-added: 2026-06-02
-reviewed: 2026-06-02
-source: migrated canonical home (was a Tide visual doc: /tide/harness-vs-context-engineering.html)
+connections:
+  - { to: prompt-context-harness-engineering, type: builds-on, why: "Expands the original diagram into the canonical narrative model." }
+  - { to: agentic-ai-reference-architecture, type: used-with, why: "The agentic reference architecture is the full production system view of this same loop." }
+source: { url: null, author: "migrated canonical home (was a Tide visual doc)", retrieved: 2026-06-02 }
+date: 2026-06-02
+depth: evergreen
+claude_specific: true
 interactive: ../../docs/claude-code-architecture/mental-model.html#harness
 ---
 
@@ -62,7 +69,8 @@ gather; tool/subagent calls = act; tests/judges = verify. This is the frame the 
 [Claude Code primitive set](claude-code-architecture.md) hangs off — every primitive is a
 way to tune one zone of this loop.
 
-## Related
-- [Claude Code Architecture — field guide](claude-code-architecture.md) — how every primitive maps onto this loop
-- [`../01-prompting/prompt-context-harness-engineering`](../01-prompting/prompt-context-harness-engineering.md) — the original diagram note
-- [`../04-agents-and-tool-use/agentic-ai-reference-architecture`](../04-agents-and-tool-use/agentic-ai-reference-architecture.md) — the full system view
+## Connections
+*Typed links — the concept graph is built from the `connections:` frontmatter above.*
+- **builds-on** → [Prompt vs Context vs Harness Engineering](prompt-context-harness-engineering.md) — the original diagram this narrative expands.
+- **used-with** → [Agentic AI Reference Architecture](agentic-ai-reference-architecture.md) — the full production system view of this loop.
+- see also → [Claude Code Architecture](claude-code-architecture.md) — every primitive maps onto this loop.

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Comparison Matrix — Claude Code primitives</title>
-<meta name="description" content="One matrix comparing Claude Code's primitives across enforcement, who holds the plan, scale, level and when to use — plus 101/201/301 leveling, breadth vs depth, and terminology corrections.">
+<meta name="description" content="One matrix comparing Claude Code's primitives across enforcement, who holds the plan, scale, coordination and when to use — plus breadth vs depth and terminology corrections.">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -26,7 +26,7 @@
   <div class="layout">
     <aside class="toc">
       <a href="#matrix">The matrix</a>
-      <a href="#levels">101 / 201 / 301</a>
+      <a href="#levels">Coordination groupings</a>
       <a href="#breadth">Breadth vs depth</a>
       <a href="#enforcement">Soft vs hard</a>
       <a href="#terms">Terminology fixes</a>
@@ -53,7 +53,7 @@
             <tr>
               <th>Primitive</th>
               <th>What it is</th>
-              <th>Level</th>
+              <th>Coordination</th>
               <th>Enforce&shy;ment</th>
               <th>Who holds the plan / invokes</th>
               <th>Where it lives</th>
@@ -66,7 +66,7 @@
             <tr>
               <td><a href="primitives/memory.html"><strong>Conventions</strong></a><br><span class="meta">CLAUDE.md / .claude/rules</span></td>
               <td>Markdown facts &amp; conventions the model reads every session.</td>
-              <td><span class="badge l101">101</span></td>
+              <td><span class="badge l101">Foundations</span></td>
               <td class="cell-warn">Soft</td>
               <td>You write it; model reads &amp; <em>may</em> follow.</td>
               <td><code>./CLAUDE.md</code>, <code>~/.claude/CLAUDE.md</code>, <code>.claude/rules/*.md</code></td>
@@ -77,7 +77,7 @@
             <tr>
               <td><a href="primitives/policies.html"><strong>Policies</strong></a><br><span class="meta">managed settings + permission rules</span></td>
               <td>Admin/config governance: allow / ask / deny, sandbox, forced model.</td>
-              <td><span class="badge l301">301</span></td>
+              <td><span class="badge l301">Orchestrate</span></td>
               <td class="cell-good">Hard</td>
               <td>Client enforces; model can&rsquo;t override.</td>
               <td><code>managed-settings.json</code>, <code>settings.json</code> &rarr; <code>permissions</code></td>
@@ -88,7 +88,7 @@
             <tr>
               <td><a href="primitives/hooks.html"><strong>Hooks</strong></a></td>
               <td>Your shell/HTTP/prompt command, fired automatically on lifecycle events.</td>
-              <td><span class="badge l201">201</span></td>
+              <td><span class="badge l201">Extend</span></td>
               <td class="cell-good">Hard</td>
               <td>Event fires it; runs deterministically.</td>
               <td><code>settings.json</code> &rarr; <code>hooks</code> (event&rarr;matcher&rarr;handler)</td>
@@ -99,7 +99,7 @@
             <tr>
               <td><a href="primitives/skills.html"><strong>Skills</strong></a><br><span class="meta">the real &ldquo;routines&rdquo;</span></td>
               <td>Reusable instructions/procedures + optional scripts, loaded on demand.</td>
-              <td><span class="badge l201">201</span></td>
+              <td><span class="badge l201">Extend</span></td>
               <td class="cell-warn">Soft</td>
               <td>You via <code>/name</code>, or model auto-loads by description.</td>
               <td><code>.claude/skills/&lt;name&gt;/SKILL.md</code>, <code>~/.claude/skills/</code></td>
@@ -110,7 +110,7 @@
             <tr>
               <td><a href="primitives/mcp.html"><strong>MCP</strong></a></td>
               <td>A protocol; servers expose new tools, resources &amp; prompts from external systems.</td>
-              <td><span class="badge l201">201</span></td>
+              <td><span class="badge l201">Extend</span></td>
               <td class="cell-warn">Soft<span class="meta"> (tools model-invoked)</span></td>
               <td>Model calls the tools when relevant.</td>
               <td><code>.mcp.json</code> (project), <code>~/.claude.json</code> (local/user)</td>
@@ -121,7 +121,7 @@
             <tr>
               <td><a href="primitives/subagents.html"><strong>Subagents</strong></a></td>
               <td>Delegated worker in its own fresh context; only a summary returns.</td>
-              <td><span class="badge l201">201</span></td>
+              <td><span class="badge l201">Extend</span></td>
               <td class="cell-warn">Soft</td>
               <td><strong>The main conversation</strong>, turn by turn.</td>
               <td><code>.claude/agents/*.md</code>; <code>/agents</code></td>
@@ -132,7 +132,7 @@
             <tr>
               <td><a href="primitives/agent-teams.html"><strong>Agent teams</strong></a></td>
               <td>A lead + peer sessions that share a task list and message each other.</td>
-              <td><span class="badge l301">301</span></td>
+              <td><span class="badge l301">Orchestrate</span></td>
               <td class="cell-warn">Soft</td>
               <td><strong>The lead agent</strong> (+ peers self-claim tasks).</td>
               <td>env flag <code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code>; created in natural language</td>
@@ -143,7 +143,7 @@
             <tr>
               <td><a href="primitives/workflows.html"><strong>Dynamic workflows</strong></a></td>
               <td>A JS script Claude writes that orchestrates many subagents &amp; cross-checks results.</td>
-              <td><span class="badge l301">301</span></td>
+              <td><span class="badge l301">Orchestrate</span></td>
               <td class="cell-warn">Soft</td>
               <td><strong>The script</strong> &mdash; the plan lives in code, not a context window.</td>
               <td>script under <code>~/.claude/projects/</code>; <code>/workflows</code>; <code>ultracode</code></td>
@@ -154,7 +154,7 @@
             <tr>
               <td><a href="primitives/agent-view.html"><strong>Worktrees + Agent view</strong></a></td>
               <td>Git checkout isolation per session + a dashboard to dispatch &amp; watch many sessions.</td>
-              <td><span class="badge l301">301</span></td>
+              <td><span class="badge l301">Orchestrate</span></td>
               <td class="cell-warn">Soft<span class="meta"> (worktree = mechanism)</span></td>
               <td><strong>You</strong> &mdash; hand off independent sessions, check back.</td>
               <td><code>claude agents</code>; <code>claude --worktree</code>; <code>.claude/worktrees/</code></td>
@@ -170,35 +170,36 @@
 
     <!-- LEVELS -->
     <section id="levels">
-      <h2>101 / 201 / 301 leveling</h2>
-      <p>The same nine, arranged as a learning path. Each level adds capability <em>and</em> conceptual load. Master a
-        level before reaching up &mdash; most real problems are solved at 101/201.</p>
+      <h2>Coordination groupings (not a ladder)</h2>
+      <p>The same nine, grouped by <strong>how much coordination</strong> they add &mdash; from steering one session to
+        orchestrating many. It&rsquo;s a map, not a ladder: go broad or deep wherever a real trigger appears. Most
+        everyday work lives in the first two groups.</p>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Level</th><th>Goal</th><th>Primitives</th><th>What changes</th><th>The trigger to level up</th></tr>
+            <tr><th>Group</th><th>Goal</th><th>Primitives</th><th>What changes</th><th>The trigger to reach further</th></tr>
           </thead>
           <tbody>
             <tr>
-              <td><span class="badge l101">101</span><br>Foundations</td>
+              <td><span class="badge l101">Foundations</span></td>
               <td>Drive <strong>one session</strong> well.</td>
               <td>CLAUDE.md / memory · slash commands · the Explore→Plan→Code→Commit loop</td>
               <td>You shape soft context; no parallelism, near-zero new concepts.</td>
               <td>You keep re-typing a prompt, or pasting a multi-step playbook.</td>
             </tr>
             <tr>
-              <td><span class="badge l201">201</span><br>Extend a session</td>
+              <td><span class="badge l201">Extend a session</span></td>
               <td>Customize, connect, guarantee, and delegate &mdash; still within one session.</td>
               <td>Skills · MCP · Hooks · Subagents</td>
               <td>You add know-how, external reach, hard guarantees, and isolated delegation.</td>
               <td>Subagents hit context limits, or need to communicate.</td>
             </tr>
             <tr>
-              <td><span class="badge l301">301</span><br>Orchestrate at scale</td>
+              <td><span class="badge l301">Orchestrate at scale</span></td>
               <td>Coordinate <strong>many agents</strong> and govern across repos.</td>
               <td>Agent teams · Dynamic workflows · Worktrees + Agent view · plugins · policies</td>
               <td>The plan leaves your single context &mdash; into a lead, a script, or many sessions; plus org governance.</td>
-              <td>&mdash; (top of the ladder; here you optimize cost &amp; trust)</td>
+              <td>&mdash; (the widest group; here you optimize cost &amp; trust)</td>
             </tr>
           </tbody>
         </table>

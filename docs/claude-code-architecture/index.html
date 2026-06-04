@@ -32,9 +32,9 @@
       slots every one of them into place, a <a href="matrix.html">single comparison matrix</a> you can return to,
       and a <a href="decision.html">decision ladder</a> for &ldquo;which do I reach for <em>now</em>?&rdquo;</p>
     <div class="pill-row" style="margin-top:18px">
-      <span class="badge l101">101 Foundations</span>
-      <span class="badge l201">201 Extend a session</span>
-      <span class="badge l301">301 Orchestrate at scale</span>
+      <span class="badge l101">Foundations</span>
+      <span class="badge l201">Extend a session</span>
+      <span class="badge l301">Orchestrate at scale</span>
     </div>
     <p class="meta" style="margin-top:14px">Last reviewed 2026-06-02 · grounded in
       <a href="https://code.claude.com/docs">code.claude.com/docs</a> &amp; the
@@ -90,38 +90,39 @@
   <!-- THE LADDER -->
   <section id="ladder">
     <div class="eyebrow">The progression</div>
-    <h2>101 → 201 → 301: build your setup as triggers appear</h2>
-    <p>You don&rsquo;t learn these all at once. Anthropic&rsquo;s own advice is to <strong>start with CLAUDE.md and add each
-      primitive when a specific trigger shows up</strong>
-      (<a href="https://code.claude.com/docs/en/features-overview">features overview</a>). That maps cleanly onto three levels.</p>
+    <h2>Build your setup as triggers appear</h2>
+    <p>You don&rsquo;t learn these all at once, and there&rsquo;s no fixed order &mdash; go broad or deep as a need shows up.
+      Anthropic&rsquo;s own advice is to <strong>start with CLAUDE.md and add each primitive when a specific trigger
+      appears</strong> (<a href="https://code.claude.com/docs/en/features-overview">features overview</a>). The three
+      groupings below are just &ldquo;how much coordination,&rdquo; not levels to climb in sequence.</p>
 
     <div class="grid cols-3">
       <div class="card">
-        <span class="badge l101">101 · Foundations</span>
+        <span class="badge l101">Foundations</span>
         <h3>Drive one session well</h3>
         <p>The agentic loop (Explore → Plan → Code → Commit), and the soft context that steers it.</p>
         <p class="meta"><strong>CLAUDE.md / memory</strong> · slash commands · git basics</p>
         <p class="analogy"><strong>Trigger:</strong> Claude got a convention wrong twice → write it in CLAUDE.md.</p>
       </div>
       <div class="card">
-        <span class="badge l201">201 · Extend a session</span>
+        <span class="badge l201">Extend a session</span>
         <h3>Customize &amp; connect</h3>
         <p>Add reusable know-how, external reach, guaranteed behavior, and the first taste of parallelism.</p>
         <p class="meta"><strong>Skills</strong> · <strong>MCP</strong> · <strong>Hooks</strong> · <strong>Subagents</strong></p>
         <p class="analogy"><strong>Trigger:</strong> pasting the same playbook a third time → make a skill.</p>
       </div>
       <div class="card">
-        <span class="badge l301">301 · Orchestrate at scale</span>
+        <span class="badge l301">Orchestrate at scale</span>
         <h3>Many agents &amp; fleet governance</h3>
         <p>Coordinate peers, script orchestration, isolate files, and standardize across repos.</p>
         <p class="meta"><strong>Agent teams</strong> · <strong>Dynamic workflows</strong> · <strong>Worktrees + Agent view</strong> · plugins &amp; <strong>policies</strong></p>
         <p class="analogy"><strong>Trigger:</strong> subagents hit context limits or need to talk → agent teams / workflows.</p>
       </div>
     </div>
-    <p class="meta">Note: Anthropic publishes only one numbered course (&ldquo;Claude Code 101&rdquo;). The 101/201/301 split here is
-      synthesized from the features-overview trigger ladder and the &ldquo;who coordinates&rdquo; progression in the
-      <a href="https://code.claude.com/docs/en/agents">agents</a> and <a href="https://code.claude.com/docs/en/workflows">workflows</a> docs.
-      See the <a href="matrix.html#levels">full leveling table</a>.</p>
+    <p class="meta">These three groupings track <strong>how much coordination</strong> a primitive needs &mdash; not a ladder
+      to climb in order. Lean on the <a href="decision.html">decision guide</a> to pick what to reach for <em>now</em>,
+      and the <a href="https://code.claude.com/docs/en/agents">agents</a> /
+      <a href="https://code.claude.com/docs/en/workflows">workflows</a> docs for depth.</p>
   </section>
 
   <hr>
@@ -136,47 +137,47 @@
 
     <div class="grid cols-3">
       <a class="card" href="primitives/memory.html"><span class="arrow">→</span>
-        <span class="badge l101">101</span>
+        
         <h3>Conventions <span class="meta">(CLAUDE.md / rules files)</span></h3>
         <p>Soft, persistent guidance the model reads every session.</p></a>
 
       <a class="card" href="primitives/policies.html"><span class="arrow">→</span>
-        <span class="badge l301">301</span> <span class="badge det">hard</span>
+        <span class="badge det">hard</span>
         <h3>Policies <span class="meta">(managed settings + permission rules)</span></h3>
         <p>Client-enforced governance that the model can&rsquo;t override. <strong>Not the same as conventions.</strong></p></a>
 
       <a class="card" href="primitives/hooks.html"><span class="arrow">→</span>
-        <span class="badge l201">201</span> <span class="badge det">hard</span>
+        <span class="badge det">hard</span>
         <h3>Hooks <span class="meta">(vs &ldquo;rules&rdquo;)</span></h3>
         <p>Your code, run automatically on lifecycle events. <strong>Not the same as rules.</strong></p></a>
 
       <a class="card" href="primitives/skills.html"><span class="arrow">→</span>
-        <span class="badge l201">201</span>
+        
         <h3>Skills <span class="meta">(&amp; what &ldquo;routines&rdquo; really means)</span></h3>
         <p>Reusable instructions/procedures loaded on demand. &ldquo;Routines&rdquo; isn&rsquo;t a real term &mdash; it&rsquo;s this.</p></a>
 
       <a class="card" href="primitives/mcp.html"><span class="arrow">→</span>
-        <span class="badge l201">201</span>
+        
         <h3>MCP <span class="meta">(Model Context Protocol)</span></h3>
         <p>A protocol that gives the model new tools &amp; data from external systems.</p></a>
 
       <a class="card" href="primitives/subagents.html"><span class="arrow">→</span>
-        <span class="badge l201">201</span>
+        
         <h3>Subagents</h3>
         <p>Delegated workers in their own context; only a summary returns.</p></a>
 
       <a class="card" href="primitives/agent-teams.html"><span class="arrow">→</span>
-        <span class="badge l301">301</span> <span class="badge exp">experimental</span>
+        <span class="badge exp">experimental</span>
         <h3>Agent teams</h3>
         <p>A lead + peer sessions that share a task list and message each other.</p></a>
 
       <a class="card" href="primitives/workflows.html"><span class="arrow">→</span>
-        <span class="badge l301">301</span> <span class="badge preview">preview</span>
+        <span class="badge preview">preview</span>
         <h3>Dynamic workflows <span class="meta">(+ ultracode)</span></h3>
         <p>Claude writes an orchestration <em>script</em> that runs dozens-to-hundreds of agents.</p></a>
 
       <a class="card" href="primitives/agent-view.html"><span class="arrow">→</span>
-        <span class="badge l301">301</span> <span class="badge preview">preview</span>
+        <span class="badge preview">preview</span>
         <h3>Worktrees + Agent view</h3>
         <p>Git isolation per session, plus one dashboard to dispatch &amp; watch many of them.</p></a>
     </div>

@@ -1,8 +1,16 @@
 ---
 title: Prompt vs Context vs Harness Engineering
-tags: [prompting, context-engineering, agents, harness]
-added: 2026-06-02
-source: diagram (saved from Documents, original author unknown)
+slug: prompt-context-harness-engineering
+kind: concept
+spine_layer: foundations
+tags: [prompting, context-engineering, harness, agents]
+connections:
+  - { to: harness-vs-context-engineering, type: alternative-to, why: "Same prompt ⊂ context ⊂ harness model — that note is the canonical narrative, this is the diagram." }
+  - { to: agentic-ai-reference-architecture, type: used-with, why: "This gather→act→verify loop is what each agent in the reference architecture runs internally." }
+source: { url: null, author: "diagram saved from Documents (original author unknown)", retrieved: 2026-06-02 }
+date: 2026-06-02
+depth: evergreen
+claude_specific: true
 ---
 
 # Prompt vs Context vs Harness Engineering
@@ -55,9 +63,8 @@ but can't recover, loop, or self-check → fix the **harness** (verify + retry).
 Maps directly onto how Claude Code itself works: CLAUDE.md + session = memory,
 the curated context window = gather, tool/subagent calls = act, tests/judges = verify.
 
-## Related
-- [`harness-vs-context-engineering`](../10-cross-cutting/harness-vs-context-engineering.md) — **canonical narrative home** for this model (migrated from the Tide visual docs)
-- [`claude-code-architecture`](../10-cross-cutting/claude-code-architecture.md) — how every Claude Code primitive maps onto this loop
-- [`agentic-ai-reference-architecture`](../04-agents-and-tool-use/agentic-ai-reference-architecture.md) — the full system view of the same loop
-- [`claude-code-multi-agent-development`](../04-agents-and-tool-use/claude-code-multi-agent-development.md) — sub-agents in the ACT step
-- patterns: [`../../patterns/prompts`](../../patterns/prompts)
+## Connections
+*Typed links — the concept graph is built from the `connections:` frontmatter above.*
+- **alternative-to** → [Harness vs Context vs Prompt Engineering](harness-vs-context-engineering.md) — the canonical narrative of this same three-level model.
+- **used-with** → [Agentic AI Reference Architecture](agentic-ai-reference-architecture.md) — each agent runs this gather→act→verify loop internally.
+- see also → [Claude Code Architecture](claude-code-architecture.md) — how every Claude Code primitive maps onto this loop.

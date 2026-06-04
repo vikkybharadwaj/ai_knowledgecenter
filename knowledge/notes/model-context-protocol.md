@@ -1,8 +1,16 @@
 ---
 title: Model Context Protocol (MCP) — From Zero to Plumbing
+slug: model-context-protocol
+kind: concept
+spine_layer: claude-code
 tags: [mcp, tool-use, agents, integrations, json-rpc]
-added: 2026-06-02
-source: cheatsheet by Brij Kishore Pandey (@brijpandeyji)
+connections:
+  - { to: agentic-ai-reference-architecture, type: part-of, why: "MCP standardizes the Tools & Integrations layer (4) of the reference architecture." }
+  - { to: claude-code-architecture, type: used-with, why: "MCP is the primitive that gives the Claude Code harness new tools and data." }
+source: { url: null, author: "cheatsheet by Brij Kishore Pandey (@brijpandeyji)", retrieved: 2026-06-02 }
+date: 2026-06-02
+depth: budding
+claude_specific: true
 ---
 
 # Model Context Protocol (MCP) — From Zero to Plumbing
@@ -79,7 +87,7 @@ plan for **OAuth and secret rotation** early, and add my own tracing since the
 protocol gives none. Map this onto the Tools & Integrations layer of the
 [agentic reference architecture](agentic-ai-reference-architecture.md).
 
-## Related
-- [`agentic-ai-reference-architecture`](agentic-ai-reference-architecture.md) — MCP fills layer 4 (Tools & Integrations)
-- [`claude-code-multi-agent-development`](claude-code-multi-agent-development.md) — Claude Code is an MCP host
-- cross-links: cost/tokens → [`../06-infra-cost-latency`](../06-infra-cost-latency), secrets/auth → [`../07-safety-and-security`](../07-safety-and-security)
+## Connections
+*Typed links — the concept graph is built from the `connections:` frontmatter above.*
+- **part-of** → [Agentic AI Reference Architecture](agentic-ai-reference-architecture.md) — MCP fills layer 4 (Tools & Integrations).
+- **used-with** → [Claude Code Architecture](claude-code-architecture.md) — MCP is the primitive that gives the harness new tools; Claude Code is an MCP host.
