@@ -34,7 +34,25 @@ window.KC_DATA = {
       "depth": "evergreen",
       "claudeSpecific": false,
       "url": "https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/notes/agentic-ai-reference-architecture.md",
-      "connCount": 5
+      "connCount": 6
+    },
+    {
+      "slug": "anatomy-of-an-agent-harness",
+      "title": "The Anatomy of an Agent Harness",
+      "kind": "concept",
+      "layer": "foundations",
+      "tags": [
+        "harness",
+        "agents",
+        "orchestration",
+        "memory",
+        "context-engineering",
+        "tool-use"
+      ],
+      "depth": "budding",
+      "claudeSpecific": true,
+      "url": "https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/notes/anatomy-of-an-agent-harness.md",
+      "connCount": 4
     },
     {
       "slug": "claude-code-architecture",
@@ -54,7 +72,7 @@ window.KC_DATA = {
       "depth": "evergreen",
       "claudeSpecific": true,
       "url": "https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/notes/claude-code-architecture.md",
-      "connCount": 7
+      "connCount": 8
     },
     {
       "slug": "claude-code-multi-agent-development",
@@ -107,7 +125,7 @@ window.KC_DATA = {
       "depth": "evergreen",
       "claudeSpecific": true,
       "url": "https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/notes/harness-vs-context-engineering.md",
-      "connCount": 6
+      "connCount": 7
     },
     {
       "slug": "model-context-protocol",
@@ -124,7 +142,7 @@ window.KC_DATA = {
       "depth": "budding",
       "claudeSpecific": true,
       "url": "https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/notes/model-context-protocol.md",
-      "connCount": 3
+      "connCount": 4
     },
     {
       "slug": "prompt-context-harness-engineering",
@@ -155,6 +173,30 @@ window.KC_DATA = {
       "to": "claude-code-multi-agent-development",
       "type": "used-with",
       "why": "Multi-agent methods realize the Agent Layer (3) of this blueprint."
+    },
+    {
+      "from": "anatomy-of-an-agent-harness",
+      "to": "harness-vs-context-engineering",
+      "type": "builds-on",
+      "why": "The harness is the 'machine' level of that model; this note dissects the machine into its organs."
+    },
+    {
+      "from": "anatomy-of-an-agent-harness",
+      "to": "claude-code-architecture",
+      "type": "used-with",
+      "why": "Claude Code is a concrete, well-instrumented harness — its primitives map onto these organs."
+    },
+    {
+      "from": "anatomy-of-an-agent-harness",
+      "to": "agentic-ai-reference-architecture",
+      "type": "used-with",
+      "why": "The nine-layer reference architecture is the production-grade view of the same anatomy."
+    },
+    {
+      "from": "anatomy-of-an-agent-harness",
+      "to": "model-context-protocol",
+      "type": "used-with",
+      "why": "Tools are one organ of the harness; MCP is how Claude exposes them to the loop."
     },
     {
       "from": "claude-code-architecture",

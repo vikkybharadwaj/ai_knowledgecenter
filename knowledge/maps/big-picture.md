@@ -40,6 +40,7 @@ design decision always lives on *some* layer — naming the layer is half the ba
 The mental models everything else obeys.
 - [Prompt vs Context vs Harness Engineering](../notes/prompt-context-harness-engineering.md) — the three nested levels of control.
 - [Harness vs Context vs Prompt Engineering](../notes/harness-vs-context-engineering.md) — canonical narrative of the same model; *where a bug lives tells you which level to fix.*
+- [The Anatomy of an Agent Harness](../notes/anatomy-of-an-agent-harness.md) — dissects the "harness" level into its six organs (loop, context, tools, memory, verification, delegation).
 
 ### 🔌 Claude API — *the engine*
 The raw capabilities a request can use. **(No notes yet — a gap to fill:** tool use, prompt
