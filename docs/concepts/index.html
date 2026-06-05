@@ -19,7 +19,7 @@
 <div class="shell">
   <aside class="siderail">
     <nav class="railnav">
-      <a href="index.html" class="active">Overview</a>
+      <a href="index.html" class="active">Deep dives</a>
       <a href="graph.html">Concept graph</a>
       <a href="mental-model.html">Mental model</a>
       <a href="matrix.html">Comparison matrix</a>
@@ -34,25 +34,22 @@
     <div class="eyebrow">Concepts · the Claude tech stack</div>
     <h1>One model, many ways to steer it.</h1>
     <p class="sub">Hooks, skills, subagents, MCP, agent teams, dynamic workflows, agent view, worktrees,
-      conventions, policies&hellip; it&rsquo;s a lot of nouns. This is where I make sense of them &mdash; structured as
-      <strong>two ways in</strong>: <strong>go deep</strong> on any single primitive, or <strong>go broad</strong>
-      across the whole stack. Same material, two altitudes &mdash; start wherever your question is.</p>
-    <p class="meta" style="margin-top:14px">Last reviewed 2026-06-02 · grounded in
+      conventions, policies&hellip; it&rsquo;s a lot of nouns. Pick one primitive and read it end to end &mdash;
+      each card opens a full page with the definition, an analogy, the mechanism, who invokes it, when to reach
+      for it (and when not), best practices, and setup. The <span class="badge det">hard</span> badge means
+      client-enforced; otherwise it&rsquo;s soft, model-mediated.
+      <a href="legend.html">See the full badge legend &rarr;</a></p>
+    <p class="meta" style="margin-top:14px">Want the wide view instead? The
+      <a href="graph.html">concept graph</a> wires every idea together across the whole stack.
+      &middot; Last reviewed 2026-06-02 · grounded in
       <a href="https://code.claude.com/docs">code.claude.com/docs</a> &amp; the
       <a href="https://claude.com/blog/introducing-dynamic-workflows-in-claude-code">dynamic-workflows announcement</a>.</p>
   </section>
 
   <hr>
 
-  <!-- GO DEEP — the nine primitive cards -->
+  <!-- The nine primitive deep-dive cards -->
   <section id="primitives">
-    <div class="eyebrow">① Go deep &mdash; one primitive at a time</div>
-    <h2>Deep-dive cards</h2>
-    <p>The <strong>narrow, vertical</strong> path: pick one primitive and read it end to end. Each card opens a full
-      page &mdash; definition, an analogy, the mechanism, who invokes it, when to reach for it (and when not), best
-      practices, and setup. The <span class="badge det">hard</span> badge means client-enforced; otherwise it&rsquo;s
-      soft, model-mediated. <a href="legend.html">See the full badge legend &rarr;</a></p>
-
     <div class="grid cols-3">
       <a class="card" href="primitives/memory.html"><span class="arrow">→</span>
 
@@ -99,19 +96,6 @@
         <h3>Worktrees + Agent view</h3>
         <p>Git isolation per session, plus one dashboard to dispatch &amp; watch many of them.</p></a>
     </div>
-  </section>
-
-  <hr>
-
-  <!-- GO BROAD — the concept graph -->
-  <section id="graph-pointer">
-    <div class="eyebrow">② Go broad &mdash; across the whole stack</div>
-    <h2>The concept graph</h2>
-    <p>The <strong>wide, horizontal</strong> path: zoom out and see how everything connects. Beyond the Claude Code
-      primitives, every idea I&rsquo;m learning across the Claude stack lives as one atomic note, wired to its neighbours
-      by <strong>typed connections</strong> on a single evolving spine. Hover a node to see how it connects; click to read
-      the note right on the page.</p>
-    <p style="margin-top:14px"><a class="btn primary" href="graph.html">Open the concept graph →</a></p>
   </section>
 
 </main>
