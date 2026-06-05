@@ -11,6 +11,13 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-05  Exam mini-cases (scenarios.html) were "hard to learn from" because the transferable rule was
+            buried in answer-prose — a learner finished a card knowing the one verdict, not the pattern.
+            Fix: every mini-case now ends in a bolded one-line `.principle` takeaway (the reusable rule).
+            Pedagogy rule of thumb: a worked case must surface its *generalizable principle* explicitly, not
+            leave the reader to extract it. The 6 scenarios themselves are a fixed external spec (the CCA-F
+            exam's six production settings, see `exam-prep/cca-f-study-guide.md:55`) — don't add/remove them.
+
 2026-06-05  Notes now READ IN-PAGE — no link-out to GitHub. `build-index.py` renders each note body
             (plus the Big Picture map + Home note) to HTML and bakes it into `knowledge.js`; a new
             `docs/assets/reader.js` overlay shows it, and every note/content link is an

@@ -40,7 +40,8 @@
       <h1>The 6 production scenarios</h1>
       <p class="lede">Every CCA-F question lives inside one of six production settings. If you can recognize the
         setting and recall its failure modes, half the work is done. For each: the setup, the task statements it leans
-        on, the high-yield traps, and worked mini-cases (click to reveal the reasoning). Reviewed 2026-06-02.</p>
+        on, the high-yield traps, and worked mini-cases — each ending in a one-line <em>Principle</em> you can carry to any
+        question in that domain (click to reveal the reasoning). Reviewed 2026-06-05.</p>
     </section>
 
     <section id="how">
@@ -70,12 +71,14 @@
         <p><strong>Answer:</strong> Both <em>error classification</em> AND <em>idempotency keys</em> — neither alone suffices.
           Classification won&rsquo;t undo a duplicate that already processed; idempotency alone won&rsquo;t retry a request that never
           arrived. Use an idempotency key (hash of operation + customer + amount) <em>and</em> classify errors before retrying.</p>
+        <p class="principle"><span class="label">Principle</span> When a failure has two independent causes (already-applied vs never-arrived), one fix can&rsquo;t cover both. Make the side-effect idempotent <em>and</em> the retry conditional.</p>
       </div></details>
       <details class="acc"><summary>Mini-case: which escalation is justified?</summary><div class="acc-body">
         <p>After looking up the customer and order, which is the <em>most</em> justified <code>escalate_to_human</code> trigger?</p>
         <p><strong>Answer:</strong> A competitor price-match request when policy allows own-site matching within 14 days but is
           <em>silent</em> on competitors. That&rsquo;s a real policy gap requiring human judgment — the agent must not fabricate policy.
           A &ldquo;change my mind&rdquo; cancel or a combined billing+return question are within the agent&rsquo;s competence.</p>
+        <p class="principle"><span class="label">Principle</span> Escalate on <em>policy silence</em>, not on difficulty or sentiment. If the rules don&rsquo;t cover the case, a human decides; if they do, the agent acts — even when the request is complex or the customer is angry.</p>
       </div></details>
     </section>
 
@@ -99,11 +102,13 @@
         <p><strong>Answer:</strong> The <em>interview pattern</em> — have Claude ask targeted questions to surface design
           considerations (TTL, invalidation, stampede protection) the developer doesn&rsquo;t know to specify. Plan mode explores
           implementation but not unstated requirements; TDD assumes you already know the edge cases.</p>
+        <p class="principle"><span class="label">Principle</span> When the gap is <em>unknown requirements</em>, make the model ask before it builds. Plan mode and TDD refine a known spec; the interview pattern discovers one.</p>
       </div></details>
       <details class="acc"><summary>Mini-case: personalize a shared command</summary><div class="acc-body">
         <p>A dev wants to tweak the team&rsquo;s shared <code>/commit</code> skill just for themselves.</p>
         <p><strong>Answer:</strong> Create a personal <code>~/.claude/skills/commit/SKILL.md</code> with the same name —
           personal skills take precedence over same-named project skills, so the team&rsquo;s version is untouched.</p>
+        <p class="principle"><span class="label">Principle</span> Personalize by <em>shadowing</em>, not editing: a same-named user-scope file overrides the project one for you alone. Never edit shared/committed config to get a personal tweak.</p>
       </div></details>
     </section>
 
@@ -124,6 +129,7 @@
         <p>The coordinator needs the web-search and document-analysis subagents to run at the same time. How?</p>
         <p><strong>Answer:</strong> Emit <em>multiple Task/Agent calls within a single response</em>. Separate turns run them
           sequentially; <code>fork_session</code> is for branching your own exploration, not fanning out worker types.</p>
+        <p class="principle"><span class="label">Principle</span> Concurrency comes from <em>one response with many calls</em>, not many responses. One call per turn is sequential by definition, no matter how it&rsquo;s phrased.</p>
       </div></details>
       <details class="acc"><summary>Mini-case: three search outcomes</summary><div class="acc-body">
         <p>Web search returns: academic = 15 papers; industry = &ldquo;0 results&rdquo;; patent = &ldquo;connection timeout.&rdquo; How should
@@ -131,6 +137,7 @@
         <p><strong>Answer:</strong> Return all three <em>distinctly</em> — academic = success; industry = valid empty result
           (<code>isError:false</code>); patent = <code>isError:true</code> with structured error context. Each demands a
           different coordinator response (accept / accept / consider-retry). Combining or silently retrying hides the signal.</p>
+        <p class="principle"><span class="label">Principle</span> &ldquo;No results&rdquo; and &ldquo;couldn&rsquo;t check&rdquo; are different facts — never collapse them. Preserve the empty-vs-error distinction so the caller can choose accept vs retry.</p>
       </div></details>
     </section>
 
@@ -153,6 +160,7 @@
         <p><strong>Answer:</strong> A <strong>PostToolUse hook</strong> — a single deterministic interception point that
           transforms <em>all</em> tool outputs (including unmodifiable third-party data) in code, rather than relying on the
           model to interpret mixed formats or wrapping every tool by hand.</p>
+        <p class="principle"><span class="label">Principle</span> Normalize once, deterministically, at the boundary — a hook — not per-tool and not in the prompt. Hooks reach even tools you don&rsquo;t own; prompts are probabilistic and don&rsquo;t scale.</p>
       </div></details>
     </section>
 
@@ -174,6 +182,7 @@
           A same-session self-review didn&rsquo;t help. Best architecture?</p>
         <p><strong>Answer:</strong> A separate, <em>independent</em> review instance with no access to the generator&rsquo;s
           reasoning — fresh eyes avoid the confirmation bias of reviewing one&rsquo;s own rationalizations. (Task 4.6: multi-instance review.)</p>
+        <p class="principle"><span class="label">Principle</span> A reviewer that can see the author&rsquo;s reasoning inherits its blind spots. For real scrutiny, withhold the rationale and use a fresh instance — self-review in-session catches little.</p>
       </div></details>
     </section>
 
@@ -194,12 +203,14 @@
         <p>40% of invoices have a <code>tax_id</code>, 60% don&rsquo;t. You mark it a required string. What happens on the 60%?</p>
         <p><strong>Answer:</strong> The model <em>fabricates</em> a value to satisfy the required constraint. Fix: make it
           optional/nullable so the model can honestly return null. &ldquo;Required fields are fabrication factories.&rdquo;</p>
+        <p class="principle"><span class="label">Principle</span> Required fields are fabrication factories: a &ldquo;required&rdquo; field the source often lacks forces the model to invent. Make genuinely-optional data nullable so &ldquo;not present&rdquo; is expressible.</p>
       </div></details>
       <details class="acc"><summary>Mini-case: removing human review</summary><div class="acc-body">
         <p>The pipeline reports 96% accuracy over 10,000 invoices; the team wants to drop human review. First validation step?</p>
         <p><strong>Answer:</strong> <em>Stratify</em> accuracy by document type and field segment. An aggregate can hide a
           catastrophic per-segment rate (99.9% on digital, 40% on handwritten still averages ~96%). Confirm consistency
           before removing the human.</p>
+        <p class="principle"><span class="label">Principle</span> An aggregate metric is a ceiling on what you know, not a floor on what you ship. Stratify before trusting it — a high average can hide a segment that&rsquo;s failing wholesale.</p>
       </div></details>
     </section>
 
@@ -213,7 +224,7 @@
 </main>
 
 <footer class="wrap">
-  <p>Claude Code Architecture field guide · the 6 scenarios · reviewed 2026-06-02 · <a href="index.html">home</a> ·
+  <p>Claude Code Architecture field guide · the 6 scenarios · reviewed 2026-06-05 · <a href="index.html">home</a> ·
      not affiliated with or endorsed by Anthropic.</p>
 </footer>
 <script src="assets/app.js"></script>

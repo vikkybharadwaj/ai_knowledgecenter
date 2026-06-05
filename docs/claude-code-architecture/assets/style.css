@@ -188,6 +188,10 @@ details.acc[open] > summary::before { transform: rotate(90deg); }
 details.acc > summary:hover { background: var(--bg-soft); }
 details.acc .acc-body { padding: 4px 18px 18px; border-top: 1px solid var(--border); }
 details.acc .acc-body > *:first-child { margin-top: 12px; }
+.principle { margin-top: 14px; padding: 9px 13px; border-left: 3px solid var(--accent-4);
+  background: var(--bg-soft); border-radius: 0 var(--radius) var(--radius) 0; font-size: 14px; }
+.principle .label { font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--accent-4); margin-right: 8px; }
 
 /* ---------- tables ---------- */
 .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); }
