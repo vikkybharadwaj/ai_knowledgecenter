@@ -3,21 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Claude Code Architecture — a field guide to the primitives</title>
+<title>Concepts — a field guide to the Claude Code primitives</title>
 <meta name="description" content="A clickable mental model for Claude Code: how skills, hooks, MCP, subagents, agent teams, dynamic workflows, agent view, worktrees, conventions and policies relate — and which to reach for when.">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="index.html"><span class="dot"></span> Claude Code · Architecture</a>
+  <a class="brand" href="index.html"><span class="dot"></span> Concepts</a>
   <div class="spacer"></div>
   <nav>
-    <a href="index.html">Home</a>
+    <a href="../index.html">Home</a>
+    <a href="index.html">Overview</a>
+    <a href="graph.html">Concept graph</a>
     <a href="mental-model.html">Mental model</a>
     <a href="matrix.html">Comparison matrix</a>
-    <a href="decision.html">Decide what to use</a>
-    <a href="exam-prep.html">Exam prep</a>
-    <a href="scenarios.html">Scenarios</a>
+    <a href="decision.html">Decide</a>
+    <a class="cta" href="exam.html">🎓 CCA-F Exam Prep</a>
   </nav>
   <button class="theme-toggle" aria-label="Toggle theme"></button>
 </header>
@@ -25,12 +26,13 @@
 <main class="wrap">
 
   <section class="hero">
-    <div class="eyebrow">A field guide for the Claude Code Architect</div>
+    <div class="eyebrow">Concepts · the Claude tech stack</div>
     <h1>One model, many ways to steer it.</h1>
     <p class="sub">Hooks, skills, subagents, MCP, agent teams, dynamic workflows, agent view, worktrees,
-      conventions, policies&hellip; it&rsquo;s a lot of nouns. This guide gives you <strong>one mental model</strong> that
+      conventions, policies&hellip; it&rsquo;s a lot of nouns. Concepts gives you <strong>one mental model</strong> that
       slots every one of them into place, a <a href="matrix.html">single comparison matrix</a> you can return to,
-      and a <a href="decision.html">decision ladder</a> for &ldquo;which do I reach for <em>now</em>?&rdquo;</p>
+      and a <a href="decision.html">decision ladder</a> for &ldquo;which do I reach for <em>now</em>?&rdquo; Prefer to wander?
+      Open the <a href="graph.html">concept graph</a> and follow the connections.</p>
     <div class="pill-row" style="margin-top:18px">
       <span class="badge l101">Foundations</span>
       <span class="badge l201">Extend a session</span>
@@ -185,20 +187,20 @@
 
   <hr>
 
-  <section id="how-built">
-    <div class="eyebrow">Meta</div>
-    <h2>How this guide was built — a dynamic-workflow in miniature</h2>
-    <p>You asked to <em>see</em> how dynamic workflows work. This guide was researched the same way a workflow
-      orchestrates: a <strong>fan-out</strong> of parallel research subagents, each owning one slice of the docs, whose
-      findings were <strong>cross-checked</strong> and then <strong>synthesized</strong> into one answer &mdash; exactly the
-      pattern a workflow script codifies. The <a href="mental-model.html#workflow-demo">mental-model page</a> shows the
-      &ldquo;script&rdquo; that was effectively run.</p>
+  <!-- THE CONCEPT GRAPH -->
+  <section id="graph-pointer">
+    <div class="eyebrow">Go broad</div>
+    <h2>The concept graph</h2>
+    <p>Beyond the Claude Code primitives, every idea I&rsquo;m learning across the Claude stack lives as one atomic note,
+      wired to its neighbours by <strong>typed connections</strong> on a single evolving spine. Hover a node to see how it
+      connects; click to read the note right on the page.</p>
+    <p style="margin-top:14px"><a class="btn primary" href="graph.html">Open the concept graph →</a></p>
   </section>
 
 </main>
 
 <footer class="wrap">
-  <p>Claude Code Architecture field guide · part of the AI Knowledge Center · reviewed 2026-06-02.
+  <p>AI Knowledge Center · Concepts · reviewed 2026-06-02.
      Primary sources: <a href="https://code.claude.com/docs">code.claude.com/docs</a>,
      <a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Agent Skills</a>,
      <a href="https://claude.com/blog/introducing-dynamic-workflows-in-claude-code">Dynamic workflows</a>.

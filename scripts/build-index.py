@@ -25,8 +25,8 @@ MAPS_DIR = os.path.join(ROOT, "knowledge", "maps")
 README = os.path.join(ROOT, "knowledge", "README.md")
 OUT = os.path.join(ROOT, "docs", "assets", "knowledge.js")
 # Where note images get copied so the in-page reader can show them (relative to
-# docs/knowledge/index.html the reader resolves these as notes/<file>).
-IMG_OUT = os.path.join(ROOT, "docs", "knowledge", "notes")
+# docs/concepts/graph.html the reader resolves these as notes/<file>).
+IMG_OUT = os.path.join(ROOT, "docs", "concepts", "notes")
 BLOB = "https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/notes/"
 
 LAYERS = ["foundations", "api", "agent-sdk", "claude-code", "patterns", "products"]
@@ -122,7 +122,7 @@ def render_inline(text, title_of):
         tokens.append(html)
         return PUA_O + str(len(tokens) - 1) + PUA_C
 
-    # images: ![alt](src) — local images are copied into docs/knowledge/notes/
+    # images: ![alt](src) — local images are copied into docs/concepts/notes/
     def img_sub(m):
         alt, src = m.group(1), m.group(2).strip()
         if re.match(r"^https?://", src):
@@ -319,7 +319,7 @@ def render_markdown(text, title_of):
 
 
 def copy_images(body, srcdir):
-    """Copy locally-referenced images from a note into docs/knowledge/notes/."""
+    """Copy locally-referenced images from a note into docs/concepts/notes/."""
     for m in re.finditer(r"!\[[^\]]*\]\(([^)]+)\)", body):
         src = m.group(1).strip()
         if re.match(r"^https?://", src):

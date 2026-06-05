@@ -14,10 +14,10 @@ goal: master the Claude/Anthropic stack, pass the **CCA-F** exam, and help small
 
 | View | What it is | Where |
 |------|------------|-------|
-| 🧠 **[Knowledge](https://vikkybharadwaj.github.io/ai_knowledgecenter/knowledge/)** | A self-organizing **concept graph** — atomic notes wired by *typed connections*, laid out on one spine. Go broad or deep at will. | `knowledge/` |
-| 🎓 **[Exam Prep](https://vikkybharadwaj.github.io/ai_knowledgecenter/claude-code-architecture/)** | An interactive Claude Code Architecture field guide + **136-question CCA-F quiz**. | `docs/claude-code-architecture/` + `exam-prep/` |
+| 🧠 **[Concepts](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/)** | Everything I'm learning about the Claude stack in one place: the mental model of every Claude Code primitive, a comparison matrix, a decision guide, primitive deep-dives, and a self-organizing **concept graph** wired by *typed connections*. | `docs/concepts/` + `knowledge/` |
+| 🎓 **[CCA-F Exam Prep](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/exam.html)** | About the exam, an interactive **practice quiz**, and the six production scenarios it's built on. | `docs/concepts/exam.html` + `exam-prep/` |
 
-## How the Knowledge view works
+## How the Concepts graph works
 
 Three mechanisms turn a pile of notes into a brain:
 
@@ -27,7 +27,7 @@ Three mechanisms turn a pile of notes into a brain:
 2. **The spine** — every note declares a `spine_layer` so it slots into the
    [Big Picture](knowledge/maps/big-picture.md): `Foundations → Claude API → Agent SDK → Claude Code
    primitives → Agent patterns → Products & consulting`. Nothing floats free.
-3. **The big picture** — an [interactive graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/knowledge/)
+3. **The big picture** — an [interactive graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html)
    you explore, plus a narrative [synthesis note](knowledge/maps/big-picture.md) that explains how it all
    fits. Both grow as notes are added.
 

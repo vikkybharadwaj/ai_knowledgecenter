@@ -11,6 +11,17 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-05  ONE learning section + ONE exam tab. Retired the two-partition site (Knowledge ⟂ Claude Code
+            Architecture) that made learning a constant context-switch: merged the architecture field guide
+            (mental model, matrix, decision, primitives) AND the concept graph into a single **Concepts**
+            view at `docs/concepts/`, and split the exam into its own hub `docs/concepts/exam.html` (about →
+            `practice.html` quiz → `scenarios.html`), surfaced as the lone top-right tab. Two move-gotchas:
+            (1) `build-index.py`'s `IMG_OUT` is hardcoded to the graph page's dir — moving the graph from
+            `docs/knowledge/` to `docs/concepts/` required updating `IMG_OUT` + re-running the build so note
+            images land beside the page (`<img src="notes/…">` is page-relative). (2) The home-note + two
+            notes baked **absolute published URLs** (`…/knowledge/`, `…/claude-code-architecture/`) into
+            `knowledge.js` — fix the *source* `.md` (never the generated JS) and rebuild.
+
 2026-06-05  Notes now READ IN-PAGE — no link-out to GitHub. `build-index.py` renders each note body
             (plus the Big Picture map + Home note) to HTML and bakes it into `knowledge.js`; a new
             `docs/assets/reader.js` overlay shows it, and every note/content link is an

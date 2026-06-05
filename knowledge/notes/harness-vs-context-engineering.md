@@ -11,7 +11,7 @@ source: { url: null, author: "migrated canonical home (was a Tide visual doc)", 
 date: 2026-06-02
 depth: evergreen
 claude_specific: true
-interactive: ../../docs/claude-code-architecture/mental-model.html#harness
+interactive: ../../docs/concepts/mental-model.html#harness
 ---
 
 # Harness vs Context vs Prompt Engineering
@@ -19,7 +19,7 @@ interactive: ../../docs/claude-code-architecture/mental-model.html#harness
 > **Canonical home.** This content previously lived as a visual page in the Tide repo
 > (`/tide/harness-vs-context-engineering.html`). It now lives here in the AI Knowledge
 > Center, and is rendered interactively on the
-> [mental-model page](../../docs/claude-code-architecture/mental-model.html#harness) of the
+> [mental-model page](../../docs/concepts/mental-model.html#harness) of the
 > Claude Code Architecture site. See the Tide-removal checklist in `LEARNINGS.md`.
 
 ## TL;DR

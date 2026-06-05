@@ -5,13 +5,13 @@ connected brain**, not a filing cabinet: atomic notes, wired together with typed
 hanging off a single [**Big Picture spine**](maps/big-picture.md).
 
 > **Go broad** → read the [Big Picture](maps/big-picture.md) or open the
-> [interactive concept graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/knowledge/).
+> [interactive concept graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html).
 > **Go deep** → click into any note and follow its **Connections** wherever they lead.
 
 ## Start here
 - 🗺️ **[The Big Picture](maps/big-picture.md)** — the spine: how the whole Claude stack fits together (the dot-connecting map).
 - 🏗️ **[Building & advising on AI stacks](maps/building-ai-stacks.md)** — the consulting cluster: *when to use Claude Code vs build your own harness*, and how to bootstrap a company's AI stack.
-- 🕸️ **[Interactive concept graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/knowledge/)** — see every note and its typed links, laid out by spine layer.
+- 🕸️ **[Interactive concept graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html)** — see every note and its typed links, laid out by spine layer.
 
 ## How this works (the model in 5 lines)
 1. **Flat pool.** Every note is one atomic idea in [`notes/`](notes/) — no topic folders, no 101/201/301 levels.
@@ -21,7 +21,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 5. **Land & connect.** Run `/land <url | file | pasted text>`; it distills, files, **connects the dots**, updates this map, and teaches you where the idea fits.
 
 ## All notes
-*(This list is the human index; the [graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/knowledge/) is the visual one. Both are derived from the notes.)*
+*(This list is the human index; the [graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html) is the visual one. Both are derived from the notes.)*
 
 | Note | Layer | Depth |
 |------|-------|-------|
@@ -38,5 +38,5 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 | [Use Claude Code vs build your own](notes/claude-code-vs-build-your-own.md) | patterns | evergreen |
 | [Scenario: bootstrapping a company's AI stack](notes/bootstrapping-company-ai-stack.md) | products | budding |
 
-> Looking for the **Claude Code Architecture exam prep**? That's the other view —
-> [`exam-prep/`](../exam-prep/) + the [interactive quiz site](https://vikkybharadwaj.github.io/ai_knowledgecenter/claude-code-architecture/).
+> Looking for the **CCA-F exam prep**? That's the other view —
+> [`exam-prep/`](../exam-prep/) + the [interactive exam-prep site](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/exam.html).
