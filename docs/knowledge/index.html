@@ -13,9 +13,8 @@
   <div class="spacer"></div>
   <nav>
     <a href="../index.html">Home</a>
-    <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/maps/big-picture.md" target="_blank" rel="noopener">Big picture</a>
+    <a href="index.html">Knowledge</a>
     <a href="../claude-code-architecture/index.html">Exam prep</a>
-    <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/tree/main/knowledge" target="_blank" rel="noopener">GitHub</a>
   </nav>
   <button class="theme-toggle" aria-label="Toggle theme"></button>
 </header>
@@ -25,12 +24,12 @@
     <div class="eyebrow">One connected brain · not a filing cabinet</div>
     <h1>The knowledge graph.</h1>
     <p class="sub">Every note is one atomic idea, wired to its neighbours by <strong>typed connections</strong> and
-      placed on a single evolving <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/maps/big-picture.md" target="_blank" rel="noopener">spine</a>.
-      Hover a node to see how it connects; click to open the note. <strong>Go broad</strong> across the map or
+      placed on a single evolving <a href="#" class="kc-link" data-slug="big-picture">spine</a>.
+      Hover a node to see how it connects; click to open the note <strong>right here on the page</strong>. <strong>Go broad</strong> across the map or
       <strong>go deep</strong> into any idea — in any order.</p>
     <div class="cta-row" style="margin-top:8px">
-      <a class="btn primary" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/maps/big-picture.md" target="_blank" rel="noopener">Read the Big Picture →</a>
-      <a class="btn" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/README.md" target="_blank" rel="noopener">Home note</a>
+      <a class="btn primary kc-link" href="#" data-slug="big-picture">Read the Big Picture →</a>
+      <a class="btn kc-link" href="#" data-slug="readme">Home note</a>
     </div>
   </section>
 
@@ -57,12 +56,12 @@
 
 <footer class="wrap">
   <p><strong>AI Knowledge Center — Knowledge view.</strong> Notes live as markdown in
-    <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/tree/main/knowledge/notes" target="_blank" rel="noopener">knowledge/notes</a>;
-    this graph is generated from their frontmatter by <code>scripts/build-index.py</code>. Add one with
-    <code>/land</code> and it wires itself in.</p>
+    <code>knowledge/notes</code> and render right here on the page — this graph is generated from their
+    frontmatter by <code>scripts/build-index.py</code>. Add one with <code>/land</code> and it wires itself in.</p>
 </footer>
 
 <script src="../assets/knowledge.js"></script>
+<script src="../assets/reader.js"></script>
 <script src="../assets/graph.js"></script>
 <script>
 /* shared theme toggle (key shared across the whole site) + notes-by-layer list */
@@ -97,7 +96,7 @@
     }
     html += "<div class='layer'><h3>" + (D.layerLabels[layer] || layer) + " <span class='ct'>" + ns.length + "</span></h3><ul>";
     ns.forEach(function (n) {
-      html += "<li><a href='" + n.url + "' target='_blank' rel='noopener'>" + (depthRank[n.depth] || "") + " " + n.title + "</a> " +
+      html += "<li><a href='#' class='kc-link' data-slug='" + n.slug + "'>" + (depthRank[n.depth] || "") + " " + n.title + "</a> " +
               "<span class='tg'>" + (n.tags || []).slice(0, 4).map(function (t) { return "#" + t; }).join(" ") + "</span></li>";
     });
     html += "</ul></div>";
