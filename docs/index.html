@@ -4,48 +4,37 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI Knowledge Center — how I learn AI</title>
-<meta name="description" content="My personal AI knowledge center for the Claude tech stack: a self-organizing, dot-connected knowledge graph, and an interactive Claude Code Architecture exam-prep system. Two views, one evolving brain.">
+<meta name="description" content="My personal AI knowledge center for the Claude tech stack: one connected, dot-linked map of concepts — mental models, the comparison matrix, the decision guide, the primitive deep-dives, and the concept graph — plus a CCA-F exam-prep track.">
 <meta property="og:title" content="AI Knowledge Center — how I learn AI">
-<meta property="og:description" content="A self-organizing knowledge graph for the Claude stack + an interactive Claude Code Architecture exam-prep system.">
+<meta property="og:description" content="One connected map of concepts for the Claude stack, plus a CCA-F exam-prep track.">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="assets/style.css">
 <style>
-  /* ---- home-only refinements: tighter hero + the two views as launchers ---- */
-  .hero{padding:60px 0 18px}
-  .hero .sub{margin-bottom:18px}
+  /* ---- home-only refinements ---- */
+  .hero{padding:64px 0 22px}
+  .hero .sub{margin-bottom:18px;max-width:62ch}
   .hero-meta{display:flex;flex-wrap:wrap;gap:10px 22px;color:var(--text-dim);font-size:12.5px;font-weight:600;letter-spacing:.2px}
   .hero-meta span{display:inline-flex;align-items:center;gap:7px}
   .hero-meta b{color:var(--text-soft);font-weight:800}
   .hero-meta .d{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.8}
 
-  /* section intro line */
+  /* the single top-right exam tab — the one prominent call to action */
+  .exam-tab{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:999px;
+    background:var(--accent);color:#1a1118;font-weight:800;font-size:13.5px;letter-spacing:.2px;border:1px solid var(--accent)}
+  .exam-tab:hover{filter:brightness(1.06);text-decoration:none;color:#1a1118}
+
+  /* the one Concepts block */
   .kicker{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.6px;color:var(--accent);margin:0 0 14px}
-
-  /* the two views become navigational launchers (cards are no longer one big link) */
-  #views{margin-top:14px}
-  .views .view{cursor:default}
-  .view .view-ic{font-size:30px;line-height:1;margin-bottom:6px}
-  .view h2{font-size:1.5rem;margin:0 0 .28em}
-  .view h2 a{color:var(--text)}
-  .view h2 a:hover{color:var(--accent);text-decoration:none}
-  .view > p{color:var(--text-soft);font-size:14.5px;line-height:1.6;margin:0 0 15px;flex:initial}
-  .view .qlinks-label{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-dim);margin:0 0 9px}
-  .view .qlinks{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
-  .view .qlinks a{font-size:12.5px;font-weight:600;padding:6px 12px;border:1px solid var(--border-2);border-radius:999px;color:var(--text-soft);background:var(--bg-soft);transition:border-color .15s,color .15s,transform .15s,background .15s}
-  .view .qlinks a:hover{border-color:var(--accent);color:var(--text);background:var(--bg-card);text-decoration:none;transform:translateY(-1px)}
-  .view .go{margin-top:auto;display:inline-flex;width:fit-content}
-  .view .go:hover{text-decoration:none;transform:translateX(2px);transition:transform .15s}
-
-  /* compact "how I learn" rail */
-  #how .cols{gap:14px}
-  .feature{position:relative;padding-left:20px}
-  .feature::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:3px;border-radius:3px;background:var(--accent);opacity:.55}
-
-  /* pillars: make "you are here" the clear anchor */
-  #pillars .lead{margin-bottom:18px}
-  .pillar{transition:transform .16s,border-color .16s}
-  .pillar:not(.me){opacity:.92}
-  .pillar.me .role{color:var(--accent)}
+  .hub{position:relative;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:30px 30px 26px;overflow:hidden}
+  .hub .view-ic{font-size:32px;line-height:1;margin-bottom:8px}
+  .hub h2{font-size:1.7rem;margin:0 0 .3em}
+  .hub h2 a{color:var(--text)}
+  .hub h2 a:hover{color:var(--accent);text-decoration:none}
+  .hub > p{color:var(--text-soft);font-size:15px;line-height:1.65;margin:0 0 18px;max-width:70ch}
+  .hub .qlinks-label{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-dim);margin:0 0 10px}
+  .hub .qlinks{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 20px}
+  .hub .qlinks a{font-size:13px;font-weight:600;padding:7px 13px;border:1px solid var(--border-2);border-radius:999px;color:var(--text-soft);background:var(--bg-soft);transition:border-color .15s,color .15s,transform .15s,background .15s}
+  .hub .qlinks a:hover{border-color:var(--accent);color:var(--text);background:var(--bg);text-decoration:none;transform:translateY(-1px)}
 </style>
 </head>
 <body>
@@ -53,110 +42,54 @@
   <a class="brand" href="index.html"><span class="dot"></span> AI Knowledge Center</a>
   <div class="spacer"></div>
   <nav>
-    <a href="knowledge/index.html">Knowledge</a>
-    <a href="claude-code-architecture/index.html">Claude Code</a>
-    <a href="#how">How I learn</a>
-    <a href="#pillars">Bigger picture</a>
-    <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter" target="_blank" rel="noopener">GitHub</a>
+    <a class="exam-tab" href="concepts/exam.html">🎓 CCA-F Exam Prep</a>
   </nav>
   <button class="theme-toggle" aria-label="Toggle theme"></button>
 </header>
 
 <main>
-  <!-- HERO — tight: one idea, then straight into the two ways in -->
+  <!-- HERO -->
   <section class="hero wrap">
     <div class="eyebrow">My AI learning center · the Claude tech stack</div>
     <h1>How I learn AI.</h1>
-    <p class="sub">The <strong>theoretical foundation</strong> behind the AI products I build — one <em>connected</em> brain
-      for the Claude stack, so I can see how every piece fits instead of keeping a pile of isolated notes. Pick a way in.</p>
+    <p class="sub">The <strong>theoretical foundation</strong> behind the AI products I build — one <em>connected</em> map
+      of the Claude stack, so I can see how every piece fits instead of keeping a pile of isolated notes.</p>
     <div class="hero-meta">
-      <span><i class="d"></i><b>2</b> ways in</span>
       <span><i class="d"></i><b>10</b> Claude Code primitives</span>
-      <span><i class="d"></i><b>136</b>-question CCA-F quiz</span>
-      <span><i class="d"></i>a living, evolving graph</span>
+      <span><i class="d"></i><b>1</b> connected concept graph</span>
+      <span><i class="d"></i>a living, evolving brain</span>
     </div>
   </section>
 
-  <!-- TWO VIEWS — now launchers: each surfaces what's inside + jumps you straight there -->
-  <section class="wrap" id="views">
-    <div class="views">
-      <article class="view">
-        <span class="accentbar"></span>
-        <div class="view-ic">🧠</div>
-        <h2><a href="knowledge/index.html">Knowledge</a></h2>
-        <p>A self-organizing graph of atomic notes on the Claude stack, wired by <strong>typed connections</strong> and laid
-          out on one evolving spine — land a doc, it connects the dots, so I always see the bigger map.</p>
-        <div class="qlinks-label">Jump in</div>
-        <div class="qlinks">
-          <a href="knowledge/index.html#graph">🕸 Concept graph</a>
-          <a href="knowledge/index.html#all-notes">≣ All notes</a>
-          <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/maps/big-picture.md" target="_blank" rel="noopener">🗺 Big picture</a>
-        </div>
-        <a class="go" href="knowledge/index.html">Explore the graph →</a>
-      </article>
-
-      <article class="view">
-        <span class="accentbar" style="background:var(--accent-2)"></span>
-        <div class="view-ic">🎓</div>
-        <h2><a href="claude-code-architecture/index.html">Claude Code Architecture</a></h2>
-        <p>An interactive field guide to every Claude Code primitive — one mental model, a comparison matrix, a decision
-          guide, scenario walkthroughs, and a <strong>136-question CCA-F practice quiz</strong>.</p>
-        <div class="qlinks-label">Jump in</div>
-        <div class="qlinks">
-          <a href="claude-code-architecture/mental-model.html">Mental model</a>
-          <a href="claude-code-architecture/matrix.html">Comparison matrix</a>
-          <a href="claude-code-architecture/decision.html">Decision guide</a>
-          <a href="claude-code-architecture/scenarios.html">Scenarios</a>
-          <a href="claude-code-architecture/exam-prep.html">Exam prep</a>
-        </div>
-        <a class="go" href="claude-code-architecture/index.html">Open the field guide →</a>
-      </article>
-    </div>
-  </section>
-
-  <!-- HOW I LEARN -->
-  <section class="wrap" id="how">
-    <div class="kicker">The method</div>
-    <h2>How I learn</h2>
-    <p class="lead">A repeatable loop I run on every new area — capture, distill, <em>connect</em>, retrieve.</p>
-    <div class="cols">
-      <div class="feature"><div class="n">01 · Capture</div><h3>Land it</h3>
-        <p>Drop a doc, article, or URL into the CLI. <code>/land</code> distills it into one atomic note, in my own words.</p></div>
-      <div class="feature"><div class="n">02 · Distill</div><h3>Find the one idea</h3>
-        <p>Compress to a mental model. If I can&rsquo;t state it as a single claim, I don&rsquo;t understand it yet.</p></div>
-      <div class="feature"><div class="n">03 · Connect</div><h3>Wire the dots</h3>
-        <p>Every note gets typed links to its neighbours and a place on the spine, so the map grows into one brain.</p></div>
-      <div class="feature"><div class="n">04 · Retrieve</div><h3>Practice to retain</h3>
-        <p>Scenario drills and exam-grade questions so the knowledge is recall-ready, not just read-once.</p></div>
-    </div>
-  </section>
-
-  <!-- BIGGER PICTURE -->
-  <section class="wrap" id="pillars">
-    <div class="kicker">Where this sits</div>
-    <h2>Part of a bigger picture</h2>
-    <p class="lead">My work sits on three pillars — practical, theoretical, operational. This site is the theoretical one,
-      pointed at one goal: master the Claude stack, pass CCA-F, and help small teams adopt agentic AI.</p>
-    <div class="pillars">
-      <div class="pillar">
-        <div class="role">Practical</div><h3>Tide</h3>
-        <p>The AI product itself — hands-on building, shipped features, real users. The &ldquo;what I build.&rdquo;</p>
+  <!-- THE ONE SECTION: CONCEPTS -->
+  <section class="wrap" id="concepts" style="margin-top:6px">
+    <div class="kicker">Start here</div>
+    <article class="hub">
+      <span class="accentbar"></span>
+      <div class="view-ic">🧠</div>
+      <h2><a href="concepts/index.html">Concepts</a></h2>
+      <p>Everything I&rsquo;m learning about the Claude stack, in one place: the <strong>mental model</strong> that organizes
+        every Claude Code primitive, a <strong>comparison matrix</strong>, a <strong>decision guide</strong> for which to reach
+        for, deep-dive cards on each primitive, and a <strong>self-organizing concept graph</strong> wired by typed
+        connections. Go broad across the map or deep into any one idea.</p>
+      <div class="qlinks-label">Jump in</div>
+      <div class="qlinks">
+        <a href="concepts/index.html">Overview</a>
+        <a href="concepts/graph.html">🕸 Concept graph</a>
+        <a href="concepts/mental-model.html">Mental model</a>
+        <a href="concepts/matrix.html">Comparison matrix</a>
+        <a href="concepts/decision.html">Decide what to use</a>
+        <a href="concepts/index.html#primitives">Primitive deep-dives</a>
       </div>
-      <div class="pillar me">
-        <div class="role">Theoretical · you are here</div><h3>AI Knowledge Center</h3>
-        <p>The connected foundations behind the building — mental models, the concept graph, and deliberate practice.</p>
-      </div>
-      <div class="pillar">
-        <div class="role">Operational</div><h3>The Operating System</h3>
-        <p>How I automate product operations from idea → implementation. The &ldquo;how I run the machine.&rdquo;</p>
-      </div>
-    </div>
+      <a class="btn primary" href="concepts/index.html">Explore Concepts →</a>
+    </article>
   </section>
 </main>
 
-<footer class="wrap">
-  <p><strong>AI Knowledge Center</strong> — a living, personal learning hub. Built in the open ·
+<footer class="wrap" style="margin-top:48px">
+  <p><strong>AI Knowledge Center</strong> — a living, personal learning hub for the Claude tech stack. Built in the open ·
      <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter" target="_blank" rel="noopener">source on GitHub</a>.
+     Prepping for the exam? → <a href="concepts/exam.html">CCA-F Exam Prep</a>.
      Content is distilled in my own words and cited; models &amp; previews are datestamped because they go stale fast.</p>
 </footer>
 

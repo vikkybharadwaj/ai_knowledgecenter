@@ -13,13 +13,13 @@ source: { url: "https://code.claude.com/docs", author: "code.claude.com/docs, di
 date: 2026-06-02
 depth: evergreen
 claude_specific: true
-interactive: ../../docs/claude-code-architecture/index.html
+interactive: ../../docs/concepts/index.html
 ---
 
 # Claude Code Architecture — field guide
 
 The markdown companion to the interactive site at
-[`/docs/claude-code-architecture/`](../../docs/claude-code-architecture/index.html).
+[`/docs/concepts/`](../../docs/concepts/index.html).
 This is the distilled, greppable version; the site is the clickable one.
 
 ## The one idea

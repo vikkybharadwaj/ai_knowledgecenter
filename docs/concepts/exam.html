@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CCA-F Exam Prep — about the exam, practice &amp; scenarios</title>
+<meta name="description" content="Everything for the Claude Certified Architect — Foundations (CCA-F) exam in one place: what the exam is and how it's weighted, an interactive practice quiz, and the six production scenarios it's built on.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="exam.html"><span class="dot"></span> CCA-F Exam Prep</a>
+  <div class="spacer"></div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="exam.html">About the exam</a>
+    <a href="practice.html">Practice questions</a>
+    <a href="scenarios.html">Scenarios</a>
+    <a class="cta" href="index.html">🧠 Concepts</a>
+  </nav>
+  <button class="theme-toggle" aria-label="Toggle theme"></button>
+</header>
+
+<main class="wrap">
+
+  <section style="margin-top:30px">
+    <div class="eyebrow">Crack the CCA-F</div>
+    <h1>CCA-F Exam Prep</h1>
+    <p class="lede">Everything for the <strong>Claude Certified Architect — Foundations</strong> exam in one place:
+      what the exam is and how it&rsquo;s weighted, an interactive practice quiz, and the six production scenarios it&rsquo;s
+      built on. Reviewed 2026-06-02.</p>
+  </section>
+
+  <!-- THE THREE WAYS IN -->
+  <section>
+    <div class="grid cols-2">
+      <a class="card" href="practice.html"><span class="arrow">→</span>
+        <h3>📝 Practice questions</h3>
+        <p>An interactive question bank weighted to the real 5-domain blueprint — instant feedback, explanations, and a
+          full 60-question exam mode scored out of 1000.</p>
+      </a>
+      <a class="card" href="scenarios.html"><span class="arrow">→</span>
+        <h3>🎬 The 6 scenarios</h3>
+        <p>Every question lives inside one of six production settings. Learn each setting&rsquo;s failure modes and half the
+          work is done — with worked mini-cases.</p>
+      </a>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ABOUT THE EXAM -->
+  <section id="about">
+    <h2>About the exam</h2>
+    <div class="grid cols-4">
+      <div class="card"><h3>60 Qs</h3><p class="meta">scenario-based multiple choice</p></div>
+      <div class="card"><h3>120 min</h3><p class="meta">no negative marking</p></div>
+      <div class="card"><h3>720 / 1000</h3><p class="meta">scaled passing score</p></div>
+      <div class="card"><h3>6 scenarios</h3><p class="meta">4 drawn per sitting (community-reported)</p></div>
+    </div>
+    <h3>Domain weighting</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Domain</th><th>Weight</th><th>Maps to (in Concepts)</th></tr></thead>
+        <tbody>
+          <tr><td>Agentic architecture &amp; orchestration</td><td>27%</td><td><a href="primitives/subagents.html">subagents</a>, <a href="primitives/agent-teams.html">teams</a>, <a href="primitives/workflows.html">workflows</a>, <a href="primitives/agent-view.html">agent view</a></td></tr>
+          <tr><td>Claude Code config &amp; workflows</td><td>20%</td><td><a href="primitives/skills.html">skills</a>, <a href="primitives/hooks.html">hooks</a>, <a href="primitives/memory.html">memory</a>, <a href="primitives/policies.html">policies</a></td></tr>
+          <tr><td>Prompt engineering &amp; structured output</td><td>20%</td><td><a href="mental-model.html#harness">prompt/context/harness</a></td></tr>
+          <tr><td>Tool design &amp; MCP integration</td><td>18%</td><td><a href="primitives/mcp.html">MCP</a></td></tr>
+          <tr><td>Context management &amp; reliability</td><td>15%</td><td><a href="mental-model.html#harness">context engineering</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="meta">Blueprint per community study materials (see attribution below); not an official Anthropic publication.</p>
+  </section>
+
+  <section>
+    <div class="callout key"><span class="label">How to study</span>
+      Read the <a href="scenarios.html">six scenarios</a> until the &ldquo;situation → fix&rdquo; mapping is automatic, work the
+      <a href="practice.html">practice quiz</a> by domain (read every explanation — the exam rewards knowing <em>why the
+      other three options are wrong</em>), then take a full <strong>exam-mode</strong> run to simulate the
+      60-question / 720-to-pass experience. Your weak scenario shows up as a weak domain. The underlying material lives in
+      <a href="index.html">Concepts</a>.</div>
+  </section>
+
+  <section>
+    <h2>Sources &amp; attribution</h2>
+    <p>Questions are <strong>original or adapted</strong>, grounded in the official
+      <a href="https://code.claude.com/docs">code.claude.com/docs</a> and informed by the community study banks below.
+      No real exam content is reproduced; where a question is adapted from a permissively-licensed community bank, it is
+      attributed inline.</p>
+    <ul>
+      <li><a href="https://github.com/hamzafarooq/claude-certified-architect">hamzafarooq/claude-certified-architect</a> (MIT)</li>
+      <li><a href="https://github.com/timothywarner-org/claude-architect">timothywarner-org/claude-architect</a> (MIT)</li>
+      <li><a href="https://github.com/carolinacherry/claude-certified-architect">carolinacherry/claude-certified-architect</a> (MIT)</li>
+      <li><a href="https://github.com/daronyondem/claude-architect-exam-guide">daronyondem/claude-architect-exam-guide</a> (CC BY 4.0)</li>
+      <li>Referenced for coverage (not copied): <a href="https://github.com/OlivierAlter/Claude-Certified-Architect-Foundations-Certification-Exam">OlivierAlter</a>, <a href="https://github.com/paullarionov/claude-certified-architect">paullarionov</a>, <a href="https://github.com/dnacenta/claude-certified-architect">dnacenta</a>, <a href="https://claudecertifications.com/claude-certified-architect">claudecertifications.com</a></li>
+    </ul>
+    <p class="meta">Markdown companions: the full
+      <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/exam-prep/cca-f-question-bank.md" target="_blank" rel="noopener">question bank</a>
+      and the <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/exam-prep/cca-f-study-guide.md" target="_blank" rel="noopener">study guide / cram sheet</a>.</p>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>CCA-F Exam Prep · part of the AI Knowledge Center · reviewed 2026-06-02 · <a href="../index.html">home</a> ·
+     not affiliated with or endorsed by Anthropic.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

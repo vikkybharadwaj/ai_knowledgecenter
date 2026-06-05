@@ -10,9 +10,11 @@ connections to its neighbours and a place on the spine. A note that connects to 
 not a draft. Structure **emerges** from those connections; it is never imposed up front.
 
 ## The two views
-1. **Knowledge** — the self-organizing graph of atomic notes (this is the open-ended half).
-2. **Exam Prep** — the existing Claude Code Architecture exam system at `docs/claude-code-architecture/`
-   + its markdown companions in `exam-prep/`. Preserve it; don't reorganize it.
+1. **Concepts** — the single learning view at `docs/concepts/`. Holds the Claude Code mental model,
+   comparison matrix, decision guide, and primitive deep-dives, plus the self-organizing **concept graph**
+   of atomic notes (`docs/concepts/graph.html`, generated from `knowledge/notes/`). This is the open-ended half.
+2. **CCA-F Exam Prep** — the exam hub at `docs/concepts/exam.html` (about the exam → `practice.html` quiz →
+   `scenarios.html`) + its markdown companions in `exam-prep/`. Preserve it; don't reorganize it.
 
 ## Structure
 - `knowledge/notes/<slug>.md` — **flat pool** of atomic notes (one idea each). No topic folders, no levels.
