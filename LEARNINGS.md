@@ -11,6 +11,12 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-05  Notes now READ IN-PAGE — no link-out to GitHub. `build-index.py` renders each note body
+            (plus the Big Picture map + Home note) to HTML and bakes it into `knowledge.js`; a new
+            `docs/assets/reader.js` overlay shows it, and every note/content link is an
+            `<a class="kc-link" data-slug=…>`. GitHub is now just the *source* the build reads from.
+            Note images are auto-copied into `docs/knowledge/notes/`. Still never hand-edit `knowledge.js`.
+
 2026-06-04  BIG REVAMP — turned the KC into a self-organizing, dot-connecting "second brain" with two
             views (Knowledge graph + Exam Prep). Deleted `articles/`, `patterns/`, `playbooks/` and the
             numbered `knowledge/` categories; flattened everything into `knowledge/notes/` (atomic notes,

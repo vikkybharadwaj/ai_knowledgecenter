@@ -3,7 +3,7 @@
    notes as nodes and their typed connections as edges. Two layouts:
      - "free"  : force-directed (repulsion + edge springs + gravity)
      - "spine" : layered bands by spine_layer (Foundations → Products)
-   Hover a node to light up its connections; click to open its note on GitHub. */
+   Hover a node to light up its connections; click to read its note in-page. */
 (function () {
   var D = window.KC_DATA;
   if (!D) return;
@@ -209,7 +209,7 @@
   canvas.addEventListener("mouseleave", function () { hover = null; });
 
   function showPanel(n) {
-    if (!panel) { window.open(n.url, "_blank"); return; }
+    if (!panel) { if (window.KCReader) window.KCReader.open(n.slug); return; }
     hover = n;
     var outs = edges.filter(function (e) { return e.a === n; })
       .map(function (e) { return "<li><span class='etype' style='color:" + (TYPE_COLORS[e.type] || "#9aa5bd") + "'>" + e.type + "</span> → <strong>" + byId[e.b.slug].title + "</strong><br><span class='ewhy'>" + (e.why || "") + "</span></li>"; });
@@ -222,7 +222,7 @@
       "<div class='np-tags'>" + (n.tags || []).map(function (t) { return "<span>#" + t + "</span>"; }).join(" ") + "</div>" +
       (outs.length ? "<div class='np-sec'>Connects out</div><ul>" + outs.join("") + "</ul>" : "") +
       (ins.length ? "<div class='np-sec'>Connected from</div><ul>" + ins.join("") + "</ul>" : "") +
-      "<a class='np-open' href='" + n.url + "' target='_blank' rel='noopener'>Open note on GitHub →</a>";
+      "<a class='np-open kc-link' href='#' data-slug='" + n.slug + "'>Read the full note →</a>";
     panel.classList.add("show");
   }
 
