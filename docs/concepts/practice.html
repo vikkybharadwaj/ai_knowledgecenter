@@ -8,25 +8,23 @@
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-<header class="topbar">
-  <nav class="brand crumbs" aria-label="Breadcrumb">
-    <span class="dot"></span>
-    <a href="../index.html">AI Knowledge Center</a>
-    <span class="sep">&rsaquo;</span>
-    <a href="index.html">Concepts</a>
-    <span class="sep">&rsaquo;</span>
-    <a href="exam.html">CCA-F Exam Prep</a>
-    <span class="sep">&rsaquo;</span>
-    <span class="here">Practice questions</span>
-  </nav>
-  <div class="spacer"></div>
-  <nav>
-    <a href="exam.html">About the exam</a>
-    <a href="practice.html">Practice questions</a>
-    <a href="scenarios.html">Scenarios</a>
-    <a class="cta" href="index.html">🧠 Concepts</a>
-  </nav>
-</header>
+<div class="shell">
+  <aside class="siderail">
+    <nav class="rail-crumbs" aria-label="Breadcrumb">
+      <span class="dot"></span>
+      <a href="../index.html">AI Knowledge Center</a>
+      <span class="sep">&rsaquo;</span>
+      <a href="exam.html">CCA-F Exam Prep</a>
+      <span class="sep">&rsaquo;</span>
+      <span class="here">Practice questions</span>
+    </nav>
+    <nav class="railnav">
+      <a href="exam.html">About the exam</a>
+      <a href="practice.html" class="active">Practice questions</a>
+      <a href="scenarios.html">Scenarios</a>
+    </nav>
+    <a class="rail-peer" href="index.html">🧠 Concepts &rarr;</a>
+  </aside>
 
 <main class="wrap">
   <section style="margin-top:30px">
@@ -64,6 +62,7 @@
     <p class="meta">Markdown companion (the full bank as text): <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/exam-prep/cca-f-question-bank.md" target="_blank" rel="noopener">exam-prep/cca-f-question-bank.md</a></p>
   </section>
 </main>
+</div>
 
 <footer class="wrap">
   <p>CCA-F Exam Prep · practice questions · reviewed 2026-06-02 · <a href="index.html">home</a> ·
