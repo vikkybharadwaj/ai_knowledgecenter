@@ -11,7 +11,7 @@ not a draft. Structure **emerges** from those connections; it is never imposed u
 
 ## The two views
 1. **Concepts** — the single learning view at `docs/concepts/`. Holds the Claude Code mental model,
-   comparison matrix, decision guide, and primitive deep-dives, plus the self-organizing **concept graph**
+   comparison matrix, decision guide, and primitives, plus the self-organizing **concept graph**
    of atomic notes (`docs/concepts/graph.html`, generated from `knowledge/notes/`). This is the open-ended half.
 2. **CCA-F Exam Prep** — the exam hub at `docs/concepts/exam.html` (about the exam → `practice.html` quiz →
    `scenarios.html`) + its markdown companions in `exam-prep/`. Preserve it; don't reorganize it.
