@@ -10,6 +10,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 
 ## Start here
 - 🗺️ **[The Big Picture](maps/big-picture.md)** — the spine: how the whole Claude stack fits together (the dot-connecting map).
+- 🏗️ **[Building & advising on AI stacks](maps/building-ai-stacks.md)** — the consulting cluster: *when to use Claude Code vs build your own harness*, and how to bootstrap a company's AI stack.
 - 🕸️ **[Interactive concept graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/knowledge/)** — see every note and its typed links, laid out by spine layer.
 
 ## How this works (the model in 5 lines)
@@ -27,11 +28,15 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 | [Prompt vs Context vs Harness Engineering](notes/prompt-context-harness-engineering.md) | foundations | evergreen |
 | [Harness vs Context vs Prompt Engineering](notes/harness-vs-context-engineering.md) | foundations | evergreen |
 | [The Anatomy of an Agent Harness](notes/anatomy-of-an-agent-harness.md) | foundations | evergreen |
+| [The Claude API agent primitives](notes/claude-api-agent-primitives.md) | api | budding |
+| [The Claude Agent SDK](notes/claude-agent-sdk.md) | agent-sdk | budding |
 | [Claude Code Architecture — field guide](notes/claude-code-architecture.md) | claude-code | evergreen |
 | [Model Context Protocol (MCP)](notes/model-context-protocol.md) | claude-code | budding |
 | [Claude Code — Multi-Agent Development](notes/claude-code-multi-agent-development.md) | claude-code | budding |
 | [Dynamic Workflows & the Ultraplan loop](notes/dynamic-workflows-and-ultraplan.md) | claude-code | evergreen |
 | [Agentic AI Reference Architecture](notes/agentic-ai-reference-architecture.md) | patterns | evergreen |
+| [Use Claude Code vs build your own](notes/claude-code-vs-build-your-own.md) | patterns | evergreen |
+| [Scenario: bootstrapping a company's AI stack](notes/bootstrapping-company-ai-stack.md) | products | budding |
 
 > Looking for the **Claude Code Architecture exam prep**? That's the other view —
 > [`exam-prep/`](../exam-prep/) + the [interactive quiz site](https://vikkybharadwaj.github.io/ai_knowledgecenter/claude-code-architecture/).
