@@ -20,7 +20,6 @@
     <a href="decision.html">Decide</a>
     <a class="cta" href="exam.html">🎓 CCA-F Exam Prep</a>
   </nav>
-  <button class="theme-toggle" aria-label="Toggle theme"></button>
 </header>
 
 <main class="wrap">
@@ -45,90 +44,6 @@
 
   <hr>
 
-  <!-- THE ONE IDEA -->
-  <section id="one-idea">
-    <div class="eyebrow">Start here</div>
-    <h2>The one idea that organizes everything</h2>
-    <p>Claude Code is a <strong>harness</strong> wrapped around a language model. The model is the engine; everything
-      with a name &mdash; CLAUDE.md, skills, hooks, MCP, subagents, teams, workflows &mdash; exists to control
-      <em>one of four things</em>. Every feature you&rsquo;re confused about is just an answer to <em>&ldquo;which of these four
-      am I trying to change?&rdquo;</em></p>
-
-    <div class="grid cols-4" style="margin-top:18px">
-      <div class="card">
-        <h3>① What it <span class="tip" data-tip="Instructions &amp; context the model reads. Soft: the model may or may not comply.">knows</span></h3>
-        <p>The words and context fed in. <strong>Soft</strong> &mdash; guidance, not a guarantee.</p>
-        <p class="meta">CLAUDE.md · rules files · skills · output styles · effort</p>
-      </div>
-      <div class="card">
-        <h3>② What it <span class="tip" data-tip="The tools &amp; external systems the model can call.">can reach</span></h3>
-        <p>The tools and external systems available to it.</p>
-        <p class="meta">built-in tools · MCP servers</p>
-      </div>
-      <div class="card">
-        <h3>③ What&rsquo;s <span class="tip" data-tip="Client-enforced. Runs or blocks regardless of what the model decides.">guaranteed</span></h3>
-        <p>Things that happen <strong>regardless</strong> of the model&rsquo;s choices. <strong>Hard</strong> enforcement.</p>
-        <p class="meta">hooks · permission rules · managed policies</p>
-      </div>
-      <div class="card">
-        <h3>④ How work is <span class="tip" data-tip="From one prompt, to one session, to many coordinated agents.">coordinated</span></h3>
-        <p>Scaling from one prompt to hundreds of agents.</p>
-        <p class="meta">subagents · agent view · agent teams · workflows · worktrees</p>
-      </div>
-    </div>
-
-    <div class="callout key">
-      <span class="label">The two axes you&rsquo;ll use all guide long</span>
-      <strong>Soft vs Hard:</strong> does the model <em>choose</em> to follow it (CLAUDE.md, skills) or does the client
-      <em>enforce</em> it no matter what (hooks, policies)? &nbsp;·&nbsp;
-      <strong>Who holds the plan:</strong> you in one prompt → the model in one session → the model coordinating peers
-      → a script. The further right, the more parallel and the less you watch each step.
-    </div>
-    <p><a href="mental-model.html">→ Walk through the full mental model</a> (including how prompt ⊂ context ⊂ harness, and how every primitive nests).</p>
-  </section>
-
-  <hr>
-
-  <!-- THE LADDER -->
-  <section id="ladder">
-    <div class="eyebrow">The progression</div>
-    <h2>Build your setup as triggers appear</h2>
-    <p>You don&rsquo;t learn these all at once, and there&rsquo;s no fixed order &mdash; go broad or deep as a need shows up.
-      Anthropic&rsquo;s own advice is to <strong>start with CLAUDE.md and add each primitive when a specific trigger
-      appears</strong> (<a href="https://code.claude.com/docs/en/features-overview">features overview</a>). The three
-      groupings below are just &ldquo;how much coordination,&rdquo; not levels to climb in sequence.</p>
-
-    <div class="grid cols-3">
-      <div class="card">
-        <span class="badge l101">Foundations</span>
-        <h3>Drive one session well</h3>
-        <p>The agentic loop (Explore → Plan → Code → Commit), and the soft context that steers it.</p>
-        <p class="meta"><strong>CLAUDE.md / memory</strong> · slash commands · git basics</p>
-        <p class="analogy"><strong>Trigger:</strong> Claude got a convention wrong twice → write it in CLAUDE.md.</p>
-      </div>
-      <div class="card">
-        <span class="badge l201">Extend a session</span>
-        <h3>Customize &amp; connect</h3>
-        <p>Add reusable know-how, external reach, guaranteed behavior, and the first taste of parallelism.</p>
-        <p class="meta"><strong>Skills</strong> · <strong>MCP</strong> · <strong>Hooks</strong> · <strong>Subagents</strong></p>
-        <p class="analogy"><strong>Trigger:</strong> pasting the same playbook a third time → make a skill.</p>
-      </div>
-      <div class="card">
-        <span class="badge l301">Orchestrate at scale</span>
-        <h3>Many agents &amp; fleet governance</h3>
-        <p>Coordinate peers, script orchestration, isolate files, and standardize across repos.</p>
-        <p class="meta"><strong>Agent teams</strong> · <strong>Dynamic workflows</strong> · <strong>Worktrees + Agent view</strong> · plugins &amp; <strong>policies</strong></p>
-        <p class="analogy"><strong>Trigger:</strong> subagents hit context limits or need to talk → agent teams / workflows.</p>
-      </div>
-    </div>
-    <p class="meta">These three groupings track <strong>how much coordination</strong> a primitive needs &mdash; not a ladder
-      to climb in order. Lean on the <a href="decision.html">decision guide</a> to pick what to reach for <em>now</em>,
-      and the <a href="https://code.claude.com/docs/en/agents">agents</a> /
-      <a href="https://code.claude.com/docs/en/workflows">workflows</a> docs for depth.</p>
-  </section>
-
-  <hr>
-
   <!-- THE 9 PRIMITIVES -->
   <section id="primitives">
     <div class="eyebrow">The nine you asked about</div>
@@ -139,7 +54,7 @@
 
     <div class="grid cols-3">
       <a class="card" href="primitives/memory.html"><span class="arrow">→</span>
-        
+
         <h3>Conventions <span class="meta">(CLAUDE.md / rules files)</span></h3>
         <p>Soft, persistent guidance the model reads every session.</p></a>
 
@@ -154,17 +69,17 @@
         <p>Your code, run automatically on lifecycle events. <strong>Not the same as rules.</strong></p></a>
 
       <a class="card" href="primitives/skills.html"><span class="arrow">→</span>
-        
+
         <h3>Skills <span class="meta">(&amp; what &ldquo;routines&rdquo; really means)</span></h3>
         <p>Reusable instructions/procedures loaded on demand. &ldquo;Routines&rdquo; isn&rsquo;t a real term &mdash; it&rsquo;s this.</p></a>
 
       <a class="card" href="primitives/mcp.html"><span class="arrow">→</span>
-        
+
         <h3>MCP <span class="meta">(Model Context Protocol)</span></h3>
         <p>A protocol that gives the model new tools &amp; data from external systems.</p></a>
 
       <a class="card" href="primitives/subagents.html"><span class="arrow">→</span>
-        
+
         <h3>Subagents</h3>
         <p>Delegated workers in their own context; only a summary returns.</p></a>
 
