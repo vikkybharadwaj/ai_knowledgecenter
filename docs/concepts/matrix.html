@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Comparison Matrix — Concepts</title>
 <meta name="description" content="One matrix comparing Claude Code's primitives across enforcement, who holds the plan, scale, cost & footprint, what they pair with, their failure modes and when to use — plus breadth vs depth and terminology corrections.">
-<link rel="stylesheet" href="assets/style.css?v=20260605c">
+<link rel="stylesheet" href="assets/style.css?v=20260605d">
 </head>
 <body>
 <header class="crumbbar">
@@ -61,7 +61,7 @@
       <p class="meta">The left columns help you <strong>understand</strong> each primitive; the right ones help you <strong>use</strong> it well &mdash;
         <strong>Cost &amp; footprint</strong> (what it spends &mdash; tokens, latency, context), <strong>Pairs with</strong> (how it composes with the others),
         and <strong>Watch out for</strong> (its characteristic failure mode).</p>
-      <div class="table-wrap">
+      <div class="table-wrap matrix-scroll">
         <table>
           <thead>
             <tr>
@@ -72,6 +72,7 @@
               <th>Who holds the plan / invokes</th>
               <th>Where it lives</th>
               <th>Scale</th>
+              <th>Context</th>
               <th>Cost &amp; footprint</th>
               <th>Reach for it when&hellip;</th>
               <th>Pairs with</th>
@@ -88,6 +89,7 @@
               <td>You write it; model reads &amp; <em>may</em> follow.</td>
               <td><code>./CLAUDE.md</code>, <code>~/.claude/CLAUDE.md</code>, <code>.claude/rules/*.md</code></td>
               <td>1 session</td>
+              <td><strong>Main context</strong> &mdash; injected into every turn&rsquo;s prompt.</td>
               <td>Loaded into <em>every</em> turn&rsquo;s context &mdash; no extra calls, but a bloated file taxes every prompt.</td>
               <td>Claude keeps getting a fact/convention wrong.</td>
               <td><a href="primitives/hooks.html">Hooks</a> &amp; <a href="primitives/policies.html">policies</a> &mdash; turn the soft rule into a hard one.</td>
@@ -102,6 +104,7 @@
               <td>Client enforces; model can&rsquo;t override.</td>
               <td><code>managed-settings.json</code>, <code>settings.json</code> &rarr; <code>permissions</code></td>
               <td>Fleet / org</td>
+              <td><strong>Neither</strong> &mdash; a config gate outside the model; never enters context.</td>
               <td>~Zero runtime cost &mdash; a config gate checked before each action, no tokens.</td>
               <td>Something must be <em>blocked or required</em> for everyone, always.</td>
               <td><a href="primitives/hooks.html">Hooks</a> for the enforcement that needs to <em>run</em> code, not just gate.</td>
@@ -116,6 +119,7 @@
               <td>Event fires it; runs deterministically.</td>
               <td><code>settings.json</code> &rarr; <code>hooks</code> (event&rarr;matcher&rarr;handler)</td>
               <td>1 session</td>
+              <td><strong>Neither</strong> &mdash; runs as your own process; only its injected output (if any) returns to main context.</td>
               <td>Adds your script&rsquo;s runtime as latency on each event; no tokens unless it injects output back.</td>
               <td>You want something to happen <em>every time</em>, guaranteed (lint, block, log).</td>
               <td><a href="primitives/memory.html">Conventions</a> &amp; <a href="primitives/skills.html">skills</a> &mdash; enforce the soft guidance they describe.</td>
@@ -130,6 +134,7 @@
               <td>You via <code>/name</code>, or model auto-loads by description.</td>
               <td><code>.claude/skills/&lt;name&gt;/SKILL.md</code>, <code>~/.claude/skills/</code></td>
               <td>1 session</td>
+              <td><strong>Main context</strong> &mdash; description always in; body loads into the main thread on demand.</td>
               <td>Cheap: only the one-line description sits in context; the body loads on demand when invoked.</td>
               <td>You paste the same procedure/checklist repeatedly.</td>
               <td><a href="primitives/subagents.html">Subagents</a> &amp; <a href="primitives/mcp.html">MCP</a> &mdash; a skill can drive both; <a href="primitives/hooks.html">hooks</a> can fire one.</td>
@@ -144,6 +149,7 @@
               <td>Model calls the tools when relevant.</td>
               <td><code>.mcp.json</code> (project), <code>~/.claude.json</code> (local/user)</td>
               <td>1 session</td>
+              <td><strong>Main context</strong> &mdash; tool schemas &amp; call results live in the main context.</td>
               <td>Tool schemas eat context (can be large); each call adds network latency.</td>
               <td>You copy data into chat from a system Claude can&rsquo;t see.</td>
               <td><a href="primitives/skills.html">Skills</a> that call its tools; <a href="primitives/subagents.html">subagents</a> with a restricted tool profile.</td>
@@ -158,6 +164,7 @@
               <td><strong>The main conversation</strong>, turn by turn.</td>
               <td><code>.claude/agents/*.md</code>; <code>/agents</code></td>
               <td>A few per turn</td>
+              <td><strong>Own context</strong> &mdash; a fresh, isolated window; only a summary returns to main.</td>
               <td>A full model run in its own context &mdash; extra tokens, but it spares <em>yours</em>; only a summary returns.</td>
               <td>A side task would flood your context; or you want a restricted tool profile.</td>
               <td><a href="primitives/workflows.html">Workflows</a> orchestrate them; <a href="primitives/skills.html">skills</a> &amp; <a href="primitives/mcp.html">MCP</a> shape what they can do.</td>
@@ -172,6 +179,7 @@
               <td><strong>The lead agent</strong> (+ peers self-claim tasks).</td>
               <td>env flag <code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code>; created in natural language</td>
               <td>3&ndash;5 peers (rec.)</td>
+              <td><strong>Own context</strong> per peer &mdash; each peer is a separate full session, sharing only a task list &amp; messages.</td>
               <td>High: N concurrent full sessions plus inter-agent messaging &mdash; the priciest of the soft primitives.</td>
               <td>Parallel work where the workers need to <em>talk to each other</em>.</td>
               <td><a href="primitives/agent-view.html">Worktrees</a> to isolate each peer; a shared task list to divide work.</td>
@@ -186,6 +194,7 @@
               <td><strong>The script</strong> &mdash; the plan lives in code, not a context window.</td>
               <td>script under <code>~/.claude/projects/</code>; <code>/workflows</code>; <code>ultracode</code></td>
               <td>Dozens&ndash;100s<br><span class="meta">(16 concurrent, 1,000 cap)</span></td>
+              <td><strong>Own context</strong> per subagent &mdash; the plan lives in the script (code), outside any context window.</td>
               <td>Highest ceiling &mdash; spends tokens across dozens&ndash;100s of subagents; budget it deliberately.</td>
               <td>A task needs more agents than one conversation can coordinate.</td>
               <td><a href="primitives/subagents.html">Subagents</a> are its unit of work; <a href="primitives/agent-view.html">worktrees</a> isolate parallel file edits.</td>
@@ -200,6 +209,7 @@
               <td><strong>You</strong> &mdash; hand off independent sessions, check back.</td>
               <td><code>claude agents</code>; <code>claude --worktree</code>; <code>.claude/worktrees/</code></td>
               <td>Many sessions</td>
+              <td><strong>Own context</strong> per session &mdash; each worktree runs a fully separate session you supervise.</td>
               <td>Disk per checkout + setup time; the real cost is <em>your</em> attention supervising, not tokens.</td>
               <td>Several independent tasks you can hand off and review later.</td>
               <td><a href="primitives/subagents.html">Subagents</a>, <a href="primitives/agent-teams.html">teams</a> &amp; <a href="primitives/workflows.html">workflows</a> &mdash; gives each an isolated checkout.</td>
