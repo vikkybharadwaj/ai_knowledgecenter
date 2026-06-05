@@ -20,7 +20,6 @@
     <a href="decision.html">Decide</a>
     <a class="cta" href="exam.html">🎓 CCA-F Exam Prep</a>
   </nav>
-  <button class="theme-toggle" aria-label="Toggle theme"></button>
 </header>
 
 <main class="wrap">
@@ -268,49 +267,6 @@
         Writing &ldquo;never run <code>curl</code>&rdquo; in CLAUDE.md is a <em>request</em>. To actually block it, use a
         <code>permissions.deny</code> rule or a <code>PreToolUse</code> hook. Soft text cannot enforce; only the client can.
       </div>
-    </section>
-
-    <!-- TERMINOLOGY -->
-    <section id="terms">
-      <h2>Terminology corrections (the three you flagged)</h2>
-      <p>You suspected some of these were the same thing with different names. Two of three are <strong>not</strong> &mdash;
-        and one isn&rsquo;t an official term at all.</p>
-
-      <h3>&ldquo;Conventions or policies &mdash; same thing?&rdquo; &rarr; <span class="cell-bad">No.</span></h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th></th><th>Conventions (CLAUDE.md)</th><th>Policies (managed settings)</th></tr></thead>
-          <tbody>
-            <tr><td>What</td><td>Markdown you write that Claude reads</td><td>Admin-deployed config the client enforces</td></tr>
-            <tr><td>Enforcement</td><td class="cell-warn">Soft &mdash; no compliance guarantee</td><td class="cell-good">Hard &mdash; cannot be overridden</td></tr>
-            <tr><td>Example</td><td>&ldquo;Use 2-space indentation&rdquo;</td><td><code>permissions.deny: ["Bash(curl *)"]</code></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="meta">Docs say it verbatim: <em>&ldquo;Settings rules are enforced by the client regardless of what Claude decides
-        to do. CLAUDE.md instructions shape Claude&rsquo;s behavior but are not a hard enforcement layer.&rdquo;</em>
-        (<a href="https://code.claude.com/docs/en/memory">memory</a>, <a href="https://code.claude.com/docs/en/settings">settings</a>)</p>
-
-      <h3>&ldquo;Routines&rdquo; &rarr; <span class="cell-warn">Not an official Claude Code term.</span></h3>
-      <p>Zero hits in the docs. Map what you mean to a real primitive:</p>
-      <div class="usewhen"><span class="ic">→</span><div>A saved, repeatable procedure → a <a href="primitives/skills.html"><strong>skill</strong></a> (custom slash commands were merged into skills).</div></div>
-      <div class="usewhen"><span class="ic">→</span><div>Orchestrated multi-step planning across many agents → a <a href="primitives/workflows.html"><strong>dynamic workflow</strong></a> (what <code>ultracode</code> triggers).</div></div>
-      <div class="usewhen"><span class="ic">→</span><div>A default voice/format every turn → an <strong>output style</strong>.</div></div>
-
-      <h3>&ldquo;Rules or hooks &mdash; all the same?&rdquo; &rarr; <span class="cell-bad">No &mdash; three things wear the word &ldquo;rule.&rdquo;</span></h3>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Term</th><th>What it actually is</th><th>Nature</th></tr></thead>
-          <tbody>
-            <tr><td><strong>Hooks</strong></td><td>Your code, run on a lifecycle event (<code>PreToolUse</code>&hellip;)</td><td class="cell-good">Deterministic code that <em>runs</em></td></tr>
-            <tr><td><strong>Permission rules</strong></td><td><code>allow</code>/<code>ask</code>/<code>deny</code> strings in <code>settings.json</code></td><td class="cell-good">Declarative config (deterministic), not code</td></tr>
-            <tr><td><strong>Project rules</strong></td><td><code>.claude/rules/*.md</code> &mdash; path-scoped CLAUDE.md-style memory</td><td class="cell-warn">Soft guidance (just modular memory)</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="meta">A hook is the only one that <em>executes your code</em>. A permission rule is config the client evaluates.
-        A <code>.claude/rules/</code> file is just memory. Docs: <em>&ldquo;To block an action regardless of what Claude decides,
-        use a PreToolUse hook.&rdquo;</em> (<a href="https://code.claude.com/docs/en/hooks">hooks</a>)</p>
     </section>
 
     <section id="sources">
