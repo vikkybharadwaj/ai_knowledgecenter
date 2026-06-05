@@ -1,7 +1,7 @@
 /* CCA-F practice quiz engine. Reads window.CCA_QUESTIONS (array) and
    window.CCA_DOMAINS (map of key -> label). Vanilla JS, no deps.
    Question shape:
-   { id, domain, level, scenario?, question, options:[str], answer:int, explanation, sources:[url], attribution? }
+   { id, domain, scenario?, question, options:[str], answer:int, explanation, sources:[url], attribution? }
 */
 (function () {
   var Q = window.CCA_QUESTIONS || [];
@@ -21,27 +21,25 @@
     var dom = el("select"); dom.id = "f-domain";
     dom.appendChild(new Option("All domains", "all"));
     Object.keys(DOMAINS).forEach(function (k) { dom.appendChild(new Option(DOMAINS[k], k)); });
-    var lvl = el("select"); lvl.id = "f-level";
-    ["All levels", "101", "201", "301"].forEach(function (l, idx) { lvl.appendChild(new Option(l, idx === 0 ? "all" : l)); });
     var practice = el("button", "primary", "Practice set");
     var exam = el("button", null, "Exam mode (60)");
     bar.appendChild(el("span", null, "<span class='meta'>Filter:</span>"));
-    bar.appendChild(dom); bar.appendChild(lvl);
+    bar.appendChild(dom);
     bar.appendChild(el("span", "grow")); bar.appendChild(practice); bar.appendChild(exam);
-    practice.onclick = function () { startPractice(dom.value, lvl.value); };
+    practice.onclick = function () { startPractice(dom.value); };
     exam.onclick = function () { startExam(); };
     return bar;
   }
 
-  function filtered(domain, level) {
+  function filtered(domain) {
     return Q.filter(function (q) {
-      return (domain === "all" || q.domain === domain) && (level === "all" || q.level === level);
+      return (domain === "all" || q.domain === domain);
     });
   }
 
-  function startPractice(domain, level) {
+  function startPractice(domain) {
     state.mode = "practice";
-    state.pool = shuffle(filtered(domain, level));
+    state.pool = shuffle(filtered(domain));
     state.i = 0; state.picks = {}; state.revealed = {};
     render();
   }
@@ -68,7 +66,7 @@
   function render() {
     root.innerHTML = "";
     if (!state.pool.length) {
-      root.appendChild(el("div", "callout", "No questions match that filter yet. Try All domains / All levels."));
+      root.appendChild(el("div", "callout", "No questions match that filter yet. Try All domains."));
       return;
     }
     var sc = score();
@@ -83,9 +81,12 @@
     var q = state.pool[state.i], qi = state.i;
     var card = el("div", "qcard");
     var meta = el("div", "qmeta");
+    var idm = /^D(\d+)-(\d+)$/.exec(q.id || "");
+    var idTitle = idm
+      ? "Domain " + idm[1] + ", question " + parseInt(idm[2], 10) + " — " + (DOMAINS[q.domain] || q.domain)
+      : (q.id || "");
     meta.innerHTML = "<span class='badge'>" + esc(DOMAINS[q.domain] || q.domain) + "</span>" +
-      (q.level ? "<span class='badge l" + q.level + "'>" + q.level + "</span>" : "") +
-      "<span class='badge'>" + esc(q.id || "") + "</span>";
+      "<span class='badge idbadge' title='" + esc(idTitle) + "'>" + esc(q.id || "") + "</span>";
     card.appendChild(meta);
     if (q.scenario) card.appendChild(el("div", "scenario", esc(q.scenario)));
     card.appendChild(el("div", "stem", esc(q.question)));
