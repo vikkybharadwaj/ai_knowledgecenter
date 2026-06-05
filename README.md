@@ -14,7 +14,7 @@ goal: master the Claude/Anthropic stack, pass the **CCA-F** exam, and help small
 
 | View | What it is | Where |
 |------|------------|-------|
-| 🧠 **[Concepts](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/)** | Everything I'm learning about the Claude stack in one place: the mental model of every Claude Code primitive, a comparison matrix, a decision guide, primitive deep-dives, and a self-organizing **concept graph** wired by *typed connections*. | `docs/concepts/` + `knowledge/` |
+| 🧠 **[Concepts](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/)** | Everything I'm learning about the Claude stack in one place: the mental model of every Claude Code primitive, a comparison matrix, a decision guide, primitives, and a self-organizing **concept graph** wired by *typed connections*. | `docs/concepts/` + `knowledge/` |
 | 🎓 **[CCA-F Exam Prep](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/exam.html)** | About the exam, an interactive **practice quiz**, and the six production scenarios it's built on. | `docs/concepts/exam.html` + `exam-prep/` |
 
 ## How the Concepts graph works
