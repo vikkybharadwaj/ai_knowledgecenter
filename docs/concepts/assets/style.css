@@ -87,6 +87,12 @@ body {
 .topbar nav a.cta { background: var(--accent); color: #1a1118; font-weight: 800; }
 .topbar nav a.cta:hover { filter: brightness(1.06); background: var(--accent); color: #1a1118; }
 .topbar .spacer { flex: 1; }
+/* breadcrumb trail in the topbar (replaces the single brand link) */
+.topbar .crumbs { gap: 7px; font-weight: 600; flex-wrap: wrap; }
+.topbar .crumbs a { color: var(--text-soft); text-decoration: none; }
+.topbar .crumbs a:hover { color: var(--text); text-decoration: underline; }
+.topbar .crumbs .sep { color: var(--text-dim); font-weight: 400; }
+.topbar .crumbs .here { color: var(--text); font-weight: 700; }
 .theme-toggle {
   cursor: pointer; border: 1px solid var(--border-2); background: var(--bg-card);
   color: var(--text-soft); border-radius: 8px; padding: 6px 10px; font-size: 14px;

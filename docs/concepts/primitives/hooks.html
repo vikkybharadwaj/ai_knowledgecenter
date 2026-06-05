@@ -8,10 +8,18 @@
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="../index.html"><span class="dot"></span> Concepts</a>
+  <nav class="brand crumbs" aria-label="Breadcrumb">
+    <span class="dot"></span>
+    <a href="../../index.html">AI Knowledge Center</a>
+    <span class="sep">&rsaquo;</span>
+    <a href="../index.html">Concepts</a>
+    <span class="sep">&rsaquo;</span>
+    <a href="../index.html#primitives">Primitives</a>
+    <span class="sep">&rsaquo;</span>
+    <span class="here">Hooks</span>
+  </nav>
   <div class="spacer"></div>
   <nav>
-    <a href="../../index.html">Home</a>
     <a href="../index.html">Overview</a>
     <a href="../graph.html">Concept graph</a>
     <a href="../mental-model.html">Mental model</a>
@@ -23,7 +31,6 @@
 
 <main class="wrap">
   <section style="margin-top:26px">
-    <p class="meta"><a href="../index.html">Home</a> › Hooks</p>
     <div class="pill-row"><span class="badge l201">Extend</span> <span class="badge det">Hard · deterministic</span> <span class="badge ga">GA</span></div>
     <h1>Hooks</h1>
     <p class="lede">Your own code, run automatically at lifecycle events. The <strong>hard-enforcement escape hatch</strong>:
