@@ -191,6 +191,7 @@ a.card:hover .arrow { transform: translateX(3px); color: var(--accent); }
 .badge.exp  { color: var(--danger); }
 .badge.det  { color: var(--accent-2); }
 .badge.model{ color: var(--accent); }
+.badge.idbadge { cursor: help; text-decoration: underline dotted; text-underline-offset: 2px; }
 
 /* ---------- tooltip (hoverable definitions) ---------- */
 .tip { border-bottom: 1px dashed var(--accent); cursor: help; position: relative; color: var(--text); }
@@ -225,6 +226,20 @@ details.acc[open] > summary::before { transform: rotate(90deg); }
 details.acc > summary:hover { background: var(--bg-soft); }
 details.acc .acc-body { padding: 4px 18px 18px; border-top: 1px solid var(--border); }
 details.acc .acc-body > *:first-child { margin-top: 12px; }
+
+/* ---------- worked mini-cases (situation → trap → answer → principle) ---------- */
+.mc-q { color: var(--text); }
+.mc-trap, .mc-ans { display: grid; grid-template-columns: 70px 1fr; gap: 12px; margin: 9px 0; align-items: baseline; }
+.mc-trap .tag, .mc-ans .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+  padding-top: 2px; }
+.mc-trap .tag { color: var(--danger); }
+.mc-ans   .tag { color: var(--accent-3); }
+.mc-trap > div:last-child { color: var(--text-soft); }
+.principle { margin: 13px 0 2px; border-left: 3px solid var(--accent-4); background: var(--bg-soft);
+  padding: 10px 15px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 14px; }
+.principle .label { font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+  color: var(--accent-4); margin-right: 9px; }
+@media (max-width: 560px){ .mc-trap, .mc-ans { grid-template-columns: 1fr; gap: 2px; } }
 
 /* ---------- tables ---------- */
 .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); }

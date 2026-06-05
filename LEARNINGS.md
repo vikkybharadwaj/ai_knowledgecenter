@@ -11,6 +11,26 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-05  The nine-primitives matrix (`concepts/matrix.html#matrix`) now splits its columns into two
+            jobs: the left set helps you *understand* a primitive (what/coordination/enforcement/where), the
+            right set helps you *use* it — **Cost & footprint** (tokens/latency/context spent), **Pairs with**
+            (cross-links to the primitives it composes with), and **Watch out for** (its characteristic failure
+            mode). "Scale" answers *how many run*, which is not the same question as *what it costs you* — keep
+            both. The Pairs-with cells double as the connect-the-dots wiring the vault is built around.
+
+2026-06-05  Mini-cases are now a fixed 4-line template: **Situation → Tempting (the trap) → Answer → Principle**
+            (`.mc-trap`/`.mc-ans`/`.principle` in `concepts/assets/style.css`). The CCA-F exam rewards knowing
+            *why the other three options are wrong*, so naming the tempting-but-wrong choice explicitly is the
+            highest-leverage learnability fix — a worked case that only states the right answer teaches one verdict,
+            not the discriminator. Also added a "Why these six?" provenance callout to `scenarios.html`: the six are
+            the *real* CCA-F production scenarios (exam launched 2026-03-12, 4-of-6 drawn per sitting) — customer
+            support is official, e-commerce is not; they're a fixed external spec, don't add/remove.
+            DEPLOY GOTCHA that caused this: an earlier "add a Principle to every mini-case" fix was made on the
+            pre-restructure `docs/claude-code-architecture/` paths and left *uncommitted* while `main` moved to
+            `docs/concepts/` — so the live page never got it and looked half-finished. Lesson: after the
+            claude-code-architecture→concepts rename, always edit `docs/concepts/`; check `git status` isn't
+            stranding edits on dead paths, and that local `main` isn't behind `origin/main` before editing the site.
+
 2026-06-05  ONE learning section + ONE exam tab. Retired the two-partition site (Knowledge ⟂ Claude Code
             Architecture) that made learning a constant context-switch: merged the architecture field guide
             (mental model, matrix, decision, primitives) AND the concept graph into a single **Concepts**

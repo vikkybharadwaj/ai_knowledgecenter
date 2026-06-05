@@ -31,6 +31,7 @@
 <main class="wrap">
   <div class="layout">
     <aside class="toc">
+      <a href="#why">Why these six?</a>
       <a href="#how">How to use this</a>
       <a href="#s1">1 · Customer support</a>
       <a href="#s2">2 · Code generation</a>
@@ -46,14 +47,33 @@
       <h1>The 6 production scenarios</h1>
       <p class="lede">Every CCA-F question lives inside one of six production settings. If you can recognize the
         setting and recall its failure modes, half the work is done. For each: the setup, the task statements it leans
-        on, the high-yield traps, and worked mini-cases (click to reveal the reasoning). Reviewed 2026-06-02.</p>
+        on, the high-yield traps, and worked mini-cases (click to reveal the reasoning). Reviewed 2026-06-05.</p>
+    </section>
+
+    <section id="why">
+      <div class="callout"><span class="label">Why these six — and not, say, e-commerce?</span>
+        These aren&rsquo;t our picks. They are the six production scenarios the real
+        <strong>Claude Certified Architect &mdash; Foundations</strong> exam is built on (Anthropic launched it
+        2026-03-12). Each sitting draws <strong>4 of the 6</strong> at random. <em>Customer support</em> is on the
+        official list; <em>e-commerce</em> is not &mdash; and swapping it in would make this prep stop matching the exam
+        (e-commerce concerns like orders, refunds, and invoices already live <em>inside</em> the support and
+        data-extraction scenarios). The six are a fixed external spec: don&rsquo;t add or remove them.
+        <br><span style="color:var(--text-dim);font-size:13px">The exam itself is confirmed by multiple independent
+        write-ups; the fine-grained blueprint (exact domain weights, the &ldquo;4-of-6&rdquo; rule) is
+        community-reconstructed and verified against
+        <a href="https://code.claude.com/docs" target="_blank" rel="noopener">code.claude.com/docs</a> &mdash; not an
+        official Anthropic publication, and not affiliated with or endorsed by Anthropic.</span></div>
     </section>
 
     <section id="how">
-      <div class="callout key"><span class="label">The drill</span>
-        Read the failure modes until the &ldquo;situation → fix&rdquo; mapping is automatic. Then work the mini-cases
-        <em>before</em> revealing the answer. Cross-reference the <a href="practice.html">quiz</a> (filter by domain) and
-        the <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/exam-prep/cca-f-study-guide.md" target="_blank" rel="noopener">cram sheet</a>.</div>
+      <div class="callout key"><span class="label">How to use this · the drill</span>
+        Read the failure modes until the &ldquo;situation → fix&rdquo; mapping is automatic. Then work each mini-case
+        top-down: read the <strong>Situation</strong>, notice the <strong style="color:var(--danger)">Tempting</strong>
+        answer it&rsquo;s steering you toward, commit to <em>your</em> pick, then reveal. The exam rewards knowing
+        <em>why the other three options are wrong</em> &mdash; so every case names the trap and ends in a one-line
+        <strong style="color:var(--accent-4)">Principle</strong> you can carry to any question in that domain.
+        Cross-reference the <a href="practice.html">quiz</a> (filter by domain) and the
+        <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/exam-prep/cca-f-study-guide.md" target="_blank" rel="noopener">cram sheet</a>.</div>
     </section>
 
     <!-- SCENARIO 1 -->
@@ -71,17 +91,31 @@
       <div class="usewhen"><span class="ic">▸</span><div><strong>Genuine policy gap</strong> (e.g. competitor price-match not in policy) → escalate for interpretation; don&rsquo;t invent policy.</div></div>
 
       <details class="acc"><summary>Mini-case: the double refund</summary><div class="acc-body">
-        <p>Retries on transient API failures occasionally cause double charges — the server processed the first request
-          before the client timed out. Which fix is <em>complete</em>?</p>
-        <p><strong>Answer:</strong> Both <em>error classification</em> AND <em>idempotency keys</em> — neither alone suffices.
-          Classification won&rsquo;t undo a duplicate that already processed; idempotency alone won&rsquo;t retry a request that never
-          arrived. Use an idempotency key (hash of operation + customer + amount) <em>and</em> classify errors before retrying.</p>
+        <p class="mc-q"><strong>Situation.</strong> Retries on transient API failures occasionally double-charge a
+          customer — the server processed the first <code>process_refund</code> before the client timed out and retried.
+          Which fix is <em>complete</em>?</p>
+        <div class="mc-trap"><div class="tag">Tempting</div><div>Pick <em>one</em> — &ldquo;just add idempotency keys&rdquo;
+          or &ldquo;just classify errors and don&rsquo;t retry the bad ones.&rdquo; Each sounds sufficient on its own.</div></div>
+        <div class="mc-ans"><div class="tag">Answer</div><div><em>Both</em>, together. Idempotency keys
+          (hash of operation + customer + amount) make a re-sent request a no-op; error classification stops you retrying
+          something that <em>did</em> arrive. Idempotency alone still won&rsquo;t recover a request that never landed;
+          classification alone can&rsquo;t undo a duplicate that already processed.</div></div>
+        <p class="principle"><span class="label">Principle</span> When a failure has two independent causes
+          (already-applied vs never-arrived), no single fix covers both — make the side-effect idempotent <em>and</em>
+          the retry conditional.</p>
       </div></details>
       <details class="acc"><summary>Mini-case: which escalation is justified?</summary><div class="acc-body">
-        <p>After looking up the customer and order, which is the <em>most</em> justified <code>escalate_to_human</code> trigger?</p>
-        <p><strong>Answer:</strong> A competitor price-match request when policy allows own-site matching within 14 days but is
-          <em>silent</em> on competitors. That&rsquo;s a real policy gap requiring human judgment — the agent must not fabricate policy.
-          A &ldquo;change my mind&rdquo; cancel or a combined billing+return question are within the agent&rsquo;s competence.</p>
+        <p class="mc-q"><strong>Situation.</strong> After looking up the customer and order, which case <em>most</em>
+          justifies firing <code>escalate_to_human</code>?</p>
+        <div class="mc-trap"><div class="tag">Tempting</div><div>Escalate the <em>hardest-sounding</em> or
+          <em>angriest</em> request — a combined billing-plus-return question, or a customer who&rsquo;s clearly upset.</div></div>
+        <div class="mc-ans"><div class="tag">Answer</div><div>A competitor price-match request when policy allows
+          own-site matching within 14 days but is <em>silent</em> on competitors. That&rsquo;s a genuine policy gap — the
+          agent must not invent a rule. A &ldquo;change my mind&rdquo; cancel and a combined billing+return question are
+          both within the agent&rsquo;s competence, complexity and sentiment notwithstanding.</div></div>
+        <p class="principle"><span class="label">Principle</span> Escalate on <em>policy silence</em>, not on difficulty
+          or sentiment. If the rules don&rsquo;t cover the case, a human decides; if they do, the agent acts — even when
+          the request is complex or the customer is angry.</p>
       </div></details>
     </section>
 
@@ -100,16 +134,30 @@
       <div class="usewhen"><span class="ic">▸</span><div><strong>Stale prior-session findings</strong> → new session + injected structured summary; note what changed.</div></div>
 
       <details class="acc"><summary>Mini-case: the unfamiliar caching task</summary><div class="acc-body">
-        <p>A developer who doesn&rsquo;t know cache-invalidation or stampede prevention asks Claude to implement Redis caching
-          right now. Best technique to surface concerns first?</p>
-        <p><strong>Answer:</strong> The <em>interview pattern</em> — have Claude ask targeted questions to surface design
-          considerations (TTL, invalidation, stampede protection) the developer doesn&rsquo;t know to specify. Plan mode explores
-          implementation but not unstated requirements; TDD assumes you already know the edge cases.</p>
+        <p class="mc-q"><strong>Situation.</strong> A developer who doesn&rsquo;t know cache-invalidation or stampede
+          prevention asks Claude to &ldquo;implement Redis caching, now.&rdquo; What surfaces the design concerns they
+          can&rsquo;t even name yet?</p>
+        <div class="mc-trap"><div class="tag">Tempting</div><div>Reach for <em>plan mode</em> or <em>TDD</em> — they
+          feel like the rigorous choices. But plan mode plans a <em>known</em> spec, and TDD assumes you already know the
+          edge cases to test.</div></div>
+        <div class="mc-ans"><div class="tag">Answer</div><div>The <em>interview pattern</em>: have Claude ask targeted
+          questions first (TTL? invalidation strategy? stampede protection?), surfacing requirements the developer
+          didn&rsquo;t know to specify — <em>then</em> build.</div></div>
+        <p class="principle"><span class="label">Principle</span> When the gap is <em>unknown requirements</em>, make the
+          model ask before it builds. Plan mode and TDD refine a spec you already have; the interview pattern discovers one.</p>
       </div></details>
       <details class="acc"><summary>Mini-case: personalize a shared command</summary><div class="acc-body">
-        <p>A dev wants to tweak the team&rsquo;s shared <code>/commit</code> skill just for themselves.</p>
-        <p><strong>Answer:</strong> Create a personal <code>~/.claude/skills/commit/SKILL.md</code> with the same name —
-          personal skills take precedence over same-named project skills, so the team&rsquo;s version is untouched.</p>
+        <p class="mc-q"><strong>Situation.</strong> A dev wants to tweak the team&rsquo;s shared, committed
+          <code>/commit</code> skill — but only for their own machine.</p>
+        <div class="mc-trap"><div class="tag">Tempting</div><div>Edit the project&rsquo;s
+          <code>.claude/skills/commit/SKILL.md</code> directly — it&rsquo;s right there. (Now everyone gets your personal
+          tweak, and your change fights the next teammate&rsquo;s.)</div></div>
+        <div class="mc-ans"><div class="tag">Answer</div><div>Create a personal
+          <code>~/.claude/skills/commit/SKILL.md</code> with the <em>same name</em>. User-scope skills shadow same-named
+          project skills, so the team&rsquo;s committed version is untouched and only <em>you</em> get the tweak.</div></div>
+        <p class="principle"><span class="label">Principle</span> Personalize by <em>shadowing</em>, not editing: a
+          same-named user-scope file overrides the project one for you alone. Never edit shared/committed config to get a
+          personal change.</p>
       </div></details>
     </section>
 
@@ -127,16 +175,29 @@
       <div class="usewhen"><span class="ic">▸</span><div><strong>Conflicting sources</strong> → present both with attribution, annotate the conflict; never average. Preserve claim→source mappings.</div></div>
 
       <details class="acc"><summary>Mini-case: parallel vs sequential</summary><div class="acc-body">
-        <p>The coordinator needs the web-search and document-analysis subagents to run at the same time. How?</p>
-        <p><strong>Answer:</strong> Emit <em>multiple Task/Agent calls within a single response</em>. Separate turns run them
-          sequentially; <code>fork_session</code> is for branching your own exploration, not fanning out worker types.</p>
+        <p class="mc-q"><strong>Situation.</strong> The coordinator needs the web-search and document-analysis subagents
+          to run <em>at the same time</em>. How do you get true concurrency?</p>
+        <div class="mc-trap"><div class="tag">Tempting</div><div>Call one subagent, then the next (feels parallel because
+          it&rsquo;s &ldquo;both&rdquo;), or reach for <code>fork_session</code> because it has &ldquo;fork&rdquo; in the
+          name.</div></div>
+        <div class="mc-ans"><div class="tag">Answer</div><div>Emit <em>multiple Agent/Task calls within a single
+          response</em>. Separate turns run sequentially by definition; <code>fork_session</code> branches <em>your own</em>
+          exploration, it doesn&rsquo;t fan out worker types.</div></div>
+        <p class="principle"><span class="label">Principle</span> Concurrency comes from <em>one response with many
+          calls</em>, not many responses. One call per turn is sequential no matter how it&rsquo;s phrased.</p>
       </div></details>
       <details class="acc"><summary>Mini-case: three search outcomes</summary><div class="acc-body">
-        <p>Web search returns: academic = 15 papers; industry = &ldquo;0 results&rdquo;; patent = &ldquo;connection timeout.&rdquo; How should
-          the subagent report this?</p>
-        <p><strong>Answer:</strong> Return all three <em>distinctly</em> — academic = success; industry = valid empty result
-          (<code>isError:false</code>); patent = <code>isError:true</code> with structured error context. Each demands a
-          different coordinator response (accept / accept / consider-retry). Combining or silently retrying hides the signal.</p>
+        <p class="mc-q"><strong>Situation.</strong> One search subagent gets three results: academic = 15 papers;
+          industry = &ldquo;0 results&rdquo;; patent = &ldquo;connection timeout.&rdquo; How should it report back to the
+          coordinator?</p>
+        <div class="mc-trap"><div class="tag">Tempting</div><div>Treat &ldquo;0 results&rdquo; and &ldquo;timeout&rdquo;
+          the same — both &ldquo;found nothing&rdquo; — or silently retry the timeout and hide it.</div></div>
+        <div class="mc-ans"><div class="tag">Answer</div><div>Report all three <em>distinctly</em>: academic = success;
+          industry = a valid empty result (<code>isError:false</code>); patent = <code>isError:true</code> with structured
+          error context. Each warrants a different coordinator move — accept / accept / consider-retry.</div></div>
+        <p class="principle"><span class="label">Principle</span> &ldquo;No results&rdquo; and &ldquo;couldn&rsquo;t
+          check&rdquo; are different facts — never collapse them. Preserve the empty-vs-error distinction so the caller can
+          choose accept vs retry.</p>
       </div></details>
     </section>
 
@@ -154,11 +215,18 @@
       <div class="usewhen"><span class="ic">▸</span><div><strong>Heterogeneous tool output formats</strong> → a PostToolUse hook normalizes results before the model sees them (works even for unmodifiable third-party MCP tools).</div></div>
 
       <details class="acc"><summary>Mini-case: normalizing third-party output</summary><div class="acc-body">
-        <p>Tools return timestamps in Unix, ISO 8601, and numeric status codes; some are third-party MCP servers you
-          can&rsquo;t modify. Most maintainable normalization?</p>
-        <p><strong>Answer:</strong> A <strong>PostToolUse hook</strong> — a single deterministic interception point that
-          transforms <em>all</em> tool outputs (including unmodifiable third-party data) in code, rather than relying on the
-          model to interpret mixed formats or wrapping every tool by hand.</p>
+        <p class="mc-q"><strong>Situation.</strong> Tools return timestamps in Unix, ISO 8601, and numeric status codes;
+          some are third-party MCP servers you <em>can&rsquo;t</em> modify. What&rsquo;s the most maintainable way to
+          normalize them?</p>
+        <div class="mc-trap"><div class="tag">Tempting</div><div>Tell the model in the prompt to &ldquo;handle the
+          different formats&rdquo; (probabilistic, doesn&rsquo;t scale), or hand-wrap each tool (impossible for servers you
+          don&rsquo;t own).</div></div>
+        <div class="mc-ans"><div class="tag">Answer</div><div>A <strong>PostToolUse hook</strong> — one deterministic
+          interception point that transforms <em>every</em> tool&rsquo;s output in code before the model sees it, including
+          data from third-party tools you can&rsquo;t touch.</div></div>
+        <p class="principle"><span class="label">Principle</span> Normalize once, deterministically, at the boundary — a
+          hook — not per-tool and not in the prompt. Hooks reach even tools you don&rsquo;t own; prompts are probabilistic
+          and don&rsquo;t scale.</p>
       </div></details>
     </section>
 
@@ -176,10 +244,17 @@
       <div class="usewhen"><span class="ic">▸</span><div><strong>Batch API choice</strong> → batch the non-blocking job (nightly), keep blocking checks synchronous; resubmit only failures via <code>custom_id</code>.</div></div>
 
       <details class="acc"><summary>Mini-case: subtle bugs slip through</summary><div class="acc-body">
-        <p>Subtle bugs are only caught in human review; the generator&rsquo;s reasoning shows it considered and dismissed them.
-          A same-session self-review didn&rsquo;t help. Best architecture?</p>
-        <p><strong>Answer:</strong> A separate, <em>independent</em> review instance with no access to the generator&rsquo;s
-          reasoning — fresh eyes avoid the confirmation bias of reviewing one&rsquo;s own rationalizations. (Task 4.6: multi-instance review.)</p>
+        <p class="mc-q"><strong>Situation.</strong> Subtle bugs are caught only in human review; the generator&rsquo;s own
+          reasoning shows it <em>considered and dismissed</em> them. Adding a same-session self-review didn&rsquo;t help.
+          What architecture catches them?</p>
+        <div class="mc-trap"><div class="tag">Tempting</div><div>&ldquo;Ask the model to review its own work more
+          carefully&rdquo; — a self-review in the same session. It re-reads its own rationalizations and clears them again.</div></div>
+        <div class="mc-ans"><div class="tag">Answer</div><div>A separate, <em>independent</em> review instance with
+          <em>no</em> access to the generator&rsquo;s reasoning — fresh eyes don&rsquo;t inherit the author&rsquo;s
+          blind spots. (CCA-F task 4.6: multi-instance review.)</div></div>
+        <p class="principle"><span class="label">Principle</span> A reviewer that can see the author&rsquo;s reasoning
+          inherits its blind spots. For real scrutiny, withhold the rationale and use a fresh instance — in-session
+          self-review catches little.</p>
       </div></details>
     </section>
 
@@ -197,15 +272,27 @@
       <div class="usewhen"><span class="ic">▸</span><div><strong>96% aggregate accuracy</strong> → stratify by type/field before trusting it; calibrate any confidence score against labeled data.</div></div>
 
       <details class="acc"><summary>Mini-case: the tax_id trap</summary><div class="acc-body">
-        <p>40% of invoices have a <code>tax_id</code>, 60% don&rsquo;t. You mark it a required string. What happens on the 60%?</p>
-        <p><strong>Answer:</strong> The model <em>fabricates</em> a value to satisfy the required constraint. Fix: make it
-          optional/nullable so the model can honestly return null. &ldquo;Required fields are fabrication factories.&rdquo;</p>
+        <p class="mc-q"><strong>Situation.</strong> 40% of invoices carry a <code>tax_id</code>, 60% don&rsquo;t. You mark
+          it a <em>required string</em> in the schema. What happens on the 60% that lack one?</p>
+        <div class="mc-trap"><div class="tag">Tempting</div><div>Assume &ldquo;required&rdquo; just enforces good data —
+          so the model will skip it or error when it&rsquo;s missing. It does neither.</div></div>
+        <div class="mc-ans"><div class="tag">Answer</div><div>The model <em>fabricates</em> a value to satisfy the
+          constraint. Fix: make the field optional/nullable so the model can honestly return <code>null</code> for
+          &ldquo;not present.&rdquo;</div></div>
+        <p class="principle"><span class="label">Principle</span> Required fields are fabrication factories: a
+          &ldquo;required&rdquo; field the source often lacks forces invention. Make genuinely-optional data nullable so
+          &ldquo;not present&rdquo; is expressible.</p>
       </div></details>
       <details class="acc"><summary>Mini-case: removing human review</summary><div class="acc-body">
-        <p>The pipeline reports 96% accuracy over 10,000 invoices; the team wants to drop human review. First validation step?</p>
-        <p><strong>Answer:</strong> <em>Stratify</em> accuracy by document type and field segment. An aggregate can hide a
-          catastrophic per-segment rate (99.9% on digital, 40% on handwritten still averages ~96%). Confirm consistency
-          before removing the human.</p>
+        <p class="mc-q"><strong>Situation.</strong> The pipeline reports <strong>96% accuracy</strong> over 10,000
+          invoices and the team wants to drop the human reviewer. What&rsquo;s the first validation step?</p>
+        <div class="mc-trap"><div class="tag">Tempting</div><div>Take 96% at face value — &ldquo;that&rsquo;s well above
+          our bar, ship it.&rdquo; The aggregate is exactly what hides the risk.</div></div>
+        <div class="mc-ans"><div class="tag">Answer</div><div><em>Stratify</em> accuracy by document type and field. A
+          blended 96% can mask a catastrophe — 99.9% on digital PDFs and 40% on handwritten scans still averages ~96%.
+          Confirm per-segment consistency before removing the human.</div></div>
+        <p class="principle"><span class="label">Principle</span> An aggregate metric is a ceiling on what you know, not a
+          floor on what you ship. Stratify before trusting it — a high average can hide a segment failing wholesale.</p>
       </div></details>
     </section>
 
@@ -220,7 +307,7 @@
 </div>
 
 <footer class="wrap">
-  <p>CCA-F Exam Prep · the 6 scenarios · reviewed 2026-06-02 · <a href="index.html">home</a> ·
+  <p>CCA-F Exam Prep · the 6 scenarios · reviewed 2026-06-05 · <a href="index.html">home</a> ·
      not affiliated with or endorsed by Anthropic.</p>
 </footer>
 <script src="assets/app.js"></script>
