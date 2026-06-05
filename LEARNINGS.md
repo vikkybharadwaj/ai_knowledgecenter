@@ -11,6 +11,13 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-05  The Concepts section now has a dedicated **hub** at `concepts/index.html` (overview + "ways in"
+            cards), mirroring the exam section's `exam.html`. The primitives field guide moved to its own
+            `concepts/primitives.html`. Before, `index.html` *was* the primitives page, so the "🧠 Concepts"
+            rail tab (and every breadcrumb "Concepts") dumped users into Primitives instead of an overview.
+            Lesson: a section landing should be a hub, not double as one of its sub-pages — keep the rail's
+            hub item ("Overview"/"About the exam") uniform across all pages in the section.
+
 2026-06-05  The nine-primitives matrix (`concepts/matrix.html#matrix`) now splits its columns into two
             jobs: the left set helps you *understand* a primitive (what/coordination/enforcement/where), the
             right set helps you *use* it — **Cost & footprint** (tokens/latency/context spent), **Pairs with**
