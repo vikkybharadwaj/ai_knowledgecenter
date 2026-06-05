@@ -43,12 +43,12 @@ The mental models everything else obeys.
 - [The Anatomy of an Agent Harness](../notes/anatomy-of-an-agent-harness.md) — dissects the "harness" level into its six organs (loop, context, tools, memory, verification, delegation).
 
 ### 🔌 Claude API — *the engine*
-The raw capabilities a request can use. **(No notes yet — a gap to fill:** tool use, prompt
-caching, extended thinking, batch, citations, files, 1M context.)
+The raw capabilities a request can use.
+- [The Claude API agent primitives](../notes/claude-api-agent-primitives.md) — the tool-use loop, MCP connector, prompt caching, batch, computer use; *an agent is ~20 lines.*
 
 ### 🛠️ Agent SDK — *the framework*
-Building your own agents on top of the loop. **(No notes yet — a gap to fill:** sessions,
-in-process MCP, the `claude_code` preset, observability.)
+Building your own agents on top of the loop.
+- [The Claude Agent SDK](../notes/claude-agent-sdk.md) — the same engine as Claude Code, as a library: hooks, subagents, MCP, sessions, headless/CI, Bedrock/Vertex/Foundry auth.
 
 ### 🧭 Claude Code primitives — *the toolbox*
 The named features that tune one zone of the loop.
@@ -60,10 +60,14 @@ The named features that tune one zone of the loop.
 ### 🧩 Agent patterns — *how you compose*
 Reusable shapes for putting primitives together.
 - [Agentic AI Reference Architecture](../notes/agentic-ai-reference-architecture.md) — the nine-layer production blueprint; what separates a prototype from a real system.
+- [Use Claude Code vs build your own](../notes/claude-code-vs-build-your-own.md) — the four-altitude decision tree (buy → use → configure → own the loop).
 
 ### 🚀 Products & consulting — *what you ship*
-Real-world scenarios that pull concepts together for a client outcome. **(No scenario notes
-yet — this is where theory becomes billable.)**
+Real-world scenarios that pull concepts together for a client outcome.
+- [Scenario: bootstrapping a company's AI stack from zero](../notes/bootstrapping-company-ai-stack.md) — discovery questions + phased rollout (buy → wire MCP → codify skills/hooks → build the differentiated slice).
+
+> 🏗️ These last three notes form a cluster with its own Map of Content —
+> **[Building & advising on AI stacks](building-ai-stacks.md)** — the evolving consulting section.
 
 ## The narrative (how it all connects)
 At the bottom, **foundations** say there are only three things to steer — the prompt (one
@@ -73,7 +77,11 @@ a framework for building agents; **Claude Code** is the most-polished agent buil
 exposing the loop as nameable **primitives** you can mix. Those primitives **compose into
 patterns** (routing, orchestration, the reference architecture), and patterns **ship as
 products** — which, for the consulting goal, means helping a client pick the *smallest* set of
-primitives that solves their problem.
+primitives that solves their problem. That "smallest set" choice now has its own pattern — the
+**[four-altitude decision](../notes/claude-code-vs-build-your-own.md)** (buy → use Claude Code →
+configure the Agent SDK → own the raw API loop) — and its own products-layer scenario,
+[bootstrapping a company's AI stack](../notes/bootstrapping-company-ai-stack.md). Together they're
+the [Building & advising on AI stacks](building-ai-stacks.md) map.
 
 Read the layers as a debugging ladder too: *bad single answer* → Foundations (prompt). *Model
 forgetting* → Foundations (context). *Can't recover / loop / self-check* → Foundations (harness)
@@ -83,5 +91,7 @@ which floor to get off on.
 ## How this map evolves
 The `/land` skill updates this file every time you add a concept: it assigns the note a
 `spine_layer`, drops a link under the right heading here, and — when a new idea genuinely shifts
-the story — rewrites the narrative. **Gaps are features:** the empty layers above are your
-visible "what to learn next" list on the road to CCA-F.
+the story — rewrites the narrative. **Gaps are features:** every layer now has at least one note —
+the remaining "what to learn next" list lives as the explicit backlog at the bottom of the
+[Building & advising on AI stacks](building-ai-stacks.md) map (the framework landscape, eval, and
+guardrails notes).
