@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Concepts — a field guide to the Claude Code primitives</title>
-<meta name="description" content="A clickable mental model for Claude Code: how skills, hooks, MCP, subagents, agent teams, dynamic workflows, agent view, worktrees, conventions and policies relate — and which to reach for when.">
-<link rel="stylesheet" href="assets/style.css?v=20260605b">
+<title>Concepts — one connected map of the Claude stack</title>
+<meta name="description" content="The Concepts hub for the Claude tech stack: the mental model, the primitives field guide, a self-organizing concept graph, a comparison matrix, and a decision guide — pick your way in.">
+<link rel="stylesheet" href="assets/style.css?v=20260605c">
 </head>
 <body>
 <header class="crumbbar">
@@ -19,8 +19,9 @@
 <div class="shell">
   <aside class="siderail">
     <nav class="railnav">
+      <a href="index.html" class="active">Overview</a>
       <a href="mental-model.html">Mental model</a>
-      <a href="index.html" class="active">Primitives</a>
+      <a href="primitives.html">Primitives</a>
       <a href="graph.html">Concept graph</a>
       <a href="matrix.html">Comparison matrix</a>
       <a href="decision.html">Decide</a>
@@ -34,60 +35,51 @@
 
   <section class="hero">
     <div class="eyebrow">Concepts · the Claude tech stack</div>
-    <h1>One model, many ways to steer it.</h1>
+    <h1>One connected map of the Claude stack.</h1>
+    <p class="sub">Everything for understanding how Claude Code actually works, in one place: the mental model
+      that frames the whole stack, a field guide to every primitive, a self-organizing concept graph, a
+      side-by-side comparison matrix, and a decision guide for picking the right tool. Pick your way in below —
+      go deep on one idea, or broad across the whole stack. Reviewed 2026-06-02.</p>
   </section>
 
-  <hr>
-
-  <!-- The primitive cards -->
-  <section id="primitives">
+  <!-- WAYS IN -->
+  <section>
     <div class="grid cols-3">
-      <a class="card" href="primitives/memory.html"><span class="arrow">→</span>
-
-        <h3>Conventions <span class="meta">(CLAUDE.md / rules files)</span></h3>
-        <p>Soft, persistent guidance the model reads every session.</p></a>
-
-      <a class="card" href="primitives/policies.html"><span class="arrow">→</span>
-        <span class="badge det">hard</span>
-        <h3>Policies <span class="meta">(managed settings + permission rules)</span></h3>
-        <p>Client-enforced governance that the model can&rsquo;t override. <strong>Not the same as conventions.</strong></p></a>
-
-      <a class="card" href="primitives/hooks.html"><span class="arrow">→</span>
-        <span class="badge det">hard</span>
-        <h3>Hooks <span class="meta">(vs &ldquo;rules&rdquo;)</span></h3>
-        <p>Your code, run automatically on lifecycle events. <strong>Not the same as rules.</strong></p></a>
-
-      <a class="card" href="primitives/skills.html"><span class="arrow">→</span>
-
-        <h3>Skills <span class="meta">(&amp; what &ldquo;routines&rdquo; really means)</span></h3>
-        <p>Reusable instructions/procedures loaded on demand. &ldquo;Routines&rdquo; isn&rsquo;t a real term &mdash; it&rsquo;s this.</p></a>
-
-      <a class="card" href="primitives/mcp.html"><span class="arrow">→</span>
-
-        <h3>MCP <span class="meta">(Model Context Protocol)</span></h3>
-        <p>A protocol that gives the model new tools &amp; data from external systems.</p></a>
-
-      <a class="card" href="primitives/subagents.html"><span class="arrow">→</span>
-
-        <h3>Subagents</h3>
-        <p>Delegated workers in their own context; only a summary returns.</p></a>
-
-      <a class="card" href="primitives/agent-teams.html"><span class="arrow">→</span>
-        <span class="badge exp">experimental</span>
-        <h3>Agent teams</h3>
-        <p>A lead + peer sessions that share a task list and message each other.</p></a>
-
-      <a class="card" href="primitives/workflows.html"><span class="arrow">→</span>
-        <span class="badge preview">preview</span>
-        <h3>Dynamic workflows <span class="meta">(+ ultracode)</span></h3>
-        <p>Claude writes an orchestration <em>script</em> that runs dozens-to-hundreds of agents.</p></a>
-
-      <a class="card" href="primitives/agent-view.html"><span class="arrow">→</span>
-        <span class="badge preview">preview</span>
-        <h3>Worktrees + Agent view</h3>
-        <p>Git isolation per session, plus one dashboard to dispatch &amp; watch many of them.</p></a>
+      <a class="card" href="mental-model.html"><span class="arrow">→</span>
+        <h3>🧠 Mental model</h3>
+        <p>How Claude Code really works — prompt, context, harness, and the loop. Start here if the stack still
+          feels like a pile of nouns.</p>
+      </a>
+      <a class="card" href="primitives.html"><span class="arrow">→</span>
+        <h3>🧱 Primitives</h3>
+        <p>The field guide: hooks, skills, MCP, subagents, agent teams, dynamic workflows, agent view,
+          conventions, policies — one full page each.</p>
+      </a>
+      <a class="card" href="graph.html"><span class="arrow">→</span>
+        <h3>🕸 Concept graph</h3>
+        <p>Every idea wired to its neighbours — the self-organizing map of atomic notes across the whole stack.</p>
+      </a>
+      <a class="card" href="matrix.html"><span class="arrow">→</span>
+        <h3>⚖️ Comparison matrix</h3>
+        <p>The primitives side by side: who invokes each, hard vs. soft enforcement, and when to reach for which.</p>
+      </a>
+      <a class="card" href="decision.html"><span class="arrow">→</span>
+        <h3>🧭 Decide</h3>
+        <p>A decision guide that turns &ldquo;I want to do X&rdquo; into &ldquo;reach for Y&rdquo; — the fast path
+          to the right primitive.</p>
+      </a>
+      <a class="card" href="legend.html"><span class="arrow">→</span>
+        <h3>🏷️ Legend</h3>
+        <p>What the badges mean — <span class="badge det">hard</span> (client-enforced) vs. soft, plus
+          <span class="badge preview">preview</span> and <span class="badge exp">experimental</span>.</p>
+      </a>
     </div>
   </section>
+
+  <p class="meta" style="margin-top:18px">Prepping for the exam instead? Head to the
+    <a href="exam.html">CCA-F Exam Prep</a> hub. &middot; Grounded in
+    <a href="https://code.claude.com/docs">code.claude.com/docs</a> &amp; the
+    <a href="https://claude.com/blog/introducing-dynamic-workflows-in-claude-code">dynamic-workflows announcement</a>.</p>
 
 </main>
 </div>

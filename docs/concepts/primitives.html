@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Primitives — a field guide to the Claude Code primitives</title>
+<meta name="description" content="A clickable mental model for Claude Code: how skills, hooks, MCP, subagents, agent teams, dynamic workflows, agent view, worktrees, conventions and policies relate — and which to reach for when.">
+<link rel="stylesheet" href="assets/style.css?v=20260605c">
+</head>
+<body>
+<header class="crumbbar">
+  <nav class="rail-crumbs" aria-label="Breadcrumb">
+    <span class="dot"></span>
+    <a href="../index.html">AI Knowledge Center</a>
+    <span class="sep">&rsaquo;</span>
+    <a href="index.html">Concepts</a>
+    <span class="sep">&rsaquo;</span>
+    <span class="here">Primitives</span>
+  </nav>
+</header>
+<div class="shell">
+  <aside class="siderail">
+    <nav class="railnav">
+      <a href="mental-model.html">Mental model</a>
+      <a href="primitives.html" class="active">Primitives</a>
+      <a href="graph.html">Concept graph</a>
+      <a href="matrix.html">Comparison matrix</a>
+      <a href="decision.html">Decide</a>
+      <span class="rail-sep" role="separator"></span>
+      <a href="legend.html">Legend</a>
+    </nav>
+    <a class="rail-peer" href="exam.html">🎓 CCA-F Exam Prep &rarr;</a>
+  </aside>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">Concepts · the Claude tech stack</div>
+    <h1>One model, many ways to steer it.</h1>
+    <p class="sub">Hooks, skills, subagents, MCP, agent teams, dynamic workflows, agent view, worktrees,
+      conventions, policies&hellip; it&rsquo;s a lot of nouns. Pick one primitive and read it end to end &mdash;
+      each card opens a full page with the definition, an analogy, the mechanism, who invokes it, when to reach
+      for it (and when not), best practices, and setup. The <span class="badge det">hard</span> badge means
+      client-enforced; otherwise it&rsquo;s soft, model-mediated.
+      <a href="legend.html">See the full badge legend &rarr;</a></p>
+    <p class="meta" style="margin-top:14px">Want the wide view instead? The
+      <a href="graph.html">concept graph</a> wires every idea together across the whole stack.
+      &middot; Last reviewed 2026-06-02 · grounded in
+      <a href="https://code.claude.com/docs">code.claude.com/docs</a> &amp; the
+      <a href="https://claude.com/blog/introducing-dynamic-workflows-in-claude-code">dynamic-workflows announcement</a>.</p>
+  </section>
+
+  <hr>
+
+  <!-- The primitive cards -->
+  <section id="primitives">
+    <div class="grid cols-3">
+      <a class="card" href="primitives/memory.html"><span class="arrow">→</span>
+
+        <h3>Conventions <span class="meta">(CLAUDE.md / rules files)</span></h3>
+        <p>Soft, persistent guidance the model reads every session.</p></a>
+
+      <a class="card" href="primitives/policies.html"><span class="arrow">→</span>
+        <span class="badge det">hard</span>
+        <h3>Policies <span class="meta">(managed settings + permission rules)</span></h3>
+        <p>Client-enforced governance that the model can&rsquo;t override. <strong>Not the same as conventions.</strong></p></a>
+
+      <a class="card" href="primitives/hooks.html"><span class="arrow">→</span>
+        <span class="badge det">hard</span>
+        <h3>Hooks <span class="meta">(vs &ldquo;rules&rdquo;)</span></h3>
+        <p>Your code, run automatically on lifecycle events. <strong>Not the same as rules.</strong></p></a>
+
+      <a class="card" href="primitives/skills.html"><span class="arrow">→</span>
+
+        <h3>Skills <span class="meta">(&amp; what &ldquo;routines&rdquo; really means)</span></h3>
+        <p>Reusable instructions/procedures loaded on demand. &ldquo;Routines&rdquo; isn&rsquo;t a real term &mdash; it&rsquo;s this.</p></a>
+
+      <a class="card" href="primitives/mcp.html"><span class="arrow">→</span>
+
+        <h3>MCP <span class="meta">(Model Context Protocol)</span></h3>
+        <p>A protocol that gives the model new tools &amp; data from external systems.</p></a>
+
+      <a class="card" href="primitives/subagents.html"><span class="arrow">→</span>
+
+        <h3>Subagents</h3>
+        <p>Delegated workers in their own context; only a summary returns.</p></a>
+
+      <a class="card" href="primitives/agent-teams.html"><span class="arrow">→</span>
+        <span class="badge exp">experimental</span>
+        <h3>Agent teams</h3>
+        <p>A lead + peer sessions that share a task list and message each other.</p></a>
+
+      <a class="card" href="primitives/workflows.html"><span class="arrow">→</span>
+        <span class="badge preview">preview</span>
+        <h3>Dynamic workflows <span class="meta">(+ ultracode)</span></h3>
+        <p>Claude writes an orchestration <em>script</em> that runs dozens-to-hundreds of agents.</p></a>
+
+      <a class="card" href="primitives/agent-view.html"><span class="arrow">→</span>
+        <span class="badge preview">preview</span>
+        <h3>Worktrees + Agent view</h3>
+        <p>Git isolation per session, plus one dashboard to dispatch &amp; watch many of them.</p></a>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<footer class="wrap">
+  <p>AI Knowledge Center · Concepts · reviewed 2026-06-02.
+     Primary sources: <a href="https://code.claude.com/docs">code.claude.com/docs</a>,
+     <a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Agent Skills</a>,
+     <a href="https://claude.com/blog/introducing-dynamic-workflows-in-claude-code">Dynamic workflows</a>.
+     Models, versions &amp; previews go stale fast — datestamps are deliberate.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
