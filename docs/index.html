@@ -9,55 +9,114 @@
 <meta property="og:description" content="A self-organizing knowledge graph for the Claude stack + an interactive Claude Code Architecture exam-prep system.">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="assets/style.css">
+<style>
+  /* ---- home-only refinements: tighter hero + the two views as launchers ---- */
+  .hero{padding:60px 0 18px}
+  .hero .sub{margin-bottom:18px}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:10px 22px;color:var(--text-dim);font-size:12.5px;font-weight:600;letter-spacing:.2px}
+  .hero-meta span{display:inline-flex;align-items:center;gap:7px}
+  .hero-meta b{color:var(--text-soft);font-weight:800}
+  .hero-meta .d{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.8}
+
+  /* section intro line */
+  .kicker{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.6px;color:var(--accent);margin:0 0 14px}
+
+  /* the two views become navigational launchers (cards are no longer one big link) */
+  #views{margin-top:14px}
+  .views .view{cursor:default}
+  .view .view-ic{font-size:30px;line-height:1;margin-bottom:6px}
+  .view h2{font-size:1.5rem;margin:0 0 .28em}
+  .view h2 a{color:var(--text)}
+  .view h2 a:hover{color:var(--accent);text-decoration:none}
+  .view > p{color:var(--text-soft);font-size:14.5px;line-height:1.6;margin:0 0 15px;flex:initial}
+  .view .qlinks-label{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-dim);margin:0 0 9px}
+  .view .qlinks{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .view .qlinks a{font-size:12.5px;font-weight:600;padding:6px 12px;border:1px solid var(--border-2);border-radius:999px;color:var(--text-soft);background:var(--bg-soft);transition:border-color .15s,color .15s,transform .15s,background .15s}
+  .view .qlinks a:hover{border-color:var(--accent);color:var(--text);background:var(--bg-card);text-decoration:none;transform:translateY(-1px)}
+  .view .go{margin-top:auto;display:inline-flex;width:fit-content}
+  .view .go:hover{text-decoration:none;transform:translateX(2px);transition:transform .15s}
+
+  /* compact "how I learn" rail */
+  #how .cols{gap:14px}
+  .feature{position:relative;padding-left:20px}
+  .feature::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:3px;border-radius:3px;background:var(--accent);opacity:.55}
+
+  /* pillars: make "you are here" the clear anchor */
+  #pillars .lead{margin-bottom:18px}
+  .pillar{transition:transform .16s,border-color .16s}
+  .pillar:not(.me){opacity:.92}
+  .pillar.me .role{color:var(--accent)}
+</style>
 </head>
 <body>
 <header class="topbar">
   <a class="brand" href="index.html"><span class="dot"></span> AI Knowledge Center</a>
   <div class="spacer"></div>
   <nav>
-    <a href="index.html">Home</a>
     <a href="knowledge/index.html">Knowledge</a>
-    <a href="claude-code-architecture/index.html">Exam prep</a>
+    <a href="claude-code-architecture/index.html">Claude Code</a>
+    <a href="#how">How I learn</a>
+    <a href="#pillars">Bigger picture</a>
+    <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter" target="_blank" rel="noopener">GitHub</a>
   </nav>
   <button class="theme-toggle" aria-label="Toggle theme"></button>
 </header>
 
 <main>
-  <!-- HERO -->
+  <!-- HERO — tight: one idea, then straight into the two ways in -->
   <section class="hero wrap">
     <div class="eyebrow">My AI learning center · the Claude tech stack</div>
     <h1>How I learn AI.</h1>
-    <p class="sub">The <strong>theoretical foundation</strong> behind the AI products I build — distilled into one
-      <em>connected</em> brain so I can see how every piece fits, not a pile of isolated notes. Two ways in:
-      explore the <strong>knowledge graph</strong>, or drill the <strong>Claude Code Architecture exam</strong>.</p>
+    <p class="sub">The <strong>theoretical foundation</strong> behind the AI products I build — one <em>connected</em> brain
+      for the Claude stack, so I can see how every piece fits instead of keeping a pile of isolated notes. Pick a way in.</p>
+    <div class="hero-meta">
+      <span><i class="d"></i><b>2</b> ways in</span>
+      <span><i class="d"></i><b>10</b> Claude Code primitives</span>
+      <span><i class="d"></i><b>136</b>-question CCA-F quiz</span>
+      <span><i class="d"></i>a living, evolving graph</span>
+    </div>
   </section>
 
-  <!-- TWO VIEWS -->
+  <!-- TWO VIEWS — now launchers: each surfaces what's inside + jumps you straight there -->
   <section class="wrap" id="views">
     <div class="views">
-      <a class="view" href="knowledge/index.html">
+      <article class="view">
         <span class="accentbar"></span>
         <div class="view-ic">🧠</div>
-        <h2>Knowledge</h2>
-        <p>A self-organizing graph of atomic notes on the Claude stack, wired together by <strong>typed connections</strong>
-          and laid out on one evolving spine. I land a doc, it connects the dots — so I always see the bigger map.</p>
-        <div class="chips"><span class="chip">self-organizing</span><span class="chip">concept graph</span><span class="chip">connect-the-dots</span></div>
-        <div class="go">Explore the graph →</div>
-      </a>
-      <a class="view" href="claude-code-architecture/index.html">
+        <h2><a href="knowledge/index.html">Knowledge</a></h2>
+        <p>A self-organizing graph of atomic notes on the Claude stack, wired by <strong>typed connections</strong> and laid
+          out on one evolving spine — land a doc, it connects the dots, so I always see the bigger map.</p>
+        <div class="qlinks-label">Jump in</div>
+        <div class="qlinks">
+          <a href="knowledge/index.html#graph">🕸 Concept graph</a>
+          <a href="knowledge/index.html#all-notes">≣ All notes</a>
+          <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/maps/big-picture.md" target="_blank" rel="noopener">🗺 Big picture</a>
+        </div>
+        <a class="go" href="knowledge/index.html">Explore the graph →</a>
+      </article>
+
+      <article class="view">
         <span class="accentbar" style="background:var(--accent-2)"></span>
         <div class="view-ic">🎓</div>
-        <h2>Exam Prep</h2>
+        <h2><a href="claude-code-architecture/index.html">Claude Code Architecture</a></h2>
         <p>An interactive field guide to every Claude Code primitive — one mental model, a comparison matrix, a decision
           guide, scenario walkthroughs, and a <strong>136-question CCA-F practice quiz</strong>.</p>
-        <div class="chips"><span class="chip">10 primitives</span><span class="chip">decision guide</span><span class="chip">136-question quiz</span></div>
-        <div class="go">Start studying →</div>
-      </a>
+        <div class="qlinks-label">Jump in</div>
+        <div class="qlinks">
+          <a href="claude-code-architecture/mental-model.html">Mental model</a>
+          <a href="claude-code-architecture/matrix.html">Comparison matrix</a>
+          <a href="claude-code-architecture/decision.html">Decision guide</a>
+          <a href="claude-code-architecture/scenarios.html">Scenarios</a>
+          <a href="claude-code-architecture/exam-prep.html">Exam prep</a>
+        </div>
+        <a class="go" href="claude-code-architecture/index.html">Open the field guide →</a>
+      </article>
     </div>
   </section>
 
   <!-- HOW I LEARN -->
   <section class="wrap" id="how">
+    <div class="kicker">The method</div>
     <h2>How I learn</h2>
     <p class="lead">A repeatable loop I run on every new area — capture, distill, <em>connect</em>, retrieve.</p>
     <div class="cols">
@@ -74,9 +133,10 @@
 
   <!-- BIGGER PICTURE -->
   <section class="wrap" id="pillars">
+    <div class="kicker">Where this sits</div>
     <h2>Part of a bigger picture</h2>
     <p class="lead">My work sits on three pillars — practical, theoretical, operational. This site is the theoretical one,
-      and it points at one goal: master the Claude stack, pass CCA-F, and help small teams adopt agentic AI.</p>
+      pointed at one goal: master the Claude stack, pass CCA-F, and help small teams adopt agentic AI.</p>
     <div class="pillars">
       <div class="pillar">
         <div class="role">Practical</div><h3>Tide</h3>
