@@ -222,3 +222,11 @@ footer a{color:var(--text-soft)}
   .siderail { position: static; width: auto; flex-basis: auto; min-height: 0; max-height: none; overflow: visible; border-right: none; border-bottom: 1px solid var(--border); }
   .rail-peer { margin-top: 4px; align-self: flex-start; }
 }
+
+/* ---------- horizontal breadcrumb heading bar (above the shell, all pages) ---------- */
+.crumbbar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 22px; border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+}
+.crumbbar .rail-crumbs { font-size: 13px; }
