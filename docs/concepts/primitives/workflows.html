@@ -8,10 +8,18 @@
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="../index.html"><span class="dot"></span> Concepts</a>
+  <nav class="brand crumbs" aria-label="Breadcrumb">
+    <span class="dot"></span>
+    <a href="../../index.html">AI Knowledge Center</a>
+    <span class="sep">&rsaquo;</span>
+    <a href="../index.html">Concepts</a>
+    <span class="sep">&rsaquo;</span>
+    <a href="../index.html#primitives">Primitives</a>
+    <span class="sep">&rsaquo;</span>
+    <span class="here">Dynamic workflows</span>
+  </nav>
   <div class="spacer"></div>
   <nav>
-    <a href="../../index.html">Home</a>
     <a href="../index.html">Overview</a>
     <a href="../graph.html">Concept graph</a>
     <a href="../mental-model.html">Mental model</a>
@@ -23,7 +31,6 @@
 
 <main class="wrap">
   <section style="margin-top:26px">
-    <p class="meta"><a href="../index.html">Home</a> › Dynamic workflows</p>
     <div class="pill-row"><span class="badge l301">Orchestrate</span> <span class="badge">The plan lives in a script</span> <span class="badge preview">research preview · v2.1.154+</span></div>
     <h1>Dynamic workflows <span class="meta" style="font-size:1rem">(+ ultracode)</span></h1>
     <p class="lede">A JavaScript script <strong>Claude writes</strong> that orchestrates subagents at scale &mdash; dozens to

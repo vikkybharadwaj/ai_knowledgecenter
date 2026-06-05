@@ -6,7 +6,6 @@
   // ---- theme toggle (persisted) ----
   var KEY = "cca-theme";
   var saved = localStorage.getItem(KEY);
-  if (saved) document.documentElement.setAttribute("data-theme", saved);
 
   function wireTheme() {
     var btn = document.querySelector(".theme-toggle");

@@ -44,7 +44,6 @@
   <nav>
     <a class="exam-tab" href="concepts/exam.html">🎓 CCA-F Exam Prep</a>
   </nav>
-  <button class="theme-toggle" aria-label="Toggle theme"></button>
 </header>
 
 <main>
@@ -93,23 +92,5 @@
      Content is distilled in my own words and cited; models &amp; previews are datestamped because they go stale fast.</p>
 </footer>
 
-<script>
-(function () {
-  var KEY = "cca-theme", saved = localStorage.getItem(KEY);
-  if (saved) document.documentElement.setAttribute("data-theme", saved);
-  var btn = document.querySelector(".theme-toggle");
-  if (!btn) return;
-  var lab = function () {
-    var d = document.documentElement.getAttribute("data-theme") !== "light";
-    btn.textContent = d ? "☀ Light" : "☾ Dark";
-  };
-  lab();
-  btn.addEventListener("click", function () {
-    var next = document.documentElement.getAttribute("data-theme") !== "light" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem(KEY, next); lab();
-  });
-})();
-</script>
 </body>
 </html>
