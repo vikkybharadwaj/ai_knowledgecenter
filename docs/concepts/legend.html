@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Legend — what the badges mean</title>
+<meta name="description" content="A legend for the badges used across the Concepts pages: altitude/grouping, enforcement (hard vs soft), and maturity (GA, preview, experimental).">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .legend-table { width: 100%; border-collapse: collapse; margin: 14px 0 6px; }
+  .legend-table td { padding: 12px 10px; border-top: 1px solid var(--border); vertical-align: top; }
+  .legend-table td:first-child { white-space: nowrap; width: 1%; }
+  .legend-table td p { margin: 0; color: var(--text-soft); font-size: 14px; line-height: 1.55; }
+  .axis-head { display: flex; align-items: baseline; gap: 10px; margin-top: 30px; }
+  .axis-head .n { font-size: 12px; font-weight: 800; color: var(--accent); letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <nav class="brand crumbs" aria-label="Breadcrumb">
+    <span class="dot"></span>
+    <a href="../index.html">AI Knowledge Center</a>
+    <span class="sep">&rsaquo;</span>
+    <a href="index.html">Concepts</a>
+    <span class="sep">&rsaquo;</span>
+    <span class="here">Legend</span>
+  </nav>
+  <div class="spacer"></div>
+  <nav>
+    <a href="index.html">Overview</a>
+    <a href="graph.html">Concept graph</a>
+    <a href="mental-model.html">Mental model</a>
+    <a href="matrix.html">Comparison matrix</a>
+    <a href="decision.html">Decide</a>
+    <a class="cta" href="exam.html">🎓 CCA-F Exam Prep</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <section class="hero" style="padding:42px 0 8px">
+    <div class="eyebrow">Concepts · reference</div>
+    <h1>Legend — what the badges mean</h1>
+    <p class="lede">Every primitive page opens with a row of badges, like the one on
+      <a href="primitives/policies.html">Policies</a>:</p>
+    <div class="pill-row" style="margin:14px 0 0">
+      <span class="badge l301">Governance</span>
+      <span class="badge det">Hard · client-enforced</span>
+      <span class="badge ga">GA</span>
+    </div>
+    <p style="color:var(--text-soft);margin-top:12px">They read left to right as <strong>three independent axes</strong>:
+      <em>where it sits</em> (altitude) · <em>who&rsquo;s in control</em> (enforcement) · <em>how finished it is</em> (maturity).
+      Extra plain badges may tack on a version or a spec date.</p>
+  </section>
+
+  <!-- AXIS 1 -->
+  <div class="axis-head"><span class="n">AXIS 1</span><h2 style="margin:0">Altitude — how much coordination</h2></div>
+  <p style="color:var(--text-soft)">The first, <strong>colored</strong> badge. It marks the primitive&rsquo;s grouping — the
+    same three altitudes the rest of the site uses. Colour = altitude; the word may vary by primitive.</p>
+  <table class="legend-table">
+    <tr><td><span class="badge l101">Foundations</span></td>
+      <td><p>Drive <strong>one session</strong> well — the soft context that steers a single agentic loop.</p></td></tr>
+    <tr><td><span class="badge l201">Extend</span></td>
+      <td><p>Extend a session — reusable know-how, external reach, guaranteed behaviour, and the first taste of parallelism.</p></td></tr>
+    <tr><td><span class="badge l301">Orchestrate</span> <span class="badge l301">Governance</span></td>
+      <td><p>Orchestrate <strong>many agents</strong> &amp; fleet governance. <em>Governance</em> is the same altitude, used when
+        the primitive is about control rather than coordination (e.g. policies).</p></td></tr>
+  </table>
+
+  <!-- AXIS 2 -->
+  <div class="axis-head"><span class="n">AXIS 2</span><h2 style="margin:0">Enforcement — who&rsquo;s in control</h2></div>
+  <p style="color:var(--text-soft)">The middle badge. Does the client <strong>guarantee</strong> the behaviour, or does the
+    model <strong>choose</strong> to follow it?</p>
+  <table class="legend-table">
+    <tr><td><span class="badge det">Hard · client-enforced</span> <span class="badge det">Hard · deterministic</span></td>
+      <td><p><strong>Hard.</strong> Runs or blocks <strong>regardless of what the model decides</strong> — hooks, permission
+        rules, managed policies. The escape hatch from &ldquo;the model usually complies.&rdquo;</p></td></tr>
+    <tr><td><span class="badge">Soft · model-mediated</span></td>
+      <td><p><strong>Soft.</strong> Guidance the model reads and <em>usually</em> follows, with no compliance guarantee —
+        CLAUDE.md, skills, output styles.</p></td></tr>
+    <tr><td><span class="badge">Tools model-invoked</span> <span class="badge">Coordinated by the main session</span></td>
+      <td><p>Plain (uncoloured) badges in this slot just <strong>describe the mechanism</strong> — who calls it or how it&rsquo;s
+        wired — when &ldquo;hard / soft&rdquo; isn&rsquo;t the useful distinction.</p></td></tr>
+  </table>
+
+  <!-- AXIS 3 -->
+  <div class="axis-head"><span class="n">AXIS 3</span><h2 style="margin:0">Maturity — how finished it is</h2></div>
+  <p style="color:var(--text-soft)">The availability badge. How much should you trust it to stay put?</p>
+  <table class="legend-table">
+    <tr><td><span class="badge ga">GA</span></td>
+      <td><p><strong>Generally available.</strong> Stable and documented; safe to build on.</p></td></tr>
+    <tr><td><span class="badge preview">preview</span> <span class="badge preview">research preview</span></td>
+      <td><p><strong>Preview.</strong> Usable but still moving — shapes and flags may change between releases.</p></td></tr>
+    <tr><td><span class="badge exp">experimental</span></td>
+      <td><p><strong>Experimental.</strong> Often off by default; expect rough edges and breaking changes.</p></td></tr>
+    <tr><td><span class="badge">v2.1.139+</span> <span class="badge">open standard · 2024-11-25</span></td>
+      <td><p>Plain trailing badges pin a <strong>version</strong> (the build a feature landed in) or a <strong>spec date</strong>.
+        Datestamps are deliberate — models &amp; previews go stale fast.</p></td></tr>
+  </table>
+
+</main>
+
+<footer class="wrap">
+  <p>AI Knowledge Center · Concepts · Legend. Badge colours are driven by the shared stylesheet, so this page always
+     matches what you see on the primitive pages.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
