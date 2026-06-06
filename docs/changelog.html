@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Change log — AI Knowledge Center</title>
+<meta name="description" content="Every shipped pull request to the AI Knowledge Center, newest first — date, title, what changed, and a link to the exact diff.">
+<meta property="og:title" content="Change log — AI Knowledge Center">
+<meta property="og:description" content="Every shipped pull request, newest first — with links to the exact changes.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="assets/style.css?v=20260605b">
+<style>
+  /* ---- changelog-only ---- */
+  .hero{padding:48px 0 8px}
+  .cl-list{list-style:none;margin:8px 0 0;padding:0;position:relative}
+  .cl-list::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;
+    background:var(--border)}
+  .cl-entry{position:relative;padding:0 0 26px 34px}
+  .cl-entry::before{content:"";position:absolute;left:0;top:6px;width:16px;height:16px;
+    border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+  .cl-when{font-family:var(--mono);font-size:12.5px;color:var(--text-dim);letter-spacing:.3px}
+  .cl-title{font-size:1.12rem;font-weight:700;color:var(--text);margin:.18em 0 .25em}
+  .cl-desc{color:var(--text-soft);font-size:14.5px;line-height:1.6;margin:0 0 .5em}
+  .cl-links{display:flex;gap:8px;flex-wrap:wrap}
+  .cl-links a{font-size:12.5px;font-weight:600;padding:4px 10px;border:1px solid var(--border-2);
+    border-radius:8px;color:var(--text-soft)}
+  .cl-links a:hover{border-color:var(--accent);color:var(--text);text-decoration:none}
+  .cl-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;
+    padding:2px 8px;border-radius:999px;background:var(--bg-soft);border:1px solid var(--border-2);
+    color:var(--text-soft);margin-left:8px;vertical-align:middle}
+  .cl-empty{color:var(--text-dim);font-size:14.5px}
+</style>
+</head>
+<body>
+<header class="crumbbar">
+  <nav class="rail-crumbs" aria-label="Breadcrumb">
+    <span class="dot"></span>
+    <a href="index.html">AI Knowledge Center</a>
+    <span class="sep">&rsaquo;</span>
+    <span class="here">Change log</span>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">What changed · newest first</div>
+    <h1>Change log</h1>
+    <p class="sub">Every pull request that ships to the AI Knowledge Center, automatically logged here with the
+      date it landed, what it changed, and a link to the exact diff on GitHub.</p>
+  </section>
+
+  <ul class="cl-list">
+  <!-- CHANGELOG:START -->
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-06 · 05:51</div>
+    <div class="cl-title">auto-ship 11 file(s) — 20260606-055110<span class="cl-tag">Docs</span></div>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/33" target="_blank" rel="noopener">PR #33 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/9fa35a3c4d96368684e6ba6f15a0bf02b962f006" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-06 · 05:04</div>
+    <div class="cl-title">auto-ship 7 file(s) — 20260606-050445<span class="cl-tag">Docs</span></div>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/31" target="_blank" rel="noopener">PR #31 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/a1d36e4ccfe48148daf684faccb0c00cfd7fd6c3" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 20:16</div>
+    <div class="cl-title">land dynamic-workflows notes + Concepts card lands on Overview<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">docs: land dynamic-workflows article as two connected notes</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/30" target="_blank" rel="noopener">PR #30 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/4d6e2a3908ad4409b8d9ede9d9506694bcdf96e8" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 17:12</div>
+    <div class="cl-title">hub breadcrumb says &quot;Concepts&quot;, not &quot;Primitives&quot;<span class="cl-tag">Fix</span></div>
+    <p class="cl-desc">The #28 merge auto-applied #27&#x27;s index.html breadcrumb edit (Concepts→Primitives) to the new Concepts hub, so the hub&#x27;s crumb disagreed with its active rail item (&quot;Overview&quot;). Restore &quot;Concepts&quot;.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/29" target="_blank" rel="noopener">PR #29 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/d460a3c1c6c503918c914049c99f17531413bb74" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 17:11</div>
+    <div class="cl-title">give Concepts a real landing hub; ship top-nav refactor<span class="cl-tag">Feature</span></div>
+    <p class="cl-desc">The &quot;Concepts&quot; tab (and every breadcrumb &quot;Concepts&quot;) landed on the Primitives page because concepts/index.html *was* the Primitives page. Add a dedicated Concepts hub at index.html (overview + &quot;ways in&quot; cards, mirroring the exam hub) and move the primitives field guide to its own concepts/primitives.html. Add a uniform &quot;Overview&quot; rail item across all concept pages and retarget every Primitives rail/breadcrumb link.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/28" target="_blank" rel="noopener">PR #28 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/f17ad71e5813ab158fec9aad67f303c28c8752f9" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 15:54</div>
+    <div class="cl-title">tidy breadcrumbs and primitive h1s<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">Drop the em-dash/parenthetical subtitles from primitive page &lt;h1&gt;s (MCP, Conventions, Policies, Skills, Dynamic workflows) and the mental-model deep-dive link, and fix the Concepts/About-the-exam breadcrumbs so each page&#x27;s crumb matches its left-nav label.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/27" target="_blank" rel="noopener">PR #27 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/b975f3e1f1357aadcd3c8c9bc99e5a5da4f84a41" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 15:32</div>
+    <div class="cl-title">rename Deep dives→Primitives + land Concepts card on Mental model<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">docs: rename &quot;Deep dives&quot; concept to &quot;Primitives&quot;</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/26" target="_blank" rel="noopener">PR #26 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/ffa7aabecfa6aba3f102345e7c2bc3d0916a9f84" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 14:56</div>
+    <div class="cl-title">keep the home &quot;AI Knowledge Center&quot; h1 on one line<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">The shared .hero h1 rule caps width at 14ch, which wrapped the 19-char home title onto two lines. Override it in the home-only style block: drop the width cap, force nowrap, and use a clamp() font-size so it still scales down on narrow phones instead of overflowing.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/25" target="_blank" rel="noopener">PR #25 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/74a001ba66945c6826079dcf54ce08d3fa71cf28" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 14:40</div>
+    <div class="cl-title">rename &quot;Deep dives&quot; concept to &quot;Primitives&quot;<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">Relabel the Concepts left-nav item &quot;Deep dives&quot; → &quot;Primitives&quot; across all 15 concept pages (it is the primitives index), and update the matching descriptive mentions in the hub hero, README, and CLAUDE.md. Left genuinely distinct uses untouched (exam-prep &quot;deep dives&quot;, the CSS accordion comment, and the inline &quot;dynamic-workflows deep dive&quot; link).</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/24" target="_blank" rel="noopener">PR #24 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/bf4a7a46dde272dd00568d7cf24bfbe72f4d9de1" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 14:27</div>
+    <div class="cl-title">reorder Concepts rail — Mental model first<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">New rail order: Mental model → Deep dives → Concept graph → Comparison matrix → Decide (then the divider + Legend). Leads with the mental model as the orientation entry point. Applied across all 15 Concepts pages; active states and relative paths preserved.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/23" target="_blank" rel="noopener">PR #23 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/00d46997af4c7391029fc4c8dd65a8a3622f3969" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 14:26</div>
+    <div class="cl-title">add Legend as a left-nav tab below Decide<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">Surface the badge legend as its own rail tab across every Concepts page, separated from the primary nav by a thin divider so it reads as a cross-reference rather than a peer of the main views. Adds a .rail-sep divider style and marks the tab active on legend.html.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/22" target="_blank" rel="noopener">PR #22 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/347cb2676519761aaeea5a625782b3caa47f80ca" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 14:14</div>
+    <div class="cl-title">make Deep dives a left-nav tab, drop the Overview sheet<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">Rename the &quot;Overview&quot; rail tab to &quot;Deep dives&quot; across every Concepts page and refocus the landing page (index.html) on the nine primitive deep-dive cards. Removes the &quot;two ways in&quot; overview framing and the redundant &quot;Go broad&quot; concept-graph pointer section — the concept graph is already its own nav tab. The #primitives anchor is preserved so the primitive-page breadcrumbs still resolve.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/21" target="_blank" rel="noopener">PR #21 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/16986d206722b1e9460e4435fb494f43602ec81a" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 14:04</div>
+    <div class="cl-title">move breadcrumb to a full-width horizontal heading bar above the rail<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">Moves the breadcrumb out of the left rail into its **own full-width horizontal heading bar** at the top of every page, consistent across all 18 Concepts/Exam pages.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/20" target="_blank" rel="noopener">PR #20 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/cf6967253e1944abd887160a1a29c59e5b157553" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 13:59</div>
+    <div class="cl-title">render the left rail — cache-bust style.css + add rail rules to root stylesheet<span class="cl-tag">Fix</span></div>
+    <p class="cl-desc">Fixes the left rail rendering unstyled (stacked at the top instead of a left column).</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/19" target="_blank" rel="noopener">PR #19 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/ca0dfd85e01187f7a3b377877777574a5bb2530c" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 13:54</div>
+    <div class="cl-title">left-column nav rail across all pages + exam as a peer of Concepts<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">Replaces the horizontal top nav bar with a consistent **left-column rail** on all 18 Concepts/Exam pages, and fixes the section hierarchy.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/18" target="_blank" rel="noopener">PR #18 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/3deeb29af6cf4df9784ec896525b4c3ae60b1161" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 13:49</div>
+    <div class="cl-title">add an accessible badge legend + link it from every pill-row<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">Adds an accessible **Legend** for the badges that appear on every primitive page (e.g. on Policies: `Governance` · `Hard · client-enforced` · `GA`).</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/17" target="_blank" rel="noopener">PR #17 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/3797b533254f9360e940ea6decbcdd2dfdec09e3" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 13:47</div>
+    <div class="cl-title">simplify landing page to one title + two cards<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">Strips the landing page down to **one title + two cards**, per request.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/16" target="_blank" rel="noopener">PR #16 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/805ceb05944b830ef5f6e5dadd019b2c2d3a3853" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 13:41</div>
+    <div class="cl-title">frame Concepts overview as a clear broad-vs-deep structure<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">Makes the Concepts overview read as one intentional structure — **two ways in**:</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/15" target="_blank" rel="noopener">PR #15 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/27a949bf05aa38e7c01c5011c4907be4aad2dfb4" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 13:26</div>
+    <div class="cl-title">breadcrumb nav + brand-home + drop Home/theme toggle<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">Site-wide navigation IA so every page shows where it sits and how to get back:</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/14" target="_blank" rel="noopener">PR #14 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/d725e18c4eec1b973f8f8ad3b5d07ea55279a166" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 11:02</div>
+    <div class="cl-title">remove theme toggle from the 9 primitives sub-pages<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">docs(concepts): trim Overview + drop theme toggle and nav-active highlight</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/13" target="_blank" rel="noopener">PR #13 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/d3c6c3be485d6579944582350d7d60050fab0538" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 10:59</div>
+    <div class="cl-title">trim Overview + drop theme toggle and nav-active highlight<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">Remove the header light/dark theme toggle from all 8 concepts pages (graph.html&#x27;s inline toggle script already null-guards, layout/tag controls that reuse .theme-toggle styling are kept) - Drop the current-page nav-active highlight (.topbar nav a.active) so &#x27;Overview&#x27; renders identically to the other nav links - Overview (index.html): remove the &#x27;Start here / one idea&#x27; and &#x27;The progression / ladder&#x27; sections; keep hero, the nine deep-dive cards, and the concept-graph pointer - Comparison matrix (matrix.html): remove the &#x27;Terminology corrections&#x27; section</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/12" target="_blank" rel="noopener">PR #12 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/6b12c19acc00522193477a0cfb5a958999bb485b" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-05 · 10:14</div>
+    <div class="cl-title">add &quot;Building &amp; advising on AI stacks&quot; consulting cluster<span class="cl-tag">Docs</span></div>
+    <p class="cl-desc">Answers the recurring question — &quot;Claude Code is itself a harness, so when do I use it vs build my own, and how do I bootstrap a company&#x27;s AI stack?&quot; — and fills the two spine gaps the Big Picture flagged as empty (api, agent-sdk) plus lights up the products layer with its first scenario.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/9" target="_blank" rel="noopener">PR #9 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/d2b6bce4ccc6b642673c799a1374a1b07fec11c6" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-03 · 11:36</div>
+    <div class="cl-title">root redirect to /docs so Pages serves the HTML hub<span class="cl-tag">Fix</span></div>
+    <p class="cl-desc">When Pages serves from the repo root, it renders README.md instead of the docs/ landing hub. This root redirect (index.html takes precedence over README.md) bounces the site root into ./docs/, so the HTML experience loads regardless of whether Pages is set to root or /docs.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/3" target="_blank" rel="noopener">PR #3 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/23a5a43451b13159349189afe28307f6efa754be" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-03 · 11:27</div>
+    <div class="cl-title">AI Knowledge Center landing hub + GitHub Pages</div>
+    <p class="cl-desc">Add a hosted landing hub (docs/index.html) driven by a module registry, with the Claude Code Architecture module live, a self-contained design system, .nojekyll, and README/Pages docs.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/2" target="_blank" rel="noopener">PR #2 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/e2863deb5c744c031895e00e66bbbf2ce32df2ba" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <li class="cl-entry">
+    <div class="cl-when">2026-06-03 · 11:10</div>
+    <div class="cl-title">Claude Code architecture field guide + CCA-F exam prep</div>
+    <p class="cl-desc">Interactive multi-page learning site (mental model, comparison matrix, decision ladder, 9 primitive deep-dives, 6-scenario walkthroughs), a 136-question CCA-F practice bank with quiz engine, and cross-cutting knowledge incl. the canonical harness-vs-context note. Grounded in code.claude.com/docs and the official exam guide.</p>
+    <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/1" target="_blank" rel="noopener">PR #1 →</a><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/419649570569041fac4ba13574d65a19535716d1" target="_blank" rel="noopener">View diff</a></div>
+  </li>
+  <!-- CHANGELOG:END -->
+  </ul>
+</main>
+
+<footer class="wrap" style="margin-top:48px">
+  <a class="btn" href="index.html">← Back to home</a>
+</footer>
+
+</body>
+</html>
