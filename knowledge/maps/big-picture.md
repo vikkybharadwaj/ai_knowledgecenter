@@ -56,11 +56,13 @@ The named features that tune one zone of the loop.
 - [Model Context Protocol (MCP)](../notes/model-context-protocol.md) — how the model *reaches* external tools/data.
 - [Claude Code — Multi-Agent Development](../notes/claude-code-multi-agent-development.md) — worktrees / agent teams / subagents.
 - [Dynamic Workflows & the Ultraplan loop](../notes/dynamic-workflows-and-ultraplan.md) — scripting fan-out across many agents.
+- [One shared context vs. many isolated contexts](../notes/execution-context-isolation.md) — what actually forks: *modes* stay in one window, *agents* fork fresh ones (+ the six permission modes).
 
 ### 🧩 Agent patterns — *how you compose*
 Reusable shapes for putting primitives together.
 - [Agentic AI Reference Architecture](../notes/agentic-ai-reference-architecture.md) — the nine-layer production blueprint; what separates a prototype from a real system.
 - [Use Claude Code vs build your own](../notes/claude-code-vs-build-your-own.md) — the four-altitude decision tree (buy → use → configure → own the loop).
+- [Six dynamic-workflow patterns & the three failure modes they fix](../notes/dynamic-workflow-patterns.md) — classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament, loop-until-done.
 
 ### 🚀 Products & consulting — *what you ship*
 Real-world scenarios that pull concepts together for a client outcome.

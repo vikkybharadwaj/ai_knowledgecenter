@@ -11,6 +11,12 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-05  When a new source overlaps an existing note, **split by idea, don't fatten the note**. The
+            "Master Dynamic Workflows" article overlapped `dynamic-workflows-and-ultraplan`, but it carried
+            two genuinely distinct ideas — the *execution-context model* (modes stay in one window, agents
+            fork) and the *six-pattern catalog + three failure modes*. Made each its own atomic note rather
+            than bloating the existing one; atomicity keeps connections precise. [→ knowledge/notes/execution-context-isolation.md, knowledge/notes/dynamic-workflow-patterns.md]
+
 2026-06-05  The Concepts section now has a dedicated **hub** at `concepts/index.html` (overview + "ways in"
             cards), mirroring the exam section's `exam.html`. The primitives field guide moved to its own
             `concepts/primitives.html`. Before, `index.html` *was* the primitives page, so the "🧠 Concepts"
