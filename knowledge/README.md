@@ -35,6 +35,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 | [Claude Code — Multi-Agent Development](notes/claude-code-multi-agent-development.md) | claude-code | budding |
 | [Dynamic Workflows & the Ultraplan loop](notes/dynamic-workflows-and-ultraplan.md) | claude-code | evergreen |
 | [One shared context vs. many isolated contexts](notes/execution-context-isolation.md) | claude-code | budding |
+| [worktree.baseRef — fresh vs head](notes/worktree-base-ref-fresh-vs-head.md) | claude-code | seedling |
 | [Agentic AI Reference Architecture](notes/agentic-ai-reference-architecture.md) | patterns | evergreen |
 | [Six dynamic-workflow patterns & three failure modes](notes/dynamic-workflow-patterns.md) | patterns | budding |
 | [Use Claude Code vs build your own](notes/claude-code-vs-build-your-own.md) | patterns | evergreen |
