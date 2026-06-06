@@ -12,7 +12,9 @@
 <style>
   /* ---- home-only ---- */
   .hero{padding:60px 0 16px}
-  .hero h1{margin:0;max-width:none;white-space:nowrap;font-size:clamp(1.6rem,7.5vw,3rem)}
+  .hero h1{margin:0 0 .45em;max-width:none;white-space:nowrap;font-size:clamp(1.6rem,7.5vw,3rem)}
+  .hero .sub{max-width:70ch}
+  .hero .sub strong{color:var(--text)}
   .cards2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
   @media (max-width:640px){.cards2{grid-template-columns:1fr}}
   .hub{display:block;position:relative;background:var(--bg-card);border:1px solid var(--border);
@@ -33,6 +35,9 @@
 <main class="wrap">
   <section class="hero">
     <h1>AI Knowledge Center</h1>
+    <p class="sub"><strong>A living, personal learning hub for the Claude tech stack.</strong> Built in the open ·
+      <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter" target="_blank" rel="noopener">source on GitHub</a>.
+      Content is distilled in my own words and cited; models &amp; previews are datestamped because they go stale fast.</p>
   </section>
 
   <div class="cards2">
@@ -56,10 +61,9 @@
   </div>
 </main>
 
-<footer class="wrap" style="margin-top:48px">
-  <p><strong>AI Knowledge Center</strong> — a living, personal learning hub for the Claude tech stack. Built in the open ·
-     <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter" target="_blank" rel="noopener">source on GitHub</a>.
-     Content is distilled in my own words and cited; models &amp; previews are datestamped because they go stale fast.</p>
+<footer class="wrap" style="margin-top:48px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+  <span>Every shipped pull request lands here as a dated entry.</span>
+  <a class="btn" href="changelog.html">🗒 Change log →</a>
 </footer>
 
 </body>
