@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Routines — unattended cloud automation, on a schedule / GitHub event / API call</title>
+<link rel="stylesheet" href="../assets/style.css?v=20260605c">
+</head>
+<body>
+<header class="crumbbar">
+  <nav class="rail-crumbs" aria-label="Breadcrumb">
+    <span class="dot"></span>
+    <a href="../../index.html">AI Knowledge Center</a>
+    <span class="sep">&rsaquo;</span>
+    <a href="../index.html">Concepts</a>
+    <span class="sep">&rsaquo;</span>
+    <a href="../primitives.html">Primitives</a>
+    <span class="sep">&rsaquo;</span>
+    <span class="here">Routines</span>
+  </nav>
+</header>
+<div class="shell">
+  <aside class="siderail">
+    <nav class="railnav">
+      <a href="../index.html">Overview</a>
+      <a href="../mental-model.html">Mental model</a>
+      <a href="../primitives.html">Primitives</a>
+      <a href="../graph.html">Concept graph</a>
+      <a href="../matrix.html">Comparison matrix</a>
+      <a href="../decision.html">Decide</a>
+      <span class="rail-sep" role="separator"></span>
+      <a href="../legend.html">Legend</a>
+    </nav>
+    <a class="rail-peer" href="../exam.html">🎓 CCA-F Exam Prep &rarr;</a>
+  </aside>
+
+<main class="wrap">
+  <section style="margin-top:26px">
+    <div class="pill-row"><span class="badge l301">Operate</span> <span class="badge">Soft · unattended cloud run</span> <span class="badge preview">research preview</span> <a class="legend-link" href="../legend.html">&#9432;&nbsp;legend</a></div>
+    <h1>Routines</h1>
+    <p class="lede">A <strong>saved Claude Code configuration</strong> &mdash; a prompt + one or more repositories + connectors/MCP,
+      packaged once and run <strong>automatically on Anthropic-managed cloud infrastructure</strong>, with your laptop closed.
+      Each routine fires on one or more <strong>triggers</strong>: a schedule, a GitHub event, or an API call. Part of
+      <em>Claude Code on the web</em>.</p>
+  </section>
+
+  <section>
+    <p class="analogy"><strong>Analogy —</strong> a <strong>cron job with a brain, run in someone else&rsquo;s data center</strong>.
+      You write the standing order and hand over the keys (which repos, which connectors); the cloud wakes it on a timer, a repo
+      event, or a webhook, and it does the whole job unattended &mdash; with no one at the keyboard to approve anything.</p>
+  </section>
+
+  <div class="callout key"><span class="label">&ldquo;Routines&rdquo; vs &ldquo;a routine&rdquo; — the name collision</span>
+    If you&rsquo;ve called a <em>saved procedure</em> &ldquo;a routine,&rdquo; you meant a <a href="skills.html">skill</a> &mdash;
+    that&rsquo;s still true. Anthropic now <em>also</em> ships a feature literally named <strong>Routines</strong>, but it&rsquo;s a
+    different thing: <em>unattended cloud automation</em> triggered on a schedule / GitHub event / API call, not a procedure loaded
+    into a session. A <strong>skill</strong> = <em>what to do</em>; a <strong>routine</strong> = <em>when &amp; where it runs unattended</em>.</div>
+
+  <section>
+    <h2>Mechanism — a saved config + triggers</h2>
+    <p>A routine packages a <strong>prompt</strong>, one or more <strong>repositories</strong>, an <strong>environment</strong>, and
+      <strong>connectors</strong> into one saved object on your claude.ai account. A trigger then runs it as a full autonomous cloud
+      session:</p>
+    <div class="flow">
+      <div class="step"><span class="n">save once</span><br><strong>the config</strong><br><span class="meta">prompt + repos + environment + connectors, stored in the cloud</span></div>
+      <div class="step"><span class="n">a trigger fires</span><br><strong>schedule / GitHub / API</strong><br><span class="meta">a timer, a repo event, or an authenticated POST</span></div>
+      <div class="step"><span class="n">unattended run</span><br><strong>a cloud session</strong><br><span class="meta">no permission prompts; pushes to <code>claude/</code> branches; review after</span></div>
+    </div>
+    <pre># CLI: scheduled triggers only (API/GitHub triggers are added on the web)
+/schedule daily PR review at 9am     # create a recurring routine, conversationally
+/schedule in 2 weeks, remove the feature flag   # a one-off future run
+/schedule list                       # see all routines
+/schedule update                     # edit cadence / set a custom cron
+/schedule run                        # fire a one-off run now
+
+# API trigger: each routine exposes its own /fire endpoint (illustrative)
+curl -X POST https://api.anthropic.com/.../routines/&lt;routine-id&gt;/fire \
+  -H "Authorization: Bearer $ROUTINE_TOKEN" \
+  -H "anthropic-beta: experimental-cc-routine-2026-04-01" \   # experimental beta header
+  -H "content-type: application/json" \
+  -d '{"text":"optional run-specific context, e.g. an alert body"}'</pre>
+    <details class="acc"><summary>Triggers, environment &amp; branch reach</summary><div class="acc-body">
+      <p><strong>Triggers (combinable in one routine):</strong> <em>Scheduled</em> — recurring (hourly/daily/weekdays/weekly, min
+        interval 1&nbsp;h) or a one-off future run; custom cron via <code>/schedule update</code>. <em>API</em> — per-routine
+        <code>POST /fire</code> with a bearer token + optional <code>text</code>. <em>GitHub</em> — <code>pull_request.*</code> /
+        <code>release.*</code> with filters (author, base/head branch, labels, draft/merged). Each GitHub event starts its own session.</p>
+      <p><strong>Environment:</strong> default <em>Trusted</em> network (package registries + common dev domains only); configurable
+        network access, environment variables/secrets, and a cached setup script. <strong>Branches:</strong> by default a run can only
+        push to <code>claude/</code>-prefixed branches unless <em>Allow unrestricted branch pushes</em> is enabled per repo.</p>
+      <p><strong>Identity &amp; limits:</strong> belongs to your individual claude.ai account; actions appear as <em>you</em> (your
+        GitHub identity, your connectors). Draws down subscription usage like an interactive session, plus a per-account daily run cap
+        (one-off runs exempt). Admins can disable routines org-wide.</p>
+    </div></details>
+    <p class="meta">Created/managed at <code>claude.ai/code/routines</code>, the Desktop app, or the CLI <code>/schedule</code>
+      (CLI = scheduled triggers only; API/GitHub triggers are added on the web).</p>
+  </section>
+
+  <section>
+    <h2>When to reach for it</h2>
+    <div class="usewhen"><span class="ic">✓</span><div>A maintenance job should run on a <em>schedule</em> with your laptop closed (dependency audit, changelog, backlog triage).</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>Claude should react to a <em>GitHub event</em> (a new PR, a release) without you watching.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>An external system (monitoring, CD pipeline, internal tool) should <em>fire a Claude run via an authenticated webhook</em>.</div></div>
+    <h3>When <em>not</em> to</h3>
+    <div class="usewhen no"><span class="ic">✕</span><div>A task that repeats <em>inside an open session</em> → <a href="workflows.html">/loop</a> (in-session, local).</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>A schedule that must run <em>on your own machine</em> with local files → Desktop scheduled tasks.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>A pure pass/fail CI gate that runs <em>your</em> scripts → GitHub Actions (not a Claude session).</div></div>
+  </section>
+
+  <section>
+    <h2>Best practices</h2>
+    <div class="usewhen"><span class="ic">★</span><div>Scope tight: pick the <em>minimum</em> repos + connectors &mdash; an unattended run has no approval step to catch a wrong move.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Keep the default <code>claude/</code>-branch restriction on; only enable unrestricted pushes where you truly need it.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Verify behaviour with a one-off (<code>/schedule run</code>) before trusting the cadence &mdash; one-off runs are exempt from the daily cap.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Keep network on <em>Trusted</em> and pass secrets via the environment, not the prompt. Write a self-contained prompt &mdash; nobody&rsquo;s there to clarify.</div></div>
+  </section>
+
+  <div class="callout warn-c"><span class="label">No prompts means no safety net</span>
+    A run is a <strong>fully autonomous</strong> cloud session: <strong>no permission prompts, no approval mode</strong>. Its blast
+    radius is whatever you pre-selected &mdash; repos, branch-push setting, environment, connectors &mdash; and it acts <em>as you</em>.
+    A green run status only means the session started and exited cleanly, <em>not</em> that the task succeeded &mdash; open the run to
+    confirm. Scope every routine to the minimum it needs.</div>
+
+  <section><h2>Sources</h2>
+    <ul><li><a href="https://code.claude.com/docs/en/routines">Routines</a> ·
+      <a href="https://code.claude.com/docs/en/claude-code-on-the-web">Claude Code on the web</a> ·
+      <a href="https://code.claude.com/docs/en/scheduled-tasks">/loop &amp; in-session scheduling</a></li></ul>
+  </section>
+</main>
+</div>
+<footer class="wrap"><p>Reviewed 2026-06-06 · <a href="../matrix.html">back to the matrix</a></p></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

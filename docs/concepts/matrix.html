@@ -50,12 +50,12 @@
       <h1>The comparison matrix</h1>
       <p class="lede">The one table to return to whenever a new feature lands and you&rsquo;re not sure where it fits.
         Read a row left-to-right to understand a primitive; read a column top-to-bottom to compare them on one
-        dimension. Reviewed 2026-06-02.</p>
+        dimension. Reviewed 2026-06-06.</p>
     </section>
 
     <!-- MAIN MATRIX -->
     <section id="matrix">
-      <h2>All nine primitives, side by side</h2>
+      <h2>All ten primitives, side by side</h2>
       <p>&ldquo;Soft&rdquo; = the model chooses whether to follow it. &ldquo;Hard&rdquo; = the client enforces it regardless of the model.
         &ldquo;Who holds the plan&rdquo; is the single best discriminator for the coordination primitives.</p>
       <p class="meta">The left columns help you <strong>understand</strong> each primitive; the right ones help you <strong>use</strong> it well &mdash;
@@ -127,7 +127,7 @@
               <td><span class="badge ga">GA</span></td>
             </tr>
             <tr>
-              <td><a href="primitives/skills.html"><strong>Skills</strong></a><br><span class="meta">the real &ldquo;routines&rdquo;</span></td>
+              <td><a href="primitives/skills.html"><strong>Skills</strong></a><br><span class="meta">what &ldquo;a routine&rdquo; usually means</span></td>
               <td>Reusable instructions/procedures + optional scripts, loaded on demand.</td>
               <td><span class="badge l201">Extend</span></td>
               <td class="cell-warn">Soft</td>
@@ -216,18 +216,33 @@
               <td>Stale/uncleaned worktrees pile up; you still owe the merge/rebase reconciliation later.</td>
               <td><span class="badge preview">preview</span><br><span class="meta">v2.1.139+</span></td>
             </tr>
+            <tr>
+              <td><a href="primitives/routines.html"><strong>Routines</strong></a><br><span class="meta">unattended cloud automation</span></td>
+              <td>A saved config (prompt + repos + connectors) run automatically on Anthropic&rsquo;s cloud on a trigger.</td>
+              <td><span class="badge l301">Operate</span></td>
+              <td class="cell-warn">Soft<span class="meta"> (reach is hard-bounded)</span></td>
+              <td><strong>A trigger</strong> &mdash; a schedule, a GitHub event, or an API <code>/fire</code> call.</td>
+              <td>cloud (Anthropic-managed); <code>claude.ai/code/routines</code>, Desktop, CLI <code>/schedule</code></td>
+              <td>1 cloud run / trigger</td>
+              <td><strong>Own context</strong> &mdash; a fresh autonomous cloud session, off your machine entirely.</td>
+              <td>Draws down subscription usage like an interactive session, plus a per-account daily run cap (one-offs exempt).</td>
+              <td>You want Claude to run unattended on a schedule / GitHub event / API call, laptop closed.</td>
+              <td><a href="primitives/skills.html">Skills</a> &amp; <a href="primitives/mcp.html">MCP</a> &mdash; bundled into the saved config the run uses.</td>
+              <td>No permission prompts during a run &mdash; scope repos/branches/connectors tightly; it acts as you.</td>
+              <td><span class="badge preview">research preview</span></td>
+            </tr>
           </tbody>
         </table>
       </div>
-      <p class="meta">Versions/status as of 2026-06-02 and move fast &mdash; re-check the linked docs before relying on a preview flag.</p>
+      <p class="meta">Versions/status as of 2026-06-06 and move fast &mdash; re-check the linked docs before relying on a preview flag.</p>
     </section>
 
     <!-- LEVELS -->
     <section id="levels">
       <h2>Coordination groupings (not a ladder)</h2>
-      <p>The same nine, grouped by <strong>how much coordination</strong> they add &mdash; from steering one session to
-        orchestrating many. It&rsquo;s a map, not a ladder: go broad or deep wherever a real trigger appears. Most
-        everyday work lives in the first two groups.</p>
+      <p>The same ten, grouped by <strong>how much coordination</strong> they add &mdash; from steering one session to
+        orchestrating many and running unattended. It&rsquo;s a map, not a ladder: go broad or deep wherever a real trigger
+        appears. Most everyday work lives in the first two groups.</p>
       <div class="table-wrap">
         <table>
           <thead>
@@ -249,10 +264,10 @@
               <td>Subagents hit context limits, or need to communicate.</td>
             </tr>
             <tr>
-              <td><span class="badge l301">Orchestrate at scale</span></td>
-              <td>Coordinate <strong>many agents</strong> and govern across repos.</td>
-              <td>Agent teams · Dynamic workflows · Worktrees + Agent view · plugins · policies</td>
-              <td>The plan leaves your single context &mdash; into a lead, a script, or many sessions; plus org governance.</td>
+              <td><span class="badge l301">Orchestrate / Operate</span></td>
+              <td>Coordinate <strong>many agents</strong>, govern across repos &mdash; and run <strong>unattended</strong> in the cloud.</td>
+              <td>Agent teams · Dynamic workflows · Worktrees + Agent view · plugins · policies · Routines (cloud)</td>
+              <td>The plan leaves your single context &mdash; into a lead, a script, many sessions, or a saved cloud config a trigger runs; plus org governance.</td>
               <td>&mdash; (the widest group; here you optimize cost &amp; trust)</td>
             </tr>
           </tbody>
@@ -335,7 +350,7 @@
     <section id="terms">
       <h2>Terminology fixes</h2>
       <p>Three pairs that sound like the same thing under different names. Two of three are <strong>not</strong> &mdash;
-        and one isn&rsquo;t an official term at all.</p>
+        and one word now names <strong>two different things</strong>.</p>
 
       <h3>&ldquo;Conventions or policies &mdash; same thing?&rdquo; &rarr; <span class="cell-bad">No.</span></h3>
       <div class="table-wrap">
@@ -352,11 +367,10 @@
         to do. CLAUDE.md instructions shape Claude&rsquo;s behavior but are not a hard enforcement layer.&rdquo;</em>
         (<a href="https://code.claude.com/docs/en/memory">memory</a>, <a href="https://code.claude.com/docs/en/settings">settings</a>)</p>
 
-      <h3>&ldquo;Routines&rdquo; &rarr; <span class="cell-warn">Not an official Claude Code term.</span></h3>
-      <p>Zero hits in the docs. Map what you mean to a real primitive:</p>
-      <div class="usewhen"><span class="ic">&rarr;</span><div>A saved, repeatable procedure → a <a href="primitives/skills.html"><strong>skill</strong></a> (custom slash commands were merged into skills).</div></div>
-      <div class="usewhen"><span class="ic">&rarr;</span><div>Orchestrated multi-step planning across many agents → a <a href="primitives/workflows.html"><strong>dynamic workflow</strong></a> (what <code>ultracode</code> triggers).</div></div>
-      <div class="usewhen"><span class="ic">&rarr;</span><div>A default voice/format every turn → an <strong>output style</strong>.</div></div>
+      <h3>&ldquo;Routines&rdquo; &rarr; <span class="cell-warn">Two different meanings &mdash; don&rsquo;t conflate them.</span></h3>
+      <p>The word now points at two things:</p>
+      <div class="usewhen"><span class="ic">&rarr;</span><div><strong>Colloquial</strong> &mdash; a <em>saved, repeatable procedure</em> you call &ldquo;a routine&rdquo; → a <a href="primitives/skills.html"><strong>skill</strong></a> (custom slash commands were merged into skills). Orchestration across many agents → a <a href="primitives/workflows.html"><strong>dynamic workflow</strong></a>; a default voice/format → an <strong>output style</strong>.</div></div>
+      <div class="usewhen"><span class="ic">&rarr;</span><div><strong>Official</strong> &mdash; the feature literally named <a href="primitives/routines.html"><strong>Routines</strong></a>: a saved config run <em>unattended on Anthropic&rsquo;s cloud</em> on a schedule / GitHub event / API call. <em>Not</em> a saved procedure &mdash; a different primitive entirely.</div></div>
 
       <h3>&ldquo;Rules or hooks &mdash; all the same?&rdquo; &rarr; <span class="cell-bad">No &mdash; three things wear the word &ldquo;rule.&rdquo;</span></h3>
       <div class="table-wrap">
@@ -389,7 +403,7 @@
 </div>
 
 <footer class="wrap">
-  <p>AI Knowledge Center · Concepts · reviewed 2026-06-02 · <a href="index.html">home</a></p>
+  <p>AI Knowledge Center · Concepts · reviewed 2026-06-06 · <a href="index.html">home</a></p>
 </footer>
 <script src="assets/app.js"></script>
 </body>

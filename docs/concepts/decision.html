@@ -48,7 +48,7 @@
       <h1>Decide what to use</h1>
       <p class="lede">Don&rsquo;t design your setup up front. Add a primitive the moment a concrete trigger appears &mdash;
         this is Anthropic&rsquo;s own guidance (<a href="https://code.claude.com/docs/en/features-overview">features overview</a>).
-        Reviewed 2026-06-02.</p>
+        Reviewed 2026-06-06.</p>
     </section>
 
     <!-- LADDER -->
@@ -70,6 +70,9 @@
             <tr><td>You&rsquo;re juggling several independent tasks at once</td><td><a href="primitives/agent-view.html"><strong>agent view</strong></a> (+ worktrees)</td><td><span class="badge l301">Orchestrate</span></td></tr>
             <tr><td>A second repo needs the same setup</td><td>a <strong>plugin</strong></td><td><span class="badge l301">Orchestrate</span></td></tr>
             <tr><td>Something must be blocked/required across the org</td><td><a href="primitives/policies.html"><strong>managed policy</strong></a></td><td><span class="badge l301">Orchestrate</span></td></tr>
+            <tr><td>You want Claude to run unattended <em>on a schedule</em>, laptop closed</td><td><a href="primitives/routines.html">a <strong>routine</strong></a> (scheduled trigger)</td><td><span class="badge l301">Operate</span></td></tr>
+            <tr><td>Claude should react to a <em>GitHub event</em> (PR / release) on its own</td><td><a href="primitives/routines.html">a <strong>routine</strong></a> (GitHub trigger)</td><td><span class="badge l301">Operate</span></td></tr>
+            <tr><td>An external system should <em>fire a Claude run via webhook/API</em></td><td><a href="primitives/routines.html">a <strong>routine</strong></a> (API <code>/fire</code>)</td><td><span class="badge l301">Operate</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -102,6 +105,11 @@
           <div class="usewhen"><span class="ic">→</span><div>Peers that must talk → <strong>agent team</strong></div></div>
           <div class="usewhen"><span class="ic">→</span><div>Massive fan-out + cross-check → <strong>dynamic workflow</strong></div></div>
           <div class="usewhen"><span class="ic">→</span><div>Many independent sessions you supervise → <strong>agent view</strong></div></div>
+        </div>
+        <div class="card"><h3>Running unattended</h3>
+          <div class="usewhen"><span class="ic">→</span><div>On a schedule / GitHub event / API call, laptop closed → <strong>routine</strong> (cloud)</div></div>
+          <div class="usewhen"><span class="ic">→</span><div>Repeating <em>inside an open session</em> → <strong>/loop</strong> (local)</div></div>
+          <div class="usewhen no"><span class="ic">✕</span><div>A routine run has <em>no</em> permission prompts &mdash; scope its repos/connectors first.</div></div>
         </div>
       </div>
 
@@ -154,6 +162,14 @@
           (they don&rsquo;t talk). <strong>Agent teams</strong> is the <em>model</em> coordinating peers that <em>do</em> talk.
           Worktrees sit under both as the file-isolation mechanism.</p>
       </div></details>
+
+      <details class="acc"><summary>Routines vs /loop vs Skills vs GitHub Actions</summary><div class="acc-body">
+        <p><strong>Routines</strong> = a saved config run <em>unattended on Anthropic&rsquo;s cloud</em> on a schedule / GitHub
+          event / API call (laptop closed). <strong>/loop</strong> = the same idea but <em>local, inside an open CLI session</em>.
+          <strong>Skills</strong> = the <em>saved procedure</em> a run (or a session) executes &mdash; the &ldquo;what,&rdquo; not the
+          &ldquo;when/where.&rdquo; <strong>GitHub Actions</strong> = generic CI that runs <em>your</em> scripts on repo events, not a
+          Claude session. A routine can <em>call</em> skills and connectors during its cloud run.</p>
+      </div></details>
     </section>
 
     <!-- COST -->
@@ -171,7 +187,7 @@
 </div>
 
 <footer class="wrap">
-  <p>AI Knowledge Center · Concepts · reviewed 2026-06-02 · <a href="index.html">home</a> ·
+  <p>AI Knowledge Center · Concepts · reviewed 2026-06-06 · <a href="index.html">home</a> ·
      trigger ladder from <a href="https://code.claude.com/docs/en/features-overview">features overview</a>.</p>
 </footer>
 <script src="assets/app.js"></script>

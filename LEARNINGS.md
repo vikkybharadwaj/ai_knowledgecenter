@@ -11,6 +11,12 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-06  **Terminology "corrections" have a shelf life — datestamp them like prices.** The vault asserted
+            in ~6 places that "routines isn't a real term" (it meant skills); Anthropic then shipped a feature
+            *literally named* Routines (unattended cloud automation). A flat denial aged into a contradiction.
+            Fix pattern: prefer "X usually means Y" over "X isn't real," and when a name collides, document
+            *both meanings* rather than picking one. [→ knowledge/notes/claude-code-routines.md]
+
 2026-06-05  When a new source overlaps an existing note, **split by idea, don't fatten the note**. The
             "Master Dynamic Workflows" article overlapped `dynamic-workflows-and-ultraplan`, but it carried
             two genuinely distinct ideas — the *execution-context model* (modes stay in one window, agents
