@@ -49,7 +49,7 @@
       <div class="eyebrow">The conceptual backbone</div>
       <h1>The mental model</h1>
       <p class="lede">If you only internalize one page, make it this one. Everything else &mdash; skills, hooks, MCP,
-        teams, workflows &mdash; is a special case of the structure below. Reviewed 2026-06-02.</p>
+        teams, workflows &mdash; is a special case of the structure below. Reviewed 2026-06-06.</p>
     </section>
 
     <!-- HARNESS -->
@@ -197,7 +197,7 @@ const findings = await Promise.all(
 );
 
 // PHASE 2 — cross-check (claims that disagree get dropped or flagged)
-const verified = crossCheck(findings);   // e.g. "routines" → 0 hits → flagged non-canonical
+const verified = crossCheck(findings);   // e.g. "routines" → 2 meanings: colloquial=skills, official=cloud automation
 
 // PHASE 3 — synthesize (only the answer reaches the main context)
 return synthesize(verified);             // → this field guide</pre>
@@ -216,7 +216,7 @@ return synthesize(verified);             // → this field guide</pre>
 </div>
 
 <footer class="wrap">
-  <p>AI Knowledge Center · Concepts · reviewed 2026-06-02 · <a href="index.html">home</a> ·
+  <p>AI Knowledge Center · Concepts · reviewed 2026-06-06 · <a href="index.html">home</a> ·
      harness/context/prompt model migrated from the Tide visual docs.</p>
 </footer>
 <script src="assets/app.js"></script>

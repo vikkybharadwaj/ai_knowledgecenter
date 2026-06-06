@@ -38,14 +38,14 @@
     <div class="eyebrow">Concepts · the Claude tech stack</div>
     <h1>One model, many ways to steer it.</h1>
     <p class="sub">Hooks, skills, subagents, MCP, agent teams, dynamic workflows, agent view, worktrees,
-      conventions, policies&hellip; it&rsquo;s a lot of nouns. Pick one primitive and read it end to end &mdash;
+      conventions, policies, routines&hellip; it&rsquo;s a lot of nouns. Pick one primitive and read it end to end &mdash;
       each card opens a full page with the definition, an analogy, the mechanism, who invokes it, when to reach
       for it (and when not), best practices, and setup. The <span class="badge det">hard</span> badge means
       client-enforced; otherwise it&rsquo;s soft, model-mediated.
       <a href="legend.html">See the full badge legend &rarr;</a></p>
     <p class="meta" style="margin-top:14px">Want the wide view instead? The
       <a href="graph.html">concept graph</a> wires every idea together across the whole stack.
-      &middot; Last reviewed 2026-06-02 · grounded in
+      &middot; Last reviewed 2026-06-06 · grounded in
       <a href="https://code.claude.com/docs">code.claude.com/docs</a> &amp; the
       <a href="https://claude.com/blog/introducing-dynamic-workflows-in-claude-code">dynamic-workflows announcement</a>.</p>
   </section>
@@ -72,8 +72,8 @@
 
       <a class="card" href="primitives/skills.html"><span class="arrow">→</span>
 
-        <h3>Skills <span class="meta">(&amp; what &ldquo;routines&rdquo; really means)</span></h3>
-        <p>Reusable instructions/procedures loaded on demand. &ldquo;Routines&rdquo; isn&rsquo;t a real term &mdash; it&rsquo;s this.</p></a>
+        <h3>Skills <span class="meta">(&amp; what people mean by &ldquo;a routine&rdquo;)</span></h3>
+        <p>Reusable instructions/procedures loaded on demand. A <em>saved procedure</em> you call &ldquo;a routine&rdquo; is this &mdash; not the new <a href="primitives/routines.html">Routines</a> feature.</p></a>
 
       <a class="card" href="primitives/mcp.html"><span class="arrow">→</span>
 
@@ -99,6 +99,11 @@
         <span class="badge preview">preview</span>
         <h3>Worktrees + Agent view</h3>
         <p>Git isolation per session, plus one dashboard to dispatch &amp; watch many of them.</p></a>
+
+      <a class="card" href="primitives/routines.html"><span class="arrow">→</span>
+        <span class="badge preview">research preview</span>
+        <h3>Routines <span class="meta">(unattended cloud automation)</span></h3>
+        <p>A saved config that runs <em>itself</em> on Anthropic&rsquo;s cloud &mdash; on a schedule, a GitHub event, or an API call.</p></a>
     </div>
   </section>
 
@@ -106,7 +111,7 @@
 </div>
 
 <footer class="wrap">
-  <p>AI Knowledge Center · Concepts · reviewed 2026-06-02.
+  <p>AI Knowledge Center · Concepts · reviewed 2026-06-06.
      Primary sources: <a href="https://code.claude.com/docs">code.claude.com/docs</a>,
      <a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Agent Skills</a>,
      <a href="https://claude.com/blog/introducing-dynamic-workflows-in-claude-code">Dynamic workflows</a>.

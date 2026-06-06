@@ -58,6 +58,7 @@ The named features that tune one zone of the loop.
 - [Dynamic Workflows & the Ultraplan loop](../notes/dynamic-workflows-and-ultraplan.md) — scripting fan-out across many agents.
 - [One shared context vs. many isolated contexts](../notes/execution-context-isolation.md) — what actually forks: *modes* stay in one window, *agents* fork fresh ones (+ the six permission modes).
 - [worktree.baseRef — fresh vs head](../notes/worktree-base-ref-fresh-vs-head.md) — the git dial under worktree parallelism: branch agents from clean published code (`fresh`) or your live WIP HEAD (`head`).
+- [Claude Code Routines — unattended cloud automation](../notes/claude-code-routines.md) — the saved config that runs *itself* on Anthropic's cloud on a schedule / GitHub event / API call (the "operate it for me" primitive).
 
 ### 🧩 Agent patterns — *how you compose*
 Reusable shapes for putting primitives together.

@@ -9,6 +9,7 @@ connections:
   - { to: model-context-protocol, type: used-with, why: "MCP is one of the nine primitives — the model's reach into external tools." }
   - { to: claude-code-multi-agent-development, type: used-with, why: "Subagents, agent teams and worktrees are the 'coordinate work' primitives." }
   - { to: dynamic-workflows-and-ultraplan, type: used-with, why: "Dynamic workflows are the script-orchestrates-many-agents primitive." }
+  - { to: claude-code-routines, type: used-with, why: "Routines are the unattended cloud 'operate' primitive — a saved config a trigger runs on Anthropic's cloud." }
 source: { url: "https://code.claude.com/docs", author: "code.claude.com/docs, distilled in-house", retrieved: 2026-06-02 }
 date: 2026-06-02
 depth: evergreen
@@ -54,18 +55,19 @@ managed policies            ← hard ceiling over everything (org governance)
     worktrees   = git isolation UNDER all of the above
 ```
 
-## The nine primitives (one line each)
+## The ten primitives (one line each)
 | Primitive | One line | Enforcement |
 |---|---|---|
 | **Conventions** (CLAUDE.md / rules files) | Soft markdown guidance read every session | Soft |
 | **Policies** (managed settings + permission rules) | Client-enforced governance; can't be overridden | **Hard** |
 | **Hooks** | Your code, run on lifecycle events | **Hard** |
-| **Skills** | Reusable procedures loaded on demand (the real "routines") | Soft |
+| **Skills** | Reusable procedures loaded on demand (what "a routine" usually means) | Soft |
 | **MCP** | Protocol giving the model new tools & data | Tools model-invoked |
 | **Subagents** | Delegated worker; only a summary returns | Soft |
 | **Agent teams** | Lead + peer sessions that message each other | Soft |
 | **Dynamic workflows** | A script Claude writes that orchestrates many agents | Soft |
 | **Worktrees + Agent view** | Git isolation + a dashboard to supervise many sessions | Soft |
+| **Routines** | Saved config run unattended on Anthropic's cloud on a trigger (schedule / GitHub / API) | Soft (reach hard-bounded) |
 
 ## When to reach for each (free-form, not a ladder)
 There's no fixed order to learn these — go broad or deep as a real need appears. The one piece
@@ -74,12 +76,15 @@ trigger shows up** (see the trigger ladder on the site's Decide page).
 - *Drive one session well:* CLAUDE.md / memory, slash commands, the Explore→Plan→Code→Commit loop.
 - *Extend a session:* skills, MCP, hooks, subagents.
 - *Orchestrate at scale & govern:* agent teams, dynamic workflows, worktrees + agent view, plugins, policies.
+- *Operate unattended:* routines — a saved config the cloud runs on a schedule / GitHub event / API call.
 
 ## Terminology corrections (common confusions)
 - **Conventions ≠ Policies.** CLAUDE.md is *soft* guidance; managed settings are *hard*,
   client-enforced. Not synonyms.
-- **"Routines" is not an official term.** Saved procedure → *skill*; orchestration → *dynamic
-  workflow*; default voice/format → *output style*.
+- **"Routines" now names two different things.** *Colloquially*, a saved procedure you call "a
+  routine" → a *skill* (orchestration → *dynamic workflow*; default voice/format → *output style*).
+  *Officially*, [Routines](claude-code-routines.md) is a real feature: a saved config run unattended
+  on Anthropic's cloud on a schedule / GitHub event / API call — not a saved procedure.
 - **Rules ≠ Hooks.** Three things wear "rule": *hooks* (code that runs), *permission rules*
   (allow/ask/deny config), and `.claude/rules/*.md` (soft memory). Only a hook executes code.
 
@@ -102,3 +107,4 @@ trigger shows up** (see the trigger ladder on the site's Decide page).
 - **used-with** → [Model Context Protocol](model-context-protocol.md) — the model's reach into external tools.
 - **used-with** → [Claude Code — Multi-Agent Development](claude-code-multi-agent-development.md) — the "coordinate work" primitives.
 - **used-with** → [Dynamic Workflows & the Ultraplan loop](dynamic-workflows-and-ultraplan.md) — script-orchestrates-many-agents.
+- **used-with** → [Claude Code Routines](claude-code-routines.md) — the unattended cloud "operate" primitive.
