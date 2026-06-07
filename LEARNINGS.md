@@ -11,6 +11,12 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-07  **Land a multi-lecture curriculum by its underlying model, not 1-note-per-page.** The 12-lecture
+            "Learn Harness Engineering" site collapsed to 4 atomic notes mapped to the harness's *subsystems*
+            (discipline+5 subsystems / repo-as-record / progressive-disclosure instructions / externalized
+            completion) — denser and better-connected than 12 thin notes that would all overlap our existing
+            harness cluster. Distill to the idea-shape, not the source's chapter count. [→ knowledge/notes/harness-engineering-discipline.md]
+
 2026-06-07  **A stray committed git worktree silently breaks GitHub Pages.** `.claude/worktrees/<name>` got
             committed as a gitlink (mode 160000) with no `.gitmodules`; Pages' checkout runs `git submodule
             update --init` and dies with "No url found for submodule path", so every `pages-build-deployment`

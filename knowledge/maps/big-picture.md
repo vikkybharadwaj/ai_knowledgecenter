@@ -41,6 +41,7 @@ The mental models everything else obeys.
 - [Prompt vs Context vs Harness Engineering](../notes/prompt-context-harness-engineering.md) — the three nested levels of control.
 - [Harness vs Context vs Prompt Engineering](../notes/harness-vs-context-engineering.md) — canonical narrative of the same model; *where a bug lives tells you which level to fix.*
 - [The Anatomy of an Agent Harness](../notes/anatomy-of-an-agent-harness.md) — dissects the "harness" level into its six organs (loop, context, tools, memory, verification, delegation).
+- [Harness engineering — reliability lives outside the model weights](../notes/harness-engineering-discipline.md) — the discipline: capable models still fail; the *same* model swings 20%→100% as you add the five harness subsystems (instructions, tools, environment, state, feedback).
 
 ### 🔌 Claude API — *the engine*
 The raw capabilities a request can use.
@@ -59,12 +60,15 @@ The named features that tune one zone of the loop.
 - [One shared context vs. many isolated contexts](../notes/execution-context-isolation.md) — what actually forks: *modes* stay in one window, *agents* fork fresh ones (+ the six permission modes).
 - [worktree.baseRef — fresh vs head](../notes/worktree-base-ref-fresh-vs-head.md) — the git dial under worktree parallelism: branch agents from clean published code (`fresh`) or your live WIP HEAD (`head`).
 - [Claude Code Routines — unattended cloud automation](../notes/claude-code-routines.md) — the saved config that runs *itself* on Anthropic's cloud on a schedule / GitHub event / API call (the "operate it for me" primitive).
+- [One giant instruction file fails — progressive disclosure](../notes/progressive-disclosure-instructions.md) — why a 600-line `CLAUDE.md` rots (lost-in-the-middle, budget exhaustion) and the entry-file + topic-docs + code-embedded structure that fixes it.
 
 ### 🧩 Agent patterns — *how you compose*
 Reusable shapes for putting primitives together.
 - [Agentic AI Reference Architecture](../notes/agentic-ai-reference-architecture.md) — the nine-layer production blueprint; what separates a prototype from a real system.
 - [Use Claude Code vs build your own](../notes/claude-code-vs-build-your-own.md) — the four-altitude decision tree (buy → use → configure → own the loop).
 - [Six dynamic-workflow patterns & the three failure modes they fix](../notes/dynamic-workflow-patterns.md) — classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament, loop-until-done.
+- [The repository is the agent's only durable memory](../notes/repository-as-system-of-record.md) — "info not in the repo doesn't exist for the agent"; ACID state files (`AGENTS.md`/`PROGRESS.md`/`DECISIONS.md`), the fresh-session test, and rebuild-cost as the metric.
+- [Never let the agent declare its own victory](../notes/completion-is-externalized.md) — externalize "done": feature-list state machines, three-layer/E2E verification, WIP=1 scope control, and observability inside the harness.
 
 ### 🚀 Products & consulting — *what you ship*
 Real-world scenarios that pull concepts together for a client outcome.
