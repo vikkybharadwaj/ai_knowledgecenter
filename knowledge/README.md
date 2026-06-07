@@ -29,6 +29,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 | [Prompt vs Context vs Harness Engineering](notes/prompt-context-harness-engineering.md) | foundations | evergreen |
 | [Harness vs Context vs Prompt Engineering](notes/harness-vs-context-engineering.md) | foundations | evergreen |
 | [The Anatomy of an Agent Harness](notes/anatomy-of-an-agent-harness.md) | foundations | evergreen |
+| [Harness engineering — reliability lives outside the model weights](notes/harness-engineering-discipline.md) | foundations | budding |
 | [The Claude API agent primitives](notes/claude-api-agent-primitives.md) | api | budding |
 | [The Claude Agent SDK](notes/claude-agent-sdk.md) | agent-sdk | budding |
 | [Claude Code Architecture — field guide](notes/claude-code-architecture.md) | claude-code | evergreen |
@@ -38,8 +39,11 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 | [One shared context vs. many isolated contexts](notes/execution-context-isolation.md) | claude-code | budding |
 | [worktree.baseRef — fresh vs head](notes/worktree-base-ref-fresh-vs-head.md) | claude-code | seedling |
 | [Claude Code Routines — unattended cloud automation](notes/claude-code-routines.md) | claude-code | budding |
+| [One giant instruction file fails — progressive disclosure](notes/progressive-disclosure-instructions.md) | claude-code | budding |
 | [Agentic AI Reference Architecture](notes/agentic-ai-reference-architecture.md) | patterns | evergreen |
 | [Six dynamic-workflow patterns & three failure modes](notes/dynamic-workflow-patterns.md) | patterns | budding |
+| [The repository is the agent's only durable memory](notes/repository-as-system-of-record.md) | patterns | budding |
+| [Never let the agent declare its own victory](notes/completion-is-externalized.md) | patterns | budding |
 | [Use Claude Code vs build your own](notes/claude-code-vs-build-your-own.md) | patterns | evergreen |
 | [Scenario: bootstrapping a company's AI stack](notes/bootstrapping-company-ai-stack.md) | products | budding |
 
