@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Concept graph — Concepts · AI Knowledge Center</title>
 <meta name="description" content="A self-organizing, dot-connected knowledge base for the Claude tech stack: every concept wired to the others by typed links and laid out on one evolving spine. Go broad or deep at will.">
-<link rel="stylesheet" href="../assets/style.css?v=20260605c">
+<link rel="stylesheet" href="../assets/style.css?v=20260607a">
 </head>
 <body>
 <header class="crumbbar">
@@ -37,12 +37,13 @@
       <div id="legend" class="legend"></div>
     </div>
     <div class="graph-wrap">
-      <canvas id="graph"></canvas>
+      <svg id="graph"></svg>
       <aside id="node-panel"></aside>
     </div>
     <p class="meta" style="color:var(--text-dim);font-size:13px;margin-top:8px">
-      Drag nodes to rearrange · toggle <strong>Spine</strong> (layered by stack) ↔ <strong>Free</strong> (force layout) ·
-      filter by tag. Node size = number of connections.</p>
+      Hover a chip to trace its connections · drag to rearrange · click to read the note in-page ·
+      toggle <strong>Spine</strong> (lanes by stack layer) ↔ <strong>Free</strong> (force layout) · filter by tag.
+      The number on each chip is its connection count.</p>
   </section>
 
   <section id="all-notes" style="margin-bottom:60px">
