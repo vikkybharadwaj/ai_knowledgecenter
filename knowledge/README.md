@@ -12,6 +12,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 - 🗺️ **[The Big Picture](maps/big-picture.md)** — the spine: how the whole Claude stack fits together (the dot-connecting map).
 - 🏗️ **[Building & advising on AI stacks](maps/building-ai-stacks.md)** — the consulting cluster: *when to use Claude Code vs build your own harness*, and how to bootstrap a company's AI stack.
 - 🕸️ **[Interactive concept graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html)** — see every note and its typed links, laid out by spine layer.
+- 📒 **[Git glossary](git-glossary.md)** — plain-English definitions of the git/GitHub terms (commit, branch, push, PR, worktree…) used to maintain this base.
 
 ## How this works (the model in 5 lines)
 1. **Flat pool.** Every note is one atomic idea in [`notes/`](notes/) — no topic folders, no 101/201/301 levels.
@@ -36,6 +37,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 | [Dynamic Workflows & the Ultraplan loop](notes/dynamic-workflows-and-ultraplan.md) | claude-code | evergreen |
 | [One shared context vs. many isolated contexts](notes/execution-context-isolation.md) | claude-code | budding |
 | [worktree.baseRef — fresh vs head](notes/worktree-base-ref-fresh-vs-head.md) | claude-code | seedling |
+| [Claude Code Routines — unattended cloud automation](notes/claude-code-routines.md) | claude-code | budding |
 | [Agentic AI Reference Architecture](notes/agentic-ai-reference-architecture.md) | patterns | evergreen |
 | [Six dynamic-workflow patterns & three failure modes](notes/dynamic-workflow-patterns.md) | patterns | budding |
 | [Use Claude Code vs build your own](notes/claude-code-vs-build-your-own.md) | patterns | evergreen |
