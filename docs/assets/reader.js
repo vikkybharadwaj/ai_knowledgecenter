@@ -15,8 +15,12 @@
     "claude-code": "#d98b5f", patterns: "#bb9af7", products: "#f7768e"
   };
 
-  // unified registry: notes + map docs, keyed by slug
+  // unified registry: concepts (the map) + notes (the sources) + map docs, by slug
   var BY = {};
+  (D.concepts || []).forEach(function (c) {
+    BY[c.slug] = { kind: "concept", title: c.title, html: c.html,
+                   layer: c.layer, label: c.kind || "concept" };
+  });
   (D.nodes || []).forEach(function (n) {
     BY[n.slug] = { kind: "note", title: n.title, html: n.html,
                    layer: n.layer, depth: n.depth, tags: n.tags || [] };
@@ -50,12 +54,19 @@
     var it = BY[slug];
     if (!it) return false;
     var head = "";
-    if (it.kind === "note") {
+    if (it.kind === "concept") {
       head =
         '<div class="kc-reader-head">' +
           '<span class="np-layer" style="background:' + (LAYER_COLORS[it.layer] || "#9aa5bd") + '">' +
             (D.layerLabels[it.layer] || it.layer) + "</span>" +
-          '<span class="np-depth">' + (it.depth || "") + "</span>" +
+          '<span class="np-depth">' + (it.label || "concept") + "</span>" +
+        "</div>";
+    } else if (it.kind === "note") {
+      head =
+        '<div class="kc-reader-head">' +
+          '<span class="np-layer" style="background:' + (LAYER_COLORS[it.layer] || "#9aa5bd") + '">' +
+            (D.layerLabels[it.layer] || it.layer) + "</span>" +
+          '<span class="np-depth">source note · ' + (it.depth || "") + "</span>" +
         "</div>";
     }
     bodyEl.innerHTML = head + (it.html || "<p>(no content yet)</p>");

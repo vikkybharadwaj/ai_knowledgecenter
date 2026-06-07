@@ -21,6 +21,7 @@ import datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NOTES_DIR = os.path.join(ROOT, "knowledge", "notes")
+CONCEPTS_DIR = os.path.join(ROOT, "knowledge", "concepts")
 MAPS_DIR = os.path.join(ROOT, "knowledge", "maps")
 README = os.path.join(ROOT, "knowledge", "README.md")
 OUT = os.path.join(ROOT, "docs", "assets", "knowledge.js")
@@ -37,6 +38,15 @@ LAYER_LABELS = {
     "claude-code": "Claude Code",
     "patterns": "Agent Patterns",
     "products": "Products & Consulting",
+}
+
+# Strict-dependency edge vocabulary for the concept graph. Every arrow points
+# from a thing to what it NEEDS — follow arrows DOWN the stack to dependencies.
+DEP_TYPES = {
+    "runs-on": "runs on",       # execution substrate (Agent SDK runs on the Claude API)
+    "depends-on": "depends on", # needs it to function (Routines depend on Claude Code)
+    "part-of": "part of",       # a component inside a larger system (Skills part of Claude Code)
+    "uses": "uses",             # composes / orchestrates a lower primitive (Orchestration uses Subagents)
 }
 
 
@@ -65,19 +75,25 @@ def scalar(fm, key, default=None):
     return val
 
 
-def parse_tags(fm):
-    m = re.search(r"^tags:\s*\[(.*?)\]\s*$", fm, re.MULTILINE)
+def parse_list(fm, key="tags"):
+    """Parse an inline list scalar:  key: [a, b, c]"""
+    m = re.search(r"^%s:\s*\[(.*?)\]\s*$" % re.escape(key), fm, re.MULTILINE)
     if not m:
         return []
     return [t.strip().strip('"\'') for t in m.group(1).split(",") if t.strip()]
 
 
-def parse_connections(fm):
-    """Parse the `connections:` block of inline dicts:
+def parse_tags(fm):
+    return parse_list(fm, "tags")
+
+
+def parse_connections(fm, key="connections"):
+    """Parse a `key:` block of inline dicts:
          - { to: slug, type: kind, why: "..." }
        Uses targeted regex so commas/em-dashes inside `why` don't break parsing."""
     conns = []
-    block = re.search(r"^connections:\s*\n(.*?)(?=^\S|\Z)", fm + "\n", re.MULTILINE | re.DOTALL)
+    block = re.search(r"^%s:\s*\n(.*?)(?=^\S|\Z)" % re.escape(key),
+                      fm + "\n", re.MULTILINE | re.DOTALL)
     if not block:
         return conns
     for line in block.group(1).splitlines():
@@ -332,6 +348,75 @@ def copy_images(body, srcdir):
 
 
 # ---------------------------------------------------------------------------
+# concepts — the tech-stack nodes the graph renders. Notes are their SOURCES.
+# ---------------------------------------------------------------------------
+def scan_concepts():
+    """Read knowledge/concepts/*.md. Each concept is a tech-stack node with a
+    short summary, strict dependency edges to OTHER concepts, and source-note
+    links. Returns (raw_concepts, raw_cedges)."""
+    raw, cedges = [], []
+    if not os.path.isdir(CONCEPTS_DIR):
+        return raw, cedges
+    for fn in sorted(os.listdir(CONCEPTS_DIR)):
+        if not fn.endswith(".md") or fn.startswith("_"):
+            continue
+        with open(os.path.join(CONCEPTS_DIR, fn), encoding="utf-8") as f:
+            text = f.read()
+        fm, body = split_frontmatter(text)
+        if fm is None:
+            print("  ! concept skipped (no frontmatter): %s" % fn)
+            continue
+        slug = scalar(fm, "slug") or fn[:-3]
+        raw.append({
+            "slug": slug,
+            "title": scalar(fm, "title", slug),
+            "kind": scalar(fm, "kind", "concept"),
+            "layer": scalar(fm, "layer", "foundations"),
+            "summary": scalar(fm, "summary", ""),
+            "sources": parse_list(fm, "sources"),
+            "_body": body.strip(),
+        })
+        for c in parse_connections(fm, "edges"):
+            cedges.append({"from": slug, "to": c["to"], "type": c["type"], "why": c["why"]})
+    return raw, cedges
+
+
+def build_concept_html(c, out_edges, ctitle_of, ntitle_of):
+    """Render a concept's in-page reader body: summary, optional prose, the
+    strict-dependency list (linked to other concepts), and Sources (linked to
+    the notes that go deeper)."""
+    parts = []
+    if c.get("summary"):
+        parts.append('<p class="kc-lede">%s</p>' % render_inline(c["summary"], ctitle_of))
+    if c.get("_body"):
+        parts.append(render_markdown(c["_body"], ntitle_of))
+    if out_edges:
+        rows = []
+        for e in out_edges:
+            label = DEP_TYPES.get(e["type"], e["type"])
+            tgt = ctitle_of(e["to"]) or e["to"]
+            why = (' — <span class="kc-why">%s</span>' % esc(e["why"])) if e["why"] else ""
+            rows.append(
+                '<li><span class="kc-dep">%s</span> '
+                '<a href="#" class="kc-link" data-slug="%s">%s</a>%s</li>'
+                % (esc(label), esc(e["to"]), esc(tgt), why))
+        parts.append('<div class="kc-relhead">Depends on</div><ul class="kc-rellist">%s</ul>'
+                     % "".join(rows))
+    if c.get("sources"):
+        rows = []
+        for s in c["sources"]:
+            t = ntitle_of(s)
+            if not t:
+                continue
+            rows.append('<li><a href="#" class="kc-link" data-slug="%s">%s</a></li>'
+                        % (esc(s), esc(t)))
+        if rows:
+            parts.append('<div class="kc-relhead">Sources — go deeper</div>'
+                         '<ul class="kc-srclist">%s</ul>' % "".join(rows))
+    return "\n".join(parts)
+
+
+# ---------------------------------------------------------------------------
 def main():
     raw_notes, raw_edges = [], []   # raw_notes: collected before rendering (need title map first)
     for fn in sorted(os.listdir(NOTES_DIR)):
@@ -404,16 +489,55 @@ def main():
     for e in edges:
         deg[e["from"]] += 1
         deg[e["to"]] += 1
-    orphans = []
     for n in nodes:
         n["connCount"] = deg[n["slug"]]
-        if n["kind"] == "concept" and deg[n["slug"]] == 0:
-            orphans.append(n["slug"])
+
+    # ---- concepts: the tech-stack nodes the graph renders (notes are sources) ----
+    raw_concepts, raw_cedges = scan_concepts()
+    cknown = {c["slug"] for c in raw_concepts}
+    nknown = {n["slug"] for n in nodes}
+
+    cedges, cdropped = [], []
+    for e in raw_cedges:
+        (cedges if e["to"] in cknown else cdropped).append(e)
+    for e in cdropped:
+        print("  ! dropped concept edge to unknown concept: %s -> %s" % (e["from"], e["to"]))
+
+    bad_sources = []
+    for c in raw_concepts:
+        for s in c.get("sources", []):
+            if s not in nknown:
+                bad_sources.append("%s -> %s" % (c["slug"], s))
+
+    cdeg = {c["slug"]: 0 for c in raw_concepts}
+    for e in cedges:
+        cdeg[e["from"]] += 1
+        cdeg[e["to"]] += 1
+
+    out_by = {}
+    for e in cedges:
+        out_by.setdefault(e["from"], []).append(e)
+    ctitle_index = {c["slug"]: c["title"] for c in raw_concepts}
+
+    def ctitle_of(slug):
+        return ctitle_index.get(slug)
+
+    concepts, corphans = [], []
+    for c in raw_concepts:
+        body = c.pop("_body")
+        c["html"] = build_concept_html(dict(c, _body=body), out_by.get(c["slug"], []),
+                                       ctitle_of, title_of)
+        c["degree"] = cdeg[c["slug"]]
+        if cdeg[c["slug"]] == 0:
+            corphans.append(c["slug"])
+        concepts.append(c)
 
     data = {
         "generated": datetime.date.today().isoformat(),
         "layers": LAYERS,
         "layerLabels": LAYER_LABELS,
+        "concepts": concepts,
+        "conceptEdges": cedges,
         "nodes": nodes,
         "edges": edges,
         "docs": docs,
@@ -425,12 +549,14 @@ def main():
         f.write("window.KC_DATA = " + json.dumps(data, indent=2, ensure_ascii=False) + ";\n")
 
     print("Wrote %s" % os.path.relpath(OUT, ROOT))
-    print("  nodes: %d   edges: %d   dropped: %d   docs: %d"
-          % (len(nodes), len(edges), len(dropped), len(docs)))
-    if orphans:
-        print("  ⚠ ORPHAN concept notes (no connections — silo risk): %s" % ", ".join(orphans))
+    print("  concepts: %d   conceptEdges: %d   dropped: %d   (notes: %d  noteEdges: %d  docs: %d)"
+          % (len(concepts), len(cedges), len(cdropped), len(nodes), len(edges), len(docs)))
+    if bad_sources:
+        print("  ⚠ concept sources pointing at unknown notes: %s" % ", ".join(bad_sources))
+    if corphans:
+        print("  ⚠ ORPHAN concepts (no dependency edges — silo risk): %s" % ", ".join(corphans))
     else:
-        print("  ✓ no orphans — every concept note is wired into the graph")
+        print("  ✓ no orphans — every concept is wired into the dependency map")
 
 
 if __name__ == "__main__":

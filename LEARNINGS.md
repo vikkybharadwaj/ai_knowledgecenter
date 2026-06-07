@@ -11,6 +11,16 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-07  **The concept graph should plot the TECH STACK, not the articles.** A graph whose nodes are
+            notes (distilled articles) connected by note-relationships teaches you the *reading list*, not the
+            *system*. Reframed it: nodes are now tech-stack **concepts** (primitives/systems/patterns in
+            `knowledge/concepts/`) wired by **strict dependency** edges (`runs-on · depends-on · part-of ·
+            uses`, arrows point to what a thing needs); the 20 atomic notes became **sources** each concept
+            links to for depth. Lesson: a visual learning map is a model of the *domain*, and source material
+            is an input to building it — don't let the artifact you ingested become the artifact you ship.
+            (Also: wrap dense lanes into sub-rows — 13 chips crammed in one row clip; ~6 columns keeps titles
+            legible and the spine still reads top-to-bottom.) [→ knowledge/concepts/, scripts/build-index.py]
+
 2026-06-07  **Land a multi-lecture curriculum by its underlying model, not 1-note-per-page.** The 12-lecture
             "Learn Harness Engineering" site collapsed to 4 atomic notes mapped to the harness's *subsystems*
             (discipline+5 subsystems / repo-as-record / progressive-disclosure instructions / externalized

@@ -5,13 +5,15 @@ connected brain**, not a filing cabinet: atomic notes, wired together with typed
 hanging off a single [**Big Picture spine**](maps/big-picture.md).
 
 > **Go broad** → read the [Big Picture](maps/big-picture.md) or open the
-> [interactive concept graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html).
-> **Go deep** → click into any note and follow its **Connections** wherever they lead.
+> [concept dependency graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html) —
+> the **tech-stack concepts** (primitives, systems, patterns) wired by *what depends on what*, so you learn
+> the Claude stack visually, bottom-up. **Go deep** → click any concept for a short explainer plus the
+> **source notes** behind it, and follow their connections wherever they lead.
 
 ## Start here
 - 🗺️ **[The Big Picture](maps/big-picture.md)** — the spine: how the whole Claude stack fits together (the dot-connecting map).
 - 🏗️ **[Building & advising on AI stacks](maps/building-ai-stacks.md)** — the consulting cluster: *when to use Claude Code vs build your own harness*, and how to bootstrap a company's AI stack.
-- 🕸️ **[Interactive concept graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html)** — see every note and its typed links, laid out by spine layer.
+- 🕸️ **[Concept dependency graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html)** — the tech-stack concepts and what each one depends on, laid out by spine layer (the notes below are its sources).
 - 📒 **[Git glossary](git-glossary.md)** — plain-English definitions of the git/GitHub terms (commit, branch, push, PR, worktree…) used to maintain this base.
 
 ## How this works (the model in 5 lines)

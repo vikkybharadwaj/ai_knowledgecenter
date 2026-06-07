@@ -23,9 +23,11 @@ The argument may be any of:
 If nothing is given, ask what to land.
 
 ## Before you write — load the existing graph
-1. `Glob knowledge/notes/*.md` and skim titles + `slug`/`tags`/`spine_layer` frontmatter so you know
-   what's already here. Read [`knowledge/maps/big-picture.md`](../../../knowledge/maps/big-picture.md)
-   for the current spine and narrative. You can't connect dots you haven't seen.
+1. `Glob knowledge/concepts/*.md` and skim the concept titles/`slug`/`layer` — these are the **graph
+   nodes** the new note will attach to. Then `Glob knowledge/notes/*.md` and skim titles +
+   `slug`/`tags`/`spine_layer` so you know what sources already exist. Read
+   [`knowledge/maps/big-picture.md`](../../../knowledge/maps/big-picture.md) for the current spine and
+   narrative. You can't connect dots you haven't seen.
 
 ## Steps
 1. **Detect & read** the source (above).
@@ -48,13 +50,22 @@ If nothing is given, ask what to land.
    story, update the narrative. Refresh the table in [`knowledge/README.md`](../../../knowledge/README.md).
 6. **Scenarios.** If the new concept suggests a concrete real-world use and no scenario note covers it,
    create/extend a `kind: scenario` note and link concepts into it with `used-in`.
-7. **Regenerate the index.** Run `python3 scripts/build-index.py`. Confirm output shows **0 dropped
-   edges** and **no orphans**. Fix any dropped edge (a typo'd `to:` slug) and re-run.
-8. **Datestamp & log.** Use today's date. If you learned something non-obvious about *organizing* the
+7. **Wire into the CONCEPT map (the graph nodes).** The graph plots tech-stack **concepts** in
+   `knowledge/concepts/`, not notes — notes are their *sources*. So:
+   - **Attach the new note as a source** to the concept(s) it explains: add the note slug to that concept
+     file's `sources:` list. Most lands only deepen an existing concept — this is the common case.
+   - **Add a new concept node only when the stack genuinely gained a part** — a real primitive, system, or
+     pattern that wasn't represented. Mirror the concept schema (summary, `kind`, `layer`, **strict
+     dependency `edges`** of `runs-on · depends-on · part-of · uses` pointing to what it needs, and
+     `sources`). Don't mint a concept for every article — that recreates the notes-as-nodes mistake.
+8. **Regenerate the index.** Run `python3 scripts/build-index.py`. Confirm output shows **0 dropped
+   edges** (notes) **and 0 dropped concept edges**, **no orphan concepts**, and no "sources pointing at
+   unknown notes" warning. Fix any typo'd `to:`/`sources:` slug and re-run.
+9. **Datestamp & log.** Use today's date. If you learned something non-obvious about *organizing* the
    vault, append a dated line to [`LEARNINGS.md`](../../../LEARNINGS.md) (newest at top).
-9. **Teach it back (in the CLI).** Tell Vikram, in a few lines:
-   *where it landed on the spine*, *what it connected to and why*, and *which gap/scenario it feeds*.
-   This is the payoff — make the dot-connection visible.
+10. **Teach it back (in the CLI).** Tell Vikram, in a few lines:
+   *where it landed on the spine*, *which concept(s) it now backs (or the new concept it added and its
+   dependencies)*, and *which gap/scenario it feeds*. This is the payoff — make the dot-connection visible.
 
 ## Note frontmatter (copy this shape exactly)
 ```yaml

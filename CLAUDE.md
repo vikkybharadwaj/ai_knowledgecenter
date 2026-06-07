@@ -11,20 +11,29 @@ not a draft. Structure **emerges** from those connections; it is never imposed u
 
 ## The two views
 1. **Concepts** — the single learning view at `docs/concepts/`. Holds the Claude Code mental model,
-   comparison matrix, decision guide, and primitives, plus the self-organizing **concept graph**
-   of atomic notes (`docs/concepts/graph.html`, generated from `knowledge/notes/`). This is the open-ended half.
+   comparison matrix, decision guide, and primitives, plus the **concept dependency graph**
+   (`docs/concepts/graph.html`). **The graph plots tech-stack CONCEPTS, not notes** — the primitives,
+   systems, and patterns of the Claude stack (Tool Use, MCP, Subagents, Worktrees, Orchestration…) wired
+   by **strict dependency** edges (`runs-on · depends-on · part-of · uses`, arrows point to what a thing
+   needs) so you can learn the stack visually, bottom-up the spine. Concepts live in `knowledge/concepts/`;
+   the **atomic notes are their SOURCES** — distilled article content each concept links to for depth.
+   This is the open-ended half.
 2. **CCA-F Exam Prep** — the exam hub at `docs/concepts/exam.html` (about the exam → `practice.html` quiz →
    `scenarios.html`) + its markdown companions in `exam-prep/`. Preserve it; don't reorganize it.
 
 ## Structure
-- `knowledge/notes/<slug>.md` — **flat pool** of atomic notes (one idea each). No topic folders, no levels.
+- `knowledge/concepts/<slug>.md` — **flat pool of tech-stack CONCEPTS** (the graph nodes): one primitive/
+  system/pattern each, with a summary, strict dependency `edges`, and `sources` (note slugs). These are
+  what the graph renders.
+- `knowledge/notes/<slug>.md` — **flat pool** of atomic SOURCE notes (one distilled idea each). No topic
+  folders, no levels. Notes back concepts; they are no longer the graph's nodes.
 - `knowledge/maps/big-picture.md` — the **spine + narrative synthesis** (the dot-connecting map). Keep it current.
 - `knowledge/maps/<topic>.md` — emergent Maps of Content; create one **only when a cluster earns it**.
 - `knowledge/README.md` — the **Home Note** (dashboard/entry). Hand-curated.
 - `exam-prep/` — markdown companions for the Exam view.
 - `docs/` — the site. `docs/assets/knowledge.js` is **generated** — never hand-edit it.
 - `.claude/skills/land/` — the `/land` ingestion skill. `.claude/hooks/validate-note.sh` — the note guard.
-- `scripts/build-index.py` — regenerates the graph data from note frontmatter.
+- `scripts/build-index.py` — regenerates the graph data from **concept + note** frontmatter.
 
 ## Note schema (every note)
 ```yaml
@@ -45,11 +54,28 @@ claude_specific: true
 Connection types: `builds-on · enables · alternative-to · used-with · part-of · contrasts-with · used-in`.
 Each note also carries a human-readable `## Connections` section mirroring the frontmatter.
 
+## Concept schema (every concept — the graph nodes)
+```yaml
+---
+title: Tool Use
+slug: tool-use                # kebab = filename
+kind: primitive               # primitive | system | pattern | concept
+layer: api                    # foundations | api | agent-sdk | claude-code | patterns | products
+summary: <one line, 2-4 sentences — the explainer shown in the reader>
+edges:                        # strict dependencies to OTHER concepts (>=1; arrows point to what it NEEDS)
+  - { to: messages-api, type: runs-on, why: "<one sentence>" }
+sources: [claude-api-agent-primitives]   # note slugs that go deeper (may be empty)
+---
+<optional short body — appended under the summary in the reader>
+```
+Dependency edge types (strict, all point to the dependency): `runs-on · depends-on · part-of · uses`.
+
 ## How to add knowledge
-- Prefer the **`/land`** skill — it distills, files, connects, updates the map, regenerates the index,
-  and teaches where the idea fits. (See `.claude/skills/land/SKILL.md`.)
-- After any note change, **`python3 scripts/build-index.py`** to refresh the graph. Confirm **0 dropped
-  edges** and **no orphans**.
+- Prefer the **`/land`** skill — it distills a source into an atomic **note**, then **attaches that note
+  to the concept(s) it explains** (and adds a new concept node only when the stack genuinely gained a part).
+  It updates the map, regenerates the index, and teaches where the idea fits. (See `.claude/skills/land/SKILL.md`.)
+- After any concept/note change, **`python3 scripts/build-index.py`** to refresh the graph. Confirm
+  **0 dropped concept edges** and **no orphan concepts**, and that every `sources` slug resolves to a real note.
 - The validation hook will block a note with missing frontmatter or zero connections — heed it.
 
 ## Conventions
