@@ -13,6 +13,7 @@ Idempotent: rewrites only the region between the CHANGELOG markers.
 """
 from __future__ import annotations
 
+import hashlib
 import html
 import re
 import subprocess
@@ -75,6 +76,118 @@ def git_log():
         yield sha.strip(), when.strip(), subject.strip(), body.strip()
 
 
+def changed_files(sha):
+    """[(status, path)] for a commit. status in A/M/D/R; renames yield the new path."""
+    out = subprocess.check_output(
+        ["git", "diff-tree", "--no-commit-id", "--name-status", "-r", "--root", sha],
+        cwd=ROOT,
+        text=True,
+    )
+    files = []
+    for line in out.splitlines():
+        if not line.strip():
+            continue
+        parts = line.split("\t")
+        status = parts[0][0]  # collapse R100 -> R, etc.
+        path = parts[-1]  # for renames, the destination path is last
+        files.append((status, path))
+    return files
+
+
+def diff_anchor(path):
+    """GitHub anchors a file's diff on a commit page as diff-<sha256(path)>."""
+    return "diff-" + hashlib.sha256(path.encode("utf-8")).hexdigest()
+
+
+STATUS_WORD = {"A": "new", "M": "edit", "D": "removed", "R": "renamed"}
+
+# files that aren't user-facing pages — shown in the file list, but never used to
+# build the plain-English title.
+_NON_PAGE = re.compile(
+    r"(^\.|/assets/|/\.|^scripts/|^LEARNINGS\.md$|^README\.md$|\.css$|\.js$|\.sh$|\.json$|\.ya?ml$)"
+)
+
+# concept pages whose filename isn't self-explanatory -> friendly name
+_CONCEPT_NAMES = {
+    "index": "Concepts hub",
+    "mental-model": "Mental model",
+    "matrix": "Comparison matrix",
+    "decision": "Decision guide",
+    "graph": "Concept graph",
+    "legend": "Legend",
+    "primitives": "Primitives index",
+    "exam": "Exam hub",
+    "practice": "Practice quiz",
+    "scenarios": "Scenarios",
+}
+
+
+def _titlecase_slug(slug):
+    return slug.replace("-", " ").replace("_", " ").strip().capitalize()
+
+
+def friendly_label(path):
+    """Human name for a user-facing page/note, or None if it's not one."""
+    if _NON_PAGE.search(path):
+        return None
+    if path == "docs/index.html":
+        return "home page"
+    if path == "docs/changelog.html":
+        return "change log"
+    m = re.match(r"docs/concepts/primitives/([\w-]+)\.html$", path)
+    if m:
+        return f"{_titlecase_slug(m.group(1))} primitive"
+    m = re.match(r"docs/concepts/([\w-]+)\.html$", path)
+    if m:
+        return _CONCEPT_NAMES.get(m.group(1), _titlecase_slug(m.group(1)))
+    m = re.match(r"knowledge/notes/([\w-]+)\.md$", path)
+    if m:
+        return f"{_titlecase_slug(m.group(1))} note"
+    if path == "knowledge/maps/big-picture.md":
+        return "big-picture map"
+    m = re.match(r"knowledge/maps/([\w-]+)\.md$", path)
+    if m:
+        return f"{_titlecase_slug(m.group(1))} map"
+    return None
+
+
+def _join(names):
+    names = list(names)
+    if len(names) <= 2:
+        return " and ".join(names)
+    return ", ".join(names[:-1]) + ", and " + names[-1]
+
+
+def _summarize(names, noun):
+    """Up to 3 names spelled out, otherwise a count ('5 Concepts pages')."""
+    if len(names) <= 3:
+        return _join(names)
+    return f"{len(names)} {noun}"
+
+
+AUTOSHIP_RE = re.compile(r"^auto-ship\s+\d+\s+file\(s\)", re.I)
+
+
+def humanize(title, files):
+    """Turn a machine 'auto-ship N file(s) — TIMESTAMP' title into plain English
+    derived from the pages it touched. Hand-written titles pass through untouched."""
+    if not AUTOSHIP_RE.match(title):
+        return title
+    added = [friendly_label(p) for s, p in files if s == "A"]
+    edited = [friendly_label(p) for s, p in files if s in ("M", "R")]
+    added = [n for n in added if n]
+    edited = [n for n in edited if n]
+    clauses = []
+    if added:
+        clauses.append("Added " + _join(added))
+    if edited:
+        verb = "updated" if added else "Updated"
+        clauses.append(verb + " " + _summarize(edited, "pages"))
+    if not clauses:
+        return "Published site + tooling updates"  # only non-page files changed
+    return "; ".join(clauses)
+
+
 def parse_entry(sha, when, subject, body):
     m = PR_RE.search(subject)
     if not m:
@@ -108,7 +221,18 @@ def parse_entry(sha, when, subject, body):
     norm = lambda s: re.sub(r"[^a-z0-9]+", "", CONV_RE.sub(r"\g<rest>", s.lower()))
     if desc and norm(desc) == norm(title):
         desc = ""
-    return {"sha": sha, "when": when, "title": title, "tag": tag, "desc": desc, "pr": pr}
+
+    files = changed_files(sha)
+    title = humanize(title, files)
+    return {
+        "sha": sha,
+        "when": when,
+        "title": title,
+        "tag": tag,
+        "desc": desc,
+        "pr": pr,
+        "files": files,
+    }
 
 
 def render(entries, base):
@@ -130,13 +254,39 @@ def render(entries, base):
             f'    <div class="cl-when">{html.escape(e["when"])}</div>\n'
             f'    <div class="cl-title">{html.escape(e["title"])}{tag}</div>\n'
             f"{desc}"
+            f"{render_files(e, base)}"
             f'    <div class="cl-links">'
             f'<a href="{pr_url}" target="_blank" rel="noopener">PR #{e["pr"]} →</a>'
-            f'<a href="{commit_url}" target="_blank" rel="noopener">View diff</a>'
+            f'<a href="{commit_url}" target="_blank" rel="noopener">View full diff</a>'
             f"</div>\n"
             f"  </li>"
         )
     return "\n".join(rows)
+
+
+def render_files(e, base):
+    """Collapsible 'What changed' list — each file links to its own diff in the commit."""
+    files = e.get("files") or []
+    if not files:
+        return ""
+    items = []
+    for status, path in files:
+        word = STATUS_WORD.get(status, "edit")
+        url = f"{base}/commit/{e['sha']}#{diff_anchor(path)}"
+        items.append(
+            f'      <li><span class="cl-fstat cl-fstat-{word}">{word}</span>'
+            f'<a href="{html.escape(url)}" target="_blank" rel="noopener">'
+            f'{html.escape(path)}</a></li>'
+        )
+    n = len(files)
+    summary = f"What changed · {n} file{'' if n == 1 else 's'}"
+    return (
+        f'    <details class="cl-files">\n'
+        f"      <summary>{summary}</summary>\n"
+        f'      <ul class="cl-flist">\n'
+        + "\n".join(items)
+        + "\n      </ul>\n    </details>\n"
+    )
 
 
 def main():
