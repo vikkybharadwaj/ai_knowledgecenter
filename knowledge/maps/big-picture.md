@@ -8,10 +8,19 @@ date: 2026-06-04
 
 # The Big Picture 🧠
 
-> **This is the spine of the whole knowledge center.** Every concept note hangs off one
+> **This is the spine of the whole knowledge center.** Every concept hangs off one
 > layer below. When you land a new doc/article/feature, it gets placed here — so the map
 > grows into a single connected brain instead of a pile of isolated notes.
 > Read this top-to-bottom to *go broad*; click into any note to *go deep*.
+
+> 🗺️ **Two things live on this spine, and they are not the same.** The interactive
+> [concept graph](../../docs/concepts/graph.html) plots **tech-stack concepts** — the
+> primitives, systems, and patterns of the Claude stack (Tool Use, MCP, Subagents,
+> Worktrees, Orchestration…) — wired to each other by **strict dependencies** (*runs-on,
+> depends-on, part-of, uses*), so you can read the stack bottom-up and learn how it fits.
+> The **source notes** listed below are the distilled articles that *back* those concepts —
+> the content you read to go deep. Concepts are the map; notes are the territory. The graph
+> is generated from `knowledge/concepts/*.md`; the notes live in `knowledge/notes/*.md`.
 
 ## The spine (one stack, bottom powers top)
 

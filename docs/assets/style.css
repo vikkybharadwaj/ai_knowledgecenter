@@ -177,6 +177,8 @@ footer a{color:var(--text-soft)}
 .layer ul{margin:0;padding-left:0;list-style:none}
 .layer li{margin:5px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline}
 .layer li .tg{font-size:11.5px;color:var(--text-dim);font-family:var(--mono)}
+.layer li{align-items:flex-start}
+.layer li .csum{flex:1 1 320px;min-width:240px;font-size:13px;line-height:1.45;color:var(--text-dim)}
 
 /* ===== in-page note reader (overlay) ===== */
 .layer li a{cursor:pointer}
@@ -195,6 +197,14 @@ footer a{color:var(--text-soft)}
 .kc-reader-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
 .kc-reader-head .np-layer{font-size:11px;font-weight:800;color:#1a1118;padding:2px 9px;border-radius:999px}
 .kc-reader-head .np-depth{font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px}
+
+/* concept reader: lede + dependency / sources sections */
+.markdown .kc-lede{font-size:1.12rem;line-height:1.55;color:var(--text);margin:.2em 0 1em;font-weight:500}
+.kc-relhead{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text-dim);margin:1.5em 0 .5em;padding-top:.7em;border-top:1px solid var(--border)}
+.kc-rellist,.kc-srclist{list-style:none;margin:.2em 0;padding:0}
+.kc-rellist li,.kc-srclist li{margin:.4em 0;color:var(--text-soft)}
+.kc-rellist .kc-dep{display:inline-block;min-width:74px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);text-transform:lowercase}
+.kc-rellist .kc-why{color:var(--text-dim);font-size:13.5px}
 
 /* rendered markdown typography (shared by the reader) */
 .markdown{color:var(--text);line-height:1.7}

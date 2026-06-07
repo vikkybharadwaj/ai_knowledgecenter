@@ -18,12 +18,12 @@
 </header>
 <main class="wrap">
   <section class="hero" style="padding:42px 0 14px">
-    <div class="eyebrow">One connected brain · not a filing cabinet</div>
-    <h1>The knowledge graph.</h1>
-    <p class="sub">Every note is one atomic idea, wired to its neighbours by <strong>typed connections</strong> and
-      placed on a single evolving <a href="#" class="kc-link" data-slug="big-picture">spine</a>.
-      Hover a node to see how it connects; click to open the note <strong>right here on the page</strong>. <strong>Go broad</strong> across the map or
-      <strong>go deep</strong> into any idea — in any order.</p>
+    <div class="eyebrow">The Claude stack · what depends on what</div>
+    <h1>The dependency map.</h1>
+    <p class="sub">Each chip is a <strong>tech-stack concept</strong> — a primitive, system, or pattern — placed on the
+      <a href="#" class="kc-link" data-slug="big-picture">spine</a> and wired to the others by <strong>strict dependencies</strong>.
+      Every arrow points to what a thing <strong>needs</strong>, so you can read the stack bottom-up and learn how it fits together fast.
+      Hover a chip to trace its dependencies; click to open a short explainer plus the <strong>source notes</strong> that go deeper.</p>
     <div class="cta-row" style="margin-top:8px">
       <a class="btn primary kc-link" href="#" data-slug="big-picture">Read the Big Picture →</a>
       <a class="btn kc-link" href="#" data-slug="readme">Home note</a>
@@ -32,30 +32,27 @@
 
   <section style="margin:18px 0 40px">
     <div class="controls">
-      <button id="layout-toggle" class="theme-toggle">Layout: Spine ▾</button>
-      <select id="tag-filter" class="theme-toggle"><option value="">All tags</option></select>
       <div id="legend" class="legend"></div>
     </div>
     <div class="graph-wrap">
       <svg id="graph"></svg>
-      <aside id="node-panel"></aside>
     </div>
     <p class="meta" style="color:var(--text-dim);font-size:13px;margin-top:8px">
-      Hover a chip to trace its connections · drag to rearrange · click to read the note in-page ·
-      toggle <strong>Spine</strong> (lanes by stack layer) ↔ <strong>Free</strong> (force layout) · filter by tag.
-      The number on each chip is its connection count.</p>
+      Hover a chip to trace its dependencies · drag to rearrange · click to open the concept
+      (a short explainer + the source notes behind it). Arrows point <strong>down</strong> the stack, from a thing to what it needs.
+      The number on each chip is how many dependencies touch it.</p>
   </section>
 
-  <section id="all-notes" style="margin-bottom:60px">
-    <div class="section-head"><h2>All notes, by spine layer</h2><span class="count" id="note-count"></span></div>
+  <section id="all-concepts" style="margin-bottom:60px">
+    <div class="section-head"><h2>All concepts, by spine layer</h2><span class="count" id="note-count"></span></div>
     <div id="layer-list"></div>
   </section>
 </main>
 
 <footer class="wrap">
-  <p><strong>AI Knowledge Center — Concept graph.</strong> Notes live as markdown in
-    <code>knowledge/notes</code> and render right here on the page — this graph is generated from their
-    frontmatter by <code>scripts/build-index.py</code>. Add one with <code>/land</code> and it wires itself in.</p>
+  <p><strong>AI Knowledge Center — Dependency map.</strong> Concepts live as markdown in
+    <code>knowledge/concepts</code> and the source notes behind them in <code>knowledge/notes</code> — both render
+    right here on the page. The map is generated from concept frontmatter by <code>scripts/build-index.py</code>.</p>
 </footer>
 
 <script src="../assets/knowledge.js"></script>
@@ -64,7 +61,7 @@
 <script>
 /* shared theme toggle (key shared across the whole site) + notes-by-layer list */
 (function () {
-  // shared theme (the real toggle lives in the topbar; #layout-toggle/#tag-filter just borrow its styling)
+  // shared theme toggle (lives in the topbar; key shared across the whole site)
   var KEY = "cca-theme", saved = localStorage.getItem(KEY);
   var tbtn = document.querySelector("header .theme-toggle");
   if (tbtn) {
@@ -82,25 +79,25 @@
 
   var D = window.KC_DATA; if (!D) return;
   var host = document.getElementById("layer-list");
-  var depthRank = { evergreen: "🌳", budding: "🌿", seedling: "🌱" };
+  var concepts = D.concepts || [];
   var html = "";
   D.layers.forEach(function (layer) {
-    var ns = D.nodes.filter(function (n) { return n.layer === layer; });
+    var ns = concepts.filter(function (n) { return n.layer === layer; });
     if (!ns.length) {
       html += "<div class='layer empty'><h3>" + (D.layerLabels[layer] || layer) + "</h3>" +
-              "<p class='meta'>— no notes yet (a gap to fill on the way to CCA-F)</p></div>";
+              "<p class='meta'>— no concepts here yet</p></div>";
       return;
     }
     html += "<div class='layer'><h3>" + (D.layerLabels[layer] || layer) + " <span class='ct'>" + ns.length + "</span></h3><ul>";
     ns.forEach(function (n) {
-      html += "<li><a href='#' class='kc-link' data-slug='" + n.slug + "'>" + (depthRank[n.depth] || "") + " " + n.title + "</a> " +
-              "<span class='tg'>" + (n.tags || []).slice(0, 4).map(function (t) { return "#" + t; }).join(" ") + "</span></li>";
+      html += "<li><a href='#' class='kc-link' data-slug='" + n.slug + "'>" + n.title + "</a>" +
+              "<span class='csum'>" + (n.summary || "") + "</span></li>";
     });
     html += "</ul></div>";
   });
   host.innerHTML = html;
   var cnt = document.getElementById("note-count");
-  if (cnt) cnt.textContent = D.nodes.length + " notes · " + D.edges.length + " connections";
+  if (cnt) cnt.textContent = concepts.length + " concepts · " + (D.conceptEdges || []).length + " dependencies";
 })();
 </script>
 </body>
