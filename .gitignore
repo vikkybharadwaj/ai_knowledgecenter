@@ -21,3 +21,6 @@ Thumbs.db
 
 # Node (in case a snippet brings deps)
 node_modules/
+
+# git worktrees created by Claude Code — never commit these
+.claude/worktrees/
