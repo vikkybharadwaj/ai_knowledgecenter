@@ -5,6 +5,7 @@ name: Update change log
 on:
   push:
     branches: [main]
+  workflow_dispatch:  # allow manual runs / backfills from the Actions tab
 
 permissions:
   contents: write
