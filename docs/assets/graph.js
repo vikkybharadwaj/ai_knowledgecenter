@@ -19,15 +19,33 @@
     foundations: "#7aa2f7", api: "#9ece6a", "agent-sdk": "#e0af68",
     "claude-code": "#d98b5f", patterns: "#bb9af7", products: "#f7768e"
   };
-  // strict-dependency vocabulary — every arrow means "needs / runs on / part of"
+  // edge vocabulary — two families:
+  //  dependency (solid, directional): arrow points to what a thing NEEDS
+  //  relation   (dashed, non-directional): a sibling/complement link, not a dependency
   var TYPE_COLORS = {
     "runs-on": "#73daca", "depends-on": "#7aa2f7",
-    "part-of": "#d98b5f", uses: "#bb9af7"
+    "part-of": "#d98b5f", uses: "#bb9af7",
+    "used-with": "#8b93a7", "alternative-to": "#e0af68"
   };
   var TYPE_LABELS = {
     "runs-on": "runs on", "depends-on": "depends on",
-    "part-of": "part of", uses: "uses"
+    "part-of": "part of", uses: "uses",
+    "used-with": "used with", "alternative-to": "alternative to"
   };
+  var TYPE_FAMILY = {
+    "runs-on": "dependency", "depends-on": "dependency",
+    "part-of": "dependency", uses: "dependency",
+    "used-with": "relation", "alternative-to": "relation"
+  };
+  var TYPE_DEFS = {
+    "runs-on": "executes atop it as its engine",
+    "depends-on": "needs it present to work",
+    "part-of": "is a component within it",
+    uses: "invokes or composes it",
+    "used-with": "complementary — often combined",
+    "alternative-to": "same need, a different way"
+  };
+  function isRel(t) { return TYPE_FAMILY[t] === "relation"; }
 
   var svg = document.getElementById("graph");
   if (!svg) return;
@@ -75,8 +93,9 @@
     return e;
   }
   // one arrow marker per dependency type, so the head matches the line colour
+  // (relation edges are dashed and headless — no marker)
   var defs = el("defs");
-  Object.keys(TYPE_COLORS).forEach(function (t) {
+  Object.keys(TYPE_COLORS).filter(function (t) { return !isRel(t); }).forEach(function (t) {
     var m = el("marker", {
       id: "arr-" + t, viewBox: "0 0 10 10", refX: "9", refY: "5",
       markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse"
@@ -202,13 +221,17 @@
       sub.textContent = cnt + (cnt === 1 ? " concept" : " concepts");
       gLanes.appendChild(name); gLanes.appendChild(sub);
     });
-    // edges
+    // edges — dependency = solid + arrowhead; relation = dashed, no arrowhead
     gEdges.textContent = "";
     edges.forEach(function (e) {
-      var path = el("path", {
-        d: edgePath(e).d, class: "kc-edge", fill: "none",
-        stroke: TYPE_COLORS[e.type] || "#5a637a", "marker-end": "url(#arr-" + e.type + ")"
-      });
+      var rel = isRel(e.type);
+      var attrs = {
+        d: edgePath(e).d, class: "kc-edge" + (rel ? " rel" : ""), fill: "none",
+        stroke: TYPE_COLORS[e.type] || "#5a637a"
+      };
+      if (rel) attrs["stroke-dasharray"] = "5 4";
+      else attrs["marker-end"] = "url(#arr-" + e.type + ")";
+      var path = el("path", attrs);
       e.el = path; gEdges.appendChild(path);
     });
     // nodes (chips)
@@ -306,11 +329,21 @@
   }
   var graphWrap = svg.closest(".graph-wrap");
   if (graphWrap && usedTypes.length) {
+    function defItems(fam) {
+      return usedTypes.filter(function (t) { return TYPE_FAMILY[t] === fam; }).map(function (t) {
+        var bar = "<i class='ek-line" + (fam === "relation" ? " dashed" : "") +
+          "' style='color:" + (TYPE_COLORS[t] || "#9aa5bd") + "'></i>";
+        return "<span class='ek'>" + bar + "<b>" + (TYPE_LABELS[t] || t) +
+          "</b><span class='ek-def'>" + (TYPE_DEFS[t] || "") + "</span></span>";
+      }).join("");
+    }
     var key = document.createElement("div");
     key.className = "kc-edgekey";
-    key.innerHTML = "<span class='kc-edgekey-h'>dependency&nbsp;types&nbsp;·&nbsp;arrows&nbsp;point&nbsp;to&nbsp;what&nbsp;a&nbsp;thing&nbsp;needs</span>" + usedTypes.map(function (t) {
-      return "<span class='ek'><i style='background:" + (TYPE_COLORS[t] || "#9aa5bd") + "'></i>" + (TYPE_LABELS[t] || t) + "</span>";
-    }).join("");
+    key.innerHTML =
+      "<div class='ek-grp'><span class='kc-edgekey-h'>dependency&nbsp;— solid arrow points to what a thing needs</span>" +
+        "<div class='ek-row'>" + defItems("dependency") + "</div></div>" +
+      "<div class='ek-grp'><span class='kc-edgekey-h'>relation&nbsp;— dashed, non-directional</span>" +
+        "<div class='ek-row'>" + defItems("relation") + "</div></div>";
     graphWrap.insertAdjacentElement("afterend", key);
   }
 

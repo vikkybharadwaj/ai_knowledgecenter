@@ -3,9 +3,9 @@ title: Slash commands
 slug: slash-commands
 kind: primitive
 layer: claude-code
-summary: Named, user-triggered actions typed as /command — the explicit, deliberate counterpart to auto-firing skills. The right home for side-effecting rituals like deploy or ship that should only run when you ask.
+summary: The /command invoke surface. Custom commands have been merged into skills — `.claude/commands/deploy.md` and `.claude/skills/deploy/SKILL.md` both create `/deploy`. A skill that should only run when you ask sets `disable-model-invocation: true`.
 edges:
-  - { to: claude-code, type: part-of, why: "Slash commands are a Claude Code invocation surface." }
+  - { to: skills, type: part-of, why: "Slash commands are how you invoke a skill (or a built-in) by name; custom commands are now skills under the hood." }
 sources: [claude-code-architecture]
 ---
-Rule of thumb: a reusable capability is a skill (it auto-fires and is invokable); a deliberate, side-effecting ritual is a command (it only runs on demand). One system, no duplication.
+Rule of thumb lives inside skills now: a capability that should auto-fire *and* be invokable is a normal skill; a deliberate, side-effecting ritual (deploy, ship) sets `disable-model-invocation: true` so only `/name` runs it. One system, no duplication.

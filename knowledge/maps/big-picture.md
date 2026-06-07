@@ -16,8 +16,9 @@ date: 2026-06-04
 > 🗺️ **Two things live on this spine, and they are not the same.** The interactive
 > [concept graph](../../docs/concepts/graph.html) plots **tech-stack concepts** — the
 > primitives, systems, and patterns of the Claude stack (Tool Use, MCP, Subagents,
-> Worktrees, Orchestration…) — wired to each other by **strict dependencies** (*runs-on,
-> depends-on, part-of, uses*), so you can read the stack bottom-up and learn how it fits.
+> Worktrees, Orchestration…) — wired by **dependency** edges (solid: *runs-on, depends-on, part-of, uses*;
+> arrows point to what a thing needs) and **relation** edges (dashed: *used-with, alternative-to*), so you
+> can read the stack bottom-up and learn how it fits.
 > The **source notes** listed below are the distilled articles that *back* those concepts —
 > the content you read to go deep. Concepts are the map; notes are the territory. The graph
 > is generated from `knowledge/concepts/*.md`; the notes live in `knowledge/notes/*.md`.

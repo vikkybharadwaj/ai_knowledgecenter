@@ -20,6 +20,12 @@ claude_specific: true
 > center, so the method itself becomes reusable reference material — dog-fooding the
 > dot-connecting model.
 
+> ⚠️ **Naming note (2026-06-07).** "Ultraplan" here is *my own term* for the research→synthesis→plan-gate→execute
+> meta-loop — coined before Claude Code shipped features with overlapping names. In the official docs these are now
+> two distinct things: **dynamic workflows** are triggered by the keyword **`ultracode`** (not "ultraplan"), and
+> **ultraplan** is a *separate cloud* feature that hands a planning task to a Claude Code-on-the-web session in plan
+> mode. The concept graph uses the docs' meaning; this note keeps my original loop terminology.
+
 ## TL;DR
 A **dynamic workflow** is a deterministic JavaScript script that fans work out across many
 subagents and collects their results — you use it when a task splits into independent

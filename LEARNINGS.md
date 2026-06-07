@@ -11,6 +11,17 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-07  **Fact-check the graph against `code.claude.com/docs` — training memory drifts.** A docs pass on the
+            42 concepts caught real errors a confident summary would never flag: "Dynamic Workflows / Ultraplan"
+            conflated two *separate* features (dynamic workflows fire on **`ultracode`**; ultraplan is a different
+            *cloud* feature); slash commands have **merged into skills**; **CLAUDE.md loads in full** (smallness comes
+            from a ~200-line target + `.claude/rules/` + skills, NOT progressive disclosure); skills do **not** depend
+            on CLAUDE.md; CC features don't "run on" SDK sub-primitives. Also: scope a learning map to the surface you
+            actually use — dropped cloud/CI nodes (routines, ultraplan, GitHub Actions) to keep it CLI-only. And edges
+            needed a second family: **dependency** (solid) vs **relation** (dashed: `used-with`, `alternative-to`),
+            because forcing "Agent teams = alternative to Subagents" into a dependency type is itself a lie. Lesson:
+            for any Claude Code claim, WebFetch the docs and diff — don't trust the model's recollection.
+
 2026-06-07  **The concept graph should plot the TECH STACK, not the articles.** A graph whose nodes are
             notes (distilled articles) connected by note-relationships teaches you the *reading list*, not the
             *system*. Reframed it: nodes are now tech-stack **concepts** (primitives/systems/patterns in

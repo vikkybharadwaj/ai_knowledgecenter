@@ -68,7 +68,10 @@ sources: [claude-api-agent-primitives]   # note slugs that go deeper (may be emp
 ---
 <optional short body — appended under the summary in the reader>
 ```
-Dependency edge types (strict, all point to the dependency): `runs-on · depends-on · part-of · uses`.
+Edge types — two families. **Dependency** (solid, directional, points to what a thing needs):
+`runs-on · depends-on · part-of · uses`. **Relation** (dashed, non-directional, a sibling/complement —
+not a dependency): `used-with · alternative-to`. Prefer a dependency type; use a relation only when the
+link genuinely isn't a dependency (e.g. Agent teams *alternative-to* Subagents; Skills *used-with* CLAUDE.md).
 
 ## How to add knowledge
 - Prefer the **`/land`** skill — it distills a source into an atomic **note**, then **attaches that note

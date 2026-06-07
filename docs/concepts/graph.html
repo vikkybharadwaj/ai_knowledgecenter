@@ -22,12 +22,8 @@
     <h1>The dependency map.</h1>
     <p class="sub">Each chip is a <strong>tech-stack concept</strong> — a primitive, system, or pattern — placed on the
       <a href="#" class="kc-link" data-slug="big-picture">spine</a> and wired to the others by <strong>strict dependencies</strong>.
-      Every arrow points to what a thing <strong>needs</strong>, so you can read the stack bottom-up and learn how it fits together fast.
-      Hover a chip to trace its dependencies; click to open a short explainer plus the <strong>source notes</strong> that go deeper.</p>
-    <div class="cta-row" style="margin-top:8px">
-      <a class="btn primary kc-link" href="#" data-slug="big-picture">Read the Big Picture →</a>
-      <a class="btn kc-link" href="#" data-slug="readme">Home note</a>
-    </div>
+      Solid arrows are <strong>dependencies</strong> (they point to what a thing needs); dashed lines are <strong>relations</strong> (complements and alternatives).
+      Read the stack bottom-up. Hover a chip to trace its links; click to open a short explainer plus the <strong>source notes</strong> that go deeper.</p>
   </section>
 
   <section style="margin:18px 0 40px">
@@ -38,9 +34,9 @@
       <svg id="graph"></svg>
     </div>
     <p class="meta" style="color:var(--text-dim);font-size:13px;margin-top:8px">
-      Hover a chip to trace its dependencies · drag to rearrange · click to open the concept
-      (a short explainer + the source notes behind it). Arrows point <strong>down</strong> the stack, from a thing to what it needs.
-      The number on each chip is how many dependencies touch it.</p>
+      Hover a chip to trace its links · drag to rearrange · click to open the concept
+      (a short explainer + the source notes behind it). Solid arrows point <strong>down</strong> the stack to what a thing needs; dashed lines mark complements/alternatives.
+      The number on each chip is how many links touch it. See the legend below for what each edge type means.</p>
   </section>
 
   <section id="all-concepts" style="margin-bottom:60px">
@@ -97,7 +93,7 @@
   });
   host.innerHTML = html;
   var cnt = document.getElementById("note-count");
-  if (cnt) cnt.textContent = concepts.length + " concepts · " + (D.conceptEdges || []).length + " dependencies";
+  if (cnt) cnt.textContent = concepts.length + " concepts · " + (D.conceptEdges || []).length + " connections";
 })();
 </script>
 </body>
