@@ -11,6 +11,13 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-07  **A stray committed git worktree silently breaks GitHub Pages.** `.claude/worktrees/<name>` got
+            committed as a gitlink (mode 160000) with no `.gitmodules`; Pages' checkout runs `git submodule
+            update --init` and dies with "No url found for submodule path", so every `pages-build-deployment`
+            fails and the live site freezes on the last good build — the repo looks correct, the site just
+            stops updating. Fix: `git rm --cached` the gitlink and gitignore `.claude/worktrees/`. When "the
+            site won't update," check the Pages deploy run, not just the content workflow.
+
 2026-06-06  **Never nest an `<a>` inside an `<a class="card">` — the whole card is already a link.** The HTML
             parser auto-closes the outer card anchor at the inner `<a>`, ejecting the rest of the card's content
             (heading stays put, paragraph spills into the next grid cell) and looking like "overlapping cards."
