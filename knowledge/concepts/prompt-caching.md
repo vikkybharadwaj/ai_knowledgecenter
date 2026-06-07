@@ -9,4 +9,4 @@ edges:
   - { to: context-window, type: depends-on, why: "It caches a stable prefix of the context window." }
 sources: [claude-api-agent-primitives]
 ---
-The 5-minute cache TTL is why long-running loops keep their prefix warm and why sleeping past it costs more. A lot of agent cost optimization is really cache-hit optimization.
+The default 5-minute cache TTL is why long-running loops keep their prefix warm and why sleeping past it costs more (a 1-hour TTL option exists at extra cost). A lot of agent cost optimization is really cache-hit optimization.

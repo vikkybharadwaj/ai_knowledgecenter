@@ -40,14 +40,20 @@ LAYER_LABELS = {
     "products": "Products & Consulting",
 }
 
-# Strict-dependency edge vocabulary for the concept graph. Every arrow points
-# from a thing to what it NEEDS — follow arrows DOWN the stack to dependencies.
-DEP_TYPES = {
-    "runs-on": "runs on",       # execution substrate (Agent SDK runs on the Claude API)
-    "depends-on": "depends on", # needs it to function (Routines depend on Claude Code)
-    "part-of": "part of",       # a component inside a larger system (Skills part of Claude Code)
-    "uses": "uses",             # composes / orchestrates a lower primitive (Orchestration uses Subagents)
+# Concept-graph edge vocabulary. Two families:
+#  - DEPENDENCY (solid, directional): the arrow points from a thing to what it NEEDS.
+#  - RELATION   (dashed, non-directional): a sibling/complement link, not a dependency.
+# Each entry: type -> (human label, family).
+EDGE_TYPES = {
+    "runs-on":        ("runs on", "dependency"),        # executes atop Y as its engine (Agent SDK runs on the Claude API)
+    "depends-on":     ("depends on", "dependency"),     # needs Y present to work (Messages API depends on a model tier)
+    "part-of":        ("part of", "dependency"),        # a component inside a larger system (Skills part of Claude Code)
+    "uses":           ("uses", "dependency"),           # invokes / composes a lower primitive (Orchestration uses Subagents)
+    "used-with":      ("used with", "relation"),        # complementary; often combined (Worktrees used with Subagents)
+    "alternative-to": ("alternative to", "relation"),   # same need, different way (Agent teams alternative to Subagents)
 }
+DEP_TYPES = {k: v[0] for k, v in EDGE_TYPES.items()}            # type -> label
+EDGE_FAMILY = {k: v[1] for k, v in EDGE_TYPES.items()}          # type -> "dependency" | "relation"
 
 
 # ---------------------------------------------------------------------------
@@ -390,9 +396,9 @@ def build_concept_html(c, out_edges, ctitle_of, ntitle_of):
         parts.append('<p class="kc-lede">%s</p>' % render_inline(c["summary"], ctitle_of))
     if c.get("_body"):
         parts.append(render_markdown(c["_body"], ntitle_of))
-    if out_edges:
+    def edge_rows(edge_list):
         rows = []
-        for e in out_edges:
+        for e in edge_list:
             label = DEP_TYPES.get(e["type"], e["type"])
             tgt = ctitle_of(e["to"]) or e["to"]
             why = (' — <span class="kc-why">%s</span>' % esc(e["why"])) if e["why"] else ""
@@ -400,8 +406,16 @@ def build_concept_html(c, out_edges, ctitle_of, ntitle_of):
                 '<li><span class="kc-dep">%s</span> '
                 '<a href="#" class="kc-link" data-slug="%s">%s</a>%s</li>'
                 % (esc(label), esc(e["to"]), esc(tgt), why))
+        return "".join(rows)
+
+    deps = [e for e in out_edges if EDGE_FAMILY.get(e["type"]) == "dependency"]
+    rels = [e for e in out_edges if EDGE_FAMILY.get(e["type"]) == "relation"]
+    if deps:
         parts.append('<div class="kc-relhead">Depends on</div><ul class="kc-rellist">%s</ul>'
-                     % "".join(rows))
+                     % edge_rows(deps))
+    if rels:
+        parts.append('<div class="kc-relhead">Related</div><ul class="kc-rellist">%s</ul>'
+                     % edge_rows(rels))
     if c.get("sources"):
         rows = []
         for s in c["sources"]:

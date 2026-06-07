@@ -71,6 +71,16 @@ window.KC_DATA = {
       "degree": 9
     },
     {
+      "slug": "agent-teams",
+      "title": "Agent teams",
+      "kind": "primitive",
+      "layer": "claude-code",
+      "summary": "Multiple independent Claude Code sessions that coordinate — they message each other and share a task list, rather than a parent spawning workers that only report back. The \"peers collaborating\" model, distinct from subagents.",
+      "sources": [],
+      "html": "<p class=\"kc-lede\">Multiple independent Claude Code sessions that coordinate — they message each other and share a task list, rather than a parent spawning workers that only report back. The \"peers collaborating\" model, distinct from subagents.</p>\n<p>Reach for subagents when you want delegation (fan out, collect results); reach for agent teams when you want collaboration (independent sessions working a shared task list and talking to each other). Docs: https://code.claude.com/docs/en/agent-teams</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Agent teams are a Claude Code coordination feature.</span></li><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"execution-isolation\">Execution-context isolation</a> — <span class=\"kc-why\">Each team member runs in its own independent context.</span></li></ul>\n<div class=\"kc-relhead\">Related</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">alternative to</span> <a href=\"#\" class=\"kc-link\" data-slug=\"cc-subagents\">Subagents / Task (Claude Code)</a> — <span class=\"kc-why\">Subagents fork from one session and report back; agent teams are independent sessions that coordinate as peers.</span></li></ul>",
+      "degree": 3
+    },
+    {
       "slug": "batch-api",
       "title": "Batch API",
       "kind": "primitive",
@@ -100,11 +110,11 @@ window.KC_DATA = {
       "title": "Hooks (Claude Code)",
       "kind": "primitive",
       "layer": "claude-code",
-      "summary": "Shell commands Claude Code runs deterministically on events — before a tool call, after an edit, on stop. How you enforce policy (format, lint, block a path) that the agent can't skip because it isn't the model's choice.",
+      "summary": "User-defined handlers — shell commands, HTTP endpoints, or LLM prompts — that Claude Code fires automatically at lifecycle points (before a tool call, after an edit, on stop). How you enforce policy (format, lint, block a path) the agent can't skip, because it isn't the model's choice.",
       "sources": [
         "claude-code-architecture"
       ],
-      "html": "<p class=\"kc-lede\">Shell commands Claude Code runs deterministically on events — before a tool call, after an edit, on stop. How you enforce policy (format, lint, block a path) that the agent can't skip because it isn't the model's choice.</p>\n<p>If you find yourself reminding the agent to do the same thing every time, that thing belongs in a hook. The harness executes it; the model can't forget it.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Hooks are a Claude Code automation surface configured in settings.</span></li><li><span class=\"kc-dep\">runs on</span> <a href=\"#\" class=\"kc-link\" data-slug=\"sdk-hooks\">Hooks (SDK)</a> — <span class=\"kc-why\">They are the SDK hook concept exposed as shell commands.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
+      "html": "<p class=\"kc-lede\">User-defined handlers — shell commands, HTTP endpoints, or LLM prompts — that Claude Code fires automatically at lifecycle points (before a tool call, after an edit, on stop). How you enforce policy (format, lint, block a path) the agent can't skip, because it isn't the model's choice.</p>\n<p>If you find yourself reminding the agent to do the same thing every time, that thing belongs in a hook. The harness executes it; the model can't forget it.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Hooks are a Claude Code automation surface configured in settings.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
       "degree": 2
     },
     {
@@ -117,8 +127,8 @@ window.KC_DATA = {
         "model-context-protocol",
         "claude-code-architecture"
       ],
-      "html": "<p class=\"kc-lede\">External tool/data integrations connected to Claude Code over MCP — GitHub, databases, design tools, internal APIs. How you give the harness capabilities Anthropic didn't ship.</p>\n<p>When the agent can't do something, the answer is usually \"connect an MCP server,\" not \"write a custom tool from scratch.\" Integrations written once travel across the whole stack.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">MCP servers plug into Claude Code's tool surface.</span></li><li><span class=\"kc-dep\">runs on</span> <a href=\"#\" class=\"kc-link\" data-slug=\"mcp\">Model Context Protocol (MCP)</a> — <span class=\"kc-why\">They speak the Model Context Protocol.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"model-context-protocol\">Model Context Protocol (MCP) — From Zero to Plumbing</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
-      "degree": 2
+      "html": "<p class=\"kc-lede\">External tool/data integrations connected to Claude Code over MCP — GitHub, databases, design tools, internal APIs. How you give the harness capabilities Anthropic didn't ship.</p>\n<p>When the agent can't do something, the answer is usually \"connect an MCP server,\" not \"write a custom tool from scratch.\" Integrations written once travel across the whole stack.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">MCP servers plug into Claude Code's tool surface.</span></li><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"mcp\">Model Context Protocol (MCP)</a> — <span class=\"kc-why\">They speak the Model Context Protocol to expose tools to the model.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"model-context-protocol\">Model Context Protocol (MCP) — From Zero to Plumbing</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
+      "degree": 3
     },
     {
       "slug": "cc-subagents",
@@ -130,8 +140,18 @@ window.KC_DATA = {
         "claude-code-multi-agent-development",
         "execution-context-isolation"
       ],
-      "html": "<p class=\"kc-lede\">Claude Code's way of delegating a scoped job to a fresh agent with its own context — used for parallel search, isolated edits, and review. The concrete handle you use to fan work out and keep your main context clean.</p>\n<p>Delegate the noisy work — broad greps, log trawls — to a subagent and keep only its findings. This is how a single session takes on tasks too big for one context.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Subagents are a core Claude Code primitive.</span></li><li><span class=\"kc-dep\">runs on</span> <a href=\"#\" class=\"kc-link\" data-slug=\"sdk-subagents\">Subagents (SDK)</a> — <span class=\"kc-why\">They are the SDK subagent capability surfaced in the product.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-multi-agent-development\">Claude Code — Multi-Agent Development</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"execution-context-isolation\">One shared context vs. many isolated contexts — what actually forks in Claude Code</a></li></ul>",
-      "degree": 6
+      "html": "<p class=\"kc-lede\">Claude Code's way of delegating a scoped job to a fresh agent with its own context — used for parallel search, isolated edits, and review. The concrete handle you use to fan work out and keep your main context clean.</p>\n<p>Delegate the noisy work — broad greps, log trawls — to a subagent and keep only its findings. This is how a single session takes on tasks too big for one context.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Subagents are a core Claude Code primitive — each runs in its own context window within a single session.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-multi-agent-development\">Claude Code — Multi-Agent Development</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"execution-context-isolation\">One shared context vs. many isolated contexts — what actually forks in Claude Code</a></li></ul>",
+      "degree": 7
+    },
+    {
+      "slug": "checkpointing",
+      "title": "Checkpointing",
+      "kind": "primitive",
+      "layer": "claude-code",
+      "summary": "Rewind the file changes Claude made — undo back to a prior state when an edit goes wrong. The safety net that lets you run with looser permissions because a bad change is reversible.",
+      "sources": [],
+      "html": "<p class=\"kc-lede\">Rewind the file changes Claude made — undo back to a prior state when an edit goes wrong. The safety net that lets you run with looser permissions because a bad change is reversible.</p>\n<p>Checkpointing changes the risk math: if you can rewind, you can let the agent move faster on edits and recover instantly when it overreaches. Docs: https://code.claude.com/docs/en/checkpointing</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Checkpointing is a built-in Claude Code safety feature.</span></li></ul>\n<div class=\"kc-relhead\">Related</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">used with</span> <a href=\"#\" class=\"kc-link\" data-slug=\"permission-modes\">Permission modes</a> — <span class=\"kc-why\">Pairs with permission modes — looser autonomy is safer when edits are one rewind away.</span></li></ul>",
+      "degree": 2
     },
     {
       "slug": "claude-code",
@@ -143,19 +163,19 @@ window.KC_DATA = {
         "claude-code-architecture"
       ],
       "html": "<p class=\"kc-lede\">Anthropic's finished agent harness for software work — a polished, opinionated bundle of tools, memory, subagents, and permissions built on the Agent SDK. The \"use it as-is\" tier of the stack.</p>\n<p>Everything below in this lane — CLAUDE.md, skills, subagents, worktrees, hooks — is a primitive Claude Code ships. Learn them as the standard parts catalogue of a production agent.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">runs on</span> <a href=\"#\" class=\"kc-link\" data-slug=\"agent-sdk\">Claude Agent SDK</a> — <span class=\"kc-why\">Claude Code is built on the same engine the SDK exposes.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
-      "degree": 13
+      "degree": 14
     },
     {
       "slug": "claude-md",
       "title": "CLAUDE.md (progressive disclosure)",
       "kind": "primitive",
       "layer": "claude-code",
-      "summary": "The project memory file Claude Code loads as standing context — instructions, conventions, and facts the agent should always know. Structured by progressive disclosure so it stays small and the agent pulls detail on demand.",
+      "summary": "The project memory file Claude Code loads as standing context — instructions, conventions, and facts the agent should always know. It loads in full every session, so you keep it lean (~200-line target) and offload depth to path-scoped rules and skills that load on demand.",
       "sources": [
         "progressive-disclosure-instructions",
         "claude-code-architecture"
       ],
-      "html": "<p class=\"kc-lede\">The project memory file Claude Code loads as standing context — instructions, conventions, and facts the agent should always know. Structured by progressive disclosure so it stays small and the agent pulls detail on demand.</p>\n<p>One giant instruction file fails — the agent drowns. The win is layering: a lean always-loaded core that points to deeper docs the agent reads only when relevant.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">CLAUDE.md is Claude Code's built-in memory surface.</span></li><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"context-engineering\">Context Engineering</a> — <span class=\"kc-why\">It is context engineering applied to a single durable file.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"progressive-disclosure-instructions\">One giant instruction file fails — structure CLAUDE.md by progressive disclosure</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
+      "html": "<p class=\"kc-lede\">The project memory file Claude Code loads as standing context — instructions, conventions, and facts the agent should always know. It loads in full every session, so you keep it lean (~200-line target) and offload depth to path-scoped rules and skills that load on demand.</p>\n<p>A common misread: CLAUDE.md is <strong>not</strong> progressively disclosed — it (and its imports) load in full at launch regardless of length. Smallness is a discipline, not a mechanism: keep the core lean and push detail into <code>.claude/rules/</code> (path-scoped instruction files) and skills (load only when used). Auto-memory then saves cross-session learnings so the file doesn't have to carry everything.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">CLAUDE.md is Claude Code's built-in memory surface.</span></li><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"context-engineering\">Context Engineering</a> — <span class=\"kc-why\">It is context engineering applied to a single durable file.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"progressive-disclosure-instructions\">One giant instruction file fails — structure CLAUDE.md by progressive disclosure</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
       "degree": 3
     },
     {
@@ -210,16 +230,16 @@ window.KC_DATA = {
     },
     {
       "slug": "dynamic-workflows",
-      "title": "Dynamic Workflows / Ultraplan",
+      "title": "Dynamic workflows (ultracode)",
       "kind": "primitive",
       "layer": "claude-code",
-      "summary": "Scripted orchestration that fans work across many subagents deterministically — loops, parallel stages, and verify steps the model can't drift from. The control plane for comprehensive, large-scale agent work.",
+      "summary": "A JavaScript script that orchestrates subagents at scale — Claude writes the script for the task you describe and a runtime executes it in the background (loops, parallel stages, verify steps it can't drift from). Triggered by the keyword `ultracode`. Research preview.",
       "sources": [
         "dynamic-workflows-and-ultraplan",
         "dynamic-workflow-patterns"
       ],
-      "html": "<p class=\"kc-lede\">Scripted orchestration that fans work across many subagents deterministically — loops, parallel stages, and verify steps the model can't drift from. The control plane for comprehensive, large-scale agent work.</p>\n<p>This is where determinism meets fan-out: the script decides what runs in parallel, what verifies, and what synthesizes, so scale doesn't mean chaos.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Workflows are a Claude Code orchestration capability.</span></li><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"cc-subagents\">Subagents / Task (Claude Code)</a> — <span class=\"kc-why\">A workflow pipelines work across many subagents.</span></li><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"plan-mode\">Plan mode</a> — <span class=\"kc-why\">The ultraplan loop plans before fanning out execution.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflows-and-ultraplan\">Dynamic Workflows &amp; the \"Ultraplan\" loop</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflow-patterns\">Six dynamic-workflow patterns and the three failure modes they fix</a></li></ul>",
-      "degree": 5
+      "html": "<p class=\"kc-lede\">A JavaScript script that orchestrates subagents at scale — Claude writes the script for the task you describe and a runtime executes it in the background (loops, parallel stages, verify steps it can't drift from). Triggered by the keyword <code>ultracode</code>. Research preview.</p>\n<p>This is where determinism meets fan-out: the script decides what runs in parallel, what verifies, and what synthesizes, so scale doesn't mean chaos. Note: the trigger keyword is <code>ultracode</code> (the always-on form is <code>/effort ultracode</code>) — distinct from <em>ultraplan</em>, which is a separate cloud plan-mode feature, not this. Docs: https://code.claude.com/docs/en/workflows</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Workflows are a Claude Code orchestration capability.</span></li><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"cc-subagents\">Subagents / Task (Claude Code)</a> — <span class=\"kc-why\">A workflow pipelines work across many subagents.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflows-and-ultraplan\">Dynamic Workflows &amp; the \"Ultraplan\" loop</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflow-patterns\">Six dynamic-workflow patterns and the three failure modes they fix</a></li></ul>",
+      "degree": 3
     },
     {
       "slug": "evals-reliability",
@@ -243,7 +263,7 @@ window.KC_DATA = {
         "execution-context-isolation"
       ],
       "html": "<p class=\"kc-lede\">The choice between one shared context and many isolated ones — what actually forks when you spawn agents. Isolation buys parallelism and a clean slate; sharing buys continuity. Knowing which you have prevents whole classes of bugs.</p>\n<p>A subagent does not see your conversation; a worktree does not see your uncommitted files unless you ask. Most \"why didn't it know X\" surprises trace back to a boundary you forgot you crossed.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"cc-subagents\">Subagents / Task (Claude Code)</a> — <span class=\"kc-why\">Each subagent is a forked, isolated context.</span></li><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"worktrees\">Worktrees (worktree.baseRef)</a> — <span class=\"kc-why\">Worktrees isolate the filesystem the way subagents isolate context.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"execution-context-isolation\">One shared context vs. many isolated contexts — what actually forks in Claude Code</a></li></ul>",
-      "degree": 3
+      "degree": 4
     },
     {
       "slug": "externalized-completion",
@@ -293,7 +313,7 @@ window.KC_DATA = {
         "model-context-protocol",
         "claude-api-agent-primitives"
       ],
-      "html": "<p class=\"kc-lede\">An open protocol for exposing tools and data to a model through a standard server interface, so any client can plug into any tool without bespoke glue. The USB-C port of the agent world.</p>\n<p>MCP is why an integration written once (GitHub, Slack, a database) works across Claude Code, the SDK, and the API. Learn the server/connector split and most \"how do I give the agent X\" questions answer themselves.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"tool-use\">Tool Use</a> — <span class=\"kc-why\">MCP servers surface their capabilities to the model as tools.</span></li><li><span class=\"kc-dep\">depends on</span> <a href=\"#\" class=\"kc-link\" data-slug=\"messages-api\">Messages API</a> — <span class=\"kc-why\">The API can connect to MCP servers to extend a single request's toolset.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"model-context-protocol\">Model Context Protocol (MCP) — From Zero to Plumbing</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-api-agent-primitives\">The Claude API agent primitives — the engine the harness runs on</a></li></ul>",
+      "html": "<p class=\"kc-lede\">An open protocol for exposing tools and data to a model through a standard server interface, so any client can plug into any tool without bespoke glue. The USB-C port of the agent world.</p>\n<p>MCP is why an integration written once (GitHub, Slack, a database) works across Claude Code, the SDK, and the API. Learn the server/connector split and most \"how do I give the agent X\" questions answer themselves.</p>\n<div class=\"kc-relhead\">Related</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">used with</span> <a href=\"#\" class=\"kc-link\" data-slug=\"tool-use\">Tool Use</a> — <span class=\"kc-why\">MCP is its own open standard; in the Claude API its servers surface to the model as tool-use calls.</span></li><li><span class=\"kc-dep\">used with</span> <a href=\"#\" class=\"kc-link\" data-slug=\"messages-api\">Messages API</a> — <span class=\"kc-why\">Provider-neutral — it integrates with the Messages API via the MCP connector, but doesn't depend on it.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"model-context-protocol\">Model Context Protocol (MCP) — From Zero to Plumbing</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-api-agent-primitives\">The Claude API agent primitives — the engine the harness runs on</a></li></ul>",
       "degree": 4
     },
     {
@@ -317,7 +337,7 @@ window.KC_DATA = {
       "sources": [
         "claude-api-agent-primitives"
       ],
-      "html": "<p class=\"kc-lede\">The three-tier family that trades capability against speed and cost — Opus for the hardest reasoning, Sonnet for the balanced default, Haiku for fast cheap high-volume work. Choosing the tier is a first-class design decision.</p>\n<p>Good harnesses route by difficulty: Haiku for mechanical sub-steps, Sonnet for most work, Opus for the genuinely hard call. Tier choice is one of the biggest cost/quality levers in the whole stack.</p>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-api-agent-primitives\">The Claude API agent primitives — the engine the harness runs on</a></li></ul>",
+      "html": "<p class=\"kc-lede\">The three-tier family that trades capability against speed and cost — Opus for the hardest reasoning, Sonnet for the balanced default, Haiku for fast cheap high-volume work. Choosing the tier is a first-class design decision.</p>\n<p>Good harnesses route by difficulty: Haiku for mechanical sub-steps, Sonnet for most work, Opus for the genuinely hard call. Tier choice is one of the biggest cost/quality levers in the whole stack. Current lineup (2026-06-07): <strong>Opus 4.8</strong> (<code>claude-opus-4-8</code>, ~$5/$25 per MTok, 1M context), <strong>Sonnet 4.6</strong> (<code>claude-sonnet-4-6</code>, ~$3/$15, 1M context), <strong>Haiku 4.5</strong> (<code>claude-haiku-4-5</code>, ~$1/$5, 200K context).</p>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-api-agent-primitives\">The Claude API agent primitives — the engine the harness runs on</a></li></ul>",
       "degree": 1
     },
     {
@@ -338,12 +358,12 @@ window.KC_DATA = {
       "title": "Permission modes",
       "kind": "primitive",
       "layer": "claude-code",
-      "summary": "How much Claude Code can do without asking — from prompt-on-everything to accept-edits to full autonomy. The dial you set to match trust against task risk.",
+      "summary": "How much Claude Code can do without asking. Six modes — default (reads only), acceptEdits, plan, auto (preview), dontAsk (pre-approved tools only), and bypassPermissions (everything) — the dial you set to match trust against task risk.",
       "sources": [
         "claude-code-architecture"
       ],
-      "html": "<p class=\"kc-lede\">How much Claude Code can do without asking — from prompt-on-everything to accept-edits to full autonomy. The dial you set to match trust against task risk.</p>\n<p>Turn the dial up for safe, repetitive work and down for anything irreversible. A denied action is feedback, not a wall — adjust the approach rather than retrying verbatim.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Permission modes are a Claude Code safety control.</span></li><li><span class=\"kc-dep\">runs on</span> <a href=\"#\" class=\"kc-link\" data-slug=\"sdk-permissions\">Permissions &amp; auth (SDK)</a> — <span class=\"kc-why\">They surface the SDK's permission/auth model in the product.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
-      "degree": 2
+      "html": "<p class=\"kc-lede\">How much Claude Code can do without asking. Six modes — default (reads only), acceptEdits, plan, auto (preview), dontAsk (pre-approved tools only), and bypassPermissions (everything) — the dial you set to match trust against task risk.</p>\n<p>Turn the dial up for safe, repetitive work and down for anything irreversible. A denied action is feedback, not a wall — adjust the approach rather than retrying verbatim. Plan mode is itself one of these modes — read-and-propose with no edits.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Permission modes are a Claude Code safety control.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
+      "degree": 4
     },
     {
       "slug": "plan-mode",
@@ -355,8 +375,18 @@ window.KC_DATA = {
         "dynamic-workflows-and-ultraplan",
         "claude-code-architecture"
       ],
-      "html": "<p class=\"kc-lede\">A read-only phase where Claude Code explores and proposes an approach for your approval before touching anything. The guardrail that turns \"it changed 40 files I didn't expect\" into a reviewable plan first.</p>\n<p>Use it for anything non-trivial: explore, get sign-off on the plan, then implement. It is the cheapest way to catch a wrong mental model before code is written.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Plan mode is a built-in Claude Code workflow state.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflows-and-ultraplan\">Dynamic Workflows &amp; the \"Ultraplan\" loop</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
-      "degree": 2
+      "html": "<p class=\"kc-lede\">A read-only phase where Claude Code explores and proposes an approach for your approval before touching anything. The guardrail that turns \"it changed 40 files I didn't expect\" into a reviewable plan first.</p>\n<p>Use it for anything non-trivial: explore, get sign-off on the plan, then implement. It is the cheapest way to catch a wrong mental model before code is written.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"permission-modes\">Permission modes</a> — <span class=\"kc-why\">Plan mode is one of Claude Code's permission modes — read-and-propose with no edits.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflows-and-ultraplan\">Dynamic Workflows &amp; the \"Ultraplan\" loop</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
+      "degree": 1
+    },
+    {
+      "slug": "plugins",
+      "title": "Plugins (and marketplaces)",
+      "kind": "primitive",
+      "layer": "claude-code",
+      "summary": "The packaging layer of Claude Code — a plugin bundles skills, hooks, subagents, and MCP servers into one installable unit, distributed through marketplaces. How you share and reuse a whole extension setup instead of wiring each piece by hand.",
+      "sources": [],
+      "html": "<p class=\"kc-lede\">The packaging layer of Claude Code — a plugin bundles skills, hooks, subagents, and MCP servers into one installable unit, distributed through marketplaces. How you share and reuse a whole extension setup instead of wiring each piece by hand.</p>\n<p>Plugins are the \"install once, get the whole setup\" layer that sits above the individual extension primitives — the natural unit for a team or a community to ship a curated Claude Code configuration. Docs: https://code.claude.com/docs/en/plugins</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Plugins are Claude Code's packaging/distribution mechanism.</span></li></ul>\n<div class=\"kc-relhead\">Related</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">used with</span> <a href=\"#\" class=\"kc-link\" data-slug=\"skills\">Skills</a> — <span class=\"kc-why\">A plugin can bundle skills.</span></li><li><span class=\"kc-dep\">used with</span> <a href=\"#\" class=\"kc-link\" data-slug=\"cc-hooks\">Hooks (Claude Code)</a> — <span class=\"kc-why\">A plugin can bundle hooks.</span></li><li><span class=\"kc-dep\">used with</span> <a href=\"#\" class=\"kc-link\" data-slug=\"cc-subagents\">Subagents / Task (Claude Code)</a> — <span class=\"kc-why\">A plugin can bundle subagents.</span></li><li><span class=\"kc-dep\">used with</span> <a href=\"#\" class=\"kc-link\" data-slug=\"cc-mcp-servers\">MCP servers (Claude Code)</a> — <span class=\"kc-why\">A plugin can bundle MCP server configs.</span></li></ul>",
+      "degree": 5
     },
     {
       "slug": "prompt-caching",
@@ -367,7 +397,7 @@ window.KC_DATA = {
       "sources": [
         "claude-api-agent-primitives"
       ],
-      "html": "<p class=\"kc-lede\">Reusing the model's processed prefix across calls so repeated context (system prompt, tools, large files) isn't re-billed and re-processed each turn. The main lever for making long agent loops fast and cheap.</p>\n<p>The 5-minute cache TTL is why long-running loops keep their prefix warm and why sleeping past it costs more. A lot of agent cost optimization is really cache-hit optimization.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"messages-api\">Messages API</a> — <span class=\"kc-why\">Caching is a feature of the Messages API request.</span></li><li><span class=\"kc-dep\">depends on</span> <a href=\"#\" class=\"kc-link\" data-slug=\"context-window\">Context Window</a> — <span class=\"kc-why\">It caches a stable prefix of the context window.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-api-agent-primitives\">The Claude API agent primitives — the engine the harness runs on</a></li></ul>",
+      "html": "<p class=\"kc-lede\">Reusing the model's processed prefix across calls so repeated context (system prompt, tools, large files) isn't re-billed and re-processed each turn. The main lever for making long agent loops fast and cheap.</p>\n<p>The default 5-minute cache TTL is why long-running loops keep their prefix warm and why sleeping past it costs more (a 1-hour TTL option exists at extra cost). A lot of agent cost optimization is really cache-hit optimization.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"messages-api\">Messages API</a> — <span class=\"kc-why\">Caching is a feature of the Messages API request.</span></li><li><span class=\"kc-dep\">depends on</span> <a href=\"#\" class=\"kc-link\" data-slug=\"context-window\">Context Window</a> — <span class=\"kc-why\">It caches a stable prefix of the context window.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-api-agent-primitives\">The Claude API agent primitives — the engine the harness runs on</a></li></ul>",
       "degree": 2
     },
     {
@@ -408,15 +438,13 @@ window.KC_DATA = {
       "degree": 2
     },
     {
-      "slug": "routines",
-      "title": "Routines (cloud automation)",
+      "slug": "sandboxing",
+      "title": "Sandboxing",
       "kind": "primitive",
       "layer": "claude-code",
-      "summary": "Scheduled, unattended Claude Code runs in the cloud — a cron for agents that wake on a timetable to do work and report back. How agent capability extends past the moment you're at the keyboard.",
-      "sources": [
-        "claude-code-routines"
-      ],
-      "html": "<p class=\"kc-lede\">Scheduled, unattended Claude Code runs in the cloud — a cron for agents that wake on a timetable to do work and report back. How agent capability extends past the moment you're at the keyboard.</p>\n<p>Routines turn \"do this every morning\" into infrastructure. The same harness you drive interactively can run itself on a schedule and surface results when something needs you.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">runs on</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">A routine is a Claude Code session triggered on a schedule.</span></li><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflows\">Dynamic Workflows / Ultraplan</a> — <span class=\"kc-why\">Routines typically run a workflow unattended.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-routines\">Claude Code Routines — unattended cloud automation</a></li></ul>",
+      "summary": "Run the Bash tool inside a restricted sandbox with filesystem and network limits, so shell commands can't reach beyond what you allow. The enforcement substrate that makes higher autonomy safe.",
+      "sources": [],
+      "html": "<p class=\"kc-lede\">Run the Bash tool inside a restricted sandbox with filesystem and network limits, so shell commands can't reach beyond what you allow. The enforcement substrate that makes higher autonomy safe.</p>\n<p>Permissions answer \"may the agent do this?\"; the sandbox answers \"and how much damage can it do if it does?\" Together they let you grant more autonomy with a bounded blast radius. Docs: https://code.claude.com/docs/en/sandboxing</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Sandboxing is a Claude Code execution-safety feature.</span></li></ul>\n<div class=\"kc-relhead\">Related</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">used with</span> <a href=\"#\" class=\"kc-link\" data-slug=\"permission-modes\">Permission modes</a> — <span class=\"kc-why\">Permission modes decide what's allowed; the sandbox enforces the blast radius when it runs.</span></li></ul>",
       "degree": 2
     },
     {
@@ -424,24 +452,24 @@ window.KC_DATA = {
       "title": "Hooks (SDK)",
       "kind": "primitive",
       "layer": "agent-sdk",
-      "summary": "Deterministic callbacks the SDK fires around model and tool events — before a tool runs, after a turn, on completion — so you can inject guards, logging, or policy that doesn't depend on the model choosing to comply.",
+      "summary": "Callbacks the SDK fires at fixed points in the agent lifecycle — tool calls, session start/stop, subagent and prompt events, compaction — so you can allow, deny, modify, or log behavior without depending on the model choosing to comply.",
       "sources": [
         "claude-agent-sdk"
       ],
-      "html": "<p class=\"kc-lede\">Deterministic callbacks the SDK fires around model and tool events — before a tool runs, after a turn, on completion — so you can inject guards, logging, or policy that doesn't depend on the model choosing to comply.</p>\n<p>Hooks are harness engineering made concrete: anything that must always happen belongs in a hook, not in a prompt instruction the model might ignore.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"agent-sdk\">Claude Agent SDK</a> — <span class=\"kc-why\">Hooks are an extension point of the SDK runtime.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-agent-sdk\">The Claude Agent SDK — build your own harness on the same engine as Claude Code</a></li></ul>",
-      "degree": 2
+      "html": "<p class=\"kc-lede\">Callbacks the SDK fires at fixed points in the agent lifecycle — tool calls, session start/stop, subagent and prompt events, compaction — so you can allow, deny, modify, or log behavior without depending on the model choosing to comply.</p>\n<p>Hooks are harness engineering made concrete: anything that must always happen belongs in a hook, not in a prompt instruction the model might ignore.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"agent-sdk\">Claude Agent SDK</a> — <span class=\"kc-why\">Hooks are an extension point of the SDK runtime.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-agent-sdk\">The Claude Agent SDK — build your own harness on the same engine as Claude Code</a></li></ul>",
+      "degree": 1
     },
     {
       "slug": "sdk-permissions",
       "title": "Permissions & auth (SDK)",
       "kind": "primitive",
       "layer": "agent-sdk",
-      "summary": "The SDK's controls over what an agent is allowed to do — which tools it can call, what needs approval, and how it authenticates. The boundary that makes an autonomous agent safe to run.",
+      "summary": "The SDK's controls over what tools an agent may use and what needs approval — permission modes, allow/deny rules, and the canUseTool callback for everything else. The boundary that makes an autonomous agent safe to run. (Authentication is configured separately.)",
       "sources": [
         "claude-agent-sdk"
       ],
-      "html": "<p class=\"kc-lede\">The SDK's controls over what an agent is allowed to do — which tools it can call, what needs approval, and how it authenticates. The boundary that makes an autonomous agent safe to run.</p>\n<p>Autonomy without a permission boundary is how agents do damage. Decide up front what is auto-allowed, what prompts, and what is forbidden.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"agent-sdk\">Claude Agent SDK</a> — <span class=\"kc-why\">Permission and auth handling are built into the SDK runtime.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-agent-sdk\">The Claude Agent SDK — build your own harness on the same engine as Claude Code</a></li></ul>",
-      "degree": 2
+      "html": "<p class=\"kc-lede\">The SDK's controls over what tools an agent may use and what needs approval — permission modes, allow/deny rules, and the canUseTool callback for everything else. The boundary that makes an autonomous agent safe to run. (Authentication is configured separately.)</p>\n<p>Autonomy without a permission boundary is how agents do damage. Decide up front what is auto-allowed, what prompts, and what is forbidden.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"agent-sdk\">Claude Agent SDK</a> — <span class=\"kc-why\">Permission and auth handling are built into the SDK runtime.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-agent-sdk\">The Claude Agent SDK — build your own harness on the same engine as Claude Code</a></li></ul>",
+      "degree": 1
     },
     {
       "slug": "sdk-sessions",
@@ -466,7 +494,7 @@ window.KC_DATA = {
         "claude-code-multi-agent-development"
       ],
       "html": "<p class=\"kc-lede\">Spawning a fresh agent with its own context to handle a scoped task and report back a result. The SDK primitive that makes fan-out, isolation, and multi-agent orchestration possible.</p>\n<p>A subagent trades shared context for a clean slate — you give it a task and get back a conclusion, not the whole transcript. This is the building block under every orchestration pattern.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"agent-sdk\">Claude Agent SDK</a> — <span class=\"kc-why\">Subagents are an SDK capability for delegating work.</span></li><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"sdk-sessions\">Sessions (SDK)</a> — <span class=\"kc-why\">Each subagent runs in its own session/context.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-agent-sdk\">The Claude Agent SDK — build your own harness on the same engine as Claude Code</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-multi-agent-development\">Claude Code — Multi-Agent Development</a></li></ul>",
-      "degree": 3
+      "degree": 2
     },
     {
       "slug": "skills",
@@ -477,19 +505,19 @@ window.KC_DATA = {
       "sources": [
         "claude-code-architecture"
       ],
-      "html": "<p class=\"kc-lede\">Packaged, model-invocable capabilities — a folder with instructions (and optional scripts) the agent loads when a task matches. Reusable expertise that auto-fires when relevant and can also be called as a slash command.</p>\n<p>A skill is how you teach the harness a repeatable procedure once and have it apply itself thereafter. The same definition both auto-fires and is invokable by name.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Skills are a Claude Code extension mechanism.</span></li><li><span class=\"kc-dep\">depends on</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-md\">CLAUDE.md (progressive disclosure)</a> — <span class=\"kc-why\">Skills extend the same progressive-disclosure idea — load detail only when needed.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
-      "degree": 2
+      "html": "<p class=\"kc-lede\">Packaged, model-invocable capabilities — a folder with instructions (and optional scripts) the agent loads when a task matches. Reusable expertise that auto-fires when relevant and can also be called as a slash command.</p>\n<p>A skill is how you teach the harness a repeatable procedure once and have it apply itself thereafter. The same definition both auto-fires and is invokable by name. Only <code>SKILL.md</code> is required, and a skill is independent of CLAUDE.md — reach for a skill when a section of CLAUDE.md has grown from a <em>fact</em> into a <em>procedure</em>.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Skills are a Claude Code extension mechanism.</span></li></ul>\n<div class=\"kc-relhead\">Related</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">used with</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-md\">CLAUDE.md (progressive disclosure)</a> — <span class=\"kc-why\">Complement to CLAUDE.md — a skill's body loads only when used, vs CLAUDE.md which is always in context. Often you graduate a grown CLAUDE.md procedure into a skill.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
+      "degree": 4
     },
     {
       "slug": "slash-commands",
       "title": "Slash commands",
       "kind": "primitive",
       "layer": "claude-code",
-      "summary": "Named, user-triggered actions typed as /command — the explicit, deliberate counterpart to auto-firing skills. The right home for side-effecting rituals like deploy or ship that should only run when you ask.",
+      "summary": "The /command invoke surface. Custom commands have been merged into skills — `.claude/commands/deploy.md` and `.claude/skills/deploy/SKILL.md` both create `/deploy`. A skill that should only run when you ask sets `disable-model-invocation: true`.",
       "sources": [
         "claude-code-architecture"
       ],
-      "html": "<p class=\"kc-lede\">Named, user-triggered actions typed as /command — the explicit, deliberate counterpart to auto-firing skills. The right home for side-effecting rituals like deploy or ship that should only run when you ask.</p>\n<p>Rule of thumb: a reusable capability is a skill (it auto-fires and is invokable); a deliberate, side-effecting ritual is a command (it only runs on demand). One system, no duplication.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code\">Claude Code (the harness)</a> — <span class=\"kc-why\">Slash commands are a Claude Code invocation surface.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
+      "html": "<p class=\"kc-lede\">The /command invoke surface. Custom commands have been merged into skills — <code>.claude/commands/deploy.md</code> and <code>.claude/skills/deploy/SKILL.md</code> both create <code>/deploy</code>. A skill that should only run when you ask sets <code>disable-model-invocation: true</code>.</p>\n<p>Rule of thumb lives inside skills now: a capability that should auto-fire <em>and</em> be invokable is a normal skill; a deliberate, side-effecting ritual (deploy, ship) sets <code>disable-model-invocation: true</code> so only <code>/name</code> runs it. One system, no duplication.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">part of</span> <a href=\"#\" class=\"kc-link\" data-slug=\"skills\">Skills</a> — <span class=\"kc-why\">Slash commands are how you invoke a skill (or a built-in) by name; custom commands are now skills under the hood.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
       "degree": 1
     },
     {
@@ -515,7 +543,7 @@ window.KC_DATA = {
         "claude-api-agent-primitives",
         "claude-code-architecture"
       ],
-      "html": "<p class=\"kc-lede\">The mechanism that lets the model call functions you define — it emits a structured tool call, your code runs it, you feed the result back. This is the \"act\" step of the loop made concrete.</p>\n<p>Every capability an agent has — reading files, running code, searching — is a tool. Master this one primitive and most of the stack is just bigger and bigger libraries of tools.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">runs on</span> <a href=\"#\" class=\"kc-link\" data-slug=\"messages-api\">Messages API</a> — <span class=\"kc-why\">Tool calls ride the Messages API request/response cycle.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-api-agent-primitives\">The Claude API agent primitives — the engine the harness runs on</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
+      "html": "<p class=\"kc-lede\">The mechanism that lets the model call functions you define — it emits a structured tool call, your code runs it, you feed the result back. This is the \"act\" step of the loop made concrete.</p>\n<p>Every capability an agent has — reading files, running code, searching — is a tool. Master this one primitive and most of the stack is just bigger and bigger libraries of tools. One nuance: <em>client tools</em> your code executes (the loop above) vs <em>server tools</em> (web_search, code_execution, web_fetch) that Anthropic executes for you — for those, you don't run anything.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">runs on</span> <a href=\"#\" class=\"kc-link\" data-slug=\"messages-api\">Messages API</a> — <span class=\"kc-why\">Tool calls ride the Messages API request/response cycle.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-api-agent-primitives\">The Claude API agent primitives — the engine the harness runs on</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide to the primitives</a></li></ul>",
       "degree": 3
     },
     {
@@ -528,7 +556,7 @@ window.KC_DATA = {
         "dynamic-workflow-patterns",
         "dynamic-workflows-and-ultraplan"
       ],
-      "html": "<p class=\"kc-lede\">The named, reusable shapes of agent orchestration — pipeline, parallel fan-out, loop-until-dry, judge panel, and friends — each fixing a specific failure mode. A vocabulary for composing reliable multi-agent work.</p>\n<p>Don't reinvent orchestration each time — reach for the pattern that matches the failure you're trying to prevent (coverage, confidence, or scale). They compose into bigger harnesses.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflows\">Dynamic Workflows / Ultraplan</a> — <span class=\"kc-why\">The patterns are implemented on the dynamic-workflow engine.</span></li><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"orchestration\">Multi-agent orchestration</a> — <span class=\"kc-why\">Each pattern is a specific orchestration structure.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflow-patterns\">Six dynamic-workflow patterns and the three failure modes they fix</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflows-and-ultraplan\">Dynamic Workflows &amp; the \"Ultraplan\" loop</a></li></ul>",
+      "html": "<p class=\"kc-lede\">The named, reusable shapes of agent orchestration — pipeline, parallel fan-out, loop-until-dry, judge panel, and friends — each fixing a specific failure mode. A vocabulary for composing reliable multi-agent work.</p>\n<p>Don't reinvent orchestration each time — reach for the pattern that matches the failure you're trying to prevent (coverage, confidence, or scale). They compose into bigger harnesses.</p>\n<div class=\"kc-relhead\">Depends on</div><ul class=\"kc-rellist\"><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflows\">Dynamic workflows (ultracode)</a> — <span class=\"kc-why\">The patterns are implemented on the dynamic-workflow engine.</span></li><li><span class=\"kc-dep\">uses</span> <a href=\"#\" class=\"kc-link\" data-slug=\"orchestration\">Multi-agent orchestration</a> — <span class=\"kc-why\">Each pattern is a specific orchestration structure.</span></li></ul>\n<div class=\"kc-relhead\">Sources — go deeper</div><ul class=\"kc-srclist\"><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflow-patterns\">Six dynamic-workflow patterns and the three failure modes they fix</a></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflows-and-ultraplan\">Dynamic Workflows &amp; the \"Ultraplan\" loop</a></li></ul>",
       "degree": 4
     },
     {
@@ -595,6 +623,24 @@ window.KC_DATA = {
       "why": "It connects to MCP servers to extend the agent's toolset."
     },
     {
+      "from": "agent-teams",
+      "to": "claude-code",
+      "type": "part-of",
+      "why": "Agent teams are a Claude Code coordination feature."
+    },
+    {
+      "from": "agent-teams",
+      "to": "cc-subagents",
+      "type": "alternative-to",
+      "why": "Subagents fork from one session and report back; agent teams are independent sessions that coordinate as peers."
+    },
+    {
+      "from": "agent-teams",
+      "to": "execution-isolation",
+      "type": "uses",
+      "why": "Each team member runs in its own independent context."
+    },
+    {
       "from": "batch-api",
       "to": "messages-api",
       "type": "depends-on",
@@ -625,12 +671,6 @@ window.KC_DATA = {
       "why": "Hooks are a Claude Code automation surface configured in settings."
     },
     {
-      "from": "cc-hooks",
-      "to": "sdk-hooks",
-      "type": "runs-on",
-      "why": "They are the SDK hook concept exposed as shell commands."
-    },
-    {
       "from": "cc-mcp-servers",
       "to": "claude-code",
       "type": "part-of",
@@ -639,20 +679,26 @@ window.KC_DATA = {
     {
       "from": "cc-mcp-servers",
       "to": "mcp",
-      "type": "runs-on",
-      "why": "They speak the Model Context Protocol."
+      "type": "uses",
+      "why": "They speak the Model Context Protocol to expose tools to the model."
     },
     {
       "from": "cc-subagents",
       "to": "claude-code",
       "type": "part-of",
-      "why": "Subagents are a core Claude Code primitive."
+      "why": "Subagents are a core Claude Code primitive — each runs in its own context window within a single session."
     },
     {
-      "from": "cc-subagents",
-      "to": "sdk-subagents",
-      "type": "runs-on",
-      "why": "They are the SDK subagent capability surfaced in the product."
+      "from": "checkpointing",
+      "to": "claude-code",
+      "type": "part-of",
+      "why": "Checkpointing is a built-in Claude Code safety feature."
+    },
+    {
+      "from": "checkpointing",
+      "to": "permission-modes",
+      "type": "used-with",
+      "why": "Pairs with permission modes — looser autonomy is safer when edits are one rewind away."
     },
     {
       "from": "claude-code",
@@ -715,12 +761,6 @@ window.KC_DATA = {
       "why": "A workflow pipelines work across many subagents."
     },
     {
-      "from": "dynamic-workflows",
-      "to": "plan-mode",
-      "type": "uses",
-      "why": "The ultraplan loop plans before fanning out execution."
-    },
-    {
       "from": "evals-reliability",
       "to": "harness-engineering",
       "type": "depends-on",
@@ -771,14 +811,14 @@ window.KC_DATA = {
     {
       "from": "mcp",
       "to": "tool-use",
-      "type": "uses",
-      "why": "MCP servers surface their capabilities to the model as tools."
+      "type": "used-with",
+      "why": "MCP is its own open standard; in the Claude API its servers surface to the model as tool-use calls."
     },
     {
       "from": "mcp",
       "to": "messages-api",
-      "type": "depends-on",
-      "why": "The API can connect to MCP servers to extend a single request's toolset."
+      "type": "used-with",
+      "why": "Provider-neutral — it integrates with the Messages API via the MCP connector, but doesn't depend on it."
     },
     {
       "from": "messages-api",
@@ -811,16 +851,40 @@ window.KC_DATA = {
       "why": "Permission modes are a Claude Code safety control."
     },
     {
-      "from": "permission-modes",
-      "to": "sdk-permissions",
-      "type": "runs-on",
-      "why": "They surface the SDK's permission/auth model in the product."
+      "from": "plan-mode",
+      "to": "permission-modes",
+      "type": "part-of",
+      "why": "Plan mode is one of Claude Code's permission modes — read-and-propose with no edits."
     },
     {
-      "from": "plan-mode",
+      "from": "plugins",
       "to": "claude-code",
       "type": "part-of",
-      "why": "Plan mode is a built-in Claude Code workflow state."
+      "why": "Plugins are Claude Code's packaging/distribution mechanism."
+    },
+    {
+      "from": "plugins",
+      "to": "skills",
+      "type": "used-with",
+      "why": "A plugin can bundle skills."
+    },
+    {
+      "from": "plugins",
+      "to": "cc-hooks",
+      "type": "used-with",
+      "why": "A plugin can bundle hooks."
+    },
+    {
+      "from": "plugins",
+      "to": "cc-subagents",
+      "type": "used-with",
+      "why": "A plugin can bundle subagents."
+    },
+    {
+      "from": "plugins",
+      "to": "cc-mcp-servers",
+      "type": "used-with",
+      "why": "A plugin can bundle MCP server configs."
     },
     {
       "from": "prompt-caching",
@@ -859,16 +923,16 @@ window.KC_DATA = {
       "why": "The repo is curated context that persists between runs."
     },
     {
-      "from": "routines",
+      "from": "sandboxing",
       "to": "claude-code",
-      "type": "runs-on",
-      "why": "A routine is a Claude Code session triggered on a schedule."
+      "type": "part-of",
+      "why": "Sandboxing is a Claude Code execution-safety feature."
     },
     {
-      "from": "routines",
-      "to": "dynamic-workflows",
-      "type": "uses",
-      "why": "Routines typically run a workflow unattended."
+      "from": "sandboxing",
+      "to": "permission-modes",
+      "type": "used-with",
+      "why": "Permission modes decide what's allowed; the sandbox enforces the blast radius when it runs."
     },
     {
       "from": "sdk-hooks",
@@ -915,14 +979,14 @@ window.KC_DATA = {
     {
       "from": "skills",
       "to": "claude-md",
-      "type": "depends-on",
-      "why": "Skills extend the same progressive-disclosure idea — load detail only when needed."
+      "type": "used-with",
+      "why": "Complement to CLAUDE.md — a skill's body loads only when used, vs CLAUDE.md which is always in context. Often you graduate a grown CLAUDE.md procedure into a skill."
     },
     {
       "from": "slash-commands",
-      "to": "claude-code",
+      "to": "skills",
       "type": "part-of",
-      "why": "Slash commands are a Claude Code invocation surface."
+      "why": "Slash commands are how you invoke a skill (or a built-in) by name; custom commands are now skills under the hood."
     },
     {
       "from": "three-levels-of-engineering",
@@ -1194,7 +1258,7 @@ window.KC_DATA = {
       "depth": "evergreen",
       "claudeSpecific": true,
       "url": "https://github.com/vikkybharadwaj/ai_knowledgecenter/blob/main/knowledge/notes/dynamic-workflows-and-ultraplan.md",
-      "html": "<h1>Dynamic Workflows &amp; the \"Ultraplan\" loop</h1>\n<blockquote><p><strong>Why this note exists.</strong> It captures the exact technique used to <em>build</em> this knowledge center, so the method itself becomes reusable reference material — dog-fooding the dot-connecting model.</p></blockquote>\n<h2>TL;DR</h2>\n<p>A <strong>dynamic workflow</strong> is a deterministic JavaScript script that fans work out across many subagents and collects their results — you use it when a task splits into independent sub-questions you want answered <em>concurrently</em> and <em>verifiably</em>. <strong>\"Ultraplan\"</strong> is the larger loop that wraps a workflow in disciplined planning: <strong>fan-out research → transparent synthesis → plan-mode gate → execute</strong>. The workflow gives you breadth and parallelism; the plan gate makes sure you think before you touch.</p>\n<h2>The mental model</h2>\n<p>A single agent in one context is a straight line: it reasons, acts, verifies, repeats — all sequentially, all competing for one finite context window. A workflow turns that line into a <strong>tree</strong>: the orchestrator spawns N child agents, each with its <em>own</em> fresh context, and merges what comes back. So a workflow is best understood as a <strong>scripted harness over many sub-harnesses</strong> — which is why it <a href=\"#\" class=\"kc-link\" data-slug=\"harness-vs-context-engineering\">builds-on</a> the gather→act→verify loop: every child runs that loop independently.</p>\n<h2><code>parallel()</code> vs <code>pipeline()</code> — the core decision</h2>\n<ul><li><strong><code>parallel()</code> is a barrier:</strong> launch all thunks, <em>wait for every one</em>, then continue. Use it when you need <strong>all</strong> results together before the next step (e.g. synthesize one design from four independent research streams — you can't synthesize until all four land).</li><li><strong><code>pipeline()</code> has no barrier:</strong> each item flows through all stages independently; item A can be in stage 3 while item B is still in stage 1. Use it when each item's stages are independent of the other items. Wall-clock = slowest single chain, not sum-of-slowest-per-stage.</li><li><strong>Default to <code>pipeline()</code>.</strong> Reach for <code>parallel()</code> only when a stage genuinely needs cross-item context (dedup across all findings, early-exit on zero, \"compare against the others\").</li></ul>\n<h2>Structured returns beat prose</h2>\n<p>Give each agent a <strong>JSON schema</strong> so it returns validated data, not text you have to parse. The orchestrator then reasons over clean objects. Validation happens at the tool layer, so the agent retries until the shape is right.</p>\n<h2>When an extra agent <em>won't</em> change the answer (just as important)</h2>\n<p>Fan-out shines for <strong>independent</strong> work. It <em>fights you</em> for <strong>interdependent</strong> work. Example from this very build: wiring typed connections across six notes is a <em>graph</em> problem — the edges must be globally coherent. Blind parallel agents would each propose links in isolation, then you'd burn effort reconciling contradictions. One reasoner holding the whole picture wins. <strong>Knowing when not to fan out is part of the skill.</strong> A good heuristic: <em>is the value in the items, or in the relationships between them?</em> Items → fan out. Relationships → keep it in one head.</p>\n<h2>The Ultraplan loop (what produced this repo)</h2>\n<ol><li><strong>Recon</strong> — read the actual material first; ground the plan in reality, not assumptions.</li><li><strong>Fan-out research</strong> — a <code>parallel()</code> workflow of focused researchers (here: self-organizing PKM, ingestion mechanics, Claude Code skills/hooks, exam scope), each returning a structured schema.</li><li><strong>Transparent synthesis</strong> — <em>you</em> (the orchestrator) merge the findings in the open, so the human sees the reasoning and the research actually changes the design.</li><li><strong>Plan-mode gate</strong> — write the plan, get explicit approval before any edit. Think before touch.</li><li><strong>Execute</strong> — and narrate the non-obvious technique choices so they become learnable.</li></ol>\n<h2>How to apply (in practice / consulting)</h2>\n<ul><li><strong>Audits &amp; research</strong> (\"review this codebase\", \"compare these 5 vendors\"): <code>parallel()</code> finders → adversarial verify → synthesis. Independent angles, merged once.</li><li><strong>Migrations &amp; sweeps</strong> (\"apply this change across 40 files\"): <code>pipeline()</code>, one item per chain, <code>isolation: 'worktree'</code> if agents mutate files concurrently.</li><li><strong>Client-facing decisions:</strong> always wrap fan-out in the plan gate — clients approve the plan, not the diff. Show the synthesis so the recommendation is legible, not a black box.</li><li><strong>Cost discipline:</strong> a workflow can spawn dozens of agents. Scope it to what the task needs, and skip agents that won't change the answer.</li></ul>\n<h2>Connections</h2>\n<p><em>Typed links — the concept graph is built from the <code>connections:</code> frontmatter above.</em></p>\n<ul><li><strong>part-of</strong> → <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture</a> — one of the orchestration primitives.</li><li><strong>used-with</strong> → <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-multi-agent-development\">Claude Code — Multi-Agent Development</a> — the deterministic cousin of agent teams / parallel subagents.</li><li><strong>builds-on</strong> → <a href=\"#\" class=\"kc-link\" data-slug=\"harness-vs-context-engineering\">Harness vs Context vs Prompt Engineering</a> — a workflow is a scripted harness over many sub-harnesses.</li></ul>",
+      "html": "<h1>Dynamic Workflows &amp; the \"Ultraplan\" loop</h1>\n<blockquote><p><strong>Why this note exists.</strong> It captures the exact technique used to <em>build</em> this knowledge center, so the method itself becomes reusable reference material — dog-fooding the dot-connecting model.</p></blockquote>\n<blockquote><p>⚠️ <strong>Naming note (2026-06-07).</strong> \"Ultraplan\" here is <em>my own term</em> for the research→synthesis→plan-gate→execute meta-loop — coined before Claude Code shipped features with overlapping names. In the official docs these are now two distinct things: <strong>dynamic workflows</strong> are triggered by the keyword <strong><code>ultracode</code></strong> (not \"ultraplan\"), and <strong>ultraplan</strong> is a <em>separate cloud</em> feature that hands a planning task to a Claude Code-on-the-web session in plan mode. The concept graph uses the docs' meaning; this note keeps my original loop terminology.</p></blockquote>\n<h2>TL;DR</h2>\n<p>A <strong>dynamic workflow</strong> is a deterministic JavaScript script that fans work out across many subagents and collects their results — you use it when a task splits into independent sub-questions you want answered <em>concurrently</em> and <em>verifiably</em>. <strong>\"Ultraplan\"</strong> is the larger loop that wraps a workflow in disciplined planning: <strong>fan-out research → transparent synthesis → plan-mode gate → execute</strong>. The workflow gives you breadth and parallelism; the plan gate makes sure you think before you touch.</p>\n<h2>The mental model</h2>\n<p>A single agent in one context is a straight line: it reasons, acts, verifies, repeats — all sequentially, all competing for one finite context window. A workflow turns that line into a <strong>tree</strong>: the orchestrator spawns N child agents, each with its <em>own</em> fresh context, and merges what comes back. So a workflow is best understood as a <strong>scripted harness over many sub-harnesses</strong> — which is why it <a href=\"#\" class=\"kc-link\" data-slug=\"harness-vs-context-engineering\">builds-on</a> the gather→act→verify loop: every child runs that loop independently.</p>\n<h2><code>parallel()</code> vs <code>pipeline()</code> — the core decision</h2>\n<ul><li><strong><code>parallel()</code> is a barrier:</strong> launch all thunks, <em>wait for every one</em>, then continue. Use it when you need <strong>all</strong> results together before the next step (e.g. synthesize one design from four independent research streams — you can't synthesize until all four land).</li><li><strong><code>pipeline()</code> has no barrier:</strong> each item flows through all stages independently; item A can be in stage 3 while item B is still in stage 1. Use it when each item's stages are independent of the other items. Wall-clock = slowest single chain, not sum-of-slowest-per-stage.</li><li><strong>Default to <code>pipeline()</code>.</strong> Reach for <code>parallel()</code> only when a stage genuinely needs cross-item context (dedup across all findings, early-exit on zero, \"compare against the others\").</li></ul>\n<h2>Structured returns beat prose</h2>\n<p>Give each agent a <strong>JSON schema</strong> so it returns validated data, not text you have to parse. The orchestrator then reasons over clean objects. Validation happens at the tool layer, so the agent retries until the shape is right.</p>\n<h2>When an extra agent <em>won't</em> change the answer (just as important)</h2>\n<p>Fan-out shines for <strong>independent</strong> work. It <em>fights you</em> for <strong>interdependent</strong> work. Example from this very build: wiring typed connections across six notes is a <em>graph</em> problem — the edges must be globally coherent. Blind parallel agents would each propose links in isolation, then you'd burn effort reconciling contradictions. One reasoner holding the whole picture wins. <strong>Knowing when not to fan out is part of the skill.</strong> A good heuristic: <em>is the value in the items, or in the relationships between them?</em> Items → fan out. Relationships → keep it in one head.</p>\n<h2>The Ultraplan loop (what produced this repo)</h2>\n<ol><li><strong>Recon</strong> — read the actual material first; ground the plan in reality, not assumptions.</li><li><strong>Fan-out research</strong> — a <code>parallel()</code> workflow of focused researchers (here: self-organizing PKM, ingestion mechanics, Claude Code skills/hooks, exam scope), each returning a structured schema.</li><li><strong>Transparent synthesis</strong> — <em>you</em> (the orchestrator) merge the findings in the open, so the human sees the reasoning and the research actually changes the design.</li><li><strong>Plan-mode gate</strong> — write the plan, get explicit approval before any edit. Think before touch.</li><li><strong>Execute</strong> — and narrate the non-obvious technique choices so they become learnable.</li></ol>\n<h2>How to apply (in practice / consulting)</h2>\n<ul><li><strong>Audits &amp; research</strong> (\"review this codebase\", \"compare these 5 vendors\"): <code>parallel()</code> finders → adversarial verify → synthesis. Independent angles, merged once.</li><li><strong>Migrations &amp; sweeps</strong> (\"apply this change across 40 files\"): <code>pipeline()</code>, one item per chain, <code>isolation: 'worktree'</code> if agents mutate files concurrently.</li><li><strong>Client-facing decisions:</strong> always wrap fan-out in the plan gate — clients approve the plan, not the diff. Show the synthesis so the recommendation is legible, not a black box.</li><li><strong>Cost discipline:</strong> a workflow can spawn dozens of agents. Scope it to what the task needs, and skip agents that won't change the answer.</li></ul>\n<h2>Connections</h2>\n<p><em>Typed links — the concept graph is built from the <code>connections:</code> frontmatter above.</em></p>\n<ul><li><strong>part-of</strong> → <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture</a> — one of the orchestration primitives.</li><li><strong>used-with</strong> → <a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-multi-agent-development\">Claude Code — Multi-Agent Development</a> — the deterministic cousin of agent teams / parallel subagents.</li><li><strong>builds-on</strong> → <a href=\"#\" class=\"kc-link\" data-slug=\"harness-vs-context-engineering\">Harness vs Context vs Prompt Engineering</a> — a workflow is a scripted harness over many sub-harnesses.</li></ul>",
       "connCount": 7
     },
     {
@@ -1772,7 +1836,7 @@ window.KC_DATA = {
   "docs": {
     "big-picture": {
       "title": "The Big Picture — how the Claude stack fits together",
-      "html": "<h1>The Big Picture 🧠</h1>\n<blockquote><p><strong>This is the spine of the whole knowledge center.</strong> Every concept hangs off one layer below. When you land a new doc/article/feature, it gets placed here — so the map grows into a single connected brain instead of a pile of isolated notes. Read this top-to-bottom to <em>go broad</em>; click into any note to <em>go deep</em>.</p></blockquote>\n<blockquote><p>🗺️ <strong>Two things live on this spine, and they are not the same.</strong> The interactive <span class=\"kc-ref\">concept graph</span> plots <strong>tech-stack concepts</strong> — the primitives, systems, and patterns of the Claude stack (Tool Use, MCP, Subagents, Worktrees, Orchestration…) — wired to each other by <strong>strict dependencies</strong> (<em>runs-on, depends-on, part-of, uses</em>), so you can read the stack bottom-up and learn how it fits. The <strong>source notes</strong> listed below are the distilled articles that <em>back</em> those concepts — the content you read to go deep. Concepts are the map; notes are the territory. The graph is generated from <code>knowledge/concepts/*.md</code>; the notes live in <code>knowledge/notes/*.md</code>.</p></blockquote>\n<h2>The spine (one stack, bottom powers top)</h2>\n<pre><code>┌─────────────────────────────────────────────────────────────┐\n│  PRODUCTS &amp; CONSULTING   real builds, client scenarios       │  ← what you ship\n│        ▲  ship as                                            │\n│  AGENT PATTERNS          chaining, routing, orchestrator-…   │  ← how you compose\n│        ▲  compose into                                       │\n│  CLAUDE CODE PRIMITIVES  skills, hooks, MCP, subagents, …    │  ← the toolbox\n│        ▲  packaged as                                        │\n│  AGENT SDK               build your own agents on the loop   │  ← the framework\n│        ▲  exposes                                            │\n│  CLAUDE API              tool use, caching, thinking, batch  │  ← the engine\n│        ▲  runs on                                            │\n│  FOUNDATIONS             prompt ⊂ context ⊂ harness          │  ← the physics\n└─────────────────────────────────────────────────────────────┘</code></pre>\n<p>Each layer is a <strong>lens on the same gather→act→verify loop</strong>, zoomed out one level. A bug or a design decision always lives on <em>some</em> layer — naming the layer is half the battle.</p>\n<h2>What lives on each layer right now</h2>\n<h3>⚛️ Foundations — <em>the physics of steering an LLM</em></h3>\n<p>The mental models everything else obeys.</p>\n<ul><li><a href=\"#\" class=\"kc-link\" data-slug=\"prompt-context-harness-engineering\">Prompt vs Context vs Harness Engineering</a> — the three nested levels of control.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"harness-vs-context-engineering\">Harness vs Context vs Prompt Engineering</a> — canonical narrative of the same model; <em>where a bug lives tells you which level to fix.</em></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"anatomy-of-an-agent-harness\">The Anatomy of an Agent Harness</a> — dissects the \"harness\" level into its six organs (loop, context, tools, memory, verification, delegation).</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"harness-engineering-discipline\">Harness engineering — reliability lives outside the model weights</a> — the discipline: capable models still fail; the <em>same</em> model swings 20%→100% as you add the five harness subsystems (instructions, tools, environment, state, feedback).</li></ul>\n<h3>🔌 Claude API — <em>the engine</em></h3>\n<p>The raw capabilities a request can use.</p>\n<ul><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-api-agent-primitives\">The Claude API agent primitives</a> — the tool-use loop, MCP connector, prompt caching, batch, computer use; <em>an agent is ~20 lines.</em></li></ul>\n<h3>🛠️ Agent SDK — <em>the framework</em></h3>\n<p>Building your own agents on top of the loop.</p>\n<ul><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-agent-sdk\">The Claude Agent SDK</a> — the same engine as Claude Code, as a library: hooks, subagents, MCP, sessions, headless/CI, Bedrock/Vertex/Foundry auth.</li></ul>\n<h3>🧭 Claude Code primitives — <em>the toolbox</em></h3>\n<p>The named features that tune one zone of the loop.</p>\n<ul><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide</a> — the one model that slots every primitive into place.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"model-context-protocol\">Model Context Protocol (MCP)</a> — how the model <em>reaches</em> external tools/data.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-multi-agent-development\">Claude Code — Multi-Agent Development</a> — worktrees / agent teams / subagents.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflows-and-ultraplan\">Dynamic Workflows &amp; the Ultraplan loop</a> — scripting fan-out across many agents.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"execution-context-isolation\">One shared context vs. many isolated contexts</a> — what actually forks: <em>modes</em> stay in one window, <em>agents</em> fork fresh ones (+ the six permission modes).</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"worktree-base-ref-fresh-vs-head\">worktree.baseRef — fresh vs head</a> — the git dial under worktree parallelism: branch agents from clean published code (<code>fresh</code>) or your live WIP HEAD (<code>head</code>).</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-routines\">Claude Code Routines — unattended cloud automation</a> — the saved config that runs <em>itself</em> on Anthropic's cloud on a schedule / GitHub event / API call (the \"operate it for me\" primitive).</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"progressive-disclosure-instructions\">One giant instruction file fails — progressive disclosure</a> — why a 600-line <code>CLAUDE.md</code> rots (lost-in-the-middle, budget exhaustion) and the entry-file + topic-docs + code-embedded structure that fixes it.</li></ul>\n<h3>🧩 Agent patterns — <em>how you compose</em></h3>\n<p>Reusable shapes for putting primitives together.</p>\n<ul><li><a href=\"#\" class=\"kc-link\" data-slug=\"agentic-ai-reference-architecture\">Agentic AI Reference Architecture</a> — the nine-layer production blueprint; what separates a prototype from a real system.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-vs-build-your-own\">Use Claude Code vs build your own</a> — the four-altitude decision tree (buy → use → configure → own the loop).</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflow-patterns\">Six dynamic-workflow patterns &amp; the three failure modes they fix</a> — classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament, loop-until-done.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"repository-as-system-of-record\">The repository is the agent's only durable memory</a> — \"info not in the repo doesn't exist for the agent\"; ACID state files (<code>AGENTS.md</code>/<code>PROGRESS.md</code>/<code>DECISIONS.md</code>), the fresh-session test, and rebuild-cost as the metric.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"completion-is-externalized\">Never let the agent declare its own victory</a> — externalize \"done\": feature-list state machines, three-layer/E2E verification, WIP=1 scope control, and observability inside the harness.</li></ul>\n<h3>🚀 Products &amp; consulting — <em>what you ship</em></h3>\n<p>Real-world scenarios that pull concepts together for a client outcome.</p>\n<ul><li><a href=\"#\" class=\"kc-link\" data-slug=\"bootstrapping-company-ai-stack\">Scenario: bootstrapping a company's AI stack from zero</a> — discovery questions + phased rollout (buy → wire MCP → codify skills/hooks → build the differentiated slice).</li></ul>\n<blockquote><p>🏗️ These last three notes form a cluster with its own Map of Content — <strong><a href=\"#\" class=\"kc-link\" data-slug=\"building-ai-stacks\">Building &amp; advising on AI stacks</a></strong> — the evolving consulting section.</p></blockquote>\n<h2>The narrative (how it all connects)</h2>\n<p>At the bottom, <strong>foundations</strong> say there are only three things to steer — the prompt (one message), the context (what stays in the window), and the harness (the whole loop). The <strong>Claude API</strong> turns that loop into callable capabilities; the <strong>Agent SDK</strong> wraps those into a framework for building agents; <strong>Claude Code</strong> is the most-polished agent built on it, exposing the loop as nameable <strong>primitives</strong> you can mix. Those primitives <strong>compose into patterns</strong> (routing, orchestration, the reference architecture), and patterns <strong>ship as products</strong> — which, for the consulting goal, means helping a client pick the <em>smallest</em> set of primitives that solves their problem. That \"smallest set\" choice now has its own pattern — the <strong><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-vs-build-your-own\">four-altitude decision</a></strong> (buy → use Claude Code → configure the Agent SDK → own the raw API loop) — and its own products-layer scenario, <a href=\"#\" class=\"kc-link\" data-slug=\"bootstrapping-company-ai-stack\">bootstrapping a company's AI stack</a>. Together they're the <a href=\"#\" class=\"kc-link\" data-slug=\"building-ai-stacks\">Building &amp; advising on AI stacks</a> map.</p>\n<p>Read the layers as a debugging ladder too: <em>bad single answer</em> → Foundations (prompt). <em>Model forgetting</em> → Foundations (context). <em>Can't recover / loop / self-check</em> → Foundations (harness) <strong>or</strong> the right Claude Code primitive (a hook, a subagent, a workflow). The spine tells you which floor to get off on.</p>\n<h2>How this map evolves</h2>\n<p>The <code>/land</code> skill updates this file every time you add a concept: it assigns the note a <code>spine_layer</code>, drops a link under the right heading here, and — when a new idea genuinely shifts the story — rewrites the narrative. <strong>Gaps are features:</strong> every layer now has at least one note — the remaining \"what to learn next\" list lives as the explicit backlog at the bottom of the <a href=\"#\" class=\"kc-link\" data-slug=\"building-ai-stacks\">Building &amp; advising on AI stacks</a> map (the framework landscape, eval, and guardrails notes).</p>"
+      "html": "<h1>The Big Picture 🧠</h1>\n<blockquote><p><strong>This is the spine of the whole knowledge center.</strong> Every concept hangs off one layer below. When you land a new doc/article/feature, it gets placed here — so the map grows into a single connected brain instead of a pile of isolated notes. Read this top-to-bottom to <em>go broad</em>; click into any note to <em>go deep</em>.</p></blockquote>\n<blockquote><p>🗺️ <strong>Two things live on this spine, and they are not the same.</strong> The interactive <span class=\"kc-ref\">concept graph</span> plots <strong>tech-stack concepts</strong> — the primitives, systems, and patterns of the Claude stack (Tool Use, MCP, Subagents, Worktrees, Orchestration…) — wired by <strong>dependency</strong> edges (solid: <em>runs-on, depends-on, part-of, uses</em>; arrows point to what a thing needs) and <strong>relation</strong> edges (dashed: <em>used-with, alternative-to</em>), so you can read the stack bottom-up and learn how it fits. The <strong>source notes</strong> listed below are the distilled articles that <em>back</em> those concepts — the content you read to go deep. Concepts are the map; notes are the territory. The graph is generated from <code>knowledge/concepts/*.md</code>; the notes live in <code>knowledge/notes/*.md</code>.</p></blockquote>\n<h2>The spine (one stack, bottom powers top)</h2>\n<pre><code>┌─────────────────────────────────────────────────────────────┐\n│  PRODUCTS &amp; CONSULTING   real builds, client scenarios       │  ← what you ship\n│        ▲  ship as                                            │\n│  AGENT PATTERNS          chaining, routing, orchestrator-…   │  ← how you compose\n│        ▲  compose into                                       │\n│  CLAUDE CODE PRIMITIVES  skills, hooks, MCP, subagents, …    │  ← the toolbox\n│        ▲  packaged as                                        │\n│  AGENT SDK               build your own agents on the loop   │  ← the framework\n│        ▲  exposes                                            │\n│  CLAUDE API              tool use, caching, thinking, batch  │  ← the engine\n│        ▲  runs on                                            │\n│  FOUNDATIONS             prompt ⊂ context ⊂ harness          │  ← the physics\n└─────────────────────────────────────────────────────────────┘</code></pre>\n<p>Each layer is a <strong>lens on the same gather→act→verify loop</strong>, zoomed out one level. A bug or a design decision always lives on <em>some</em> layer — naming the layer is half the battle.</p>\n<h2>What lives on each layer right now</h2>\n<h3>⚛️ Foundations — <em>the physics of steering an LLM</em></h3>\n<p>The mental models everything else obeys.</p>\n<ul><li><a href=\"#\" class=\"kc-link\" data-slug=\"prompt-context-harness-engineering\">Prompt vs Context vs Harness Engineering</a> — the three nested levels of control.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"harness-vs-context-engineering\">Harness vs Context vs Prompt Engineering</a> — canonical narrative of the same model; <em>where a bug lives tells you which level to fix.</em></li><li><a href=\"#\" class=\"kc-link\" data-slug=\"anatomy-of-an-agent-harness\">The Anatomy of an Agent Harness</a> — dissects the \"harness\" level into its six organs (loop, context, tools, memory, verification, delegation).</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"harness-engineering-discipline\">Harness engineering — reliability lives outside the model weights</a> — the discipline: capable models still fail; the <em>same</em> model swings 20%→100% as you add the five harness subsystems (instructions, tools, environment, state, feedback).</li></ul>\n<h3>🔌 Claude API — <em>the engine</em></h3>\n<p>The raw capabilities a request can use.</p>\n<ul><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-api-agent-primitives\">The Claude API agent primitives</a> — the tool-use loop, MCP connector, prompt caching, batch, computer use; <em>an agent is ~20 lines.</em></li></ul>\n<h3>🛠️ Agent SDK — <em>the framework</em></h3>\n<p>Building your own agents on top of the loop.</p>\n<ul><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-agent-sdk\">The Claude Agent SDK</a> — the same engine as Claude Code, as a library: hooks, subagents, MCP, sessions, headless/CI, Bedrock/Vertex/Foundry auth.</li></ul>\n<h3>🧭 Claude Code primitives — <em>the toolbox</em></h3>\n<p>The named features that tune one zone of the loop.</p>\n<ul><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-architecture\">Claude Code Architecture — field guide</a> — the one model that slots every primitive into place.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"model-context-protocol\">Model Context Protocol (MCP)</a> — how the model <em>reaches</em> external tools/data.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-multi-agent-development\">Claude Code — Multi-Agent Development</a> — worktrees / agent teams / subagents.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflows-and-ultraplan\">Dynamic Workflows &amp; the Ultraplan loop</a> — scripting fan-out across many agents.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"execution-context-isolation\">One shared context vs. many isolated contexts</a> — what actually forks: <em>modes</em> stay in one window, <em>agents</em> fork fresh ones (+ the six permission modes).</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"worktree-base-ref-fresh-vs-head\">worktree.baseRef — fresh vs head</a> — the git dial under worktree parallelism: branch agents from clean published code (<code>fresh</code>) or your live WIP HEAD (<code>head</code>).</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-routines\">Claude Code Routines — unattended cloud automation</a> — the saved config that runs <em>itself</em> on Anthropic's cloud on a schedule / GitHub event / API call (the \"operate it for me\" primitive).</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"progressive-disclosure-instructions\">One giant instruction file fails — progressive disclosure</a> — why a 600-line <code>CLAUDE.md</code> rots (lost-in-the-middle, budget exhaustion) and the entry-file + topic-docs + code-embedded structure that fixes it.</li></ul>\n<h3>🧩 Agent patterns — <em>how you compose</em></h3>\n<p>Reusable shapes for putting primitives together.</p>\n<ul><li><a href=\"#\" class=\"kc-link\" data-slug=\"agentic-ai-reference-architecture\">Agentic AI Reference Architecture</a> — the nine-layer production blueprint; what separates a prototype from a real system.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-vs-build-your-own\">Use Claude Code vs build your own</a> — the four-altitude decision tree (buy → use → configure → own the loop).</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"dynamic-workflow-patterns\">Six dynamic-workflow patterns &amp; the three failure modes they fix</a> — classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament, loop-until-done.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"repository-as-system-of-record\">The repository is the agent's only durable memory</a> — \"info not in the repo doesn't exist for the agent\"; ACID state files (<code>AGENTS.md</code>/<code>PROGRESS.md</code>/<code>DECISIONS.md</code>), the fresh-session test, and rebuild-cost as the metric.</li><li><a href=\"#\" class=\"kc-link\" data-slug=\"completion-is-externalized\">Never let the agent declare its own victory</a> — externalize \"done\": feature-list state machines, three-layer/E2E verification, WIP=1 scope control, and observability inside the harness.</li></ul>\n<h3>🚀 Products &amp; consulting — <em>what you ship</em></h3>\n<p>Real-world scenarios that pull concepts together for a client outcome.</p>\n<ul><li><a href=\"#\" class=\"kc-link\" data-slug=\"bootstrapping-company-ai-stack\">Scenario: bootstrapping a company's AI stack from zero</a> — discovery questions + phased rollout (buy → wire MCP → codify skills/hooks → build the differentiated slice).</li></ul>\n<blockquote><p>🏗️ These last three notes form a cluster with its own Map of Content — <strong><a href=\"#\" class=\"kc-link\" data-slug=\"building-ai-stacks\">Building &amp; advising on AI stacks</a></strong> — the evolving consulting section.</p></blockquote>\n<h2>The narrative (how it all connects)</h2>\n<p>At the bottom, <strong>foundations</strong> say there are only three things to steer — the prompt (one message), the context (what stays in the window), and the harness (the whole loop). The <strong>Claude API</strong> turns that loop into callable capabilities; the <strong>Agent SDK</strong> wraps those into a framework for building agents; <strong>Claude Code</strong> is the most-polished agent built on it, exposing the loop as nameable <strong>primitives</strong> you can mix. Those primitives <strong>compose into patterns</strong> (routing, orchestration, the reference architecture), and patterns <strong>ship as products</strong> — which, for the consulting goal, means helping a client pick the <em>smallest</em> set of primitives that solves their problem. That \"smallest set\" choice now has its own pattern — the <strong><a href=\"#\" class=\"kc-link\" data-slug=\"claude-code-vs-build-your-own\">four-altitude decision</a></strong> (buy → use Claude Code → configure the Agent SDK → own the raw API loop) — and its own products-layer scenario, <a href=\"#\" class=\"kc-link\" data-slug=\"bootstrapping-company-ai-stack\">bootstrapping a company's AI stack</a>. Together they're the <a href=\"#\" class=\"kc-link\" data-slug=\"building-ai-stacks\">Building &amp; advising on AI stacks</a> map.</p>\n<p>Read the layers as a debugging ladder too: <em>bad single answer</em> → Foundations (prompt). <em>Model forgetting</em> → Foundations (context). <em>Can't recover / loop / self-check</em> → Foundations (harness) <strong>or</strong> the right Claude Code primitive (a hook, a subagent, a workflow). The spine tells you which floor to get off on.</p>\n<h2>How this map evolves</h2>\n<p>The <code>/land</code> skill updates this file every time you add a concept: it assigns the note a <code>spine_layer</code>, drops a link under the right heading here, and — when a new idea genuinely shifts the story — rewrites the narrative. <strong>Gaps are features:</strong> every layer now has at least one note — the remaining \"what to learn next\" list lives as the explicit backlog at the bottom of the <a href=\"#\" class=\"kc-link\" data-slug=\"building-ai-stacks\">Building &amp; advising on AI stacks</a> map (the framework landscape, eval, and guardrails notes).</p>"
     },
     "readme": {
       "title": "Knowledge 🧠 — the Home Note",

@@ -8,4 +8,4 @@ edges:
   - { to: messages-api, type: runs-on, why: "Tool calls ride the Messages API request/response cycle." }
 sources: [claude-api-agent-primitives, claude-code-architecture]
 ---
-Every capability an agent has — reading files, running code, searching — is a tool. Master this one primitive and most of the stack is just bigger and bigger libraries of tools.
+Every capability an agent has — reading files, running code, searching — is a tool. Master this one primitive and most of the stack is just bigger and bigger libraries of tools. One nuance: *client tools* your code executes (the loop above) vs *server tools* (web_search, code_execution, web_fetch) that Anthropic executes for you — for those, you don't run anything.
