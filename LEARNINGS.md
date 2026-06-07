@@ -11,6 +11,12 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-06  **Never nest an `<a>` inside an `<a class="card">` — the whole card is already a link.** The HTML
+            parser auto-closes the outer card anchor at the inner `<a>`, ejecting the rest of the card's content
+            (heading stays put, paragraph spills into the next grid cell) and looking like "overlapping cards."
+            Use `<em>`/`<span>` for emphasis inside a card, or reword to point at the standalone card. Bit the
+            Skills card on `docs/concepts/primitives.html`; fixed in f331c8b.
+
 2026-06-06  **Terminology "corrections" have a shelf life — datestamp them like prices.** The vault asserted
             in ~6 places that "routines isn't a real term" (it meant skills); Anthropic then shipped a feature
             *literally named* Routines (unattended cloud automation). A flat denial aged into a contradiction.
