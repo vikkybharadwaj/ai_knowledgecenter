@@ -80,6 +80,18 @@
     <h2 class="cl-date">June 7, 2026</h2>
     <ul class="cl-items">
     <li class="cl-item">
+      <p class="cl-head"><span class="cl-tag cl-tag-fix">Fix</span><span class="cl-text">Removed orphan worktree gitlink that broke GitHub Pages</span></p>
+      <p class="cl-desc">`.claude/worktrees/changelog-home` was accidentally committed as a gitlink (mode 160000) with no .gitmodules entry. GitHub Pages&#x27; checkout runs `git submodule update --init` and fails with &quot;No url found for submodule path&quot;, so every pages-build-deployment has been failing and the live site was frozen on a stale build. Untrack it and gitignore .claude/worktrees/ so it can&#x27;t recur.</p>
+      <details class="cl-files">
+        <summary>What changed · 2 files</summary>
+        <ul class="cl-flist">
+        <li><span class="cl-fstat cl-fstat-removed">removed</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/ed3585d39bcc196b8c0314d0c759b447373fe360#diff-0b4175607f7958f544fc923e0d9f4495eaef4bd757e7b4af83babad7caa0db01" target="_blank" rel="noopener">.claude/worktrees/changelog-home</a></li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/ed3585d39bcc196b8c0314d0c759b447373fe360#diff-bc37d034bad564583790a46f19d807abfe519c5671395fd494d8cce506c42947" target="_blank" rel="noopener">.gitignore</a></li>
+        </ul>
+      </details>
+      <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/41" target="_blank" rel="noopener">PR #41 →</a></div>
+    </li>
+    <li class="cl-item">
       <p class="cl-head"><span class="cl-tag cl-tag-new">New</span><span class="cl-text">Restyle change log like the Claude Code changelog</span></p>
       <details class="cl-files">
         <summary>What changed · 2 files</summary>
