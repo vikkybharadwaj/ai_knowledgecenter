@@ -80,6 +80,16 @@
     <h2 class="cl-date">June 7, 2026</h2>
     <ul class="cl-items">
     <li class="cl-item">
+      <p class="cl-head"><span class="cl-tag cl-tag-docs">Docs</span><span class="cl-text">Record Pages-breaking orphan-gitlink learning</span></p>
+      <details class="cl-files">
+        <summary>What changed · 1 file</summary>
+        <ul class="cl-flist">
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/b4017762f6ef6de0ba862954240e47e4c95a3b8f#diff-5c15e28d1e3331250743cc136d2c3684e1068ec86dc8e82743bae4dc66374c11" target="_blank" rel="noopener">LEARNINGS.md</a></li>
+        </ul>
+      </details>
+      <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/42" target="_blank" rel="noopener">PR #42 →</a></div>
+    </li>
+    <li class="cl-item">
       <p class="cl-head"><span class="cl-tag cl-tag-fix">Fix</span><span class="cl-text">Removed orphan worktree gitlink that broke GitHub Pages</span></p>
       <p class="cl-desc">`.claude/worktrees/changelog-home` was accidentally committed as a gitlink (mode 160000) with no .gitmodules entry. GitHub Pages&#x27; checkout runs `git submodule update --init` and fails with &quot;No url found for submodule path&quot;, so every pages-build-deployment has been failing and the live site was frozen on a stale build. Untrack it and gitignore .claude/worktrees/ so it can&#x27;t recur.</p>
       <details class="cl-files">
