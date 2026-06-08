@@ -3,71 +3,196 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Knowledge Center</title>
-<meta name="description" content="My personal AI knowledge center for the Claude tech stack: a connected map of concepts, plus a CCA-F exam-prep track.">
+<title>AI Knowledge Center — a connected map of the Claude stack</title>
+<meta name="description" content="My personal, self-organizing knowledge base for the Claude tech stack: one connected map of concepts, plus a CCA-F exam-prep track. Built in the open.">
 <meta property="og:title" content="AI Knowledge Center">
-<meta property="og:description" content="A connected map of concepts for the Claude stack, plus a CCA-F exam-prep track.">
+<meta property="og:description" content="A connected map of concepts for the Claude stack, plus a CCA-F exam-prep track. Built in the open.">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="assets/style.css?v=20260608ui">
 <style>
   /* ---- home-only ---- */
-  .hero{padding:60px 0 16px}
-  .hero h1{margin:0 0 .45em;max-width:none;white-space:nowrap;font-size:clamp(1.6rem,7.5vw,3rem)}
-  .hero .sub{max-width:70ch}
+  .hero{padding:96px 0 28px}
+  .hero h1{max-width:16ch}
+  .hero .sub{max-width:64ch}
   .hero .sub strong{color:var(--text)}
-  .cards2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-  @media (max-width:640px){.cards2{grid-template-columns:1fr}}
-  .hub{display:block;position:relative;background:var(--bg-card);border:1px solid var(--border);
-    border-radius:var(--radius);padding:28px 28px 24px;overflow:hidden;text-decoration:none;
-    transition:border-color .15s,transform .15s}
-  .hub:hover{border-color:var(--accent);transform:translateY(-2px);text-decoration:none}
-  .hub .view-ic{font-size:32px;line-height:1;margin-bottom:10px}
-  .hub h2{font-size:1.5rem;margin:0 0 .35em;color:var(--text)}
-  .hub p{color:var(--text-soft);font-size:14.5px;line-height:1.6;margin:0 0 14px}
-  .hub .go{font-weight:700;color:var(--accent);font-size:14px}
+
+  /* 3-up explore band — portfolio "explore my work" pattern */
+  .explore{grid-template-columns:repeat(3,1fr)}
+  @media (max-width:900px){.explore{grid-template-columns:1fr}}
+  .module .icon{font-size:30px;display:block;margin-bottom:12px}
+  .module h3{font-size:1.32rem}
+  .module .xsub{font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--accent);margin:6px 0 0}
+  .module.t .xsub{color:var(--accent-3)}
+  .module.t{border-color:color-mix(in srgb,var(--accent-3) 30%,transparent)}
+  .module.t:hover{border-color:var(--accent-3);box-shadow:0 18px 50px rgba(45,212,191,.14)}
+  .module.t .accentbar{background:var(--accent-3)}
+  .module.c{border-color:color-mix(in srgb,var(--accent-2) 30%,transparent)}
+  .module.c:hover{border-color:var(--accent-2);box-shadow:0 18px 50px rgba(79,140,255,.14)}
+  .module.c .accentbar{background:var(--accent-2)}
+  .module.c .xsub{color:var(--accent-2)}
+
+  /* the spine strip */
+  .spine{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:24px}
+  .spine .seg{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.04em;
+    padding:7px 13px;border-radius:999px;border:1px solid var(--border);
+    background:rgba(255,255,255,.025);color:var(--text-soft);white-space:nowrap}
+  .spine .seg:first-child{border-color:color-mix(in srgb,var(--accent) 45%,transparent);color:var(--text)}
+  .spine .seg:last-child{border-color:color-mix(in srgb,var(--accent-2) 45%,transparent);color:var(--text)}
+  .spine .arr{color:var(--text-dim);font-size:.85rem}
 </style>
 </head>
 <body>
 <header class="nav">
   <div class="wrap">
-    <a href="../index.html">&larr; Portfolio</a>
+    <a href="../index.html" style="margin-right:14px;font-size:.78rem;color:var(--text-soft)">&larr; Portfolio</a>
     <a class="brand" href="index.html"><span class="dot"></span> AI Knowledge Center</a>
     <nav class="navlinks">
-      <a href="concepts/index.html" class="active">Concepts</a>
-      <a href="concepts/exam.html">Exam Prep</a>
+      <a href="concepts/index.html">Concepts</a>
       <a href="changelog.html">Change log</a>
     </nav>
+    <a class="pill" href="concepts/exam.html">🎓 Exam Prep</a>
   </div>
 </header>
 
 <main class="wrap">
+
   <section class="hero">
-    <h1>AI Knowledge Center</h1>
-    <p class="sub"><strong>A living, personal learning hub for the Claude tech stack.</strong> Built in the open ·
-      <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter" target="_blank" rel="noopener">source on GitHub</a>.
-      Content is distilled in my own words and cited; models &amp; previews are datestamped because they go stale fast.</p>
+    <div class="eyebrow">Personal knowledge base · the Claude tech stack</div>
+    <h1>A connected map of the <span class="grad">Claude stack.</span></h1>
+    <p class="sub"><strong>A living, self-organizing learning hub for everything I'm building toward on the
+      Claude/Anthropic stack.</strong> Not a pile of facts — a graph where every concept is wired to its
+      neighbours so the whole picture holds together. Distilled in my own words, cited, and datestamped
+      because models &amp; previews go stale fast.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="concepts/index.html">Explore the concepts →</a>
+      <a class="btn" href="concepts/exam.html">🎓 CCA-F Exam Prep</a>
+      <a class="btn" href="https://github.com/vikkybharadwaj/ai_knowledgecenter" target="_blank" rel="noopener">Source on GitHub ↗</a>
+    </div>
   </section>
 
-  <div class="cards2">
-    <a class="hub" href="concepts/index.html">
-      <span class="accentbar"></span>
-      <div class="view-ic">🧠</div>
-      <h2>Concepts</h2>
-      <p>One connected map of the Claude stack — the mental model, comparison matrix, decision guide,
-        primitives, and a self-organizing concept graph. Go deep on any primitive, or broad across the whole stack.</p>
-      <span class="go">Explore Concepts →</span>
-    </a>
+  <!-- EXPLORE BAND -->
+  <section>
+    <div class="section-head">
+      <h2>Two ways in</h2>
+      <span class="count">pick a view</span>
+    </div>
+    <div class="modules explore">
 
-    <a class="hub" href="concepts/exam.html">
-      <span class="accentbar"></span>
-      <div class="view-ic">🎓</div>
-      <h2>CCA-F Exam Prep</h2>
-      <p>A focused track for the Claude Code Associate – Foundations exam: what it covers, practice questions, and
-        scenario drills.</p>
-      <span class="go">Start prepping →</span>
-    </a>
-  </div>
+      <a class="module live g" href="concepts/index.html">
+        <span class="accentbar"></span>
+        <div class="topline"><span class="status live">The map</span></div>
+        <span class="icon">🧠</span>
+        <h3>Concepts</h3>
+        <p class="xsub">mental model · primitives · graph</p>
+        <p class="tagline">One connected map of the Claude stack — the mental model, a field guide to every
+          primitive, a comparison matrix, a decision guide, and a self-organizing concept graph. Go deep on
+          any primitive, or broad across the whole stack.</p>
+        <div class="mlinks">
+          <a href="concepts/mental-model.html">Mental model</a>
+          <a href="concepts/primitives.html">Primitives</a>
+          <a href="concepts/graph.html">Concept graph</a>
+        </div>
+        <span class="go">Explore Concepts →</span>
+      </a>
+
+      <a class="module live t" href="concepts/exam.html">
+        <span class="accentbar"></span>
+        <div class="topline"><span class="status building">Exam track</span></div>
+        <span class="icon">🎓</span>
+        <h3>CCA-F Exam Prep</h3>
+        <p class="xsub">study · practice · scenarios</p>
+        <p class="tagline">A focused track for the Claude Certified Architect – Foundations exam: what it
+          covers, a practice-question bank, and scenario drills that pressure-test the same mental model
+          against real situations.</p>
+        <div class="mlinks">
+          <a href="concepts/exam.html">About the exam</a>
+          <a href="concepts/practice.html">Practice</a>
+          <a href="concepts/scenarios.html">Scenarios</a>
+        </div>
+        <span class="go">Start prepping →</span>
+      </a>
+
+      <a class="module live c" href="concepts/graph.html">
+        <span class="accentbar"></span>
+        <div class="topline"><span class="status live">Live graph</span></div>
+        <span class="icon">🕸</span>
+        <h3>The concept graph</h3>
+        <p class="xsub">dependency edges · bottom-up</p>
+        <p class="tagline">The stack rendered as a graph — primitives, systems, and patterns wired by strict
+          dependency edges (<code>runs-on · depends-on · part-of · uses</code>). Learn it visually,
+          bottom-up the spine, instead of as a list of nouns.</p>
+        <div class="mlinks">
+          <a href="concepts/graph.html">Open the graph</a>
+          <a href="concepts/matrix.html">Comparison matrix</a>
+          <a href="concepts/decision.html">Decision guide</a>
+        </div>
+        <span class="go">See the graph →</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- THE SPINE -->
+  <section>
+    <div class="section-head">
+      <h2>One spine, bottom-up</h2>
+      <span class="count">how it's organized</span>
+    </div>
+    <p class="lead">Every concept sits on a single spine that runs from raw foundations up to shipped products.
+      You can always answer &ldquo;what does this depend on, and what is it a part of?&rdquo;</p>
+    <div class="spine">
+      <span class="seg">Foundations</span><span class="arr">→</span>
+      <span class="seg">Claude API</span><span class="arr">→</span>
+      <span class="seg">Agent SDK</span><span class="arr">→</span>
+      <span class="seg">Claude Code primitives</span><span class="arr">→</span>
+      <span class="seg">Agent patterns</span><span class="arr">→</span>
+      <span class="seg">Products</span>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section>
+    <div class="section-head">
+      <h2>How this base is built</h2>
+      <span class="count">the rules</span>
+    </div>
+    <div class="cols">
+      <div class="feature">
+        <span class="n">01</span>
+        <h3>Connect, don't dump</h3>
+        <p>Every note carries 2–5 typed connections and a place on the spine. A note that links to nothing is
+          a failure, not a draft — structure emerges from the edges.</p>
+      </div>
+      <div class="feature">
+        <span class="n">02</span>
+        <h3>Claude-specific</h3>
+        <p>Content stays tied to the Claude/Anthropic stack unless an idea is genuinely foundational. The goal
+          is mastery of one stack, not a generic AI wiki.</p>
+      </div>
+      <div class="feature">
+        <span class="n">03</span>
+        <h3>In my own words</h3>
+        <p>Sources are distilled, never pasted — one atomic idea per note, explaining the <em>why</em> and the
+          <em>when to use</em>, with the original always cited.</p>
+      </div>
+      <div class="feature">
+        <span class="n">04</span>
+        <h3>Datestamped</h3>
+        <p>Anything with a shelf life — models, prices, previews — carries a retrieval date, because the stack
+          moves fast and stale facts are worse than none.</p>
+      </div>
+    </div>
+  </section>
+
 </main>
+
+<footer class="wrap">
+  <p>AI Knowledge Center · a personal second brain for the Claude tech stack · built in the open ·
+     <a href="https://github.com/vikkybharadwaj/ai_knowledgecenter" target="_blank" rel="noopener">source on GitHub</a> ·
+     <a href="../index.html">← back to portfolio</a>.<br>
+     Content is distilled in my own words and cited; models &amp; previews are datestamped because they go stale fast.</p>
+</footer>
 
 </body>
 </html>
