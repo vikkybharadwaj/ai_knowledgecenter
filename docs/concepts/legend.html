@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Legend — what the badges mean</title>
 <meta name="description" content="A legend for the badges used across the Concepts pages: altitude/grouping, enforcement (hard vs soft), and maturity (GA, preview, experimental).">
-<link rel="stylesheet" href="assets/style.css?v=20260605c">
+<link rel="stylesheet" href="assets/style.css?v=20260608ui">
 <style>
   .legend-table { width: 100%; border-collapse: collapse; margin: 14px 0 6px; }
   .legend-table td { padding: 12px 10px; border-top: 1px solid var(--border); vertical-align: top; }
@@ -16,31 +16,21 @@
 </style>
 </head>
 <body>
-<header class="crumbbar">
-  <nav class="rail-crumbs" aria-label="Breadcrumb">
-    <span class="dot"></span>
-    <a href="../index.html">AI Knowledge Center</a>
-    <span class="sep">&rsaquo;</span>
-    <a href="index.html">Concepts</a>
-    <span class="sep">&rsaquo;</span>
-    <span class="here">Legend</span>
-  </nav>
-</header>
-<div class="shell">
-  <aside class="siderail">
-    <nav class="railnav">
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../index.html"><span class="dot"></span> AI Knowledge Center</a>
+    <nav class="navlinks">
       <a href="index.html">Overview</a>
       <a href="mental-model.html">Mental model</a>
       <a href="primitives.html">Primitives</a>
       <a href="graph.html">Concept graph</a>
       <a href="matrix.html">Comparison matrix</a>
       <a href="decision.html">Decide</a>
-      <span class="rail-sep" role="separator"></span>
       <a href="legend.html" class="active">Legend</a>
     </nav>
-    <a class="rail-peer" href="exam.html">🎓 CCA-F Exam Prep &rarr;</a>
-  </aside>
-
+    <a class="pill" href="exam.html">🎓 Exam Prep</a>
+  </div>
+</header>
 <main class="wrap">
 
   <section class="hero" style="padding:42px 0 8px">
@@ -104,7 +94,6 @@
   </table>
 
 </main>
-</div>
 
 <footer class="wrap">
   <p>AI Knowledge Center · Concepts · Legend. Badge colours are driven by the shared stylesheet, so this page always

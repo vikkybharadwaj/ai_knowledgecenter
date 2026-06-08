@@ -11,6 +11,15 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-08  **The site is re-skinnable as a pure token remap — both stylesheets share the same CSS variable
+            names (`--bg`, `--accent`, `--text*`, `--border*`, `--radius`, `--sans/--mono`), and JS never reads
+            CSS vars.** Aligning the whole UI to the portfolio (`vikkybharadwaj.github.io` + Product Cockpit:
+            JetBrains Mono, `#0a0f1a`, glassy cards, green→blue gradient, ambient glow, dark-only) meant remapping
+            the `:root` values in `docs/assets/style.css` (hub/graph/reader) + `docs/concepts/assets/style.css`
+            (concepts/exam), plus the only hard-coded colours — `LAYER_COLORS`/`TYPE_COLORS` in `graph.js` &
+            `reader.js`. No note/concept content changes, no `build-index.py` rerun. Nav was the one structural
+            edit (rail+crumbbar → sticky top `.nav`), done across 22 HTML files by a path-keyed script.
+
 2026-06-07  **Fact-check the graph against `code.claude.com/docs` — training memory drifts.** A docs pass on the
             42 concepts caught real errors a confident summary would never flag: "Dynamic Workflows / Ultraplan"
             conflated two *separate* features (dynamic workflows fire on **`ultracode`**; ultraplan is a different

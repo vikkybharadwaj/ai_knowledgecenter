@@ -5,16 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Concept graph — Concepts · AI Knowledge Center</title>
 <meta name="description" content="A self-organizing, dot-connected knowledge base for the Claude tech stack: every concept wired to the others by typed links and laid out on one evolving spine. Go broad or deep at will.">
-<link rel="stylesheet" href="../assets/style.css?v=20260607a">
+<link rel="stylesheet" href="../assets/style.css?v=20260608ui">
 </head>
 <body>
-<header class="crumbbar">
-  <nav class="rail-crumbs" aria-label="Breadcrumb">
-    <span class="dot"></span>
-    <a href="../index.html">AI Knowledge Center</a>
-    <span class="sep">&rsaquo;</span>
-    <span class="here">Concept graph</span>
-  </nav>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../index.html"><span class="dot"></span> AI Knowledge Center</a>
+    <nav class="navlinks">
+      <a href="index.html">Overview</a>
+      <a href="mental-model.html">Mental model</a>
+      <a href="primitives.html">Primitives</a>
+      <a href="graph.html" class="active">Concept graph</a>
+      <a href="matrix.html">Comparison matrix</a>
+      <a href="decision.html">Decide</a>
+      <a href="legend.html">Legend</a>
+    </nav>
+    <a class="pill" href="exam.html">🎓 Exam Prep</a>
+  </div>
 </header>
 <main class="wrap">
   <section class="hero" style="padding:42px 0 14px">
@@ -55,23 +62,9 @@
 <script src="../assets/reader.js"></script>
 <script src="../assets/graph.js"></script>
 <script>
-/* shared theme toggle (key shared across the whole site) + notes-by-layer list */
+/* dark-only canvas + notes-by-layer list */
 (function () {
-  // shared theme toggle (lives in the topbar; key shared across the whole site)
-  var KEY = "cca-theme", saved = localStorage.getItem(KEY);
-  var tbtn = document.querySelector("header .theme-toggle");
-  if (tbtn) {
-    var lab = function () {
-      var d = document.documentElement.getAttribute("data-theme") !== "light";
-      tbtn.textContent = d ? "☀ Light" : "☾ Dark";
-    };
-    lab();
-    tbtn.addEventListener("click", function () {
-      var next = document.documentElement.getAttribute("data-theme") !== "light" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem(KEY, next); lab();
-    });
-  }
+  document.documentElement.setAttribute("data-theme", "dark");
 
   var D = window.KC_DATA; if (!D) return;
   var host = document.getElementById("layer-list");
