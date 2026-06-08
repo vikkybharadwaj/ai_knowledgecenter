@@ -11,6 +11,14 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-08  **A whole-card link (`<a class="card">…</a>`) silently breaks the moment it wraps an inner `<a>` —
+            HTML forbids nested anchors, so the parser auto-closes the outer anchor right before the inner link,
+            and every child after that point (sub-links, the "go →" affordance) escapes the card and renders as a
+            sibling row.** Symptom looks like a CSS bug (flex/grid rules "not applying"); it's actually the DOM.
+            Fix for the portfolio `.module`/`.xcard` pattern: the card anchor may contain only non-anchor children —
+            use `.chip`/tag **spans**, never `<a>` sub-links. Caught it by `--dump-dom`, not by reading the CSS.
+            [→ docs/index.html explore band]
+
 2026-06-08  **The site is re-skinnable as a pure token remap — both stylesheets share the same CSS variable
             names (`--bg`, `--accent`, `--text*`, `--border*`, `--radius`, `--sans/--mono`), and JS never reads
             CSS vars.** Aligning the whole UI to the portfolio (`vikkybharadwaj.github.io` + Product Cockpit:
