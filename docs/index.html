@@ -22,7 +22,9 @@
   .module .icon{font-size:30px;display:block;margin-bottom:12px}
   .module h3{font-size:1.32rem}
   .module .xsub{font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--accent);margin:6px 0 0}
+    text-transform:uppercase;color:var(--accent);margin:6px 0 12px}
+  .module .xtags{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 2px}
+  .module .chip{font-size:.66rem;padding:3px 9px}
   .module.t .xsub{color:var(--accent-3)}
   .module.t{border-color:color-mix(in srgb,var(--accent-3) 30%,transparent)}
   .module.t:hover{border-color:var(--accent-3);box-shadow:0 18px 50px rgba(45,212,191,.14)}
@@ -88,10 +90,11 @@
         <p class="tagline">One connected map of the Claude stack — the mental model, a field guide to every
           primitive, a comparison matrix, a decision guide, and a self-organizing concept graph. Go deep on
           any primitive, or broad across the whole stack.</p>
-        <div class="mlinks">
-          <a href="concepts/mental-model.html">Mental model</a>
-          <a href="concepts/primitives.html">Primitives</a>
-          <a href="concepts/graph.html">Concept graph</a>
+        <div class="xtags">
+          <span class="chip">Mental model</span>
+          <span class="chip">Primitives</span>
+          <span class="chip">Comparison matrix</span>
+          <span class="chip">Decision guide</span>
         </div>
         <span class="go">Explore Concepts →</span>
       </a>
@@ -105,10 +108,10 @@
         <p class="tagline">A focused track for the Claude Certified Architect – Foundations exam: what it
           covers, a practice-question bank, and scenario drills that pressure-test the same mental model
           against real situations.</p>
-        <div class="mlinks">
-          <a href="concepts/exam.html">About the exam</a>
-          <a href="concepts/practice.html">Practice</a>
-          <a href="concepts/scenarios.html">Scenarios</a>
+        <div class="xtags">
+          <span class="chip">About the exam</span>
+          <span class="chip">Practice bank</span>
+          <span class="chip">Scenario drills</span>
         </div>
         <span class="go">Start prepping →</span>
       </a>
@@ -122,10 +125,11 @@
         <p class="tagline">The stack rendered as a graph — primitives, systems, and patterns wired by strict
           dependency edges (<code>runs-on · depends-on · part-of · uses</code>). Learn it visually,
           bottom-up the spine, instead of as a list of nouns.</p>
-        <div class="mlinks">
-          <a href="concepts/graph.html">Open the graph</a>
-          <a href="concepts/matrix.html">Comparison matrix</a>
-          <a href="concepts/decision.html">Decision guide</a>
+        <div class="xtags">
+          <span class="chip">runs-on</span>
+          <span class="chip">depends-on</span>
+          <span class="chip">part-of</span>
+          <span class="chip">uses</span>
         </div>
         <span class="go">See the graph →</span>
       </a>
