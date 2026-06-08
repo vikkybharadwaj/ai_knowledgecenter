@@ -81,6 +81,17 @@
     <h2 class="cl-date">June 8, 2026</h2>
     <ul class="cl-items">
     <li class="cl-item">
+      <p class="cl-head"><span class="cl-tag cl-tag-new">New</span><span class="cl-text">Added active Overview tab to top nav</span></p>
+      <p class="cl-desc">Landing page now shows an &quot;Overview&quot; button in the nav, auto-selected with the active (you-are-here) treatment. Existing hero + explore band content is wrapped in an #overview section.</p>
+      <details class="cl-files">
+        <summary>What changed · 1 file</summary>
+        <ul class="cl-flist">
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/710e0f381644fd5a31f315903f3b48cd7af0379d#diff-b04b38d4e36f7a7171aeb211bf933eaf36d41d9866ebbc3639f673f84dc350ae" target="_blank" rel="noopener">docs/index.html</a></li>
+        </ul>
+      </details>
+      <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/54" target="_blank" rel="noopener">PR #54 →</a></div>
+    </li>
+    <li class="cl-item">
       <p class="cl-head"><span class="cl-tag cl-tag-fix">Fix</span><span class="cl-text">Gave cross-view pill its own color, distinct from the active tab</span></p>
       <p class="cl-desc">The top-right &quot;Exam Prep&quot; / &quot;Concepts&quot; pill shared the exact green→blue gradient + dark text used for the active nav tab, so it read as &quot;you are here&quot; rather than &quot;jump to the other view&quot;. Split the pill/CTA off into its own rule with a purple→blue gradient + white text so the two affordances are visually distinct. Applied to both stylesheets (concepts + home) and bumped the CSS cache-bust version across all pages.</p>
       <details class="cl-files">
