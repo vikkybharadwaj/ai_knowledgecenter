@@ -59,9 +59,11 @@ body::after  { top:220px; right:-180px; width:560px; height:560px; background:ra
   white-space:nowrap; text-decoration:none; transition:color .15s, background .15s;
 }
 .nav a:hover, .topbar nav a:hover { background:rgba(255,255,255,.05); color:var(--text); text-decoration:none; }
-.nav a.active, .nav .pill, .topbar nav a.active, .topbar nav a.cta { background:var(--grad); color:#06120c; font-weight:700; }
-.nav a.active:hover, .nav .pill:hover { color:#06120c; box-shadow:0 8px 22px rgba(0,210,106,.25); text-decoration:none; }
-.nav .pill { margin-left:8px; }
+.nav a.active, .topbar nav a.active { background:var(--grad); color:#06120c; font-weight:700; }
+.nav a.active:hover, .topbar nav a.active:hover { color:#06120c; box-shadow:0 8px 22px rgba(0,210,106,.25); text-decoration:none; }
+/* Cross-view CTA — a distinct destination, NOT the active tab. Purple→blue so it never reads as "you are here". */
+.nav .pill, .topbar nav a.cta { margin-left:8px; background:linear-gradient(100deg,var(--accent-4),var(--accent-2)); color:#fff; font-weight:700; }
+.nav .pill:hover, .topbar nav a.cta:hover { color:#fff; box-shadow:0 8px 22px rgba(168,85,247,.30); text-decoration:none; }
 .nav .sep { width:1px; height:20px; background:var(--border); margin:0 6px; flex:none; }
 @media (max-width:760px){
   .nav .wrap, .topbar .wrap { overflow-x:auto; gap:2px; -webkit-overflow-scrolling:touch; }
