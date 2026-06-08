@@ -11,8 +11,8 @@
   if (!D) return;
 
   var LAYER_COLORS = {
-    foundations: "#7aa2f7", api: "#9ece6a", "agent-sdk": "#e0af68",
-    "claude-code": "#d98b5f", patterns: "#bb9af7", products: "#f7768e"
+    foundations: "#4F8CFF", api: "#2dd4bf", "agent-sdk": "#a855f7",
+    "claude-code": "#00D26A", patterns: "#f59e0b", products: "#00d4ff"
   };
 
   // unified registry: concepts (the map) + notes (the sources) + map docs, by slug
@@ -57,14 +57,14 @@
     if (it.kind === "concept") {
       head =
         '<div class="kc-reader-head">' +
-          '<span class="np-layer" style="background:' + (LAYER_COLORS[it.layer] || "#9aa5bd") + '">' +
+          '<span class="np-layer" style="background:' + (LAYER_COLORS[it.layer] || "#64748b") + '">' +
             (D.layerLabels[it.layer] || it.layer) + "</span>" +
           '<span class="np-depth">' + (it.label || "concept") + "</span>" +
         "</div>";
     } else if (it.kind === "note") {
       head =
         '<div class="kc-reader-head">' +
-          '<span class="np-layer" style="background:' + (LAYER_COLORS[it.layer] || "#9aa5bd") + '">' +
+          '<span class="np-layer" style="background:' + (LAYER_COLORS[it.layer] || "#64748b") + '">' +
             (D.layerLabels[it.layer] || it.layer) + "</span>" +
           '<span class="np-depth">source note · ' + (it.depth || "") + "</span>" +
         "</div>";

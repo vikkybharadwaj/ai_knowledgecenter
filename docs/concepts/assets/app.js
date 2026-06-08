@@ -3,31 +3,15 @@
    nav active-state, and keyboard-accessible tooltips. */
 
 (function () {
-  // ---- theme toggle (persisted) ----
-  var KEY = "cca-theme";
-  var saved = localStorage.getItem(KEY);
-
+  // ---- dark-only: ensure the dark canvas regardless of any stale stored theme ----
   function wireTheme() {
-    var btn = document.querySelector(".theme-toggle");
-    if (!btn) return;
-    function label() {
-      var dark = document.documentElement.getAttribute("data-theme") !== "light";
-      btn.textContent = dark ? "☀ Light" : "☾ Dark";
-    }
-    label();
-    btn.addEventListener("click", function () {
-      var dark = document.documentElement.getAttribute("data-theme") !== "light";
-      var next = dark ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem(KEY, next);
-      label();
-    });
+    document.documentElement.setAttribute("data-theme", "dark");
   }
 
-  // ---- highlight current page in top nav ----
+  // ---- highlight current page in the top nav ----
   function wireNav() {
     var here = location.pathname.split("/").pop() || "index.html";
-    document.querySelectorAll(".topbar nav a").forEach(function (a) {
+    document.querySelectorAll(".nav .navlinks a, .topbar nav a").forEach(function (a) {
       var href = a.getAttribute("href");
       if (!href) return;
       var target = href.split("/").pop().split("#")[0];

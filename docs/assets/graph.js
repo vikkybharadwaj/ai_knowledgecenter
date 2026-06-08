@@ -16,16 +16,16 @@
   var XHTML = "http://www.w3.org/1999/xhtml";
 
   var LAYER_COLORS = {
-    foundations: "#7aa2f7", api: "#9ece6a", "agent-sdk": "#e0af68",
-    "claude-code": "#d98b5f", patterns: "#bb9af7", products: "#f7768e"
+    foundations: "#4F8CFF", api: "#2dd4bf", "agent-sdk": "#a855f7",
+    "claude-code": "#00D26A", patterns: "#f59e0b", products: "#00d4ff"
   };
   // edge vocabulary — two families:
   //  dependency (solid, directional): arrow points to what a thing NEEDS
   //  relation   (dashed, non-directional): a sibling/complement link, not a dependency
   var TYPE_COLORS = {
-    "runs-on": "#73daca", "depends-on": "#7aa2f7",
-    "part-of": "#d98b5f", uses: "#bb9af7",
-    "used-with": "#8b93a7", "alternative-to": "#e0af68"
+    "runs-on": "#2dd4bf", "depends-on": "#4F8CFF",
+    "part-of": "#00D26A", uses: "#a855f7",
+    "used-with": "#94a3b8", "alternative-to": "#f59e0b"
   };
   var TYPE_LABELS = {
     "runs-on": "runs on", "depends-on": "depends on",
@@ -63,7 +63,7 @@
   var nodes = (D.concepts || []).map(function (n) {
     var o = Object.assign({}, n);
     o.x = 0; o.y = 0; o.vx = 0; o.vy = 0; o.w = CHIP_W; o.h = CHIP_H;
-    o.color = LAYER_COLORS[n.layer] || "#9aa5bd";
+    o.color = LAYER_COLORS[n.layer] || "#64748b";
     o.degree = n.degree || 0;
     o.edges = [];
     byId[n.slug] = o;
@@ -210,7 +210,7 @@
     gLanes.textContent = "";
     spineLayers.forEach(function (l, li) {
       var g = laneGeom[l]; if (!g) return;
-      var top = g.top, laneH = g.height, cy = top + laneH / 2, col = LAYER_COLORS[l] || "#9aa5bd";
+      var top = g.top, laneH = g.height, cy = top + laneH / 2, col = LAYER_COLORS[l] || "#64748b";
       gLanes.appendChild(el("rect", { x: 0, y: top, width: W, height: laneH, class: "kc-band", fill: col, "fill-opacity": li % 2 ? 0.05 : 0.09 }));
       gLanes.appendChild(el("rect", { x: 0, y: top + 7, width: 4, height: laneH - 14, rx: 2, fill: col }));
       gLanes.appendChild(el("circle", { cx: 22, cy: top + 24, r: 5, fill: col }));
@@ -227,7 +227,7 @@
       var rel = isRel(e.type);
       var attrs = {
         d: edgePath(e).d, class: "kc-edge" + (rel ? " rel" : ""), fill: "none",
-        stroke: TYPE_COLORS[e.type] || "#5a637a"
+        stroke: TYPE_COLORS[e.type] || "#475569"
       };
       if (rel) attrs["stroke-dasharray"] = "5 4";
       else attrs["marker-end"] = "url(#arr-" + e.type + ")";
@@ -282,7 +282,7 @@
     if (hover) {
       hover.edges.forEach(function (e) {
         var g = edgePath(e);
-        var t = el("text", { x: g.mx, y: g.my - 2, class: "kc-etype", fill: TYPE_COLORS[e.type] || "#9aa5bd" });
+        var t = el("text", { x: g.mx, y: g.my - 2, class: "kc-etype", fill: TYPE_COLORS[e.type] || "#64748b" });
         t.textContent = TYPE_LABELS[e.type] || e.type;
         gHover.appendChild(t);
       });
@@ -324,7 +324,7 @@
   var legend = document.getElementById("legend");
   if (legend) {
     legend.innerHTML = D.layers.map(function (l) {
-      return "<span class='lg'><i style='background:" + (LAYER_COLORS[l] || "#9aa5bd") + "'></i>" + (D.layerLabels[l] || l) + "</span>";
+      return "<span class='lg'><i style='background:" + (LAYER_COLORS[l] || "#64748b") + "'></i>" + (D.layerLabels[l] || l) + "</span>";
     }).join("");
   }
   var graphWrap = svg.closest(".graph-wrap");
@@ -332,7 +332,7 @@
     function defItems(fam) {
       return usedTypes.filter(function (t) { return TYPE_FAMILY[t] === fam; }).map(function (t) {
         var bar = "<i class='ek-line" + (fam === "relation" ? " dashed" : "") +
-          "' style='color:" + (TYPE_COLORS[t] || "#9aa5bd") + "'></i>";
+          "' style='color:" + (TYPE_COLORS[t] || "#64748b") + "'></i>";
         return "<span class='ek'>" + bar + "<b>" + (TYPE_LABELS[t] || t) +
           "</b><span class='ek-def'>" + (TYPE_DEFS[t] || "") + "</span></span>";
       }).join("");
