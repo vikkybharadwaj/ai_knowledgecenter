@@ -144,7 +144,7 @@
 
     <!-- AXES -->
     <section id="axes">
-      <h2>The two axes that separate everything</h2>
+      <h2>The three axes that separate everything</h2>
 
       <h3>Axis 1 — Soft vs Hard</h3>
       <p>Does the model <em>choose</em> to follow it, or does the client <em>enforce</em> it no matter what?</p>
@@ -170,6 +170,21 @@
         </table>
       </div>
       <p class="meta">Adapted from the official <a href="https://code.claude.com/docs/en/workflows">&ldquo;who holds the plan&rdquo;</a> table.</p>
+
+      <h3 style="margin-top:30px">Axis 3 — Breadth vs Depth</h3>
+      <p>Two different kinds of scaling. <strong>Breadth</strong> = how many things run in parallel.
+        <strong>Depth</strong> = how much sustained, single-thread reasoning &amp; shared context a unit of work keeps.
+        Picking the wrong axis is the most common mistake: people reach for agent teams or workflows (breadth) when
+        they needed one deep session (depth), and vice-versa.</p>
+      <div class="callout">
+        <span class="label">Rule of thumb</span>
+        If the units of work <em>don&rsquo;t need each other&rsquo;s context</em> → push for breadth (workflows / agent view).
+        If they <em>do</em> → keep depth (one session, or a small agent team that talks).
+      </div>
+      <p class="meta">Related to Axis 2 but not the same: Axis 2 is about <em>who controls the plan and where results live</em>;
+        Axis 3 is about <em>parallelism vs shared context</em>. They correlate (more control often means less parallelism)
+        but diverge — agent teams are high-control <em>and</em> fairly deep. For the scored breadth/depth bars on every
+        primitive, see the <a href="matrix.html#breadth">comparison matrix</a>.</p>
     </section>
 
     <!-- NESTING -->
