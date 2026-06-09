@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Mental Model — Concepts</title>
-<meta name="description" content="The mental model that organizes every Claude Code primitive: prompt ⊂ context ⊂ harness, the soft/hard axis, the who-holds-the-plan axis, and how subagents, teams, workflows, worktrees and agent view nest.">
+<meta name="description" content="The mental model that organizes every Claude Code primitive: prompt ⊂ context ⊂ harness ⊂ loop, the soft/hard axis, the who-holds-the-plan axis, and how subagents, teams, workflows, worktrees and agent view nest.">
 <link rel="stylesheet" href="assets/style.css?v=20260609scroll">
 </head>
 <body>
@@ -26,7 +26,8 @@
 <main class="wrap">
   <div class="layout">
     <aside class="toc">
-      <a href="#harness">Prompt ⊂ context ⊂ harness</a>
+      <a href="#harness">Prompt ⊂ context ⊂ harness ⊂ loop</a>
+      <a href="#loop">④ Loop engineering</a>
       <a href="#four">The four levers</a>
       <a href="#axes">The two axes</a>
       <a href="#nesting">How it all nests</a>
@@ -39,14 +40,15 @@
       <div class="eyebrow">The conceptual backbone</div>
       <h1>The mental model</h1>
       <p class="lede">If you only internalize one page, make it this one. Everything else &mdash; skills, hooks, MCP,
-        teams, workflows &mdash; is a special case of the structure below. Reviewed 2026-06-06.</p>
+        teams, workflows &mdash; is a special case of the structure below. Reviewed 2026-06-09.</p>
     </section>
 
     <!-- HARNESS -->
     <section id="harness">
-      <h2>Prompt ⊂ Context ⊂ Harness</h2>
-      <p>Three nested levels of control over a model, each a bigger unit of work than the last. This is the frame the
-        rest of Claude Code hangs off. (Migrated from the Tide visual doc; this is now its canonical home.)</p>
+      <h2>Prompt ⊂ Context ⊂ Harness ⊂ Loop</h2>
+      <p>Four nested levels of control over a model, each a bigger unit of work than the last. This is the frame the
+        rest of Claude Code hangs off. The first three migrated from the Tide visual doc (this is now their canonical
+        home); the fourth &mdash; the loop &mdash; is the floor above, where a 2026 practice now lives.</p>
 
       <div class="flow" style="margin:22px 0">
         <div class="step"><span class="n">① the message</span><br><strong>Prompt engineering</strong><br>
@@ -54,7 +56,9 @@
         <div class="step"><span class="n">② the memory</span><br><strong>Context engineering</strong><br>
           <span class="meta">A finite budget. A curator <em>selects, compresses, drops</em> so only what matters reaches the model each step.</span></div>
         <div class="step"><span class="n">③ the machine</span><br><strong>Harness engineering</strong><br>
-          <span class="meta">The outer loop: <strong>Gather → Act → Verify → retry</strong>. Contains the other two inside its Gather/Act steps.</span></div>
+          <span class="meta">The outer loop: <strong>Gather → Act → Verify → retry</strong>. Contains the other two inside its Gather/Act steps. Runs <em>once</em>.</span></div>
+        <div class="step"><span class="n">④ the timer</span><br><strong>Loop engineering</strong><br>
+          <span class="meta">The harness <strong>put on a timer that feeds itself</strong>: it finds work, hands it out, checks it, records progress, decides the next thing &mdash; then pokes the agent instead of you.</span></div>
       </div>
 
       <details class="acc" open>
@@ -73,9 +77,53 @@
         <span class="label">Why this matters — it tells you where a bug lives</span>
         Bad single answer → fix the <strong>prompt</strong>. Model forgetting or drowning in irrelevant tokens → fix
         <strong>context</strong> (the curator). Agent does the right thing once but can&rsquo;t recover, loop, or self-check →
-        fix the <strong>harness</strong> (verify + retry). Maps straight onto Claude Code: CLAUDE.md + session = memory,
-        the curated window = gather, tool/subagent calls = act, tests/judges = verify.
+        fix the <strong>harness</strong> (verify + retry). One session nails it but the work doesn&rsquo;t persist, recur, or
+        feed itself over time → fix the <strong>loop</strong> (a heartbeat + on-disk progress + a trusted &ldquo;done&rdquo; gate).
+        Maps straight onto Claude Code: CLAUDE.md + session = memory,
+        the curated window = gather, tool/subagent calls = act, tests/judges = verify, <code>/loop</code> · <code>/goal</code> · routines = the timer.
       </div>
+    </section>
+
+    <!-- LOOP -->
+    <section id="loop">
+      <h2>④ Loop engineering — the harness on a timer</h2>
+      <p>A harness runs <em>once</em>: something starts it, it works the Gather → Act → Verify cycle, it stops &mdash; and
+        you start the next one. <strong>Loop engineering</strong> is the floor above. You stop prompting turn-by-turn and
+        instead design a system that <em>finds the work, hands it out, checks it, records what&rsquo;s done, and decides the
+        next thing</em> &mdash; then lets it poke the agent instead of you. It&rsquo;s the same harness, now self-feeding.</p>
+
+      <div class="callout key">
+        <span class="label">The shift — the leverage point moved</span>
+        The highest-value thing is no longer writing each turn; it&rsquo;s <strong>designing the loop</strong>. Same model,
+        same harness &mdash; what changes is that <em>nobody has to be in the chair</em> for the next cycle to start. The
+        same five Claude Code blocks ship in Codex too, so the shape outlives any one tool.
+      </div>
+
+      <details class="acc" open>
+        <summary>What a loop is built from — a heartbeat, five blocks, and a memory</summary>
+        <div class="acc-body">
+          <p><strong>The heartbeat</strong> — what restarts the cycle without you. Three flavours:
+            <code>/loop</code> = a <em>clock</em> (run again every N minutes);
+            <code>/goal</code> = a <em>condition</em> (keep going until a separate validator confirms done);
+            a <strong>routine</strong> = <em>cloud cron</em> (a saved config a trigger runs unattended, laptop closed).</p>
+          <p><strong>Subagents</strong> — split the maker from the checker so a verifier the loop <em>trusts</em> decides
+            &ldquo;done&rdquo; (no model grading its own homework — what <code>/goal</code>&rsquo;s separate Haiku evaluator does).</p>
+          <p><strong>Worktrees</strong> — git isolation so concurrent runs don&rsquo;t collide on the same files.</p>
+          <p><strong>Skills</strong> — project intent written down once, so the loop doesn&rsquo;t re-derive it from zero each cycle.</p>
+          <p><strong>Plugins + MCP</strong> — connectors that let the loop act in real tools: open a PR, update a ticket, post to Slack.</p>
+          <p><strong>On-disk memory</strong> — the repo is the system of record. The model forgets everything between runs,
+            so &ldquo;what&rsquo;s done&rdquo; has to live on disk, not in a context window.</p>
+        </div>
+      </details>
+
+      <div class="callout tip-c">
+        <span class="label">The catch — build the loop, stay the engineer</span>
+        The loop changes the work; it doesn&rsquo;t delete you from it. Verification, comprehension debt, and cognitive
+        surrender all get <em>sharper</em> as the loop improves. Treat it as a 2026 practice/preview, not a settled standard.
+      </div>
+
+      <p class="meta">Concept node: <a href="graph.html">Loop Engineering</a> (patterns layer) · depends-on
+        <strong>Harness Engineering</strong>, <strong>repo-as-record</strong>, and <strong>externalized completion</strong>.</p>
     </section>
 
     <!-- FOUR LEVERS -->
@@ -207,8 +255,8 @@ return synthesize(verified);             // → this field guide</pre>
 </main>
 
 <footer class="wrap">
-  <p>AI Knowledge Center · Concepts · reviewed 2026-06-06 · <a href="index.html">home</a> ·
-     harness/context/prompt model migrated from the Tide visual docs.</p>
+  <p>AI Knowledge Center · Concepts · reviewed 2026-06-09 · <a href="index.html">home</a> ·
+     prompt/context/harness model migrated from the Tide visual docs; loop layer added 2026-06-09.</p>
 </footer>
 <script src="assets/app.js"></script>
 </body>
