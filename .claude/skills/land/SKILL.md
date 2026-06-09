@@ -6,7 +6,7 @@ description: >-
   article/doc", or pastes a URL/text to file away. Distills the source into an atomic note, places it
   on the Big-Picture spine, wires 2–5 typed connections to existing notes, updates the map, regenerates
   the graph index, and teaches where the new idea fits.
-allowed-tools: Read, Write, Edit, WebFetch, Bash, Glob, Grep
+allowed-tools: Read, Write, Edit, WebFetch, WebSearch, Bash, Glob, Grep, Agent
 ---
 
 # /land — ingest and connect a new piece of knowledge
@@ -38,6 +38,19 @@ If nothing is given, ask what to land.
    - the substance (clear, greppable),
    - a **"Mental model / why it matters"** section (this is a learning vault — explain the *why*),
    - a **"How to apply (in practice / consulting)"** section (theory → real client use).
+   **2.5. VERIFY BEFORE YOU WRITE (required — this is the source-of-truth gate).** This vault is
+   Vikram's single source of truth; he will *not* go back to the official docs or the original article
+   once something lands. So before committing claims to a note, run an **adversarial verification**
+   pass against [`verification-rubric.md`](verification-rubric.md):
+   - **Fact-check every Claude Code / Anthropic claim against the official docs** (`code.claude.com/docs`,
+     `docs.claude.com`) — use the **claude-code-guide** agent (or the **claude-api** skill / WebFetch),
+     **never** model memory. Articles use terms loosely and over-claim parity; assume nothing.
+   - **Tag each claim's provenance** in the note: ✅ verified (cite the doc) · ⚠️ partial/nuance ·
+     ❓ author's claim/unverified · ❌ corrected (and apply the fix). Map every loose term to the
+     **official** one (e.g. "connectors" → MCP servers); mark non-Claude claims (Codex, etc.) as
+     out-of-scope. Add a short **"Provenance & caveats"** section recording corrections + datestamp.
+   - A note may not land with an unresolved ❌. (On a PR, the `knowledge-fact-checker` subagent reruns
+     this same rubric on the diff — see the rubric's "How to run the check".)
 3. **Place on the spine.** Assign `spine_layer` ∈ `foundations | api | agent-sdk | claude-code |
    patterns | products`. If it's a real-world build situation, set `kind: scenario` (else `concept`).
 4. **CONNECT THE DOTS (required).** Identify **2–5** existing notes this relates to and add typed
@@ -86,6 +99,9 @@ claude_specific: true
 The note filename is `knowledge/notes/<slug>.md`. Put any image next to it in the same folder.
 
 ## Guardrails
+- **Verify before you write (Step 2.5).** Nothing becomes source-of-truth on an article's say-so —
+  every Claude/Anthropic claim is checked against official docs and tagged for provenance. See
+  [`verification-rubric.md`](verification-rubric.md). This is the anti-misinformation guard.
 - A **validation hook** (`.claude/hooks/validate-note.sh`) blocks notes with missing frontmatter or
   zero connections — heed it; it's the anti-silo guard, not noise.
 - **Don't paste full copyrighted text** — summarize and cite the `source`.

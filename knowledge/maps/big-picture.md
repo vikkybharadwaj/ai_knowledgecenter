@@ -79,6 +79,7 @@ Reusable shapes for putting primitives together.
 - [Six dynamic-workflow patterns & the three failure modes they fix](../notes/dynamic-workflow-patterns.md) — classify-and-act, fan-out-and-synthesize, adversarial verification, generate-and-filter, tournament, loop-until-done.
 - [The repository is the agent's only durable memory](../notes/repository-as-system-of-record.md) — "info not in the repo doesn't exist for the agent"; ACID state files (`AGENTS.md`/`PROGRESS.md`/`DECISIONS.md`), the fresh-session test, and rebuild-cost as the metric.
 - [Never let the agent declare its own victory](../notes/completion-is-externalized.md) — externalize "done": feature-list state machines, three-layer/E2E verification, WIP=1 scope control, and observability inside the harness.
+- [Loop engineering — design the loop, not the prompt](../notes/designing-loops-not-prompts.md) — the harness on a timer that feeds itself: five Claude Code blocks (scheduling, worktrees, skills, plugins+MCP, subagents) + on-disk memory. The leverage point moves from writing the turn to designing the system; *build the loop, stay the engineer.*
 
 ### 🚀 Products & consulting — *what you ship*
 Real-world scenarios that pull concepts together for a client outcome.
@@ -105,6 +106,14 @@ Read the layers as a debugging ladder too: *bad single answer* → Foundations (
 forgetting* → Foundations (context). *Can't recover / loop / self-check* → Foundations (harness)
 **or** the right Claude Code primitive (a hook, a subagent, a workflow). The spine tells you
 which floor to get off on.
+
+There's an emerging top to this ladder: **[loop engineering](../notes/designing-loops-not-prompts.md)**.
+Once the primitives exist as products, you can stop prompting turn-by-turn and instead *design the
+loop* — the harness on a timer that does its own discovery, fans work to subagents in worktrees,
+verifies with a separate model (`/goal`), and remembers state on disk. It's the same gather→act→verify
+loop, zoomed all the way out until **you** are no longer in the inner loop — only at the verification
+gate. It's a 2026 preview, not settled practice: the leverage point moved, but so did the failure
+modes (token cost, slop, comprehension debt). *Build the loop, stay the engineer.*
 
 ## How this map evolves
 The `/land` skill updates this file every time you add a concept: it assigns the note a

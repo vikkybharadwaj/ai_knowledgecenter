@@ -46,6 +46,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 | [Six dynamic-workflow patterns & three failure modes](notes/dynamic-workflow-patterns.md) | patterns | budding |
 | [The repository is the agent's only durable memory](notes/repository-as-system-of-record.md) | patterns | budding |
 | [Never let the agent declare its own victory](notes/completion-is-externalized.md) | patterns | budding |
+| [Loop engineering — design the loop, not the prompt](notes/designing-loops-not-prompts.md) | patterns | seedling |
 | [Use Claude Code vs build your own](notes/claude-code-vs-build-your-own.md) | patterns | evergreen |
 | [Scenario: bootstrapping a company's AI stack](notes/bootstrapping-company-ai-stack.md) | products | budding |
 
