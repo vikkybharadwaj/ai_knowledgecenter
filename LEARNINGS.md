@@ -11,6 +11,15 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-09  **Changelog deep-links must validate anchors against the LIVE page, not the historical file.**
+            The change log now links each touched `docs/*.html` to its live GitHub Pages URL and lists the exact
+            visible text added/removed (HTML tags stripped), deep-linked to the nearest `id=` section. Gotcha: the
+            nearest-anchor is computed from the file *at that commit* (`git show <sha>:<path>`) for correct line-number
+            alignment, but the link points to the *current* page — so a section renamed/removed since then, or a
+            JS-injected id, yields a dead `#anchor`. Fix: filter every anchor through `current_anchors()` (ids in the
+            working-tree file); misses fall back to the page top. One `git diff-tree -p` per commit keeps the build ~2.6s.
+            (`scripts/build-changelog.py`)
+
 2026-06-09  **Two confusable families, sorted by one verified frame each.** Landing the "WTF Is a Loop?"
             article surfaced two mix-ups worth pinning. (1) Automation: the command is **`/goal`** (singular,
             v2.1.139+) — a *condition*-driven wrapper around a prompt-based **Stop hook** that a small fast model
