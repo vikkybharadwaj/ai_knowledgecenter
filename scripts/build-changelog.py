@@ -5,8 +5,13 @@ Every commit that lands a pull request (squash-merged with a trailing "(#NN)",
 which is how this repo ships) becomes one entry, grouped under the day it landed.
 Entries read like the Claude Code changelog (https://code.claude.com/docs/en/changelog):
 a plain-English, verb-led sentence ("Added…", "Renamed…", "Fixed…"), with a
-collapsible list of the exact files that changed — each linking to that file's
-diff on GitHub — plus a link to the PR.
+collapsible list of the exact files that changed plus a link to the PR.
+
+For published pages (docs/*.html) the file row links to the LIVE page on GitHub
+Pages — not the GitHub diff, which only shows raw markup — and lists the exact
+visible text that was added or removed, each deep-linked to the nearest section
+anchor so you land right where the change is. Non-page files (notes, scripts)
+and deleted pages keep the GitHub diff link, since that's the only record of them.
 
 This is what makes "every new PR creates a changelog entry" automatic — the
 GitHub Action (.github/workflows/changelog.yml) runs it on every push to main.
@@ -84,6 +89,141 @@ def repo_url() -> str:
     if url.startswith("git@"):  # git@github.com:owner/repo.git
         url = "https://" + url[len("git@"):].replace(":", "/", 1)
     return url[:-4] if url.endswith(".git") else url
+
+
+def pages_base(repo: str) -> str:
+    """GitHub Pages root for the repo: github.com/<owner>/<repo> ->
+    <owner>.github.io/<repo>. The site is published from /docs, so a
+    'docs/x.html' source path lives at '<base>/x.html' once deployed."""
+    m = re.match(r"https?://github\.com/([^/]+)/([^/]+)", repo)
+    if not m:
+        return "https://vikkybharadwaj.github.io/ai_knowledgecenter"
+    owner, name = m.group(1), m.group(2)
+    return f"https://{owner}.github.io/{name}"
+
+
+def live_url(path, pages):
+    """The live published URL for a docs/ page, or None if the path isn't a
+    page you can open in a browser (notes, scripts, assets all return None)."""
+    if not path.startswith("docs/"):
+        return None
+    if not path.endswith((".html", ".htm")):
+        return None
+    return f"{pages}/{path[len('docs/'):]}"
+
+
+def is_page(path):
+    return path.startswith("docs/") and path.endswith((".html", ".htm"))
+
+
+# --- per-page "what exactly changed" extraction -----------------------------
+# The diff link shows raw HTML markup, which is useless for spotting what a page
+# now SAYS. Instead we pull the visible text that was added/removed and deep-link
+# each snippet to the nearest section anchor, so you jump straight to the spot.
+
+MAX_SNIPPETS = 6          # per page — keep the list scannable
+SNIPPET_CHARS = 110       # truncate each snippet
+_TAG_RE = re.compile(r"<[^>]+>")
+_ID_RE = re.compile(r'id=["\']([A-Za-z][\w:.-]*)["\']')
+_WORD_RE = re.compile(r"[A-Za-z0-9]")
+
+
+def commit_patches(sha):
+    """One git call per commit: {path: [patch lines]} for every changed file."""
+    out = subprocess.check_output(
+        ["git", "diff-tree", "--no-commit-id", "-p", "-r", "--root", sha],
+        cwd=ROOT,
+        text=True,
+        errors="replace",
+    )
+    patches, cur, lines = {}, None, []
+    for line in out.splitlines():
+        if line.startswith("diff --git "):
+            if cur is not None:
+                patches[cur] = lines
+            # 'diff --git a/<path> b/<path>' — take the b-side path
+            m = re.search(r" b/(.+)$", line)
+            cur, lines = (m.group(1) if m else None), []
+        elif cur is not None:
+            lines.append(line)
+    if cur is not None:
+        patches[cur] = lines
+    return patches
+
+
+def _anchor_index(sha, path):
+    """[(line_no, id)] for every id= in the file at this commit, sorted."""
+    try:
+        body = subprocess.check_output(
+            ["git", "show", f"{sha}:{path}"], cwd=ROOT, text=True, errors="replace"
+        )
+    except subprocess.CalledProcessError:
+        return []
+    idx = []
+    for n, line in enumerate(body.splitlines(), 1):
+        m = _ID_RE.search(line)
+        if m:
+            idx.append((n, m.group(1)))
+    return idx
+
+
+def _nearest_anchor(idx, line_no):
+    """The id of the closest element at or above line_no (the section you'd
+    land in), or None."""
+    best = None
+    for n, anchor in idx:
+        if n <= line_no:
+            best = anchor
+        else:
+            break
+    return best
+
+
+def _visible(line):
+    """Strip tags + entities; return the human-readable text, or '' if the line
+    is pure markup/whitespace (nothing a reader would see)."""
+    text = html.unescape(_TAG_RE.sub(" ", line))
+    text = re.sub(r"\s+", " ", text).strip()
+    if len(_WORD_RE.findall(text)) < 3:  # needs real words, not just braces/punct
+        return ""
+    return text[:SNIPPET_CHARS] + ("…" if len(text) > SNIPPET_CHARS else "")
+
+
+def page_changes(sha, path, patch):
+    """Walk a single file's patch and pull the visible text that was added or
+    removed, each tagged with the nearest section anchor on the page. Returns
+    ([{kind, text, anchor}], total_changed_lines)."""
+    if not patch:
+        return [], 0
+    idx = _anchor_index(sha, path)
+    snippets, seen, new_no, total = [], set(), 0, 0
+    for line in patch:
+        if line.startswith("@@"):
+            m = re.search(r"\+(\d+)", line)
+            new_no = (int(m.group(1)) if m else new_no) - 1
+            continue
+        if line.startswith("+++") or line.startswith("---"):
+            continue
+        if line.startswith("+"):
+            new_no += 1
+            total += 1
+            text = _visible(line[1:])
+            if text and text not in seen:
+                seen.add(text)
+                snippets.append(
+                    {"kind": "added", "text": text, "anchor": _nearest_anchor(idx, new_no)}
+                )
+        elif line.startswith("-"):
+            total += 1
+            text = _visible(line[1:])
+            if text and text not in seen:
+                seen.add(text)
+                snippets.append(
+                    {"kind": "removed", "text": text, "anchor": _nearest_anchor(idx, new_no)}
+                )
+        else:  # context line
+            new_no += 1
+    return snippets[:MAX_SNIPPETS], total
 
 
 def git_log():
@@ -264,6 +404,18 @@ def parse_entry(sha, when, subject, body):
     files = changed_files(sha)
     title = humanize(title, files)
 
+    # For each published page, pull the visible text that actually changed so the
+    # reader sees what changed and where — not a raw markup diff. One git call
+    # for the whole commit's patch, then split per page.
+    changes = {}
+    if any(is_page(p) and s != "D" for s, p in files):
+        patches = commit_patches(sha)
+        for status, path in files:
+            if is_page(path) and status != "D":
+                snippets, total = page_changes(sha, path, patches.get(path, []))
+                if snippets:
+                    changes[path] = {"snippets": snippets, "total": total}
+
     # skip a description that just restates the title (common in squashed PRs)
     norm = lambda s: re.sub(r"[^a-z0-9]+", "", CONV_RE.sub(r"\g<rest>", s.lower()))
     if desc and norm(desc) == norm(title):
@@ -277,6 +429,7 @@ def parse_entry(sha, when, subject, body):
         "desc": desc,
         "pr": pr,
         "files": files,
+        "changes": changes,
     }
 
 
@@ -289,20 +442,88 @@ def pretty_date(iso):
         return iso
 
 
-def render_files(e, base):
-    """Collapsible file list — each file links to its own diff inside the commit."""
+_CUR_ANCHORS = {}
+
+
+def current_anchors(path):
+    """Set of element ids in the LIVE (working-tree) version of a page. A diff's
+    anchor only deep-links if it still exists here — sections renamed or removed
+    since the commit, and runtime/JS-injected ids, fall back to the page top
+    instead of a dead jump."""
+    if path not in _CUR_ANCHORS:
+        fp = ROOT / path
+        ids = set()
+        if fp.exists():
+            ids = set(_ID_RE.findall(fp.read_text(encoding="utf-8", errors="replace")))
+        _CUR_ANCHORS[path] = ids
+    return _CUR_ANCHORS[path]
+
+
+def render_changes(live, path, info):
+    """Nested list of the exact text added/removed on a page, each deep-linking
+    to the nearest section anchor so you land right where the change is."""
+    snippets = info.get("snippets") or []
+    if not snippets:
+        return ""
+    valid = current_anchors(path)
+    rows = []
+    for s in snippets:
+        sign = "+" if s["kind"] == "added" else "−"
+        anchor = s.get("anchor")
+        href = f"{live}#{anchor}" if anchor and anchor in valid else live
+        rows.append(
+            f'          <li class="cl-chg cl-chg-{s["kind"]}">'
+            f'<span class="cl-csign">{sign}</span>'
+            f'<a href="{html.escape(href)}" target="_blank" rel="noopener">'
+            f'{html.escape(s["text"])}</a></li>'
+        )
+    more = ""
+    total = info.get("total") or 0
+    if total > len(snippets):
+        more = (
+            f'          <li class="cl-chg-more">+{total - len(snippets)} more '
+            f"changed line{'' if total - len(snippets) == 1 else 's'}</li>"
+        )
+    return (
+        '        <ul class="cl-changes">\n' + "\n".join(rows) + ("\n" + more if more else "")
+        + "\n        </ul>\n"
+    )
+
+
+def render_files(e, base, pages):
+    """Collapsible file list. A published page links to its LIVE URL so you can
+    open the actual rendered page, and lists the exact text that changed (each
+    deep-linked to the section it's in). Everything else (notes, scripts, and any
+    deleted page, which no longer has a live URL) links to its diff inside the
+    commit. Live-page rows also carry a small 'diff' link as a fallback."""
     files = e.get("files") or []
     if not files:
         return ""
+    changes = e.get("changes") or {}
     items = []
     for status, path in files:
         word = STATUS_WORD.get(status, "edit")
-        url = f"{base}/commit/{e['sha']}#{diff_anchor(path)}"
-        items.append(
-            f'        <li><span class="cl-fstat cl-fstat-{word}">{word}</span>'
-            f'<a href="{html.escape(url)}" target="_blank" rel="noopener">'
-            f"{html.escape(path)}</a></li>"
-        )
+        diff = f"{base}/commit/{e['sha']}#{diff_anchor(path)}"
+        live = None if status == "D" else live_url(path, pages)
+        if live:
+            extra = (
+                f'<a class="cl-fdiff" href="{html.escape(diff)}" '
+                f'target="_blank" rel="noopener">diff</a>'
+            )
+            chg = render_changes(live, path, changes[path]) if path in changes else ""
+            row = (
+                f'        <li><span class="cl-fstat cl-fstat-{word}">{word}</span>'
+                f'<a href="{html.escape(live)}" target="_blank" rel="noopener">'
+                f"{html.escape(path)}</a>{extra}"
+            )
+            row += (f"\n{chg}        </li>" if chg else "</li>")
+            items.append(row)
+        else:
+            items.append(
+                f'        <li><span class="cl-fstat cl-fstat-{word}">{word}</span>'
+                f'<a href="{html.escape(diff)}" target="_blank" rel="noopener">'
+                f"{html.escape(path)}</a></li>"
+            )
     n = len(files)
     summary = f"What changed · {n} file{'' if n == 1 else 's'}"
     return (
@@ -314,7 +535,7 @@ def render_files(e, base):
     )
 
 
-def render(entries, base):
+def render(entries, base, pages):
     if not entries:
         return (
             '  <p class="cl-empty">No entries yet — the next merged pull request '
@@ -349,7 +570,7 @@ def render(entries, base):
                 f'      <p class="cl-head">{tag}<span class="cl-text">'
                 f'{html.escape(e["title"])}</span></p>\n'
                 f"{desc}"
-                f"{render_files(e, base)}"
+                f"{render_files(e, base, pages)}"
                 f'      <div class="cl-links">'
                 f'<a href="{pr_url}" target="_blank" rel="noopener">PR #{e["pr"]} →</a>'
                 f"</div>\n"
@@ -369,6 +590,7 @@ def main():
         print(f"error: {PAGE} not found", file=sys.stderr)
         return 1
     base = repo_url()
+    pages = pages_base(base)
     entries = []
     seen = set()
     for sha, when, subject, body in git_log():
@@ -379,7 +601,7 @@ def main():
         if len(entries) >= MAX_ENTRIES:
             break
 
-    block = render(entries, base)
+    block = render(entries, base, pages)
     text = PAGE.read_text(encoding="utf-8")
     pattern = re.compile(re.escape(START) + r".*?" + re.escape(END), re.S)
     if not pattern.search(text):
