@@ -304,10 +304,10 @@
     <!-- BREADTH / DEPTH -->
     <section id="breadth">
       <h2>Breadth vs depth</h2>
-      <p>Two different kinds of scaling. <strong>Breadth</strong> = how many things run in parallel.
-        <strong>Depth</strong> = how much sustained, single-thread reasoning &amp; shared context a unit of work keeps.
-        Picking the wrong axis is the most common mistake: people reach for agent teams (breadth) when they needed one
-        deep session (depth), and vice-versa.</p>
+      <p>The scored view of <strong>Axis 3</strong>. The axis itself — what breadth and depth mean and how to choose —
+        is explained on the <a href="mental-model.html#axes">mental model</a> page; this table scores every primitive on it.
+        <strong>Breadth</strong> = how many things run in parallel. <strong>Depth</strong> = how much sustained, single-thread
+        reasoning &amp; shared context a unit of work keeps.</p>
       <div class="callout tip-c">
         <span class="label">How to read the bars</span>
         Each bar is a <em>relative score</em>, not a line graph &mdash; it just shows how much of that one quality a primitive
@@ -343,11 +343,8 @@
           </tbody>
         </table>
       </div>
-      <div class="callout tip-c">
-        <span class="label">Rule of thumb</span>
-        If the units of work <em>don&rsquo;t need each other&rsquo;s context</em> → push for breadth (workflows / agent view).
-        If they <em>do</em> → keep depth (one session, or a small agent team that talks).
-      </div>
+      <p class="meta">Choosing between these? The rule of thumb lives with the axis on the
+        <a href="mental-model.html#axes">mental model</a> page.</p>
     </section>
 
     <!-- ENFORCEMENT -->
