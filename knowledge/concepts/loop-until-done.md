@@ -7,6 +7,6 @@ summary: Keep working until an external condition is met — tests pass, K round
 edges:
   - { to: workflow-patterns, type: part-of, why: "It's one of the core dynamic-workflow patterns." }
   - { to: externalized-completion, type: depends-on, why: "The loop's exit condition lives outside the model." }
-sources: [dynamic-workflow-patterns, completion-is-externalized]
+sources: [dynamic-workflow-patterns, completion-is-externalized, automation-control-flow-spectrum]
 ---
 For unknown-size discovery (bugs, edge cases), loop until consecutive rounds come up empty. The exit gate must be a real signal — a passing test, a dry round — not the agent's say-so.

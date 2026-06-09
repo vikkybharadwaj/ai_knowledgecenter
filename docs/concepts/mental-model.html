@@ -134,13 +134,15 @@
     ├── skills               ← procedures pulled into Act on demand
     ├── MCP servers          ← extra tools available in Act
     ├── hooks                ← deterministic code at lifecycle events
-    └── subagents            ← delegated workers (own context, summary returns)
+    ├── subagents            ← delegated workers (own context, summary returns)
+    └── /loop &amp; /goal        ← keep the session working (clock / until a condition holds)
 
   ...and when one session isn't enough:
     agent view   = you supervising MANY of these sessions
     agent teams  = a LEAD session coordinating PEER sessions that message
     workflows    = a SCRIPT spawning dozens–hundreds of subagents
-    worktrees    = git isolation UNDER all of the above (so files don't collide)</pre>
+    worktrees    = git isolation UNDER all of the above (so files don't collide)
+    routines     = a saved config a TRIGGER runs unattended in the cloud (laptop closed)</pre>
       <div class="callout">
         <span class="label">Three things people mix up</span>
         <strong>Subagent</strong> = a worker <em>inside</em> one session (can&rsquo;t spawn its own subagents).

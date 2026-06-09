@@ -56,6 +56,7 @@ The mental models everything else obeys.
 ### 🔌 Claude API — *the engine*
 The raw capabilities a request can use.
 - [The Claude API agent primitives](../notes/claude-api-agent-primitives.md) — the tool-use loop, MCP connector, prompt caching, batch, computer use; *an agent is ~20 lines.*
+- [Tool call, function call, MCP, skill — one containment model](../notes/tool-call-taxonomy.md) — "tool use" is the umbrella; an MCP call *is* a tool call, a skill invocation *is* a `Skill` tool call, and "function call" is the legacy synonym.
 
 ### 🛠️ Agent SDK — *the framework*
 Building your own agents on top of the loop.
@@ -70,6 +71,7 @@ The named features that tune one zone of the loop.
 - [One shared context vs. many isolated contexts](../notes/execution-context-isolation.md) — what actually forks: *modes* stay in one window, *agents* fork fresh ones (+ the six permission modes).
 - [worktree.baseRef — fresh vs head](../notes/worktree-base-ref-fresh-vs-head.md) — the git dial under worktree parallelism: branch agents from clean published code (`fresh`) or your live WIP HEAD (`head`).
 - [Claude Code Routines — unattended cloud automation](../notes/claude-code-routines.md) — the saved config that runs *itself* on Anthropic's cloud on a schedule / GitHub event / API call (the "operate it for me" primitive).
+- [Keeping Claude working — the two axes behind /loop, /goal, hooks, routines & cron](../notes/automation-control-flow-spectrum.md) — WHERE it runs (open session vs independent) × WHAT starts the next unit of work (clock / condition / event); the frame that tells `/loop`, `/goal`, hooks and routines apart.
 - [One giant instruction file fails — progressive disclosure](../notes/progressive-disclosure-instructions.md) — why a 600-line `CLAUDE.md` rots (lost-in-the-middle, budget exhaustion) and the entry-file + topic-docs + code-embedded structure that fixes it.
 
 ### 🧩 Agent patterns — *how you compose*
@@ -80,6 +82,7 @@ Reusable shapes for putting primitives together.
 - [The repository is the agent's only durable memory](../notes/repository-as-system-of-record.md) — "info not in the repo doesn't exist for the agent"; ACID state files (`AGENTS.md`/`PROGRESS.md`/`DECISIONS.md`), the fresh-session test, and rebuild-cost as the metric.
 - [Never let the agent declare its own victory](../notes/completion-is-externalized.md) — externalize "done": feature-list state machines, three-layer/E2E verification, WIP=1 scope control, and observability inside the harness.
 - [Loop engineering — design the loop, not the prompt](../notes/designing-loops-not-prompts.md) — the harness on a timer that feeds itself: five Claude Code blocks (scheduling, worktrees, skills, plugins+MCP, subagents) + on-disk memory. The leverage point moves from writing the turn to designing the system; *build the loop, stay the engineer.*
+- [A loop is cron plus a decision-maker in the body](../notes/loop-is-cron-plus-a-decision-maker.md) — the lineage (ReAct → AutoGPT → ralph → `/goal` → orchestration), the one-line definition, and the 2026 economics: *the loop, not the model, is the expensive part* (cap iterations, detect no-progress, set a budget).
 
 ### 🚀 Products & consulting — *what you ship*
 Real-world scenarios that pull concepts together for a client outcome.
