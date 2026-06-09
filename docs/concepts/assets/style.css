@@ -241,7 +241,11 @@ footer a { color: var(--text-soft); }
 .bar > span { display: block; height: 100%; background: var(--grad); }
 
 /* ---------- on-page TOC ---------- */
-.layout { display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: start; }
+.layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 40px; align-items: start; }
+/* grid items default to min-width:auto, which lets a wide table balloon the column past 1fr
+   so .matrix-scroll never gets to scroll. min-width:0 lets the column shrink and hand the
+   overflow to the inner .table-wrap. */
+.layout > * { min-width: 0; }
 .toc { position: sticky; top: 80px; font-size: .82rem; }
 .toc a { display: block; color: var(--text-dim); padding: 4px 10px; border-left: 2px solid var(--border); }
 .toc a:hover, .toc a.active { color: var(--accent); border-color: var(--accent); text-decoration: none; }
