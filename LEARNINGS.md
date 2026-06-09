@@ -11,6 +11,19 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-09  **Two confusable families, sorted by one verified frame each.** Landing the "WTF Is a Loop?"
+            article surfaced two mix-ups worth pinning. (1) Automation: the command is **`/goal`** (singular,
+            v2.1.139+) — a *condition*-driven wrapper around a prompt-based **Stop hook** that a small fast model
+            (Haiku) evaluates each turn; **`/loop`** (v2.1.72+) is *clock*-driven, uses `CronCreate` cron syntax
+            but is session-scoped + 7-day-expiry (≠ OS cron's fixed script, ≠ cloud **routines**'s unattended
+            run). The clean separator: *WHERE it runs × WHAT starts the next unit (clock / condition / event)*,
+            and *"a loop is cron plus a decision-maker in the body."* (2) Invocation: **tool use ⊃ tool call ⊃
+            {MCP call, `Skill` tool call}**; "function call" is the legacy OpenAI synonym. Also: there was a
+            `routines.html` primitive page and a `claude-code-routines` note but **no `routines` concept node** —
+            a silent graph gap; added it alongside `scheduled-tasks` + `goal-mode`. Codex `/goal` parity and
+            Yegge's "Gas Town" marked ❓ (author's claims), per the existing verification rubric.
+            [→ knowledge/notes/{loop-is-cron-plus-a-decision-maker,automation-control-flow-spectrum,tool-call-taxonomy}.md]
+
 2026-06-09  **Opinion articles can't be trusted to define vocabulary for a source-of-truth vault — verify
             before you write, not after.** Landing Addy Osmani's "loop engineering" thread, a docs fact-check
             (via the claude-code-guide agent) found the Claude Code *claims* largely correct but the *terms*

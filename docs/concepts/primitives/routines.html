@@ -89,7 +89,7 @@ curl -X POST https://api.anthropic.com/.../routines/&lt;routine-id&gt;/fire \
     <div class="usewhen"><span class="ic">✓</span><div>Claude should react to a <em>GitHub event</em> (a new PR, a release) without you watching.</div></div>
     <div class="usewhen"><span class="ic">✓</span><div>An external system (monitoring, CD pipeline, internal tool) should <em>fire a Claude run via an authenticated webhook</em>.</div></div>
     <h3>When <em>not</em> to</h3>
-    <div class="usewhen no"><span class="ic">✕</span><div>A task that repeats <em>inside an open session</em> → <a href="workflows.html">/loop</a> (in-session, local).</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>A task that repeats <em>inside an open session</em> → <a href="loop.html">/loop</a> (in-session, local).</div></div>
     <div class="usewhen no"><span class="ic">✕</span><div>A schedule that must run <em>on your own machine</em> with local files → Desktop scheduled tasks.</div></div>
     <div class="usewhen no"><span class="ic">✕</span><div>A pure pass/fail CI gate that runs <em>your</em> scripts → GitHub Actions (not a Claude session).</div></div>
   </section>

@@ -13,6 +13,8 @@ edges:
   - { to: skills, type: uses, why: "Writes project intent down once so the loop doesn't re-derive it from zero every cycle." }
   - { to: cc-mcp-servers, type: uses, why: "MCP servers (the source's 'connectors') let the loop act in real tools — open PRs, update tickets, post to Slack." }
   - { to: cc-hooks, type: uses, why: "Lifecycle hooks plus /loop and /goal give the loop its scheduled heartbeat." }
-sources: [designing-loops-not-prompts]
+  - { to: scheduled-tasks, type: uses, why: "/loop is the clock-driven heartbeat that turns one run into a recurring in-session loop." }
+  - { to: goal-mode, type: uses, why: "/goal is the condition-driven heartbeat — keep going until a validator confirms done." }
+sources: [designing-loops-not-prompts, loop-is-cron-plus-a-decision-maker, automation-control-flow-spectrum]
 ---
 The leverage point moved: the highest-value thing is now designing the loop, not writing each turn. The same five pieces ship in both Claude Code and Codex, so the shape outlives any one tool. But the loop changes the work, it doesn't delete you from it — verification, comprehension debt, and cognitive surrender all get *sharper* as the loop improves. Build the loop; stay the engineer.

@@ -28,6 +28,7 @@
     <aside class="toc">
       <a href="#matrix">The matrix</a>
       <a href="#levels">Coordination groupings</a>
+      <a href="#keep-running">Keep running &amp; schedule</a>
       <a href="#breadth">Breadth vs depth</a>
       <a href="#enforcement">Soft vs hard</a>
       <a href="#terms">Terminology fixes</a>
@@ -265,6 +266,41 @@
       </div>
     </section>
 
+    <!-- KEEP RUNNING / SCHEDULE -->
+    <section id="keep-running">
+      <h2>&ldquo;Make Claude keep working&rdquo; — two axes</h2>
+      <p><code>/loop</code>, <code>/goal</code>, hooks, routines and cron all blur together because they all
+        &ldquo;keep Claude working.&rdquo; They separate cleanly on two questions: <strong>where</strong> it runs (in an
+        <em>open session</em> you&rsquo;re driving, or <em>independent</em> of any session) and <strong>what starts the next
+        unit of work</strong> (a <em>clock</em>, a <em>condition</em>, or an <em>event</em>).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>Clock (interval)</th><th>Condition (a check passes)</th><th>Event (something happens)</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>In an open session</strong></td>
+              <td><a href="primitives/loop.html"><strong>/loop</strong></a> — re-run a prompt every N min</td>
+              <td><a href="primitives/goal.html"><strong>/goal</strong></a> — until a small model confirms done; or a custom Stop <a href="primitives/hooks.html">hook</a></td>
+              <td><a href="primitives/hooks.html"><strong>Hooks</strong></a> (PreToolUse, Stop…); Channels (CI pushes a failure in)</td>
+            </tr>
+            <tr>
+              <td><strong>Independent of session</strong></td>
+              <td><a href="primitives/routines.html"><strong>Routines</strong></a> (schedule) · Desktop scheduled tasks · OS cron · GitHub Actions</td>
+              <td class="meta">—</td>
+              <td><a href="primitives/routines.html"><strong>Routines</strong></a> (GitHub event / API <code>/fire</code>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout key">
+        <span class="label">The discriminators</span>
+        <strong>/loop vs /goal</strong> = clock vs condition. <strong>/loop vs OS cron</strong> = cron runs a fixed script;
+        <code>/loop</code> runs a <em>model that decides</em> (and is session-scoped, 7-day expiry). <strong>/loop vs
+        routines</strong> = local + session open vs cloud + unattended. <strong>/goal vs a Stop hook</strong> = a session
+        shortcut vs a settings-level handler you script.
+      </div>
+    </section>
+
     <!-- BREADTH / DEPTH -->
     <section id="breadth">
       <h2>Breadth vs depth</h2>
@@ -376,6 +412,23 @@
       <p class="meta">A hook is the only one that <em>executes your code</em>. A permission rule is config the client evaluates.
         A <code>.claude/rules/</code> file is just memory. Docs: <em>&ldquo;To block an action regardless of what Claude decides,
         use a PreToolUse hook.&rdquo;</em> (<a href="https://code.claude.com/docs/en/hooks">hooks</a>)</p>
+
+      <h3>&ldquo;Tool call, MCP, skill, function call &mdash; four things?&rdquo; &rarr; <span class="cell-warn">No &mdash; one mechanism with specializations.</span></h3>
+      <p><strong>Tool use</strong> is the umbrella API capability; a <strong>tool call</strong> is one instance of it (the model
+        emits a <code>tool_use</code> block → you return a <code>tool_result</code>). The rest are special cases or synonyms:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Term</th><th>What it actually is</th><th>Is it a tool call?</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Tool call</strong></td><td>One <code>tool_use</code> → <code>tool_result</code> cycle (client tool you run, or server tool Anthropic runs)</td><td class="cell-good">It <em>is</em> the thing</td></tr>
+            <tr><td><strong>MCP call</strong></td><td>A tool exposed by an MCP server; same <code>tool_use</code> JSON, routed via the MCP client</td><td class="cell-good">Yes — an ordinary tool call</td></tr>
+            <tr><td><strong>Skill invocation</strong></td><td>The model calls the <code>Skill</code> tool, which loads a <code>SKILL.md</code> into context</td><td class="cell-good">Yes — a <code>Skill</code> tool call (but a skill isn&rsquo;t a tool — it&rsquo;s knowledge)</td></tr>
+            <tr><td><strong>Function call</strong></td><td>OpenAI&rsquo;s older name for the same capability</td><td class="cell-warn">Synonym — Anthropic says &ldquo;tool use&rdquo;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="meta">MCP also exposes <em>prompts</em> (→ slash commands) and <em>resources</em> (→ <code>@mentions</code>), which are
+        <em>not</em> tool calls. Containment: tool use ⊃ tool call ⊃ {MCP call, <code>Skill</code> tool call}.</p>
     </section>
 
     <section id="sources">

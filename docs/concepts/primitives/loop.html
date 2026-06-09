@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scheduled tasks (/loop) — in-session, clock-driven repetition</title>
+<link rel="stylesheet" href="../assets/style.css?v=20260609scroll">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../../index.html"><span class="dot"></span> AI Knowledge Center</a>
+    <nav class="navlinks">
+      <a href="../index.html">Overview</a>
+      <a href="../mental-model.html">Mental model</a>
+      <a href="../primitives.html" class="active">Primitives</a>
+      <a href="../graph.html">Concept graph</a>
+      <a href="../matrix.html">Comparison matrix</a>
+      <a href="../decision.html">Decide</a>
+      <a href="../legend.html">Legend</a>
+    </nav>
+    <a class="pill" href="../exam.html">🎓 Exam Prep</a>
+  </div>
+</header>
+<main class="wrap">
+  <section style="margin-top:26px">
+    <div class="pill-row"><span class="badge l201">Extend</span> <span class="badge">Soft · in-session, local</span> <span class="badge ga">GA</span> <span class="badge">v2.1.72+</span> <a class="legend-link" href="../legend.html">&#9432;&nbsp;legend</a></div>
+    <h1>Scheduled tasks <span class="meta">(/loop)</span></h1>
+    <p class="lede"><strong>Clock-driven repetition inside an open session.</strong> The <code>/loop</code> bundled skill
+      re-runs a prompt on an interval &mdash; poll a deploy, babysit a PR, check back on a long build. It feels like cron
+      because it <em>is</em> cron under the hood &mdash; but it runs a <strong>model that decides what to do each tick</strong>,
+      not a fixed script.</p>
+  </section>
+
+  <section>
+    <p class="analogy"><strong>Analogy —</strong> a <strong>kitchen timer wired to a cook</strong>. The timer rings every
+      N minutes (the cron part); each time it rings, the cook looks at the current state of the kitchen and decides what to do
+      next (the decision-maker part). Cron alone just rings a bell and runs the same script; <code>/loop</code> rings the bell
+      <em>and</em> thinks.</p>
+  </section>
+
+  <div class="callout key"><span class="label">It&rsquo;s cron + a decision-maker &mdash; and it&rsquo;s session-scoped</span>
+    Three things people conflate. <strong>OS cron</strong> runs a <em>fixed shell script</em> system-wide, forever &mdash;
+    <code>/loop</code> runs a <em>model</em> and only <em>while your session is open and idle</em>. <strong><a href="goal.html">/goal</a></strong>
+    is the <em>condition</em>-driven cousin (keep going until a check passes), where <code>/loop</code> is <em>clock</em>-driven
+    (every N minutes). <strong><a href="routines.html">Routines</a></strong> are the <em>cloud/unattended</em> cousin that
+    survive a closed laptop &mdash; <code>/loop</code> does not.</div>
+
+  <section>
+    <h2>Mechanism — what you provide determines the mode</h2>
+    <p>Both the interval and the prompt are optional, and what you give decides the behaviour:</p>
+    <div class="flow">
+      <div class="step"><span class="n">interval + prompt</span><br><strong>fixed cron</strong><br><span class="meta"><code>/loop 5m check the deploy</code> — converted to a cron expression and scheduled</span></div>
+      <div class="step"><span class="n">prompt only</span><br><strong>Claude picks the delay</strong><br><span class="meta">a dynamic 1-min–1-hour wait each iteration based on what it saw; may use the Monitor tool</span></div>
+      <div class="step"><span class="n">nothing</span><br><strong>maintenance prompt</strong><br><span class="meta">a built-in upkeep prompt, or your <code>.claude/loop.md</code> if one exists</span></div>
+    </div>
+    <pre>/loop 5m check if the deployment finished and tell me what happened   # fixed interval
+/loop check whether CI passed and address review comments            # Claude-chosen interval
+/loop 20m /review-pr 1234                                            # re-run a saved command each tick
+remind me at 3pm to push the release branch                          # a one-shot, scheduled in natural language</pre>
+    <details class="acc"><summary>The cron tools, jitter &amp; expiry</summary><div class="acc-body">
+      <p>Under the hood Claude uses <code>CronCreate</code> (5-field cron expression + prompt + recurs/once),
+        <code>CronList</code>, and <code>CronDelete</code> (by 8-char ID). A session holds up to <strong>50</strong> tasks.
+        The scheduler checks every second and fires a due prompt <em>between</em> your turns, never mid-response, at low
+        priority. <strong>Jitter</strong> adds a deterministic offset (recurring tasks up to 30&nbsp;min late) so every
+        session doesn&rsquo;t hit the API at once.</p>
+      <p>Tasks are <strong>session-scoped</strong>: starting a new conversation clears them; <code>--resume</code>/<code>--continue</code>
+        restores any that haven&rsquo;t expired. Recurring tasks <strong>auto-expire 7 days</strong> after creation (one final
+        fire, then delete) &mdash; this bounds how long a forgotten loop can run. Press <kbd>Esc</kbd> while a <code>/loop</code>
+        waits to stop it. Disable the whole scheduler with <code>CLAUDE_CODE_DISABLE_CRON=1</code>.</p>
+    </div></details>
+    <p class="meta">Customize the bare-<code>/loop</code> default with <code>.claude/loop.md</code> (project) or
+      <code>~/.claude/loop.md</code> (personal) &mdash; plain markdown, edited live between iterations.</p>
+  </section>
+
+  <section>
+    <h2>When to reach for it</h2>
+    <div class="usewhen"><span class="ic">✓</span><div>You want to <em>poll</em> something on a cadence during dev &mdash; a deploy, a PR&rsquo;s CI, a long build.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>You want a recurring upkeep pass <em>while you work</em> &mdash; bare <code>/loop</code> or a <code>loop.md</code>.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>You&rsquo;ll keep the session open and want to stop it any time with <kbd>Esc</kbd>.</div></div>
+    <h3>When <em>not</em> to</h3>
+    <div class="usewhen no"><span class="ic">✕</span><div>You mean &ldquo;keep going <em>until</em> a condition holds,&rdquo; not &ldquo;every N minutes&rdquo; → <a href="goal.html">/goal</a>.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>It must run with your <em>laptop closed</em> or survive a restart → <a href="routines.html">a routine</a> (cloud) or Desktop scheduled tasks.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>You want to <em>react to an event</em> the moment it happens, not poll → Channels (CI pushes the failure in) or a <a href="hooks.html">hook</a>.</div></div>
+  </section>
+
+  <section>
+    <h2>Best practices</h2>
+    <div class="usewhen"><span class="ic">★</span><div>Prefer a <em>dynamic</em> <code>/loop</code> (prompt only) so Claude waits longer when nothing&rsquo;s pending &mdash; cheaper and more responsive than a fixed tick.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>For a long-running process, let Claude use the <strong>Monitor</strong> tool instead of polling &mdash; it streams output and avoids re-running a prompt on a timer.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Pick a fire minute that isn&rsquo;t <code>:00</code>/<code>:30</code> if exact timing matters &mdash; jitter offsets the round ones.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Budget it: a fixed loop runs until you stop it or 7 days pass. Cap iterations and watch token spend &mdash; the loop, not the model, is the expensive part.</div></div>
+  </section>
+
+  <div class="callout warn-c"><span class="label">Session-scoped means it stops when you do</span>
+    Tasks fire <strong>only while Claude Code is running and idle</strong>. Closing the terminal stops them; there&rsquo;s
+    <strong>no catch-up</strong> for fires missed while Claude was busy (it fires once when idle, not once per missed
+    interval). A new conversation clears all tasks. For anything that must run unattended, use
+    <a href="routines.html">Routines</a> or Desktop scheduled tasks.</div>
+
+  <section><h2>Sources</h2>
+    <ul><li><a href="https://code.claude.com/docs/en/scheduled-tasks">Run prompts on a schedule (/loop &amp; cron tools)</a> ·
+      <a href="https://code.claude.com/docs/en/goal">/goal</a> ·
+      <a href="https://code.claude.com/docs/en/routines">Routines</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><p>Reviewed 2026-06-09 · <a href="../matrix.html">back to the matrix</a></p></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>

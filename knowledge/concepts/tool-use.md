@@ -6,6 +6,6 @@ layer: api
 summary: The mechanism that lets the model call functions you define — it emits a structured tool call, your code runs it, you feed the result back. This is the "act" step of the loop made concrete.
 edges:
   - { to: messages-api, type: runs-on, why: "Tool calls ride the Messages API request/response cycle." }
-sources: [claude-api-agent-primitives, claude-code-architecture]
+sources: [claude-api-agent-primitives, claude-code-architecture, tool-call-taxonomy]
 ---
 Every capability an agent has — reading files, running code, searching — is a tool. Master this one primitive and most of the stack is just bigger and bigger libraries of tools. One nuance: *client tools* your code executes (the loop above) vs *server tools* (web_search, code_execution, web_fetch) that Anthropic executes for you — for those, you don't run anything.

@@ -60,6 +60,8 @@
             <tr><td>You&rsquo;re juggling several independent tasks at once</td><td><a href="primitives/agent-view.html"><strong>agent view</strong></a> (+ worktrees)</td><td><span class="badge l301">Orchestrate</span></td></tr>
             <tr><td>A second repo needs the same setup</td><td>a <strong>plugin</strong></td><td><span class="badge l301">Orchestrate</span></td></tr>
             <tr><td>Something must be blocked/required across the org</td><td><a href="primitives/policies.html"><strong>managed policy</strong></a></td><td><span class="badge l301">Orchestrate</span></td></tr>
+            <tr><td>You want Claude to keep working <em>until a condition holds</em> (tests pass, queue empty)</td><td><a href="primitives/goal.html">a <strong>/goal</strong></a> (condition-driven)</td><td><span class="badge l201">Extend</span></td></tr>
+            <tr><td>You want to <em>poll</em> something every N minutes inside an open session</td><td><a href="primitives/loop.html">a <strong>/loop</strong></a> (clock-driven)</td><td><span class="badge l201">Extend</span></td></tr>
             <tr><td>You want Claude to run unattended <em>on a schedule</em>, laptop closed</td><td><a href="primitives/routines.html">a <strong>routine</strong></a> (scheduled trigger)</td><td><span class="badge l301">Operate</span></td></tr>
             <tr><td>Claude should react to a <em>GitHub event</em> (PR / release) on its own</td><td><a href="primitives/routines.html">a <strong>routine</strong></a> (GitHub trigger)</td><td><span class="badge l301">Operate</span></td></tr>
             <tr><td>An external system should <em>fire a Claude run via webhook/API</em></td><td><a href="primitives/routines.html">a <strong>routine</strong></a> (API <code>/fire</code>)</td><td><span class="badge l301">Operate</span></td></tr>
@@ -96,10 +98,12 @@
           <div class="usewhen"><span class="ic">→</span><div>Massive fan-out + cross-check → <strong>dynamic workflow</strong></div></div>
           <div class="usewhen"><span class="ic">→</span><div>Many independent sessions you supervise → <strong>agent view</strong></div></div>
         </div>
-        <div class="card"><h3>Running unattended</h3>
-          <div class="usewhen"><span class="ic">→</span><div>On a schedule / GitHub event / API call, laptop closed → <strong>routine</strong> (cloud)</div></div>
-          <div class="usewhen"><span class="ic">→</span><div>Repeating <em>inside an open session</em> → <strong>/loop</strong> (local)</div></div>
+        <div class="card"><h3>Keeping it running</h3>
+          <div class="usewhen"><span class="ic">→</span><div>On a schedule / GitHub event / API call, laptop closed → <a href="primitives/routines.html"><strong>routine</strong></a> (cloud)</div></div>
+          <div class="usewhen"><span class="ic">→</span><div>Poll something every N min <em>inside an open session</em> → <a href="primitives/loop.html"><strong>/loop</strong></a> (local, clock)</div></div>
+          <div class="usewhen"><span class="ic">→</span><div>Keep going <em>until a condition holds</em> → <a href="primitives/goal.html"><strong>/goal</strong></a> (a fresh model checks each turn)</div></div>
           <div class="usewhen no"><span class="ic">✕</span><div>A routine run has <em>no</em> permission prompts &mdash; scope its repos/connectors first.</div></div>
+          <div class="usewhen no"><span class="ic">✕</span><div>Don&rsquo;t mistake <code>/loop</code> for OS <strong>cron</strong>: cron runs a fixed script; <code>/loop</code> runs a <em>model that decides</em>, only while the session is open, and expires in 7 days.</div></div>
         </div>
       </div>
 
@@ -153,12 +157,27 @@
           Worktrees sit under both as the file-isolation mechanism.</p>
       </div></details>
 
-      <details class="acc"><summary>Routines vs /loop vs Skills vs GitHub Actions</summary><div class="acc-body">
-        <p><strong>Routines</strong> = a saved config run <em>unattended on Anthropic&rsquo;s cloud</em> on a schedule / GitHub
-          event / API call (laptop closed). <strong>/loop</strong> = the same idea but <em>local, inside an open CLI session</em>.
-          <strong>Skills</strong> = the <em>saved procedure</em> a run (or a session) executes &mdash; the &ldquo;what,&rdquo; not the
-          &ldquo;when/where.&rdquo; <strong>GitHub Actions</strong> = generic CI that runs <em>your</em> scripts on repo events, not a
-          Claude session. A routine can <em>call</em> skills and connectors during its cloud run.</p>
+      <details class="acc"><summary>/loop vs /goal vs Routines vs cron vs GitHub Actions</summary><div class="acc-body">
+        <p>Separate them on <strong>two axes</strong>: <em>where</em> it runs (in your open session vs independent of it) and
+          <em>what starts the next unit of work</em> (a clock, a condition, or an event).</p>
+        <p><strong>/loop</strong> = in-session, <em>clock</em>-driven (&ldquo;every N minutes&rdquo;); local, needs the session
+          open, 7-day expiry. <strong>/goal</strong> = in-session, <em>condition</em>-driven (&ldquo;keep going until tests
+          pass&rdquo;); a fresh small model checks each turn (it&rsquo;s a wrapper around a Stop hook). <strong>Routines</strong> =
+          <em>unattended on Anthropic&rsquo;s cloud</em> on a schedule / GitHub event / API call (laptop closed).
+          <strong>OS cron</strong> = your machine&rsquo;s scheduler running a <em>fixed shell script</em> &mdash; no model, no
+          decision in the body; <code>/loop</code> uses cron syntax but adds the decision-maker. <strong>GitHub Actions</strong> =
+          generic CI that runs <em>your</em> scripts on repo events, not a Claude session. A <strong>skill</strong> is the saved
+          <em>procedure</em> any of these executes &mdash; the &ldquo;what,&rdquo; not the &ldquo;when/where.&rdquo;</p>
+      </div></details>
+
+      <details class="acc"><summary>Tool call vs MCP vs Skill vs Function call</summary><div class="acc-body">
+        <p>Mostly <em>one mechanism with specializations</em>. A <strong>tool call</strong> is the model emitting a
+          <code>tool_use</code> block that you (or Anthropic) run and return a <code>tool_result</code> for. An
+          <strong>MCP</strong> server tool <em>is</em> an ordinary tool call &mdash; same JSON, just routed to a server. In Claude
+          Code, <strong>invoking a skill</strong> is itself a <code>Skill</code> <em>tool call</em> (though a skill is a knowledge
+          package, not an external function). <strong>&ldquo;Function call&rdquo;</strong> is the older OpenAI word for the same
+          thing &mdash; Anthropic says &ldquo;tool use.&rdquo; So: yes, an MCP call is a tool call; yes, a skill invocation is a tool
+          call; function call &asymp; tool call.</p>
       </div></details>
     </section>
 

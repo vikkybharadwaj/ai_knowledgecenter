@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Goal mode (/goal) — keep working until a condition holds</title>
+<link rel="stylesheet" href="../assets/style.css?v=20260609scroll">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../../index.html"><span class="dot"></span> AI Knowledge Center</a>
+    <nav class="navlinks">
+      <a href="../index.html">Overview</a>
+      <a href="../mental-model.html">Mental model</a>
+      <a href="../primitives.html" class="active">Primitives</a>
+      <a href="../graph.html">Concept graph</a>
+      <a href="../matrix.html">Comparison matrix</a>
+      <a href="../decision.html">Decide</a>
+      <a href="../legend.html">Legend</a>
+    </nav>
+    <a class="pill" href="../exam.html">🎓 Exam Prep</a>
+  </div>
+</header>
+<main class="wrap">
+  <section style="margin-top:26px">
+    <div class="pill-row"><span class="badge l201">Extend</span> <span class="badge">Soft · in-session · until-done</span> <span class="badge ga">GA</span> <span class="badge">v2.1.139+</span> <a class="legend-link" href="../legend.html">&#9432;&nbsp;legend</a></div>
+    <h1>Goal mode <span class="meta">(/goal)</span></h1>
+    <p class="lede"><strong>Condition-driven repetition inside an open session.</strong> <code>/goal</code> sets a completion
+      condition and Claude keeps working turn after turn until it holds &mdash; <em>without</em> you prompting each step.
+      After every turn a <strong>small fast model</strong> (Haiku by default) checks the condition; if it&rsquo;s not met,
+      Claude starts another turn instead of returning to you. This is the productized &ldquo;ralph loop.&rdquo;</p>
+  </section>
+
+  <section>
+    <p class="analogy"><strong>Analogy —</strong> a <strong>finish-line judge</strong>. Claude keeps running laps; after each
+      lap a <em>separate</em> referee (a fresh Haiku call) checks whether you&rsquo;ve actually crossed the line you described,
+      and only then calls the race. The runner doesn&rsquo;t get to declare its own victory.</p>
+  </section>
+
+  <div class="callout key"><span class="label">/goal vs /loop vs a Stop hook vs auto mode</span>
+    All keep a session moving, but on different triggers. <strong><a href="loop.html">/loop</a></strong> advances on a
+    <em>clock</em> (every N minutes); <strong>/goal</strong> advances when the previous turn finishes and stops when a
+    <em>condition</em> is confirmed. A <strong><a href="hooks.html">Stop hook</a></strong> also fires after every turn but
+    lives in your settings and can run a custom script &mdash; <code>/goal</code> is the session-scoped shortcut for the common
+    case. <strong>Auto mode</strong> removes per-<em>tool</em> prompts within a turn; <code>/goal</code> removes per-<em>turn</em>
+    prompts &mdash; they&rsquo;re complementary.</div>
+
+  <section>
+    <h2>Mechanism — a wrapper around a Stop hook</h2>
+    <p>Setting a goal starts a turn immediately with the condition as the directive; you don&rsquo;t send a separate prompt.
+      Then each turn loops through:</p>
+    <div class="flow">
+      <div class="step"><span class="n">turn finishes</span><br><strong>evaluate</strong><br><span class="meta">the condition + the conversation so far go to your small fast model (default Haiku)</span></div>
+      <div class="step"><span class="n">verdict</span><br><strong>yes / no + reason</strong><br><span class="meta">&ldquo;no&rdquo; → Claude continues with the reason as guidance; &ldquo;yes&rdquo; → the goal clears</span></div>
+      <div class="step"><span class="n">judged from</span><br><strong>the transcript only</strong><br><span class="meta">the evaluator reads what Claude surfaced; it does <em>not</em> run tools or read files itself</span></div>
+    </div>
+    <pre>/goal all tests in test/auth pass and the lint step is clean   # set it; a turn starts immediately
+/goal                                                          # status: turns, tokens, last reason
+/goal clear                                                    # stop early (aliases: stop/off/reset/none/cancel)
+claude -p "/goal CHANGELOG.md has an entry for every PR merged this week"   # run to completion, non-interactive</pre>
+    <details class="acc"><summary>Writing an effective condition</summary><div class="acc-body">
+      <p>Because the evaluator only judges what&rsquo;s in the transcript, write the condition as something Claude&rsquo;s own
+        output can <em>demonstrate</em>. A durable condition has: <strong>one measurable end state</strong> (a test result,
+        a build exit code, an empty queue); <strong>a stated check</strong> (&ldquo;<code>npm test</code> exits 0&rdquo;); and
+        <strong>constraints that matter</strong> (&ldquo;no other test file is modified&rdquo;). Up to 4,000 characters. To bound
+        runtime, add a clause like <code>or stop after 20 turns</code>.</p>
+      <p>One goal is active per session. A goal still active at session end is restored on <code>--resume</code> (the condition
+        carries over; turn count, timer, and token baseline reset). An achieved or cleared goal is not restored. Running
+        <code>/clear</code> also removes it.</p>
+    </div></details>
+    <p class="meta">Evaluation tokens bill on the small fast model and are typically negligible vs main-turn spend.</p>
+  </section>
+
+  <section>
+    <h2>When to reach for it</h2>
+    <div class="usewhen"><span class="ic">✓</span><div>Substantial work with a <em>verifiable end state</em> &mdash; migrate every call site until tests pass; split a file until each module is under budget.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>Working a backlog until the queue is empty, where &ldquo;done&rdquo; is checkable from Claude&rsquo;s output.</div></div>
+    <div class="usewhen"><span class="ic">✓</span><div>You want a <em>fresh</em> model to decide completion, not the one that did the work (externalized completion).</div></div>
+    <h3>When <em>not</em> to</h3>
+    <div class="usewhen no"><span class="ic">✕</span><div>You mean &ldquo;check every N minutes,&rdquo; not &ldquo;until done&rdquo; → <a href="loop.html">/loop</a>.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>The condition can&rsquo;t be shown in the transcript (needs the evaluator to run commands) → write a custom <a href="hooks.html">Stop hook</a> instead.</div></div>
+    <div class="usewhen no"><span class="ic">✕</span><div>It must run unattended with your laptop closed → <a href="routines.html">a routine</a>.</div></div>
+  </section>
+
+  <section>
+    <h2>Best practices</h2>
+    <div class="usewhen"><span class="ic">★</span><div>Pair with <strong>auto mode</strong> so each goal turn runs without per-tool approvals &mdash; otherwise it stalls on prompts.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Make the check concrete (&ldquo;<code>npm test</code> exits 0&rdquo;) so Claude surfaces evidence the evaluator can read.</div></div>
+    <div class="usewhen"><span class="ic">★</span><div>Always bound it &mdash; a turn/time clause in the condition, plus an eye on token spend. Like any loop it can run a long way.</div></div>
+  </section>
+
+  <div class="callout warn-c"><span class="label">It&rsquo;s a hook &mdash; so it needs trust</span>
+    <code>/goal</code> runs only in workspaces where you&rsquo;ve <strong>accepted the trust dialog</strong>, because the
+    evaluator is part of the hooks system. It&rsquo;s unavailable when <code>disableAllHooks</code> is set at any level or
+    <code>allowManagedHooksOnly</code> is set in managed settings (the command tells you why). And because completion is judged
+    only from the transcript, a condition Claude can&rsquo;t demonstrate will never clear.</div>
+
+  <section><h2>Sources</h2>
+    <ul><li><a href="https://code.claude.com/docs/en/goal">Keep Claude working toward a goal (/goal)</a> ·
+      <a href="https://code.claude.com/docs/en/scheduled-tasks">/loop &amp; scheduled tasks</a> ·
+      <a href="https://code.claude.com/docs/en/hooks">Hooks (Stop hooks)</a></li></ul>
+  </section>
+</main>
+<footer class="wrap"><p>Reviewed 2026-06-09 · <a href="../matrix.html">back to the matrix</a></p></footer>
+<script src="../assets/app.js"></script>
+</body>
+</html>
