@@ -11,6 +11,17 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-09  **Opinion articles can't be trusted to define vocabulary for a source-of-truth vault — verify
+            before you write, not after.** Landing Addy Osmani's "loop engineering" thread, a docs fact-check
+            (via the claude-code-guide agent) found the Claude Code *claims* largely correct but the *terms*
+            loose: "connectors" is really **MCP servers**, "schedule a cron task" conflates session-scoped
+            (`/loop`, `CronCreate`) with unattended (Routines / GitHub Actions / web), and "agent teams" ≠
+            "subagents". Cross-tool parity ("Codex has all five too") was unverifiable and got marked as the
+            author's claim. Fix: added a **Step 2.5 verification gate** to `/land` + a reusable
+            **`verification-rubric.md`** (10 criteria) + a **`knowledge-fact-checker` subagent** that reruns the
+            rubric on a PR diff — the article's own maker/checker split applied to the vault itself.
+            [→ .claude/skills/land/verification-rubric.md, knowledge/notes/designing-loops-not-prompts.md]
+
 2026-06-08  **A whole-card link (`<a class="card">…</a>`) silently breaks the moment it wraps an inner `<a>` —
             HTML forbids nested anchors, so the parser auto-closes the outer anchor right before the inner link,
             and every child after that point (sub-links, the "go →" affordance) escapes the card and renders as a
