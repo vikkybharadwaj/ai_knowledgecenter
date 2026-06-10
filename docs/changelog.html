@@ -98,6 +98,20 @@
     <h2 class="cl-date">June 10, 2026</h2>
     <ul class="cl-items">
     <li class="cl-item">
+      <p class="cl-head"><span class="cl-tag cl-tag-docs">Docs</span><span class="cl-text">Added workflow-journal-resume — durable orchestration via resumeFromRunId</span></p>
+      <p class="cl-desc">New atomic note: workflow runs journal every agent() result keyed by (prompt, opts); resumeFromRunId replays the unchanged prefix from cache and re-runs only failed/edited calls. Durability — not parallelism — is the decisive reason to script destructive multi-surface work as one workflow instead of N ad-hoc agents.</p>
+      <details class="cl-files">
+        <summary>What changed · 4 files</summary>
+        <ul class="cl-flist">
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/8cc727e7947ac20701fc8b0fa5fa24df56c05545#diff-6e1811e11f08d93a36c5d17bdf3befd14cda58f97a2919ec165178b890002a87" target="_blank" rel="noopener">docs/assets/knowledge.js</a></li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/8cc727e7947ac20701fc8b0fa5fa24df56c05545#diff-33b515cab35fb7ae1bac6008dcc02fd6dd439c5450e79f9718695255f213b34f" target="_blank" rel="noopener">knowledge/concepts/dynamic-workflows.md</a></li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/8cc727e7947ac20701fc8b0fa5fa24df56c05545#diff-c335215ac2c5d681032936e54733598369c4fd566e18c532e756a7875e1b33d4" target="_blank" rel="noopener">knowledge/maps/big-picture.md</a></li>
+        <li><span class="cl-fstat cl-fstat-new">new</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/8cc727e7947ac20701fc8b0fa5fa24df56c05545#diff-6cd1ec2e9d611d2b05e202aa23f230fba62275d5039203530d87009d7cc9a941" target="_blank" rel="noopener">knowledge/notes/workflow-journal-resume.md</a></li>
+        </ul>
+      </details>
+      <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/68" target="_blank" rel="noopener">PR #68 →</a></div>
+    </li>
+    <li class="cl-item">
       <p class="cl-head"><span class="cl-tag cl-tag-fix">Fix</span><span class="cl-text">Uncap home hero h1 + sub so both span full content width</span></p>
       <p class="cl-desc">docs/index.html had home-only inline overrides (.hero h1 max-width:16ch, .hero .sub max-width:64ch) that re-capped the hero after the shared stylesheet was widened. Set both to max-width:none so the heading and subtext run to the container edge (left-aligned), matching the other hubs.</p>
       <details class="cl-files">
