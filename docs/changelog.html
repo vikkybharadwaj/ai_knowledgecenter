@@ -98,6 +98,24 @@
     <h2 class="cl-date">June 10, 2026</h2>
     <ul class="cl-items">
     <li class="cl-item">
+      <p class="cl-head"><span class="cl-tag cl-tag-fix">Fix</span><span class="cl-text">Uncap home hero h1 + sub so both span full content width</span></p>
+      <p class="cl-desc">docs/index.html had home-only inline overrides (.hero h1 max-width:16ch, .hero .sub max-width:64ch) that re-capped the hero after the shared stylesheet was widened. Set both to max-width:none so the heading and subtext run to the container edge (left-aligned), matching the other hubs.</p>
+      <details class="cl-files">
+        <summary>What changed · 1 file</summary>
+        <ul class="cl-flist">
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/index.html" target="_blank" rel="noopener">docs/index.html</a><a class="cl-fdiff" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/6b0cebfe3d723637e23f5cf6292ee7fcd745a138#diff-b04b38d4e36f7a7171aeb211bf933eaf36d41d9866ebbc3639f673f84dc350ae" target="_blank" rel="noopener">diff</a>
+        <ul class="cl-changes">
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/index.html" target="_blank" rel="noopener">.hero h1{max-width:16ch}</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/index.html" target="_blank" rel="noopener">.hero .sub{max-width:64ch}</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/index.html" target="_blank" rel="noopener">.hero h1{max-width:none}</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/index.html" target="_blank" rel="noopener">.hero .sub{max-width:none}</a></li>
+        </ul>
+        </li>
+        </ul>
+      </details>
+      <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/67" target="_blank" rel="noopener">PR #67 →</a></div>
+    </li>
+    <li class="cl-item">
       <p class="cl-head"><span class="cl-tag cl-tag-docs">Docs</span><span class="cl-text">Declutter mental-model page; unify all four control levels into one template</span></p>
       <p class="cl-desc">The page was lopsided and dense: only Loop (④) had a full section, while Prompt/Context/Harness (①②③) got a one-line step card each, on top of two always-open accordions and a large combined callout.</p>
       <details class="cl-files">
