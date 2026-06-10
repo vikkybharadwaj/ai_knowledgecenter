@@ -7,6 +7,6 @@ summary: A JavaScript script that orchestrates subagents at scale — Claude wri
 edges:
   - { to: claude-code, type: part-of, why: "Workflows are a Claude Code orchestration capability." }
   - { to: cc-subagents, type: uses, why: "A workflow pipelines work across many subagents." }
-sources: [dynamic-workflows-and-ultraplan, dynamic-workflow-patterns]
+sources: [dynamic-workflows-and-ultraplan, dynamic-workflow-patterns, workflow-journal-resume]
 ---
-This is where determinism meets fan-out: the script decides what runs in parallel, what verifies, and what synthesizes, so scale doesn't mean chaos. Note: the trigger keyword is `ultracode` (the always-on form is `/effort ultracode`) — distinct from *ultraplan*, which is a separate cloud plan-mode feature, not this. Docs: https://code.claude.com/docs/en/workflows
+This is where determinism meets fan-out: the script decides what runs in parallel, what verifies, and what synthesizes, so scale doesn't mean chaos. Runs are also journaled — `resumeFromRunId` replays finished agents from cache after a mid-run failure, which makes scripted orchestration durable, not just parallel. Note: the trigger keyword is `ultracode` (the always-on form is `/effort ultracode`) — distinct from *ultraplan*, which is a separate cloud plan-mode feature, not this. Docs: https://code.claude.com/docs/en/workflows
