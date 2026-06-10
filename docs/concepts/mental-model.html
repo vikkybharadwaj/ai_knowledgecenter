@@ -116,6 +116,39 @@
         </div>
       </details>
 
+      <h3 style="margin-top:26px">Pick the heartbeat — two questions</h3>
+      <p>The official docs don&rsquo;t stack these as control levels; they treat them as <strong>siblings you pick
+        between</strong>, split on two questions. <strong>Where does it run</strong> &mdash; inside an open session you&rsquo;re
+        driving, or independent of any session? <strong>What fires the next unit of work</strong> &mdash; a clock, a
+        condition, or an event? &ldquo;Where it runs&rdquo; is the load-bearing one: the
+        <a href="https://code.claude.com/docs/en/scheduled-tasks">scheduling-options table</a> makes
+        <em>&ldquo;Requires open session&rdquo;</em> its spine, and the
+        <a href="https://code.claude.com/docs/en/agents">agents page</a> fences this whole family off as
+        &ldquo;a different problem than splitting work across agents.&rdquo;</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>&nbsp;</th><th>Clock — an interval</th><th>Condition — a check passes</th><th>Event — something happens</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>In an open session</strong><br><span class="meta">you&rsquo;re driving; stops when the session ends</span></td>
+              <td><code>/loop 5m</code> — re-run a prompt every N min on a fixed cron step</td>
+              <td><code>/goal</code> — until a separate small-model validator confirms done; self-paced <code>/loop</code> (Claude picks the delay); a custom <code>Stop</code> hook</td>
+              <td><strong>Hooks</strong> (PreToolUse, Stop…); <strong>Channels</strong> — CI pushes a failure straight into the session</td>
+            </tr>
+            <tr>
+              <td><strong>Independent of session</strong><br><span class="meta">survives a closed laptop; launches a fresh session</span></td>
+              <td><strong>Routines</strong> (schedule) · Desktop scheduled tasks · OS cron · GitHub Actions</td>
+              <td class="meta">— rare; encode the check as the routine&rsquo;s own first step</td>
+              <td><strong>Routines</strong> (GitHub event · API <code>/fire</code>) · GitHub Actions (CI events)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="meta">The split runs right through the <strong>session boundary</strong>: <code>/loop</code> · <code>/goal</code> ·
+        hooks · Channels drive turns <em>inside</em> one session; routines · desktop tasks · cron · Actions are a trigger
+        ring <em>outside</em> it that fires a whole session. That boundary &mdash; not the trigger type &mdash; is the first
+        thing to decide, which is why the docs put it first.</p>
+
       <div class="callout tip-c">
         <span class="label">The catch — build the loop, stay the engineer</span>
         The loop changes the work; it doesn&rsquo;t delete you from it. Verification, comprehension debt, and cognitive
