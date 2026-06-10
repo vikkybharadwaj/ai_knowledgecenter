@@ -29,6 +29,7 @@
       <a href="#ladder">The trigger ladder</a>
       <a href="#flow">Decision flow</a>
       <a href="#pairs">Confusable pairs</a>
+      <a href="#keep-running">Keep running — two axes</a>
       <a href="#cost">Cost &amp; trust</a>
     </aside>
 
@@ -157,28 +158,47 @@
           Worktrees sit under both as the file-isolation mechanism.</p>
       </div></details>
 
-      <details class="acc"><summary>/loop vs /goal vs Routines vs cron vs GitHub Actions</summary><div class="acc-body">
-        <p>Separate them on <strong>two axes</strong>: <em>where</em> it runs (in your open session vs independent of it) and
-          <em>what starts the next unit of work</em> (a clock, a condition, or an event).</p>
-        <p><strong>/loop</strong> = in-session, <em>clock</em>-driven (&ldquo;every N minutes&rdquo;); local, needs the session
-          open, 7-day expiry. <strong>/goal</strong> = in-session, <em>condition</em>-driven (&ldquo;keep going until tests
-          pass&rdquo;); a fresh small model checks each turn (it&rsquo;s a wrapper around a Stop hook). <strong>Routines</strong> =
-          <em>unattended on Anthropic&rsquo;s cloud</em> on a schedule / GitHub event / API call (laptop closed).
-          <strong>OS cron</strong> = your machine&rsquo;s scheduler running a <em>fixed shell script</em> &mdash; no model, no
-          decision in the body; <code>/loop</code> uses cron syntax but adds the decision-maker. <strong>GitHub Actions</strong> =
-          generic CI that runs <em>your</em> scripts on repo events, not a Claude session. A <strong>skill</strong> is the saved
-          <em>procedure</em> any of these executes &mdash; the &ldquo;what,&rdquo; not the &ldquo;when/where.&rdquo;</p>
-      </div></details>
+      <p class="meta">Naming overlaps &mdash; &ldquo;is X just another word for Y?&rdquo; (conventions vs policies, the two meanings of
+        &ldquo;routines,&rdquo; the three things called a &ldquo;rule,&rdquo; and tool call vs MCP vs skill vs function call) &mdash; are a
+        <em>different</em> question from which-do-I-pick; they live in the matrix&rsquo;s
+        <a href="matrix.html#terms">Terminology fixes</a>. Choosing how to <em>keep Claude running</em> is its own two-axis
+        decision &mdash; just below.</p>
+    </section>
 
-      <details class="acc"><summary>Tool call vs MCP vs Skill vs Function call</summary><div class="acc-body">
-        <p>Mostly <em>one mechanism with specializations</em>. A <strong>tool call</strong> is the model emitting a
-          <code>tool_use</code> block that you (or Anthropic) run and return a <code>tool_result</code> for. An
-          <strong>MCP</strong> server tool <em>is</em> an ordinary tool call &mdash; same JSON, just routed to a server. In Claude
-          Code, <strong>invoking a skill</strong> is itself a <code>Skill</code> <em>tool call</em> (though a skill is a knowledge
-          package, not an external function). <strong>&ldquo;Function call&rdquo;</strong> is the older OpenAI word for the same
-          thing &mdash; Anthropic says &ldquo;tool use.&rdquo; So: yes, an MCP call is a tool call; yes, a skill invocation is a tool
-          call; function call &asymp; tool call.</p>
-      </div></details>
+    <!-- KEEP RUNNING — choosing among these is a decision, so the table lives here (was duplicated on the matrix) -->
+    <section id="keep-running">
+      <h2>Keep running — two axes</h2>
+      <p><code>/loop</code>, <code>/goal</code>, hooks, routines and cron all blur together because they all
+        &ldquo;keep Claude working.&rdquo; They separate cleanly on two questions: <strong>where</strong> it runs (in an
+        <em>open session</em> you&rsquo;re driving, or <em>independent</em> of any session) and <strong>what starts the next
+        unit of work</strong> (a <em>clock</em>, a <em>condition</em>, or an <em>event</em>).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>Clock (interval)</th><th>Condition (a check passes)</th><th>Event (something happens)</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>In an open session</strong></td>
+              <td><a href="primitives/loop.html"><strong>/loop</strong></a> — re-run a prompt every N min</td>
+              <td><a href="primitives/goal.html"><strong>/goal</strong></a> — until a small model confirms done; or a custom Stop <a href="primitives/hooks.html">hook</a></td>
+              <td><a href="primitives/hooks.html"><strong>Hooks</strong></a> (PreToolUse, Stop…); Channels (CI pushes a failure in)</td>
+            </tr>
+            <tr>
+              <td><strong>Independent of session</strong></td>
+              <td><a href="primitives/routines.html"><strong>Routines</strong></a> (schedule) · Desktop scheduled tasks · OS cron · GitHub Actions</td>
+              <td class="meta">—</td>
+              <td><a href="primitives/routines.html"><strong>Routines</strong></a> (GitHub event / API <code>/fire</code>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout key">
+        <span class="label">The discriminators</span>
+        <strong>/loop vs /goal</strong> = clock vs condition. <strong>/loop vs OS cron</strong> = cron runs a fixed script;
+        <code>/loop</code> runs a <em>model that decides</em> (and is session-scoped, 7-day expiry). <strong>/loop vs
+        routines</strong> = local + session open vs cloud + unattended. <strong>/goal vs a Stop hook</strong> = a session
+        shortcut vs a settings-level handler you script. A <strong>skill</strong> is the saved <em>procedure</em> any of these
+        runs &mdash; the &ldquo;what,&rdquo; not the &ldquo;when/where.&rdquo;
+      </div>
     </section>
 
     <!-- COST -->
