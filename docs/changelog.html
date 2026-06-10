@@ -98,6 +98,28 @@
     <h2 class="cl-date">June 10, 2026</h2>
     <ul class="cl-items">
     <li class="cl-item">
+      <p class="cl-head"><span class="cl-tag cl-tag-docs">Docs</span><span class="cl-text">Declutter mental-model page; unify all four control levels into one template</span></p>
+      <p class="cl-desc">The page was lopsided and dense: only Loop (④) had a full section, while Prompt/Context/Harness (①②③) got a one-line step card each, on top of two always-open accordions and a large combined callout.</p>
+      <details class="cl-files">
+        <summary>What changed · 2 files</summary>
+        <ul class="cl-flist">
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/8e16cf9ed445e7caec283b98a165382433863dba#diff-7f306a2fbd1f2854d1d86c67673c8e24ed63c90780f6b4d6387cfd5a6a78bfd0" target="_blank" rel="noopener">docs/concepts/assets/style.css</a></li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/mental-model.html" target="_blank" rel="noopener">docs/concepts/mental-model.html</a><a class="cl-fdiff" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/8e16cf9ed445e7caec283b98a165382433863dba#diff-6695e0030bac371181ddc718b9a3b0b80e79e152ca485fd7d4e46a4e1980da5b" target="_blank" rel="noopener">diff</a>
+        <ul class="cl-changes">
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/mental-model.html" target="_blank" rel="noopener">Prompt ⊂ context ⊂ harness ⊂ loop</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/mental-model.html" target="_blank" rel="noopener">④ Loop engineering</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/mental-model.html" target="_blank" rel="noopener">① Prompt — the message</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/mental-model.html" target="_blank" rel="noopener">② Context — the memory</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/mental-model.html" target="_blank" rel="noopener">③ Harness — the machine</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/mental-model.html" target="_blank" rel="noopener">④ Loop — the timer</a></li>
+          <li class="cl-chg-more">+114 more changed lines</li>
+        </ul>
+        </li>
+        </ul>
+      </details>
+      <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/66" target="_blank" rel="noopener">PR #66 →</a></div>
+    </li>
+    <li class="cl-item">
       <p class="cl-head"><span class="cl-tag cl-tag-fix">Fix</span><span class="cl-text">Let hero subtext span full content width (left-aligned)</span></p>
       <p class="cl-desc">The hero `.sub` was capped at max-width:62ch, so the description wrapped early and left a large empty gutter on the right. Drop the cap to max-width:none so it fills the .wrap container (1140px), still left-aligned. Bump the stylesheet cache-buster so the change ships to browsers.</p>
       <details class="cl-files">
