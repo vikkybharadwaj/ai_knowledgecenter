@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Mental Model — Concepts</title>
 <meta name="description" content="The mental model that organizes every Claude Code primitive: prompt ⊂ context ⊂ harness ⊂ loop, the soft/hard axis, the who-holds-the-plan axis, and how subagents, teams, workflows, worktrees and agent view nest.">
-<link rel="stylesheet" href="assets/style.css?v=20260610subfull">
+<link rel="stylesheet" href="assets/style.css?v=20260610levels">
 </head>
 <body>
 <header class="nav">
@@ -26,42 +26,83 @@
 <main class="wrap">
   <div class="layout">
     <aside class="toc">
-      <a href="#harness">Prompt ⊂ context ⊂ harness ⊂ loop</a>
-      <a href="#loop">④ Loop engineering</a>
+      <a href="#levels">Prompt ⊂ context ⊂ harness ⊂ loop</a>
+      <a href="#prompt">① Prompt — the message</a>
+      <a href="#context">② Context — the memory</a>
+      <a href="#harness">③ Harness — the machine</a>
+      <a href="#loop">④ Loop — the timer</a>
       <a href="#four">The four levers</a>
-      <a href="#axes">The two axes</a>
+      <a href="#axes">The three axes</a>
       <a href="#nesting">How it all nests</a>
       <a href="#coordination">The coordination spectrum</a>
       <a href="#workflow-demo">A workflow in miniature</a>
     </aside>
 
     <div>
-    <section style="margin-top:30px">
+    <section id="levels" style="margin-top:30px">
       <div class="eyebrow">The conceptual backbone</div>
       <h1>The mental model</h1>
-      <p class="lede">If you only internalize one page, make it this one. Everything else &mdash; skills, hooks, MCP,
-        teams, workflows &mdash; is a special case of the structure below. Reviewed 2026-06-09.</p>
-    </section>
+      <p class="lede">If you internalize one page, make it this one. Every Claude Code feature &mdash; skills, hooks, MCP,
+        teams, workflows &mdash; is a special case of <strong>four nested levels of control over a model</strong>. Reviewed 2026-06-10.</p>
 
-    <!-- HARNESS -->
-    <section id="harness">
       <h2>Prompt ⊂ Context ⊂ Harness ⊂ Loop</h2>
-      <p>Four nested levels of control over a model, each a bigger unit of work than the last. This is the frame the
-        rest of Claude Code hangs off. The first three migrated from the Tide visual doc (this is now their canonical
-        home); the fourth &mdash; the loop &mdash; is the floor above, where a 2026 practice now lives.</p>
+      <p>Each level is a bigger unit of work than the last and <em>contains</em> the one before it: a message sits inside a
+        context window, which sits inside a single session, which a loop runs over and over. Start at the message; end at a
+        system that runs itself.</p>
 
       <div class="flow" style="margin:22px 0">
-        <div class="step"><span class="n">① the message</span><br><strong>Prompt engineering</strong><br>
-          <span class="meta">Compose one best input: role, context, instructions, examples, format. Send → refine the weakest ingredient → repeat.</span></div>
-        <div class="step"><span class="n">② the memory</span><br><strong>Context engineering</strong><br>
-          <span class="meta">A finite budget. A curator <em>selects, compresses, drops</em> so only what matters reaches the model each step.</span></div>
-        <div class="step"><span class="n">③ the machine</span><br><strong>Harness engineering</strong><br>
-          <span class="meta">The outer loop: <strong>Gather → Act → Verify → retry</strong>. Contains the other two inside its Gather/Act steps. Runs <em>once</em>.</span></div>
-        <div class="step"><span class="n">④ the timer</span><br><strong>Loop engineering</strong><br>
-          <span class="meta">The harness <strong>put on a timer that feeds itself</strong>: it finds work, hands it out, checks it, records progress, decides the next thing &mdash; then pokes the agent instead of you.</span></div>
+        <div class="step"><span class="n">① the message</span><br><strong>Prompt</strong><br>
+          <span class="meta">Compose one best input.</span></div>
+        <div class="step"><span class="n">② the memory</span><br><strong>Context</strong><br>
+          <span class="meta">Curate a finite window.</span></div>
+        <div class="step"><span class="n">③ the machine</span><br><strong>Harness</strong><br>
+          <span class="meta">Gather → Act → Verify, once.</span></div>
+        <div class="step"><span class="n">④ the timer</span><br><strong>Loop</strong><br>
+          <span class="meta">The harness, self-feeding.</span></div>
       </div>
+      <p class="meta">Each level in depth below &mdash; same four facts every time: <em>the unit · what you engineer ·
+        fix here when · in Claude Code</em>. The first three are the canonical home of the Tide prompt/context/harness model;
+        the loop is the floor above, where a 2026 practice lives.</p>
+    </section>
 
-      <details class="acc" open>
+    <!-- ① PROMPT -->
+    <section id="prompt" class="level">
+      <span class="lv-tag">① the message</span>
+      <h2>Prompt engineering</h2>
+      <p class="lv-lede">Compose one best input, then refine the weakest ingredient and resend.</p>
+      <div class="lv-facts">
+        <div class="fact"><span class="k">The unit</span><span class="v"><strong>One inference call</strong> — the single message you hand the model.</span></div>
+        <div class="fact"><span class="k">You engineer</span><span class="v">role · context · instructions · examples · output format</span></div>
+        <div class="fact"><span class="k">Fix here when</span><span class="v">a single answer is wrong, vague, or mis-formatted &mdash; the model had what it needed, you just asked badly.</span></div>
+        <div class="fact"><span class="k">In Claude Code</span><span class="v">the prompt and effort level you send each turn.</span></div>
+      </div>
+    </section>
+
+    <!-- ② CONTEXT -->
+    <section id="context" class="level">
+      <span class="lv-tag">② the memory</span>
+      <h2>Context engineering</h2>
+      <p class="lv-lede">A finite budget. A curator <em>selects, compresses, drops</em> so only what matters reaches the model each step.</p>
+      <div class="lv-facts">
+        <div class="fact"><span class="k">The unit</span><span class="v"><strong>The whole context window</strong> — a finite token budget, refilled every step.</span></div>
+        <div class="fact"><span class="k">You engineer</span><span class="v">what to select, compress, or drop before the window fills.</span></div>
+        <div class="fact"><span class="k">Fix here when</span><span class="v">the model forgets earlier facts, drowns in irrelevant tokens, or contradicts itself over a long session.</span></div>
+        <div class="fact"><span class="k">In Claude Code</span><span class="v">CLAUDE.md + session memory, and the curated window the Gather step assembles.</span></div>
+      </div>
+    </section>
+
+    <!-- ③ HARNESS -->
+    <section id="harness" class="level">
+      <span class="lv-tag">③ the machine</span>
+      <h2>Harness engineering</h2>
+      <p class="lv-lede">The outer loop &mdash; <strong>Gather → Act → Verify → retry</strong> &mdash; that contains prompt and context inside it, and runs <em>once</em>.</p>
+      <div class="lv-facts">
+        <div class="fact"><span class="k">The unit</span><span class="v"><strong>One full session</strong> — the Gather → Act → Verify cycle, run once.</span></div>
+        <div class="fact"><span class="k">You engineer</span><span class="v">the wiring &mdash; which tools/subagents Act can reach, and what verifies the result before it ships.</span></div>
+        <div class="fact"><span class="k">Fix here when</span><span class="v">the agent does the right thing once but can&rsquo;t recover, retry, or check its own work.</span></div>
+        <div class="fact"><span class="k">In Claude Code</span><span class="v">tool + subagent calls (Act), tests/judges (Verify), the curated window (Gather).</span></div>
+      </div>
+      <details class="acc">
         <summary>The harness loop, zone by zone</summary>
         <div class="acc-body">
           <p><strong>① GATHER</strong> — the context-engineering zone. A curator fills a finite context window from: the
@@ -72,25 +113,19 @@
             Fail → retry: re-run gather → act → verify with updated context.</p>
         </div>
       </details>
-
-      <div class="callout key">
-        <span class="label">Why this matters — it tells you where a bug lives</span>
-        Bad single answer → fix the <strong>prompt</strong>. Model forgetting or drowning in irrelevant tokens → fix
-        <strong>context</strong> (the curator). Agent does the right thing once but can&rsquo;t recover, loop, or self-check →
-        fix the <strong>harness</strong> (verify + retry). One session nails it but the work doesn&rsquo;t persist, recur, or
-        feed itself over time → fix the <strong>loop</strong> (a heartbeat + on-disk progress + a trusted &ldquo;done&rdquo; gate).
-        Maps straight onto Claude Code: CLAUDE.md + session = memory,
-        the curated window = gather, tool/subagent calls = act, tests/judges = verify, <code>/loop</code> · <code>/goal</code> · routines = the timer.
-      </div>
     </section>
 
-    <!-- LOOP -->
-    <section id="loop">
-      <h2>④ Loop engineering — the harness on a timer</h2>
-      <p>A harness runs <em>once</em>: something starts it, it works the Gather → Act → Verify cycle, it stops &mdash; and
-        you start the next one. <strong>Loop engineering</strong> is the floor above. You stop prompting turn-by-turn and
-        instead design a system that <em>finds the work, hands it out, checks it, records what&rsquo;s done, and decides the
-        next thing</em> &mdash; then lets it poke the agent instead of you. It&rsquo;s the same harness, now self-feeding.</p>
+    <!-- ④ LOOP -->
+    <section id="loop" class="level lv-loop">
+      <span class="lv-tag">④ the timer</span>
+      <h2>Loop engineering</h2>
+      <p class="lv-lede">The harness <strong>put on a timer that feeds itself</strong>: it finds work, hands it out, checks it, records progress, decides the next thing &mdash; then pokes the agent instead of you.</p>
+      <div class="lv-facts">
+        <div class="fact"><span class="k">The unit</span><span class="v"><strong>Many sessions over time</strong> — the harness on a heartbeat that restarts it.</span></div>
+        <div class="fact"><span class="k">You engineer</span><span class="v">the heartbeat, a trusted &ldquo;done&rdquo; gate, and on-disk memory so progress survives between runs.</span></div>
+        <div class="fact"><span class="k">Fix here when</span><span class="v">one session nails it but the work doesn&rsquo;t persist, recur, or restart without you in the chair.</span></div>
+        <div class="fact"><span class="k">In Claude Code</span><span class="v"><code>/loop</code> · <code>/goal</code> · routines (the heartbeat) + the repo as system of record.</span></div>
+      </div>
 
       <div class="callout key">
         <span class="label">The shift — the leverage point moved</span>
@@ -99,7 +134,7 @@
         same five Claude Code blocks ship in Codex too, so the shape outlives any one tool.
       </div>
 
-      <details class="acc" open>
+      <details class="acc">
         <summary>What a loop is built from — a heartbeat, five blocks, and a memory</summary>
         <div class="acc-body">
           <p><strong>The heartbeat</strong> — what restarts the cycle without you. Three flavours:
@@ -303,8 +338,9 @@ return synthesize(verified);             // → this field guide</pre>
 </main>
 
 <footer class="wrap">
-  <p>AI Knowledge Center · Concepts · reviewed 2026-06-09 · <a href="index.html">home</a> ·
-     prompt/context/harness model migrated from the Tide visual docs; loop layer added 2026-06-09.</p>
+  <p>AI Knowledge Center · Concepts · reviewed 2026-06-10 · <a href="index.html">home</a> ·
+     prompt/context/harness model migrated from the Tide visual docs; loop layer added 2026-06-09;
+     all four levels unified into one template 2026-06-10.</p>
 </footer>
 <script src="assets/app.js"></script>
 </body>
