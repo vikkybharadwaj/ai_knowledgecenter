@@ -68,6 +68,7 @@ The named features that tune one zone of the loop.
 - [Model Context Protocol (MCP)](../notes/model-context-protocol.md) — how the model *reaches* external tools/data.
 - [Claude Code — Multi-Agent Development](../notes/claude-code-multi-agent-development.md) — worktrees / agent teams / subagents.
 - [Dynamic Workflows & the Ultraplan loop](../notes/dynamic-workflows-and-ultraplan.md) — scripting fan-out across many agents.
+- [Workflow runs are journaled — resume replays finished agents from cache](../notes/workflow-journal-resume.md) — `resumeFromRunId` makes orchestration *durable*, not just parallel; the decisive reason to script destructive multi-surface work (lived: Tide PR #180 survived a mid-run spend-limit kill at zero structural cost).
 - [One shared context vs. many isolated contexts](../notes/execution-context-isolation.md) — what actually forks: *modes* stay in one window, *agents* fork fresh ones (+ the six permission modes).
 - [worktree.baseRef — fresh vs head](../notes/worktree-base-ref-fresh-vs-head.md) — the git dial under worktree parallelism: branch agents from clean published code (`fresh`) or your live WIP HEAD (`head`).
 - [Claude Code Routines — unattended cloud automation](../notes/claude-code-routines.md) — the saved config that runs *itself* on Anthropic's cloud on a schedule / GitHub event / API call (the "operate it for me" primitive).
