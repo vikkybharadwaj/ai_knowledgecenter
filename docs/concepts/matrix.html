@@ -266,39 +266,14 @@
       </div>
     </section>
 
-    <!-- KEEP RUNNING / SCHEDULE -->
+    <!-- KEEP RUNNING / SCHEDULE — table moved to Decide (choosing among these is a decision, not a comparison) -->
     <section id="keep-running">
-      <h2>&ldquo;Make Claude keep working&rdquo; — two axes</h2>
-      <p><code>/loop</code>, <code>/goal</code>, hooks, routines and cron all blur together because they all
-        &ldquo;keep Claude working.&rdquo; They separate cleanly on two questions: <strong>where</strong> it runs (in an
-        <em>open session</em> you&rsquo;re driving, or <em>independent</em> of any session) and <strong>what starts the next
-        unit of work</strong> (a <em>clock</em>, a <em>condition</em>, or an <em>event</em>).</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th></th><th>Clock (interval)</th><th>Condition (a check passes)</th><th>Event (something happens)</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><strong>In an open session</strong></td>
-              <td><a href="primitives/loop.html"><strong>/loop</strong></a> — re-run a prompt every N min</td>
-              <td><a href="primitives/goal.html"><strong>/goal</strong></a> — until a small model confirms done; or a custom Stop <a href="primitives/hooks.html">hook</a></td>
-              <td><a href="primitives/hooks.html"><strong>Hooks</strong></a> (PreToolUse, Stop…); Channels (CI pushes a failure in)</td>
-            </tr>
-            <tr>
-              <td><strong>Independent of session</strong></td>
-              <td><a href="primitives/routines.html"><strong>Routines</strong></a> (schedule) · Desktop scheduled tasks · OS cron · GitHub Actions</td>
-              <td class="meta">—</td>
-              <td><a href="primitives/routines.html"><strong>Routines</strong></a> (GitHub event / API <code>/fire</code>)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="callout key">
-        <span class="label">The discriminators</span>
-        <strong>/loop vs /goal</strong> = clock vs condition. <strong>/loop vs OS cron</strong> = cron runs a fixed script;
-        <code>/loop</code> runs a <em>model that decides</em> (and is session-scoped, 7-day expiry). <strong>/loop vs
-        routines</strong> = local + session open vs cloud + unattended. <strong>/goal vs a Stop hook</strong> = a session
-        shortcut vs a settings-level handler you script.
-      </div>
+      <h2>&ldquo;Make Claude keep working&rdquo; — see Decide</h2>
+      <p>Choosing among <code>/loop</code>, <code>/goal</code>, hooks, routines and cron is a <em>decision</em>, not a
+        dimensional comparison &mdash; so the two-axis table that separates them (<strong>where</strong> it runs: open session
+        vs independent &times; <strong>what starts the next unit</strong>: clock / condition / event) lives on the
+        <a href="decision.html#keep-running">Decide page &rarr; Keep running</a>. <code>/loop</code> and <code>/goal</code>
+        aren&rsquo;t rows in the matrix above; <a href="primitives/routines.html">Routines</a> is.</p>
     </section>
 
     <!-- BREADTH / DEPTH -->
