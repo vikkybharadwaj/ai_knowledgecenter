@@ -98,6 +98,38 @@
     <h2 class="cl-date">June 9, 2026</h2>
     <ul class="cl-items">
     <li class="cl-item">
+      <p class="cl-head"><span class="cl-tag cl-tag-docs">Docs</span><span class="cl-text">De-dup Decide vs Comparison — split by intent (choose vs compare)</span></p>
+      <p class="cl-desc">The two pages cover the same ten primitives but on different axes: Decide is symptom-first (need → tool), Comparison is tool-first (tool → properties). Keep them separate, remove the genuine overlaps.</p>
+      <details class="cl-files">
+        <summary>What changed · 2 files</summary>
+        <ul class="cl-flist">
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/decision.html" target="_blank" rel="noopener">docs/concepts/decision.html</a><a class="cl-fdiff" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/be64866671057023e28e42f54122b363e63ea5a8#diff-c2c9b1efe5a39998e5a0fedfce6cac95c4784eeeea142ab23dcf20e769059ca2" target="_blank" rel="noopener">diff</a>
+        <ul class="cl-changes">
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/decision.html" target="_blank" rel="noopener">Keep running — two axes</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/decision.html#pairs" target="_blank" rel="noopener">/loop vs /goal vs Routines vs cron vs GitHub Actions</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/decision.html#pairs" target="_blank" rel="noopener">Separate them on two axes : where it runs (in your open session vs independent of it) and</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/decision.html#pairs" target="_blank" rel="noopener">what starts the next unit of work (a clock, a condition, or an event).</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/decision.html#pairs" target="_blank" rel="noopener">/loop = in-session, clock -driven (“every N minutes”); local, needs the session</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/decision.html#pairs" target="_blank" rel="noopener">open, 7-day expiry. /goal = in-session, condition -driven (“keep going until tests</a></li>
+          <li class="cl-chg-more">+56 more changed lines</li>
+        </ul>
+        </li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/matrix.html" target="_blank" rel="noopener">docs/concepts/matrix.html</a><a class="cl-fdiff" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/be64866671057023e28e42f54122b363e63ea5a8#diff-5e0b38cb20e5cd117439f7411cde01cfa7b470e951b6cde88260f4d1f28cc871" target="_blank" rel="noopener">diff</a>
+        <ul class="cl-changes">
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/matrix.html#keep-running" target="_blank" rel="noopener">“Make Claude keep working” — two axes</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/matrix.html#keep-running" target="_blank" rel="noopener">/loop , /goal , hooks, routines and cron all blur together because they all</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/matrix.html#keep-running" target="_blank" rel="noopener">“keep Claude working.” They separate cleanly on two questions: where it runs (in an</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/matrix.html#keep-running" target="_blank" rel="noopener">open session you’re driving, or independent of any session) and what starts the next</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/matrix.html#keep-running" target="_blank" rel="noopener">unit of work (a clock , a condition , or an event ).</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/matrix.html#keep-running" target="_blank" rel="noopener">Clock (interval) Condition (a check passes) Event (something happens)</a></li>
+          <li class="cl-chg-more">+33 more changed lines</li>
+        </ul>
+        </li>
+        </ul>
+      </details>
+      <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/63" target="_blank" rel="noopener">PR #63 →</a></div>
+    </li>
+    <li class="cl-item">
       <p class="cl-head"><span class="cl-tag cl-tag-docs">Docs</span><span class="cl-text">Cross-link primitives page to terminology fixes</span></p>
       <p class="cl-desc">Add a one-line signpost in the primitives.html hero pointing to the matrix&#x27;s Terminology fixes section (matrix.html#terms). Closes the discoverability gap for readers confused by primitive names without moving the disambiguation content off the comparison page where it belongs.</p>
       <details class="cl-files">
