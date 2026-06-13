@@ -11,6 +11,19 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-06-13  **Closed the harness-vs-context migration — the Tide source page is now deleted, so AKC is the SOLE home.**
+            Executed the tide-side checklist left open in the 2026-06-02 entry below: in the **tide** repo, deleted
+            `docs/harness-vs-context-engineering.html`, removed its card + orphaned CSS from both landing pages
+            (`index.html`, `visual-docs-hub.html`), and let `sync-portfolio.sh`'s orphan pass prune the live mirror
+            at `vikkybharadwaj.github.io/projects/tide/`. The knowledge already lived here (and better, vendor-neutral):
+            [[harness-vs-context-engineering]] (canonical note) + [[anatomy-of-an-agent-harness]] (the 12-component
+            harness anatomy) + the interactive `docs/concepts/mental-model.html#harness` render. Nothing ported this
+            round — the 2026-06-02 distillation WAS the migration; the verbatim Tide-specific "15 jobs mapped onto Tide"
+            table was application detail that stays in Tide's own LEARNINGS, not reusable AKC material. Lesson: a
+            migration isn't done when the new home exists — it's done when the old copy is deleted and every pointer to
+            it is gone; carry the removal checklist in LEARNINGS so the second half doesn't get orphaned for weeks.
+            [→ knowledge/notes/harness-vs-context-engineering.md]
+
 2026-06-09  **Changelog deep-links must validate anchors against the LIVE page, not the historical file.**
             The change log now links each touched `docs/*.html` to its live GitHub Pages URL and lists the exact
             visible text added/removed (HTML tags stripped), deep-linked to the nearest `id=` section. Gotcha: the
