@@ -17,10 +17,11 @@ interactive: ../../docs/concepts/mental-model.html#harness
 # Harness vs Context vs Prompt Engineering
 
 > **Canonical home.** This content previously lived as a visual page in the Tide repo
-> (`/tide/harness-vs-context-engineering.html`). It now lives here in the AI Knowledge
-> Center, and is rendered interactively on the
+> (`/tide/harness-vs-context-engineering.html`). That page was **removed on 2026-06-13**,
+> so this is now the sole home — rendered interactively on the
 > [mental-model page](../../docs/concepts/mental-model.html#harness) of the
-> Claude Code Architecture site. See the Tide-removal checklist in `LEARNINGS.md`.
+> Claude Code Architecture site. The deeper harness breakdown lives in
+> [The Anatomy of an Agent Harness](anatomy-of-an-agent-harness.md).
 
 ## TL;DR
 Three nested levels of control over an LLM, each a bigger unit of work than the last.
