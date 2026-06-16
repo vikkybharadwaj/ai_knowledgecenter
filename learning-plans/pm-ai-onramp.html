@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Your Hands Dirty with AI — A Product Leader's On-Ramp</title>
+<style>
+  :root{
+    --ink:#1a1a2e; --muted:#5b6172; --line:#e6e8ef; --bg:#ffffff; --soft:#f6f7fb;
+    --accent:#5a4fcf; --accent-soft:#eceaff; --accent2:#0e9f8f; --warn:#b6791f;
+    --maxw:880px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:54px 28px 90px;}
+  h1{font-size:30px; line-height:1.2; letter-spacing:-.02em; margin:0 0 10px;}
+  .sub{color:var(--muted); font-size:15.5px; margin:0 0 26px;}
+  h2{font-size:13px; text-transform:uppercase; letter-spacing:.12em; color:var(--accent);
+     margin:46px 0 6px; font-weight:700;}
+  h3{font-size:21px; letter-spacing:-.01em; margin:6px 0 14px;}
+  h4{font-size:16px; margin:26px 0 8px;}
+  p{margin:0 0 14px;}
+  a{color:var(--accent); text-decoration:none; border-bottom:1px solid var(--accent-soft);}
+  a:hover{border-bottom-color:var(--accent);}
+  .lede{background:var(--soft); border:1px solid var(--line); border-left:4px solid var(--accent);
+        border-radius:10px; padding:16px 20px; margin:0 0 30px; font-size:15px;}
+  .arc{background:linear-gradient(135deg,#5a4fcf,#7d5fe0); color:#fff; border-radius:16px;
+       padding:26px 28px; margin:18px 0 26px; box-shadow:0 12px 30px -14px rgba(90,79,207,.6);}
+  .arc .big{font-size:26px; font-weight:800; letter-spacing:-.01em; margin:0 0 8px;}
+  .arc p{margin:0; color:#efeaff; font-size:15px;}
+  table{width:100%; border-collapse:collapse; margin:14px 0 22px; font-size:14.5px;}
+  th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  th{font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:700;}
+  tr:hover td{background:var(--soft);}
+  td strong, th strong{color:var(--ink);}
+  .nest{background:#0f1226; color:#c9d1ff; border-radius:12px; padding:18px 20px; margin:8px 0 24px;
+        font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; overflow-x:auto; white-space:pre;}
+  .callout{background:var(--accent-soft); border-radius:10px; padding:14px 18px; margin:18px 0; font-size:15px;}
+  .callout.teal{background:#e3f6f3;}
+  .callout.warn{background:#fbf3e2;}
+  .wk{display:inline-block; min-width:30px; height:30px; line-height:30px; text-align:center;
+      background:var(--accent); color:#fff; border-radius:8px; font-weight:700; font-size:13px;}
+  .pill{display:inline-block; background:var(--soft); border:1px solid var(--line); border-radius:999px;
+        padding:2px 10px; font-size:12.5px; color:var(--muted); margin:1px 2px;}
+  hr{border:0; border-top:1px solid var(--line); margin:40px 0;}
+  .divider-strong{border-top:2px solid var(--ink); opacity:.12; margin:54px 0 34px;}
+  .apph{color:var(--muted); font-size:13px; letter-spacing:.1em; text-transform:uppercase; font-weight:700;}
+  .foot{color:var(--muted); font-size:13px; font-style:italic; margin-top:40px;}
+  code{background:var(--soft); border:1px solid var(--line); border-radius:5px; padding:1px 5px; font-size:13px;}
+  @media print{ .arc{box-shadow:none;} body{font-size:12px;} a{color:var(--ink);} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Getting Your Hands Dirty with AI<br>A Product Leader's On-Ramp</h1>
+  <p class="sub">A structured, no-overwhelm way into building with AI. Claude ecosystem first — one stack, one mental model, no thrash. ~2–3 hrs/week for 6 weeks. Everything hands-on runs on one <strong>Claude Pro</strong> plan (~$20/mo) — no terminal, no code.</p>
+
+  <div class="lede">
+    <strong>How to use this doc.</strong> Pages 1–2 are the whole map — read them once, then do <strong>one row a week</strong>. The appendices are a reference library to dip into, not homework. You already write good prompts; this is about everything that wraps <em>around</em> the prompt — which is where the actual leverage (and the actual PM craft) now lives.
+  </div>
+
+  <!-- PAGE 1 -->
+  <h2>Page 1</h2>
+  <h3>The one idea that organizes everything</h3>
+
+  <div class="arc">
+    <div class="big">Prompt → Context → Harness → Loop</div>
+    <p>Each era didn't replace the last — it <em>wrapped</em> it. The skill that creates value kept moving outward, from "write a clever ask" to "design a system that runs itself."</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Era</th><th>What you control</th><th>Plain-English version</th><th>The PM analogy from your world</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Prompt</strong></td><td>One ask, one answer</td><td>How you phrase a single request</td><td>A single, well-written ticket or brief</td></tr>
+      <tr><td><strong>2. Context</strong></td><td>What the model <em>sees</em> this turn</td><td>Instructions, files, history in its working memory — incl. <strong>RAG</strong> (pulling in the right docs automatically)</td><td>The data, specs & guardrails you put in front of a team before they start</td></tr>
+      <tr><td><strong>3. Harness</strong></td><td>The <strong>gather → act → verify</strong> loop</td><td>The model in a cycle: uses tools, checks its own work, retries — not one reply</td><td>An experimentation system: hypothesis → run → <strong>measure</strong> → iterate. The <em>measure</em> step is the point.</td></tr>
+      <tr><td><strong>4. Loop</strong></td><td>The harness running <strong>itself</strong></td><td>The system kicks itself off, spawns helpers, works unattended</td><td>A standing program with its own cadence — a growth engine that runs without you in every meeting</td></tr>
+    </tbody>
+  </table>
+
+  <h4>And they nest.</h4>
+  <div class="nest">┌─ LOOP — runs itself, on a cadence, spawns helpers ───────────┐
+│  ┌─ HARNESS — gather → act → verify, tools + memory ──────┐ │
+│  │   ┌─ CONTEXT — what's in the window (+ RAG) ────────┐ │ │
+│  │   │        ┌─ PROMPT — the single ask ──────────┐   │ │ │
+│  │   │        └─────────────────────────────────────┘   │ │ │
+│  │   └──────────────────────────────────────────────────┘ │ │
+│  └──────────────────────────────────────────────────────┘ │
+└────────────────────────────────────────────────────────────┘</div>
+
+  <h4>The instinct this gives you: <em>"Which layer is this problem on?"</em></h4>
+  <p>The single most useful reflex in an AI roadmap review. When something's wrong, the <em>symptom</em> tells you which layer to fix — and stops you from "just rewording the prompt" forever:</p>
+  <table>
+    <thead><tr><th>The symptom</th><th>Layer that's actually broken</th><th>The fix</th></tr></thead>
+    <tbody>
+      <tr><td>"Bad answer, but a clearer ask fixes it"</td><td><strong>Prompt</strong></td><td>Reword. (You already do this.)</td></tr>
+      <tr><td>"It forgot what I told it / missed the relevant doc / drowning in irrelevant text"</td><td><strong>Context</strong></td><td>Curate the window — Projects, instructions, RAG</td></tr>
+      <tr><td>"Plausible but <em>wrong</em>, and it didn't catch it"</td><td><strong>Harness</strong></td><td>Add verification, tools, a check step</td></tr>
+      <tr><td>"It works, but I babysit every step"</td><td><strong>Loop</strong></td><td>Design the system that runs the steps</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><strong>The big shift for a PM:</strong> "AI quality" is rarely a model problem. It's almost always a <strong>context</strong> or <strong>harness</strong> problem — i.e., a <em>product design</em> problem you're equipped to own. That's the opening.</div>
+
+  <!-- PAGE 2 -->
+  <hr>
+  <h2>Page 2</h2>
+  <h3>The 6-week path</h3>
+  <p>One concept a week: <strong>read the why → do the 20–30 min exercise → optionally follow one link deeper.</strong> Surfaces graduate as the concepts do — you start in the chat box and end up directing a system. All three surfaces come with one Claude Pro plan; none need a terminal.</p>
+  <div class="callout warn"><strong>Before Week 1 (5 min):</strong> Get <strong>Claude Pro</strong> and install the <a href="https://claude.com/download">Claude desktop app</a>. That one subscription unlocks Claude.ai (web), <strong>Cowork</strong> (desktop agent), and <strong>Claude Code</strong> (desktop/web).</div>
+
+  <table>
+    <thead><tr><th>Wk</th><th>Concept · why you need it</th><th>20–30 min exercise</th><th>Surface · go deeper</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="wk">1</span></td>
+        <td><strong>The arc + a prompt tune-up.</strong> Internalize the map; confirm prompting is a <em>solved</em> base to build past.</td>
+        <td>Take a real task. Push one prompt to a genuinely great output — then deliberately find its ceiling (it doesn't know your data, can't act, won't check itself). That ceiling is the rest of this plan.</td>
+        <td>Claude.ai<br><span class="pill"><a href="https://anthropic.skilljar.com/ai-fluency-framework-foundations">AI Fluency</a></span><span class="pill"><a href="https://anthropic.skilljar.com/claude-101">Claude 101</a></span></td>
+      </tr>
+      <tr>
+        <td><span class="wk">2</span></td>
+        <td><strong>Context engineering + RAG.</strong> Where ~80% of "AI quality" actually lives — and it's product work, not ML.</td>
+        <td>Create a <strong>Project</strong>: write a system instruction (role/tone/rules) + upload 2–3 of your own docs (spec, PRD, research). Ask questions spanning the docs. <em>That cross-doc retrieval is RAG, lite.</em></td>
+        <td>Claude.ai Projects<br><span class="pill"><a href="https://claude.ai/projects">Projects</a></span><span class="pill"><a href="https://github.com/anthropics/prompt-eng-interactive-tutorial">Prompt tutorial</a></span></td>
+      </tr>
+      <tr>
+        <td><span class="wk">3</span></td>
+        <td><strong>Context → Harness: what makes it an <em>agent</em>.</strong> The leap from "answers" to "does the work + checks itself" — gather→act→<strong>verify</strong>.</td>
+        <td>In <strong>Cowork</strong>, point Claude at a folder and give it a multi-step job ("read these 3 files, find the trend, draft a 1-pager"). Watch it <strong>plan, act, and hand back a finished deliverable</strong>.</td>
+        <td>Cowork (desktop)<br><span class="pill"><a href="https://www.anthropic.com/engineering/building-effective-agents">Building Effective Agents</a></span><span class="pill"><a href="https://anthropic.skilljar.com/introduction-to-claude-cowork">Intro to Cowork</a></span></td>
+      </tr>
+      <tr>
+        <td><span class="wk">4</span></td>
+        <td><strong>The harness toolbox: primitives.</strong> The vocabulary to <em>spec</em> AI features — each primitive answers one control question.</td>
+        <td>In Cowork/Claude, connect a tool (a <strong>connector / MCP</strong>) or try an <strong>Agent Skill</strong>. Notice you gave the agent a new <em>capability</em>, not a new sentence.</td>
+        <td>Cowork / Claude<br><span class="pill"><a href="https://github.com/anthropics/skills">Agent Skills</a></span><span class="pill"><a href="https://anthropic.skilljar.com/claude-code-in-action">Claude Code in Action</a></span></td>
+      </tr>
+      <tr>
+        <td><span class="wk">5</span></td>
+        <td><strong>The Loop: work that runs itself.</strong> Where leverage becomes "per system," not "per task" — the executive view of AI.</td>
+        <td>In <strong>Claude Code</strong> (desktop/web — no terminal), give it a small multi-step goal on a folder and watch it loop. Optional: set a <strong>Routine</strong> to run on a schedule.</td>
+        <td>Claude Code (desktop/web)<br><span class="pill"><a href="https://claude.com/blog/introducing-dynamic-workflows-in-claude-code">Dynamic workflows</a></span><span class="pill"><a href="https://code.claude.com/docs/en/scheduled-tasks">Scheduled tasks</a></span></td>
+      </tr>
+      <tr>
+        <td><span class="wk">6</span></td>
+        <td><strong>Capstone: build one real thing.</strong> Cement it by shipping — and by naming the layer behind each design choice.</td>
+        <td>Pick a recurring task you own. Build it end-to-end (Project → Cowork → maybe a Routine). Annotate: <em>where's my context boundary? where should I add a verify step? what could run unattended?</em></td>
+        <td>your pick</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout teal"><strong>The whole arc in one breath:</strong> Week 1 you <em>ask</em>. Week 2 you <em>feed it the right context</em>. Week 3 it <em>does the work and checks itself</em>. Week 5 it <em>runs itself</em>. Week 6 you <em>direct the system</em> — which is the actual job of a PM in the AI era.</div>
+
+  <div class="divider-strong"></div>
+  <p class="apph">Appendices — reference, dip in as needed</p>
+
+  <h2>Appendix A</h2>
+  <h3>The evolution, expanded (the connect-the-dots)</h3>
+  <p>The four eras as a story of <strong>where the leverage moved</strong>:</p>
+  <p><strong>Prompt engineering</strong> — <em>Leverage = phrasing.</em> You optimize a single turn. Real, but capped: the model only knows what's in front of it and gets one shot.</p>
+  <p><strong>Context engineering</strong> — <em>Leverage = curation.</em> The model is only as good as its window, so you manage it: instructions, examples, and <strong>retrieval (RAG)</strong> to pull in the right knowledge at the right moment. Most "make the AI better" work is here.</p>
+  <p><strong>Harness engineering</strong> — <em>Leverage = the loop around the model.</em> One reply isn't enough for real work, so you wrap the model in a cycle — <strong>gather → act → verify → retry</strong> — plus memory. Where reliability is won or lost. Key truth: <em>the model is systematically overconfident, so "done" is judged by the harness, not the model</em> (see Appendix C).</p>
+  <p><strong>Loop engineering</strong> — <em>Leverage = the system.</em> You stop writing turns and design the thing that writes them: a harness that triggers itself, spawns sub-agents, runs unattended. A <strong>loop is just cron + a decision-maker</strong> — a scheduler running a <em>model that decides what to do next</em>, not a fixed script.</p>
+  <div class="callout"><strong>Why this matters to you:</strong> your edge isn't model internals — it's knowing <em>which layer a problem lives on</em> and designing the product around it.</div>
+
+  <h2>Appendix B</h2>
+  <h3>The Spine (the 6-layer "lens stack")</h3>
+  <p>The same <code>gather → act → verify</code> idea, zoomed out one level at a time. Not a skill ladder — a set of lenses; pick the layer your question lives on.</p>
+  <table>
+    <thead><tr><th>Layer</th><th>What lives here</th><th>One line</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Products &amp; consulting</strong></td><td>Real builds, client scenarios</td><td>What you ship</td></tr>
+      <tr><td><strong>Agent patterns</strong></td><td>Chaining, routing, orchestrator–worker</td><td>How you compose</td></tr>
+      <tr><td><strong>Claude Code primitives</strong></td><td>Skills, hooks, MCP, subagents</td><td>The toolbox</td></tr>
+      <tr><td><strong>Agent SDK</strong></td><td>Build your own agent on the loop</td><td>The framework</td></tr>
+      <tr><td><strong>Claude API</strong></td><td>Tool use, caching, batching</td><td>The engine</td></tr>
+      <tr><td><strong>Foundations</strong></td><td>prompt ⊂ context ⊂ harness</td><td>The physics</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Appendix C</h2>
+  <h3>Mental models (your working vocabulary)</h3>
+  <table>
+    <thead><tr><th>Model</th><th>The idea</th><th>When to reach for it</th></tr></thead>
+    <tbody>
+      <tr><td><strong>prompt ⊂ context ⊂ harness</strong></td><td>Three nested levels of control</td><td>Deciding <em>where</em> a problem lives</td></tr>
+      <tr><td><strong>Harness = a debugging ladder</strong></td><td>Climb out a level when the current one can't fix it</td><td>When rewording the prompt keeps failing</td></tr>
+      <tr><td><strong>Anatomy of a harness (6 organs)</strong></td><td>Loop · context · tools · memory · verification · delegation</td><td>Spec'ing or auditing an agent feature</td></tr>
+      <tr><td><strong>Containment vs. discrimination</strong></td><td>Nest to <em>understand</em>; grid to <em>decide between</em></td><td>When an "is X a type of Y?" debate stalls</td></tr>
+      <tr><td><strong>Loop = cron + a decision-maker</strong></td><td>Cron runs a fixed script; a loop runs a model that <em>decides</em></td><td>Explaining what "agentic" means</td></tr>
+      <tr><td><strong>Completion is externalized</strong></td><td>Agents are overconfident; the <em>harness</em> owns "done"</td><td>Designing QA/acceptance for any AI feature</td></tr>
+      <tr><td><strong>Designing loops, not prompts</strong></td><td>Leverage moved from "write the turn" to "design the system"</td><td>Thinking about scale &amp; automation</td></tr>
+      <tr><td><strong>Automation = where × trigger</strong></td><td><em>Where</em> it runs × <em>what</em> starts it (clock/condition/event)</td><td>Choosing the right automation primitive</td></tr>
+      <tr><td><strong>Repo as system-of-record</strong></td><td>Could a fresh agent, using only the written record, do the job?</td><td>Judging whether your context/docs are good enough</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Appendix D</h2>
+  <h3>Primitives field guide (each answers <em>one</em> control question)</h3>
+  <table>
+    <thead><tr><th>Primitive</th><th>The question it answers</th><th>Plain version</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Tool use</strong></td><td>"How does it <em>do</em> things, not just talk?"</td><td>Model calls a function you defined; your code runs; result returns</td></tr>
+      <tr><td><strong>MCP (connectors)</strong></td><td>"How do I plug in external tools/data cleanly?"</td><td>An open standard — the "USB-C" for agents (adopted across vendors)</td></tr>
+      <tr><td><strong>Skills</strong></td><td>"How do I teach a repeatable procedure once?"</td><td>A folder of instructions the agent loads on demand</td></tr>
+      <tr><td><strong>Subagents</strong></td><td>"How do I get a second set of eyes / parallel work?"</td><td>A delegated worker in its own context (maker/checker)</td></tr>
+      <tr><td><strong>Hooks</strong></td><td>"How do I enforce a rule it <em>can't</em> skip?"</td><td>Deterministic handlers fired at lifecycle events</td></tr>
+      <tr><td><strong>Routines</strong></td><td>"How do I make it run unattended on a schedule?"</td><td>Saved config that runs on the cloud, laptop closed</td></tr>
+      <tr><td><strong>Dynamic workflows</strong></td><td>"How do I orchestrate dozens of agents on a big task?"</td><td>A script that fans out many subagents</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Appendix E</h2>
+  <h3>Cross-vendor cheat sheet (orientation only — titles, no deep dives)</h3>
+  <p>So you can map a Claude concept onto its OpenAI/Gemini cousin in a meeting. <strong>Stay on Claude while learning</strong> — this is just so the words aren't foreign elsewhere.</p>
+  <table>
+    <thead><tr><th>Concept</th><th>Claude</th><th>OpenAI</th><th>Google Gemini</th></tr></thead>
+    <tbody>
+      <tr><td>The chat app</td><td>Claude.ai</td><td>ChatGPT</td><td>Gemini app</td></tr>
+      <tr><td>Saved workspace + knowledge</td><td><strong>Projects</strong></td><td>Projects / Custom GPTs</td><td><strong>Gems</strong></td></tr>
+      <tr><td>Retrieval over your docs (RAG)</td><td>Project knowledge</td><td>Custom GPT knowledge</td><td>Grounding / NotebookLM</td></tr>
+      <tr><td>Inline editable output</td><td>Artifacts</td><td>Canvas</td><td>Canvas</td></tr>
+      <tr><td>Tool/data connection standard</td><td><strong>MCP</strong></td><td>(adopted MCP)</td><td>(adopted MCP)</td></tr>
+      <tr><td>Desktop agent that does work</td><td><strong>Cowork</strong></td><td>Agent / Operator</td><td>Project Mariner</td></tr>
+      <tr><td>Coding / agentic dev tool</td><td><strong>Claude Code</strong></td><td>Codex CLI</td><td>Gemini CLI</td></tr>
+      <tr><td>Reusable skill packages</td><td><strong>Agent Skills</strong></td><td>(adopting open standard)</td><td>(adopting open standard)</td></tr>
+      <tr><td>Scheduled, unattended runs</td><td><strong>Routines</strong></td><td>Tasks</td><td>Scheduled actions</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Appendix F</h2>
+  <h3>Decision guide ("I want X → reach for Y")</h3>
+  <table>
+    <tbody>
+      <tr><td>"A better single answer."</td><td>→ <strong>Prompt</strong> it more clearly.</td></tr>
+      <tr><td>"It to know my docs/specs."</td><td>→ <strong>Context</strong>: a Project + uploads (RAG).</td></tr>
+      <tr><td>"It to do a multi-step job and hand me a deliverable."</td><td>→ <strong>Harness</strong>: Cowork.</td></tr>
+      <tr><td>"A new capability (a tool, a data source)."</td><td>→ A <strong>connector / MCP</strong> or a <strong>Skill</strong>.</td></tr>
+      <tr><td>"A second opinion or parallel work."</td><td>→ <strong>Subagents</strong>.</td></tr>
+      <tr><td>"A rule it can never skip."</td><td>→ A <strong>hook</strong>.</td></tr>
+      <tr><td>"It to run on its own, on a schedule."</td><td>→ A <strong>Routine</strong> / the <strong>Loop</strong>.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Appendix G</h2>
+  <h3>Curated official resources (start here, go in order)</h3>
+  <h4>Start here — Anthropic Academy (free, on Skilljar): <a href="https://anthropic.skilljar.com/">anthropic.skilljar.com</a></h4>
+  <ul>
+    <li><a href="https://anthropic.skilljar.com/claude-101">Claude 101</a> — the everyday foundation</li>
+    <li><a href="https://anthropic.skilljar.com/ai-fluency-framework-foundations">AI Fluency: Framework &amp; Foundations</a> — how to <em>think</em> with AI</li>
+    <li><a href="https://anthropic.skilljar.com/introduction-to-claude-cowork">Introduction to Claude Cowork</a> — the desktop agent (Week 3)</li>
+    <li><a href="https://anthropic.skilljar.com/claude-code-in-action">Claude Code in Action</a> — the loop/primitives (Week 5)</li>
+    <li><a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api">Building with the Claude API</a> — optional, how products are built</li>
+  </ul>
+  <h4>Context &amp; prompting</h4>
+  <ul>
+    <li><a href="https://github.com/anthropics/prompt-eng-interactive-tutorial">Interactive Prompt Engineering Tutorial</a> — hands-on, with a playground</li>
+    <li><a href="https://claude.ai/projects">Claude Projects</a> — the context workspace</li>
+  </ul>
+  <h4>Agents &amp; the harness</h4>
+  <ul>
+    <li><a href="https://www.anthropic.com/engineering/building-effective-agents">Building Effective Agents</a> — <em>the</em> essay; read it twice</li>
+    <li><a href="https://github.com/anthropics/skills">Agent Skills (official repo)</a> — what a reusable skill looks like</li>
+    <li><a href="https://claude.com/product/cowork">Cowork</a> · <a href="https://www.anthropic.com/product/claude-cowork">overview</a></li>
+  </ul>
+  <h4>The loop &amp; Claude Code</h4>
+  <ul>
+    <li><a href="https://code.claude.com/docs">Claude Code docs</a> · <a href="https://code.claude.com/docs/en/desktop">desktop app</a> · <a href="https://code.claude.com/docs/en/scheduled-tasks">scheduled tasks/routines</a></li>
+    <li><a href="https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan">Use Claude Code with Pro/Max</a> — one Pro plan covers it</li>
+    <li><a href="https://claude.com/blog/introducing-dynamic-workflows-in-claude-code">Dynamic workflows</a> — orchestration, when ready</li>
+    <li><a href="https://walkinglabs.github.io/learn-harness-engineering/en/">Learn Harness Engineering</a> — community deep dive</li>
+  </ul>
+
+  <h2>Appendix H</h2>
+  <h3>Glossary (one line each)</h3>
+  <table>
+    <tbody>
+      <tr><td><strong>Prompt</strong></td><td>A single instruction to the model.</td></tr>
+      <tr><td><strong>Context window</strong></td><td>Everything the model can "see" in one turn.</td></tr>
+      <tr><td><strong>Context engineering</strong></td><td>Deliberately managing what's in that window.</td></tr>
+      <tr><td><strong>RAG</strong></td><td>Automatically pulling relevant docs into context before answering.</td></tr>
+      <tr><td><strong>Tool use / function calling</strong></td><td>The model calling code you defined to <em>do</em> something.</td></tr>
+      <tr><td><strong>Agent</strong></td><td>A model running in a gather→act→verify loop with tools.</td></tr>
+      <tr><td><strong>Harness</strong></td><td>The loop + tools + memory + verification around the model.</td></tr>
+      <tr><td><strong>Verification</strong></td><td>The step where work is checked; the harness owns "done."</td></tr>
+      <tr><td><strong>MCP</strong></td><td>An open standard for connecting tools/data to agents.</td></tr>
+      <tr><td><strong>Skill</strong></td><td>A reusable, loadable package of instructions for a repeatable task.</td></tr>
+      <tr><td><strong>Subagent</strong></td><td>A delegated agent working in its own separate context.</td></tr>
+      <tr><td><strong>Hook</strong></td><td>A deterministic rule the agent is forced to obey at set moments.</td></tr>
+      <tr><td><strong>Loop / loop engineering</strong></td><td>Designing the self-running system, not the single turn.</td></tr>
+      <tr><td><strong>Routine</strong></td><td>An agent saved to run unattended on a schedule.</td></tr>
+      <tr><td><strong>Cowork</strong></td><td>Anthropic's desktop agent that works on your files and returns deliverables.</td></tr>
+      <tr><td><strong>Claude Code</strong></td><td>Anthropic's agentic dev tool — the clearest place to <em>watch</em> a loop work.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="foot">Built from a personal AI knowledge base, grounded in official Anthropic sources. Claude-first by design — once the four layers click here, every other vendor's tools map onto the same arc (Appendix E).</p>
+
+</div>
+</body>
+</html>
