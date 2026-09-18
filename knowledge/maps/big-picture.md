@@ -52,6 +52,7 @@ The mental models everything else obeys.
 - [Harness vs Context vs Prompt Engineering](../notes/harness-vs-context-engineering.md) — canonical narrative of the same model; *where a bug lives tells you which level to fix.*
 - [The Anatomy of an Agent Harness](../notes/anatomy-of-an-agent-harness.md) — dissects the "harness" level into its six organs (loop, context, tools, memory, verification, delegation).
 - [Harness engineering — reliability lives outside the model weights](../notes/harness-engineering-discipline.md) — the discipline: capable models still fail; the *same* model swings 20%→100% as you add the five harness subsystems (instructions, tools, environment, state, feedback).
+- [An offline eval is a controlled experiment — the agent is real, the world is frozen](../notes/offline-vs-online-evals.md) — how to *measure* reliability: offline (frozen fixtures, known answers) + online (production traffic, rubric judge only) + the flywheel between them; freeze *every* observable input, clock included (lived: Tide's 95 nights of fake 0%).
 
 ### 🔌 Claude API — *the engine*
 The raw capabilities a request can use.
