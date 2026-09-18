@@ -11,6 +11,8 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-09-18  Every `knowledge/maps/*.md` is now rendered as an in-page reader doc (build-index.py), so a `[..](../maps/x.md)` link opens in the reader instead of silently dying (building-ai-stacks links had been dead). The reader's CSS moved to `docs/assets/reader.css`, so a hub on the concepts stylesheet can load the reader without copying CSS. And a hub page should build its cards from `knowledge.js` (by tag), not hand-typed lists: see `docs/concepts/evals.html`. [→ knowledge/maps/evals.md]
+
 2026-06-13  **Closed the harness-vs-context migration — the Tide source page is now deleted, so AKC is the SOLE home.**
             Executed the tide-side checklist left open in the 2026-06-02 entry below: in the **tide** repo, deleted
             `docs/harness-vs-context-engineering.html`, removed its card + orphaned CSS from both landing pages

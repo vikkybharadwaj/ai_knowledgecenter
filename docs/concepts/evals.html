@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evals — how to measure whether an AI product works</title>
+<meta name="description" content="The Evals section: plain-language lessons on measuring AI quality — offline vs online evals, freezing the world, noise, graders and their blind spots, and safety gates — each learned the hard way and opened right here on the page.">
+<link rel="stylesheet" href="assets/style.css?v=20260610subfull">
+<link rel="stylesheet" href="../assets/reader.css?v=20260918evals">
+<style>
+  /* hub-only bits; cards/grid/badges come from assets/style.css, the reader from reader.css */
+  .ev-group { margin: 34px 0 10px; }
+  .ev-group .section-head { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+  .ev-group .section-head h2 { margin:0; }
+  .ev-group > p.meta { margin:0 0 16px; max-width:760px; }
+  .ev-num { font-family:var(--mono); font-size:.7rem; color:var(--text-dim); letter-spacing:.08em; }
+  a.card.kc-link { cursor:pointer; }
+  .card .ev-hook { color:var(--text-soft); }
+  .card .ev-foot { margin-top:10px; font-family:var(--mono); font-size:.66rem; color:var(--text-dim);
+                   text-transform:uppercase; letter-spacing:.06em; }
+  .ev-concepts { margin-top:12px; }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../index.html"><span class="dot"></span> AI Knowledge Center</a>
+    <nav class="navlinks">
+      <a href="index.html">Overview</a>
+      <a href="mental-model.html">Mental model</a>
+      <a href="primitives.html">Primitives</a>
+      <a href="evals.html" class="active">Evals</a>
+      <a href="graph.html">Concept graph</a>
+      <a href="matrix.html">Comparison matrix</a>
+      <a href="decision.html">Decide</a>
+      <a href="legend.html">Legend</a>
+    </nav>
+    <a class="pill" href="exam.html">🎓 Exam Prep</a>
+  </div>
+</header>
+<main class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">Concepts · evals &amp; reliability</div>
+    <h1>How do you know it actually works?</h1>
+    <p class="sub">An AI product&rsquo;s quality isn&rsquo;t a feeling; it&rsquo;s a measurement. But the measurement is
+      itself a machine that can break, drift and lie. These lessons, one idea each and in plain words, were learned the
+      hard way by rebuilding a real eval system (the Tide money coach, September 2026). Read them in order: set up a
+      fair experiment, make sure the number means something, then grade the answer properly. Every card opens right
+      here on the page.</p>
+    <p class="meta" style="margin-top:14px">Want the running index? Open the
+      <a href="#" class="kc-link" data-slug="evals">Evals map</a>. &middot; Where it sits in the stack: the
+      <a href="#" class="kc-link" data-slug="evals-reliability">Evals &amp; Reliability</a> concept on the
+      <a href="graph.html">concept graph</a>. &middot; <span id="ev-count"></span></p>
+  </section>
+
+  <hr>
+
+  <div id="ev-groups"></div>
+
+  <section class="ev-group">
+    <div class="section-head"><h2>The concepts behind the lessons</h2></div>
+    <p class="meta">Lessons are the <em>sources</em>; these are the nodes they back on the concept graph.</p>
+    <div class="grid cols-3 ev-concepts" id="ev-concepts"></div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <p>AI Knowledge Center · Evals · started 2026-09-18. Lessons live as markdown in <code>knowledge/notes</code>
+     (tagged <code>evals</code>); this page builds its cards from the generated index, so a new lesson shows up
+     here automatically. Anthropic grounding:
+     <a href="https://platform.claude.com/docs/en/test-and-evaluate/develop-tests">Define success criteria and build evaluations</a>.</p>
+</footer>
+
+<script src="../assets/knowledge.js"></script>
+<script src="../assets/reader.js"></script>
+<script>
+/* Cards are DERIVED from window.KC_DATA (every note tagged "evals"), never typed by hand:
+   this page only owns the reading order + a one-line hook per lesson. Any evals note not
+   listed below still appears, under "Also tagged evals", so the hub can't silently go stale. */
+(function () {
+  var D = window.KC_DATA;
+  if (!D) return;
+  var GROUPS = [
+    { title: "1 · Set up a fair experiment",
+      blurb: "An eval is a controlled experiment: the agent is real, the world is frozen. Get this wrong and every number after it is noise.",
+      items: [
+        ["offline-vs-online-evals", "Test with pretend data before release; check real conversations after. You need both."],
+        ["evals-test-judgment", "Unit tests own the math, evals own the judgment, and the seam between them is where money apps get hurt."],
+        ["freeze-everything-the-model-sees", "Freeze every input: the data, the date, the whole conversation, the limits."],
+        ["dont-copy-derive", "Two copies of one fact drift apart. Derive from one source instead."] ] },
+    { title: "2 · Make sure the number means something",
+      blurb: "Before asking “how good was it?”, ask “did we measure anything at all?” and “is this difference bigger than the noise?”",
+      items: [
+        ["crashed-is-not-failed", "A test that crashed isn’t a test that failed. Keep broken runs out of every average."],
+        ["one-run-is-a-sample", "Identical runs give different scores. Measure the noise before trusting a change."] ] },
+    { title: "3 · Grade the answer properly",
+      blurb: "Every grader is blind to something. Pick by what the failure looks like, and read disagreements between graders as a signal.",
+      items: [
+        ["word-checks-cant-read-meaning", "Word-matching checks fail good answers: the spam-filter problem."],
+        ["three-kinds-of-grader", "Word checks, an AI judge, similarity to a perfect answer: what each one can’t see."],
+        ["safety-alarm-false-alarms", "A zero-tolerance safety gate is only as good as its checks. False alarms train people to ignore it."] ] }
+  ];
+  var CONCEPTS = ["evals-reliability", "llm-as-judge"];
+
+  var bySlug = {};
+  (D.nodes || []).forEach(function (n) { bySlug[n.slug] = n; });
+  var cBySlug = {};
+  (D.concepts || []).forEach(function (c) { cBySlug[c.slug] = c; });
+  var evalNotes = (D.nodes || []).filter(function (n) { return (n.tags || []).indexOf("evals") !== -1; });
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function card(slug, hook, num) {
+    var n = bySlug[slug];
+    if (!n) return "";
+    return '<a class="card kc-link" href="#" data-slug="' + esc(slug) + '"><span class="arrow">→</span>' +
+      (num ? '<div class="ev-num">LESSON ' + num + "</div>" : "") +
+      "<h3>" + esc(n.title) + "</h3>" +
+      (hook ? '<p class="ev-hook">' + esc(hook) + "</p>" : "") +
+      '<div class="ev-foot">' + esc((D.layerLabels || {})[n.layer] || n.layer) + " · " + esc(n.depth || "") + "</div></a>";
+  }
+
+  var html = "", listed = {}, num = 0;
+  GROUPS.forEach(function (g) {
+    var cards = g.items.map(function (it) {
+      if (!bySlug[it[0]]) return "";
+      listed[it[0]] = true; num += 1;
+      return card(it[0], it[1], num);
+    }).join("");
+    if (!cards) return;
+    html += '<section class="ev-group"><div class="section-head"><h2>' + esc(g.title) + "</h2></div>" +
+            '<p class="meta">' + esc(g.blurb) + '</p><div class="grid cols-3">' + cards + "</div></section>";
+  });
+  var extra = evalNotes.filter(function (n) { return !listed[n.slug]; });
+  if (extra.length) {
+    html += '<section class="ev-group"><div class="section-head"><h2>Also tagged evals</h2></div>' +
+            '<p class="meta">Related notes elsewhere on the spine, plus any new lesson not yet placed in the reading order.</p><div class="grid cols-3">' +
+            extra.map(function (n) { return card(n.slug, "", 0); }).join("") + "</div></section>";
+  }
+  document.getElementById("ev-groups").innerHTML = html;
+  document.getElementById("ev-count").textContent = num + " lessons so far";
+
+  document.getElementById("ev-concepts").innerHTML = CONCEPTS.map(function (slug) {
+    var c = cBySlug[slug];
+    if (!c) return "";
+    return '<a class="card kc-link" href="#" data-slug="' + esc(slug) + '"><span class="arrow">→</span>' +
+      '<div class="ev-num">' + esc((c.kind || "concept").toUpperCase()) + "</div><h3>" + esc(c.title) + "</h3>" +
+      '<p class="ev-hook">' + esc(c.summary || "") + "</p></a>";
+  }).join("");
+})();
+</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

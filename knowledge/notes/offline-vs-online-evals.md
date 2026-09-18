@@ -12,7 +12,7 @@ connections:
 source: { url: null, author: "Vik — distilled in-house from rebuilding the Tide Coach eval harness (tide PR #234)", retrieved: 2026-09-18 }
 date: 2026-09-18
 depth: seedling
-claude_specific: true
+claude_specific: false
 ---
 
 # An offline eval is a controlled experiment — the agent is real, the world is frozen
@@ -28,17 +28,11 @@ The cost is realism, which you buy back with **online evals** on sampled product
 **everything the agent can observe, including the clock.**
 
 ## Two layers, two kinds of test
-An agentic product has two layers, and each needs its own kind of test:
-
-| | Deterministic layer (data, arithmetic) | Agent layer (judgment, communication) |
-|---|---|---|
-| Example | Bank data → DB → a service computes "safe to spend: $127.50" | Picks tools, interprets the result, explains it to a stressed person |
-| Nature | Same input → same output | Probabilistic |
-| Tested by | **Unit tests**: exact assertions | **Evals**: "given these numbers, did it respond well?" |
-
-**Evals test judgment; unit tests test arithmetic.** Mocking the tool layer is what separates the
-two: the fixture *assumes* the deterministic layer is correct and asks only how the agent handles
-its output.
+An agentic product has a **deterministic layer** (data and arithmetic: same input, same output) and an **agent
+layer** (judgment and communication: probabilistic). **Evals test judgment; unit tests test arithmetic.**
+Mocking the tool layer is what separates them: the fixture *assumes* the math is right and asks only how the
+agent handles its output. The full lesson, including the easy-to-miss seam between the two, is
+[Evals test judgment; unit tests test math](evals-test-judgment.md).
 
 ## Why frozen data instead of live data (most important first)
 1. **No known answer, no grade.** Live data keeps changing, so there's nothing stable to compare
@@ -75,32 +69,19 @@ permanent regression tests, which keeps the offline suite grounded in reality ra
 into imagined scenarios. (Tide: `evals/scripts/trace_to_fixture.ts` turns a flagged row in the
 `ai_traces` table into a fixture template; a PM then writes the ground-truth response.)
 
-## The lived lesson: freeze *everything*, including the clock
-An experiment is only controlled if **every** input is frozen. Tide's harness froze the tool data,
-but it imports the real production prompt builder, which stamps `Today: <weekday>, <date>` from
-`new Date()` (`system_prompt.ts:22`). The harness passes no date, so the real clock leaks in. In
-the 2026-09-18 nightly, fixtures authored months earlier (one with a predicted payday of *April 1*)
-met an agent told it was *September 18*. The agent correctly said the date was "already in the
-past" and declined to state it. **One such fixture was graded a fail (`conf-003`) and another a pass
-(`proj-acc-005`).** So the same correct behaviour got opposite verdicts, and the result depends on
-*which day the suite ran*. That breaks **repeatability**, the one property the whole approach
-exists to protect. A second unfrozen input sits in the same file: a time-of-day greeting from
-`getHours()` (`:190`).
+## The two lessons that make this stick
+**Freeze *everything*, including the clock.** The experiment is only controlled if every input the agent can
+observe comes from the fixture. Tide's harness froze the tool data but stamped the prompt with the real date,
+so a test written for a March payday, run in September, had the agent (correctly) call the payday stale and
+get graded **1/5**. Once each fixture carried its own required "today", the same test scored **4/5**.
+The full checklist (date, conversation, limits) is
+[Freeze everything the model can see](freeze-everything-the-model-sees.md).
 
-**Rule:** anything the agent can observe (tool outputs, **date/time**, user profile, locale,
-feature flags) comes from the fixture, never from the environment. Each fixture declares its own
-"now". *(As of 2026-09-18 this is an open item in Tide, not yet fixed; PR #234 fixed the model-ID
-failure below.)*
-
-## Same root, different symptom: a dead harness scores 0%
-An errored run (API down, a retired model ID, output cut off at the token cap) still produces a
-*result object*, and a naive harness scores it as a quality failure. Tide's nightly suite published
-a confident **0% for 95 nights** because the eval config pinned `claude-sonnet-4-20250514`, which
-the Claude API retired on 2026-06-15. Production kept working because it runs on Amazon Bedrock,
-whose retirement schedule is separate, so nothing looked broken from outside. This is **infrastructure
-failure disguised as a quality signal.** Validity has to gate every score: first ask *"did we
-measure anything at all?"* (a fail-fast preflight call and a run-health classification), and only
-then ask *"how good was it?"*
+**Validity gates every score.** An errored run still produces a result object, and a naive harness scores it
+as a quality failure. Tide published a confident **0% for 95 nights** because the eval pinned a model ID the
+Claude API had retired, while production on Amazon Bedrock kept working. First ask *"did we measure anything
+at all?"*, then *"how good was it?"* The full lesson is
+[A test that crashed is not a test that failed](crashed-is-not-failed.md).
 
 ## Mental model / why it matters
 Think **flight simulator vs flight recorder.** The simulator (offline) lets you script the storm,
@@ -129,11 +110,11 @@ applied to the measuring tool itself.
   Anthropic's platform, requests to a retired model ID *fail*; they don't silently fall back.
 
 ## Provenance & caveats
-Distilled in-house on 2026-09-18 from rebuilding the Tide Coach eval harness (tide PR #234), with
-every Tide claim checked against that repo: `evals/runner.ts:57` (prompt built with no date),
-`apps/backend/app/services/ai/system_prompt.ts:22,190`, `evals/scripts/trace_to_fixture.ts`,
-`evals/types.ts` (`must_call_tool`), `evals/preflight.ts`, and nightly result
-`nightly-2026-09-18T11-07-21-621Z.json`.
+Distilled in-house on 2026-09-18 from rebuilding the Tide Coach eval harness (tide PR #234). Tide claims
+checked against that repo by a separate fact-check pass: `evals/scripts/trace_to_fixture.ts` (flagged
+`ai_traces` rows → fixture templates), per-fixture frozen dates (commit `45e40fe`, required by
+`evals/runner.ts`), `proj-acc-002` similarity 1 → 4 (runs `2026-09-18T11-07` vs `T16-12`), and 95 nightly
+runs at 0/81 from 2026-06-16.
 - ✅ *Requests to retired models fail; Bedrock/Google Cloud set their own retirement schedules;
   `claude-sonnet-4-20250514` retired on the Claude API 2026-06-15.* Source: platform.claude.com/docs
   "Model deprecations", retrieved 2026-09-18.
@@ -141,11 +122,10 @@ every Tide claim checked against that repo: `evals/runner.ts:57` (prompt built w
   and human grading. Source: platform.claude.com/docs "Define success criteria and build
   evaluations", retrieved 2026-09-18.
 - ⚠️ The **offline/online** and **reference vs reference-free** framing is *not* Anthropic's
-  wording. It's a synthesis on top of that grader list (exact match needs a predefined correct
-  answer; a Likert/rubric LLM judge doesn't).
-- ❌ **Corrected from the draft:** the draft's stale-date example ("next payday June 22", "graded
-  as failing") didn't match the evidence. The verified run shows an *April 1* payday, with one
-  fixture failing and one passing on the same behaviour. The note uses the verified version.
+  wording. It's a synthesis on top of that grader list.
+- ❌ **Corrected 2026-09-18 (second pass):** the first version of this note used `conf-003` as the stale-clock
+  example and said the clock fix was still open. `conf-003` actually failed a date-*format* word check; the
+  real stale-clock case is `proj-acc-002`. Frozen dates shipped in PR #234.
 - ❓ The five-reason ordering and the flight-simulator analogy are opinion (a teaching frame), not
   vendor guidance.
 
