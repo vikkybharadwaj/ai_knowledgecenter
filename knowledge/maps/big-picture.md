@@ -53,6 +53,7 @@ The mental models everything else obeys.
 - [The Anatomy of an Agent Harness](../notes/anatomy-of-an-agent-harness.md) — dissects the "harness" level into its six organs (loop, context, tools, memory, verification, delegation).
 - [Harness engineering — reliability lives outside the model weights](../notes/harness-engineering-discipline.md) — the discipline: capable models still fail; the *same* model swings 20%→100% as you add the five harness subsystems (instructions, tools, environment, state, feedback).
 - [An offline eval is a controlled experiment — the agent is real, the world is frozen](../notes/offline-vs-online-evals.md) — how to *measure* reliability: offline (frozen fixtures, known answers) + online (production traffic, rubric judge only) + the flywheel between them; freeze *every* observable input, clock included (lived: Tide's 95 nights of fake 0%).
+  - 🧪 **The evals track** grew into its own section, the **[Evals map](evals.md)**. It has eight more foundations lessons: [evals test judgment, unit tests test math](../notes/evals-test-judgment.md) · [freeze everything the model sees](../notes/freeze-everything-the-model-sees.md) · [don't copy, derive](../notes/dont-copy-derive.md) · [a crashed test isn't a failed test](../notes/crashed-is-not-failed.md) · [one run is a sample](../notes/one-run-is-a-sample.md) · [word checks can't read meaning](../notes/word-checks-cant-read-meaning.md) · [a safety alarm is only as good as its checks](../notes/safety-alarm-false-alarms.md).
 
 ### 🔌 Claude API — *the engine*
 The raw capabilities a request can use.
@@ -85,6 +86,7 @@ Reusable shapes for putting primitives together.
 - [Never let the agent declare its own victory](../notes/completion-is-externalized.md) — externalize "done": feature-list state machines, three-layer/E2E verification, WIP=1 scope control, and observability inside the harness.
 - [Loop engineering — design the loop, not the prompt](../notes/designing-loops-not-prompts.md) — the harness on a timer that feeds itself: five Claude Code blocks (scheduling, worktrees, skills, plugins+MCP, subagents) + on-disk memory. The leverage point moves from writing the turn to designing the system; *build the loop, stay the engineer.*
 - [A loop is cron plus a decision-maker in the body](../notes/loop-is-cron-plus-a-decision-maker.md) — the lineage (ReAct → AutoGPT → ralph → `/goal` → orchestration), the one-line definition, and the 2026 economics: *the loop, not the model, is the expensive part* (cap iterations, detect no-progress, set a budget).
+- [Three kinds of grader, and what each one can't see](../notes/three-kinds-of-grader.md) — word checks, an AI judge (*LLM-as-judge*), and similarity to a perfect answer; each is blind to something, and their disagreements are the signal. Backs the new **LLM-as-judge** pattern.
 
 ### 🚀 Products & consulting — *what you ship*
 Real-world scenarios that pull concepts together for a client outcome.

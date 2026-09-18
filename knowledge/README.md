@@ -12,6 +12,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 
 ## Start here
 - 🗺️ **[The Big Picture](maps/big-picture.md)** — the spine: how the whole Claude stack fits together (the dot-connecting map).
+- 🧪 **[Evals](maps/evals.md)**: how to know an AI product actually works. Nine plain-language lessons, learned rebuilding a real eval system (hub: `docs/concepts/evals.html`).
 - 🏗️ **[Building & advising on AI stacks](maps/building-ai-stacks.md)** — the consulting cluster: *when to use Claude Code vs build your own harness*, and how to bootstrap a company's AI stack.
 - 🕸️ **[Concept dependency graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html)** — the tech-stack concepts and what each one depends on, laid out by spine layer (the notes below are its sources).
 - 📒 **[Git glossary](git-glossary.md)** — plain-English definitions of the git/GitHub terms (commit, branch, push, PR, worktree…) used to maintain this base.
@@ -33,6 +34,14 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 | [The Anatomy of an Agent Harness](notes/anatomy-of-an-agent-harness.md) | foundations | evergreen |
 | [Harness engineering — reliability lives outside the model weights](notes/harness-engineering-discipline.md) | foundations | budding |
 | [An offline eval is a controlled experiment — the agent is real, the world is frozen](notes/offline-vs-online-evals.md) | foundations | seedling |
+| [A test that crashed is not a test that failed](notes/crashed-is-not-failed.md) | foundations | seedling |
+| [Freeze everything the model can see — including the date and the conversation](notes/freeze-everything-the-model-sees.md) | foundations | seedling |
+| [One run is a sample, not a measurement](notes/one-run-is-a-sample.md) | foundations | seedling |
+| [Word checks can't read meaning (the spam-filter problem)](notes/word-checks-cant-read-meaning.md) | foundations | seedling |
+| [Don't copy, derive — two copies of one fact will drift apart](notes/dont-copy-derive.md) | foundations | seedling |
+| [Evals test judgment; unit tests test math](notes/evals-test-judgment.md) | foundations | seedling |
+| [A safety alarm is only as good as its checks](notes/safety-alarm-false-alarms.md) | foundations | seedling |
+| [Three kinds of grader, and what each one can't see](notes/three-kinds-of-grader.md) | patterns | seedling |
 | [The Claude API agent primitives](notes/claude-api-agent-primitives.md) | api | budding |
 | [The Claude Agent SDK](notes/claude-agent-sdk.md) | agent-sdk | budding |
 | [Claude Code Architecture — field guide](notes/claude-code-architecture.md) | claude-code | evergreen |

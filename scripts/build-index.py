@@ -462,13 +462,19 @@ def main():
     docs = {}
     title_index = {n["slug"]: n["title"] for n in raw_notes}
 
-    bp_path = os.path.join(MAPS_DIR, "big-picture.md")
-    if os.path.exists(bp_path):
-        with open(bp_path, encoding="utf-8") as f:
-            fm, body = split_frontmatter(f.read())
-        title_index["big-picture"] = (scalar(fm or "", "title", "The Big Picture")
-                                       if fm else "The Big Picture")
-        docs["big-picture"] = {"title": title_index["big-picture"], "_body": body}
+    # every map (Big Picture spine, building-ai-stacks, evals, …) is a doc keyed by its
+    # slug, so a [link](../maps/<slug>.md) anywhere opens it in the reader instead of dying
+    for fn in sorted(os.listdir(MAPS_DIR)) if os.path.isdir(MAPS_DIR) else []:
+        if not fn.endswith(".md"):
+            continue
+        with open(os.path.join(MAPS_DIR, fn), encoding="utf-8") as f:
+            text = f.read()
+        fm, body = split_frontmatter(text)
+        if fm is None:
+            fm, body = "", text
+        key = scalar(fm, "slug") or fn[:-3]
+        title_index[key] = scalar(fm, "title", key) if fm else key
+        docs[key] = {"title": title_index[key], "_body": body}
         copy_images(body, MAPS_DIR)
 
     if os.path.exists(README):
