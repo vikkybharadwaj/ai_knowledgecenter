@@ -6,6 +6,6 @@ layer: foundations
 summary: Measuring whether the agent actually works — failure-mode analysis, fixtures, and graded runs — so improvements are real and regressions are caught. Reliability is engineered and measured, not hoped for.
 edges:
   - { to: harness-engineering, type: depends-on, why: "You harden the harness against the failure modes evals expose." }
-sources: [harness-engineering-discipline]
+sources: [harness-engineering-discipline, offline-vs-online-evals]
 ---
-Without evals you are tuning prompts in the dark. They turn "it feels better" into a number, and they tell the harness which failure modes are worth a deterministic guard.
+Without evals you are tuning prompts in the dark. They turn "it feels better" into a number, and they tell the harness which failure modes are worth a deterministic guard. Two halves make it work: **offline** evals run the real agent against a frozen world (known answers, catch regressions), and **online** evals grade sampled production traffic against a rubric. A flywheel turns flagged production failures into new frozen fixtures.

@@ -32,6 +32,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 | [Harness vs Context vs Prompt Engineering](notes/harness-vs-context-engineering.md) | foundations | evergreen |
 | [The Anatomy of an Agent Harness](notes/anatomy-of-an-agent-harness.md) | foundations | evergreen |
 | [Harness engineering — reliability lives outside the model weights](notes/harness-engineering-discipline.md) | foundations | budding |
+| [An offline eval is a controlled experiment — the agent is real, the world is frozen](notes/offline-vs-online-evals.md) | foundations | seedling |
 | [The Claude API agent primitives](notes/claude-api-agent-primitives.md) | api | budding |
 | [The Claude Agent SDK](notes/claude-agent-sdk.md) | agent-sdk | budding |
 | [Claude Code Architecture — field guide](notes/claude-code-architecture.md) | claude-code | evergreen |
