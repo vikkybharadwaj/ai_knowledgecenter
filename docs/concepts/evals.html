@@ -48,10 +48,6 @@
       hard way by rebuilding a real eval system (the Tide money coach, September 2026). Read them in order: set up a
       fair experiment, make sure the number means something, then grade the answer properly. Every card opens right
       here on the page.</p>
-    <p class="meta" style="margin-top:14px">Want the running index? Open the
-      <a href="#" class="kc-link" data-slug="evals">Evals map</a>. &middot; Where it sits in the stack: the
-      <a href="#" class="kc-link" data-slug="evals-reliability">Evals &amp; Reliability</a> concept on the
-      <a href="graph.html">concept graph</a>. &middot; <span id="ev-count"></span></p>
   </section>
 
   <hr>
@@ -140,7 +136,6 @@
             extra.map(function (n) { return card(n.slug, "", 0); }).join("") + "</div></section>";
   }
   document.getElementById("ev-groups").innerHTML = html;
-  document.getElementById("ev-count").textContent = num + " lessons so far";
 
   document.getElementById("ev-concepts").innerHTML = CONCEPTS.map(function (slug) {
     var c = cBySlug[slug];

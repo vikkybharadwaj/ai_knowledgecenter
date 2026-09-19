@@ -64,7 +64,7 @@ Checked on 2026-09-18 against the tide repo (worktree `evals-revival`, PR #234) 
 - ✅ 95 back-to-back nightly runs at 0/81 (2026-06-16 → 2026-09-18). All 7,695 results failed with the same `404 not_found_error` for `claude-sonnet-4-20250514`. The last honest run, 2026-06-15, scored 40/81.
 - ✅ All four fixes exist in code: `evals/preflight.ts` (a 1-token call per model; throws and writes no results), `evals/run_health.ts` (invalid if every test crashed, or ≥50% crashed with the same cause), `generate_dashboard.ts` (trend shows valid runs only, plus a harness-failure banner), and `failure_kind.ts` + `evals.yml` (opens an issue only for harness failures).
 - ✅ Retired models fail and Bedrock runs its own schedule: platform.claude.com/docs "Model deprecations" (retrieved 2026-09-18).
-- ⚠️ A tide code comment (`evals/config.ts:9-11`) still says "91 nights, around 2026-06-21". The data says 95 nights from 2026-06-16.
+- ✅ Tide's own comments and docs said "91 nights, around 2026-06-21" until tide PR #239 (2026-09-18) corrected them to 95 nights from 2026-06-16, after the 2026-06-15 retirement.
 
 ## Connections
 - **builds-on [An offline eval is a controlled experiment](offline-vs-online-evals.md)**: that note states the validity rule; this is the full lesson behind it.
