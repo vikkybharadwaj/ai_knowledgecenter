@@ -54,7 +54,7 @@ Phase 5  Platform layers    → gateway · observability+eval · guardrails · i
 *Gaps are features — the visible backlog for this cluster.*
 - [ ] **Agent-framework landscape note** — LangGraph · OpenAI Agents SDK/Responses/AgentKit · Google ADK + A2A · Microsoft Agent Framework · CrewAI · Bedrock AgentCore · Vertex Agent Engine (when to pick each).
 - [ ] **MCP for the enterprise** — exposing internal systems as servers, the official Registry, AgentCore Gateway, Streamable HTTP transport.
-- [ ] **Eval & observability layer** — Langfuse / LangSmith / Braintrust / Arize; why "no eval, no ship" for customer-facing agents. *(Concept groundwork landed: the nine-lesson [Evals map](evals.md). The vendor-tooling comparison is still open.)*
+- [ ] **Eval & observability layer** — Langfuse / LangSmith / Braintrust / Arize; why "no eval, no ship" for customer-facing agents. *(Concept groundwork landed: the eleven-lesson [Evals map](evals.md). The vendor-tooling comparison is still open.)*
 - [x] ~~**LLM-as-judge: rubric vs reference**~~: landed as the **LLM-as-judge** concept + [three kinds of grader](../notes/three-kinds-of-grader.md). Still open: calibrating a judge against humans (see the [Evals map](evals.md) backlog).
 - [ ] **Guardrails layer** — NeMo Guardrails / Guardrails AI; PII/jailbreak/topic/hallucination rails.
 - [ ] **A2A vs MCP** — agent-to-agent vs agent-to-tool; the two-protocol interop layer.

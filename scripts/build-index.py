@@ -485,6 +485,23 @@ def main():
         docs["readme"] = {"title": title_index["readme"], "_body": body}
         copy_images(body, os.path.dirname(README))
 
+    # other top-level knowledge/*.md (e.g. git-glossary) — the Home Note links them,
+    # so they need to open in the reader too
+    kdir = os.path.dirname(README)
+    for fn in sorted(os.listdir(kdir)):
+        if not fn.endswith(".md") or fn == os.path.basename(README):
+            continue
+        with open(os.path.join(kdir, fn), encoding="utf-8") as f:
+            text = f.read()
+        fm, body = split_frontmatter(text)
+        if fm is None:
+            fm, body = "", text
+        key = scalar(fm, "slug") or fn[:-3]
+        h1 = re.search(r"^#\s+(.*)$", body, re.MULTILINE)
+        title_index[key] = scalar(fm, "title", None) or (h1.group(1).strip() if h1 else key)
+        docs[key] = {"title": title_index[key], "_body": body}
+        copy_images(body, kdir)
+
     def title_of(slug):
         return title_index.get(slug)
 
