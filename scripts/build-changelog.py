@@ -607,7 +607,11 @@ def main():
     if not pattern.search(text):
         print("error: CHANGELOG markers not found in changelog.html", file=sys.stderr)
         return 1
-    new = pattern.sub(f"{START}\n{block}\n  {END}", text)
+    # A function replacement, NOT a string: re.sub interprets backslash escapes in a
+    # string replacement, so a commit touching source that contains e.g. "·"
+    # crashed the build with "bad escape \u" (2026-09-20, run on #74).
+    replacement = f"{START}\n{block}\n  {END}"
+    new = pattern.sub(lambda _m: replacement, text)
     if new != text:
         PAGE.write_text(new, encoding="utf-8")
         print(f"updated changelog: {len(entries)} entr{'y' if len(entries)==1 else 'ies'}")
