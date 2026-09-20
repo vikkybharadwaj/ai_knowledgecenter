@@ -11,6 +11,8 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-09-20  Sweeping for unlanded work: `git branch -r --no-merged origin/main` OVER-reports, because a squash merge leaves the branch looking unmerged forever. Check each branch's PR state instead (`gh pr list --head <branch> --state all`) — that separates "already squash-merged" from genuinely dropped. Two real gaps surfaced this way: `docs/legend-exam-domains` (24 lines of D1–D5 legend content that never got a PR) and `redesign/knowledge-graph-legibility` (PR #10 closed — but a false alarm: #43 had re-landed it on the renamed paths). Also: a landing packet in another repo's tmp/ can gain NEW drafts after you land the first batch, so re-read its README before assuming a section is complete. [→ knowledge/maps/evals.md]
+
 2026-09-18  Every `knowledge/maps/*.md` is now rendered as an in-page reader doc (build-index.py), so a `[..](../maps/x.md)` link opens in the reader instead of silently dying (building-ai-stacks links had been dead). The reader's CSS moved to `docs/assets/reader.css`, so a hub on the concepts stylesheet can load the reader without copying CSS. And a hub page should build its cards from `knowledge.js` (by tag), not hand-typed lists: see `docs/concepts/evals.html`. [→ knowledge/maps/evals.md]
 
 2026-06-13  **Closed the harness-vs-context migration — the Tide source page is now deleted, so AKC is the SOLE home.**
