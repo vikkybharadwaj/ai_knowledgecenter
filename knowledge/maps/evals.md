@@ -47,6 +47,7 @@ model, and evals are how you find out whether it worked. On the concept graph th
 
 10. [Dimensions vs slices — how to build a failure map](../notes/dimensions-vs-slices.md) — dimensions are the *type* of mistake (what you grade); slices are the *situation* (how you cut the results). Build dimensions from the stages of an answer so every failure lands in exactly one place.
 11. [Sort your tests onto the map before trusting the count](../notes/sort-before-you-count.md) — "81 tests" isn't coverage. Label every test, draw the grid, and read the piles, the gaps and the thin red lines. Re-sort before you re-grade.
+12. [When a test fails, find out whose fault it is before you fix anything](../notes/whose-fault-is-the-failure.md) — a failing test isn't evidence until you know whose fault it is. In a real suite 24 failures were the test's and 9 the AI's; the quiet ones are the checks that can't fail.
 
 ## How the lessons connect (the big picture in one paragraph)
 Freezing the world (1, 3) is what makes a right answer knowable, and copied facts (4) are how the frozen
@@ -57,11 +58,11 @@ meaning but only what it's shown, and the reference score only knows the perfect
 The chain from data to answer (2) tells you *which* link each grader covers. And the highest-stakes place
 all of this goes wrong is the safety gate (9). All of that grades the tests you happen to have, which is why
 the last step is coverage: build a map of every way the AI can fail (10), then sort your tests onto it (11)
-and read the empty squares. That closes the loop back to the start, because the gaps the map finds are the
-next fixtures the flywheel should freeze.
+and read the empty squares, then audit the tests themselves (12) — because a failing test is only evidence once you know whose fault it is. That closes the loop back to the start, because the gaps the map finds are the next fixtures the flywheel should freeze.
 
 ## Next up (the backlog for this section)
 - [x] ~~**Defining "complete" with a failure-mode map**~~: landed as [dimensions vs slices](../notes/dimensions-vs-slices.md) (Tide Stage 4c) and [sort before you count](../notes/sort-before-you-count.md) (step 4d part 1).
-- [ ] **Auditing the answer keys**: how to tell "the AI failed" from "the test failed", and fix the keys (Tide Stage 4d, parts 2–3).
-- [ ] **Calibrating an LLM judge against humans**: measuring judge–human agreement before trusting the judge.
+- [x] ~~**Auditing the answer keys**~~: landed as [whose fault is the failure](../notes/whose-fault-is-the-failure.md) (Tide Stage 4d parts 2–3).
+- [ ] **Validating the judges against human grades** (Tide Stage 4e, in flight): judge–human agreement, and what removing the shared few-shot examples did to it.
+- [ ] **Rewriting the checks** (Stage 4f): turning brittle word checks into intent questions, and moving the release gate onto red lines.
 - [ ] **Eval & observability tooling**: Langfuse / LangSmith / Braintrust / Arize, from the [consulting map](building-ai-stacks.md) backlog.
