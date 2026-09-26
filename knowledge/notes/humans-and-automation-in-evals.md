@@ -17,7 +17,6 @@ claude_specific: false
 
 # Humans discover and decide; automation scales and watches — combine them, never outsource the judging
 
-**Your question 9: how do you combine automated evals with human evals?**
 
 ## TL;DR
 Split the work by what each is good at. **Humans** (one domain expert) **discover** the failure modes,

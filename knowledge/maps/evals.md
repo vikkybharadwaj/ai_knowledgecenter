@@ -10,8 +10,8 @@ date: 2026-09-18
 
 > **The question this section answers:** *how do you know an AI product actually works?* Quality isn't a
 > feeling; it's a measurement. But the measurement is a machine too, and it can break, drift and lie.
-> Two halves: **your 10 questions** — the mental model, distilled from the best practitioner writing on
-> evals — and **12 lessons** learned the hard way rebuilding a real eval system (the Tide money coach,
+> Two halves: **ten mental models** — how evals work, distilled from the best practitioner writing — and
+> **12 lessons** learned the hard way rebuilding a real eval system (the Tide money coach,
 > September 2026). Each note is **one idea, in plain words, with one real example**.
 > The visual hub is `docs/concepts/evals.html`; this file is its running index.
 
@@ -22,35 +22,36 @@ model, and evals are how you find out whether it worked. On the concept graph th
 **Evals & Reliability** (the practice), **Error analysis** (how you find what to measure) and
 **LLM-as-judge** (the grader pattern).
 
-## Your 10 questions — the mental model (start here)
+## Ten mental models for evals (start here)
 *Distilled from Hamel Husain & Shreya Shankar (evals FAQ + Lenny's Newsletter), Hamel's "Your AI Product Needs
-Evals", Parlance Labs' automated-evals study and Aman Khan's PM guide (landed 2026-09-26). Each question is one
+Evals", Parlance Labs' automated-evals study and Aman Khan's PM guide (landed 2026-09-26). Each model is one
 note; the Tide lessons below are the same ideas learned the hard way on a real product.*
 
-| # | Question | Answer in one line | Note |
+| # | Mental model | In one line | Note |
 |---|---|---|---|
-| 1 | What is an eval, and why? | A repeatable check of one behaviour; build product evals, not benchmarks | [What is an eval](../notes/what-is-an-eval.md) |
-| 2 | What are the two types? | Code check when a rule can decide; LLM judge when it takes judgment | [Two kinds of eval check](../notes/two-kinds-of-eval-check.md) |
-| 3 | Basic vs RAG vs agentic? | Split the eval along the system's stages; find the first thing that broke | [Evaluate by system shape](../notes/evals-by-system-type.md) |
-| 4 | Key metrics for each? | Pass rate per real failure + recall@k/MRR, faithfulness, task success, step rates | [Metrics by system shape](../notes/eval-metrics-by-system-type.md) |
-| 5 | How to align an LLM judge? | Expert pass/fail + critique → train/dev/test → TPR and TNR | [Aligning an LLM judge](../notes/aligning-an-llm-judge.md) |
-| 6 | Scenarios before production? | Dimensions → hand-written tuples → LLM tuples → messages in a separate prompt | [Synthetic scenarios before launch](../notes/synthetic-scenarios-before-launch.md) |
-| 7 | Evals once you have traces? | Error analysis: read ~100, note, group into <10 modes, count | [Error analysis on traces](../notes/error-analysis-on-traces.md) |
-| 8 | Keep the suite current? | New production failures → CI examples; retire tests that never fail | [The production-to-eval flywheel](../notes/production-to-eval-flywheel.md) |
-| 9 | Combine automated + human? | Humans discover and decide; automation scales; never outsource the judging | [Humans and automation](../notes/humans-and-automation-in-evals.md) |
-| 10 | Code-check best practices? | Test structure, state and behaviour per scenario, with pass and fail examples | [Code-check best practices](../notes/code-check-best-practices.md) |
+| 1 | An eval is a sensor on one behaviour | A repeatable check of one behaviour; build product evals, not benchmarks | [What is an eval](../notes/what-is-an-eval.md) |
+| 2 | Generate scenarios from dimensions, not one prompt | Before launch: dimensions → hand-written tuples → LLM tuples → messages in a separate prompt | [Synthetic scenarios before launch](../notes/synthetic-scenarios-before-launch.md) |
+| 3 | Error analysis finds what to measure | After launch: read ~100 traces, note, group into under 10 failure modes, count | [Error analysis on traces](../notes/error-analysis-on-traces.md) |
+| 4 | Rule or judgment picks the check | Code check when a rule can decide; LLM judge when it takes judgment | [Two kinds of eval check](../notes/two-kinds-of-eval-check.md) |
+| 5 | Code checks test structure, state and behaviour | Scoped per scenario, with pass and fail examples | [Code-check best practices](../notes/code-check-best-practices.md) |
+| 6 | A judge is a classifier — certify it | Expert pass/fail + critique → train/dev/test → TPR and TNR | [Aligning an LLM judge](../notes/aligning-an-llm-judge.md) |
+| 7 | Split the eval along the system's stages | One call, RAG or agent: evaluate stage by stage; find the first thing that broke | [Evaluate by system shape](../notes/evals-by-system-type.md) |
+| 8 | Every metric maps to a real failure | Pass rate per real failure, plus recall@k/MRR, faithfulness, task success, step rates | [Metrics by system shape](../notes/eval-metrics-by-system-type.md) |
+| 9 | The suite is a flywheel, not a snapshot | New production failures → CI examples; retire tests that never fail | [The production-to-eval flywheel](../notes/production-to-eval-flywheel.md) |
+| 10 | Humans set the standard; automation scales it | Humans discover and decide; never outsource the judging | [Humans and automation](../notes/humans-and-automation-in-evals.md) |
 
-**How the ten connect.** An eval is a sensor on one behaviour (1). You find what to point sensors at with
-error analysis — on synthetic traces before launch (6), real traces after (7). Each failure mode becomes one
-check: code if a rule can decide it (10), a judge if not — and a judge only counts once it's aligned against
-expert labels (5); those are the two kinds (2). The system's shape decides how you split the checks (3) and
-which numbers you watch (4). Humans own discovery and the standard, automation owns scale (9), and the
-flywheel keeps the whole suite tied to what production is actually doing (8).
+**How the ten connect.** They follow the life of an eval. An eval is a sensor on one behaviour (1). You
+find what to point sensors at with generated scenarios before launch (2) and error analysis on real traces
+after (3). Each failure mode becomes one check (4): a code check if a rule can decide it (5), an LLM judge if
+it takes judgment — certified against expert labels with TPR and TNR (6). The system's shape decides how you
+split the checks (7), and every number you watch maps back to a real failure (8). The flywheel keeps the
+suite tied to what production is doing (9), and across it all, humans set the standard while automation
+scales it (10).
 
-**Where the Tide lessons meet the articles.** Error analysis (7) is what produced Tide's failure map
+**Where the Tide lessons meet the articles.** Error analysis (3) is what produced Tide's failure map
 ([dimensions vs slices](../notes/dimensions-vs-slices.md)) and test audit ([whose fault is the
-failure](../notes/whose-fault-is-the-failure.md)). The judge-alignment procedure (5) would have caught Tide's
-shared few-shot example contradicting a test. And beware one word clash: in synthetic data (6) "dimensions"
+failure](../notes/whose-fault-is-the-failure.md)). The judge-certification procedure (6) would have caught Tide's
+shared few-shot example contradicting a test. And beware one word clash: in synthetic data (2) "dimensions"
 are axes of *input variation* — what the Tide lesson calls **slices** — not types of mistake.
 
 ## The Tide lessons — read in this order

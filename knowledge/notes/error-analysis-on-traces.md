@@ -17,7 +17,6 @@ claude_specific: false
 
 # Error analysis on real traces — read, note, group, count — is the most important activity in evals
 
-**Your question 7: how do you do evals once you have real users' traces?**
 
 ## TL;DR
 Don't start by writing metrics. Start by **reading ~100 real traces** and writing a plain note on what went

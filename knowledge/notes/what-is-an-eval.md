@@ -17,7 +17,6 @@ claude_specific: false
 
 # An eval is a repeatable check of one behaviour — product evals, not benchmarks, are the ones you build
 
-**Your question 1: what is an eval, and why do we need it?**
 
 ## TL;DR
 An **eval** is the systematic measurement of quality: each one **checks one behaviour on relevant examples

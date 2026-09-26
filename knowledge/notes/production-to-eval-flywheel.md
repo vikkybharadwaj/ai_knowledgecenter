@@ -17,7 +17,6 @@ claude_specific: false
 
 # Keep the eval suite current — production failures flow into CI, and stale tests get retired
 
-**Your question 8: how do you feed production findings back into the eval suite so it stays current?**
 
 ## TL;DR
 Run two loops that feed each other. **CI evals** run on every change: a small curated set (~100+
