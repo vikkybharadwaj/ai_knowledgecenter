@@ -17,7 +17,6 @@ claude_specific: false
 
 # Code checks — test structure, state and behaviour, scoped per scenario, with pass and fail examples
 
-**Your question 10: what are the best practices and principles for code-based evals?**
 
 ## TL;DR
 Use a code check **whenever a deterministic rule can decide pass or fail** — it's fast, cheap and never

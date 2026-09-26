@@ -17,7 +17,6 @@ claude_specific: false
 
 # The metrics that matter for each system shape — and why generic scores don't
 
-**Your question 4: what are the key metrics for each approach in question 3?**
 
 ## TL;DR
 The best metric is almost always **the pass rate of a specific, binary check for a failure mode you actually

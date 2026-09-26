@@ -3,22 +3,87 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Evals — how to measure whether an AI product works</title>
-<meta name="description" content="The Evals section: plain-language lessons on measuring AI quality — offline vs online evals, freezing the world, noise, graders and their blind spots, and safety gates — each learned the hard way and opened right here on the page.">
+<title>Evals — how to know an AI product actually works</title>
+<meta name="description" content="Ten mental models for AI evals, one picture of how they fit together, and twelve lessons from rebuilding a real eval system — readable top to bottom, with every idea opening in place.">
 <link rel="stylesheet" href="assets/style.css?v=20260610subfull">
 <link rel="stylesheet" href="../assets/reader.css?v=20260918evals">
 <style>
-  /* hub-only bits; cards/grid/badges come from assets/style.css, the reader from reader.css */
-  .ev-group { margin: 34px 0 10px; }
-  .ev-group .section-head { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
-  .ev-group .section-head h2 { margin:0; }
-  .ev-group > p.meta { margin:0 0 16px; max-width:760px; }
-  .ev-num { font-family:var(--mono); font-size:.7rem; color:var(--text-dim); letter-spacing:.08em; }
-  a.card.kc-link { cursor:pointer; }
-  .card .ev-hook { color:var(--text-soft); }
-  .card .ev-foot { margin-top:10px; font-family:var(--mono); font-size:.66rem; color:var(--text-dim);
-                   text-transform:uppercase; letter-spacing:.06em; }
+  /* hub-only styles; tokens + cards come from assets/style.css, note typography from reader.css (.markdown) */
+  .ev-jump { display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 0; }
+  .ev-jump a { font-family:var(--mono); font-size:.72rem; padding:6px 11px; border:1px solid var(--border);
+               border-radius:999px; color:var(--text-soft); text-decoration:none; }
+  .ev-jump a:hover { border-color:var(--accent); color:var(--text); }
+  .ev-sec { margin:46px 0 10px; scroll-margin-top:80px; }
+  .ev-sec > h2 { margin:0 0 6px; }
+  .ev-sec > p.ev-lede { color:var(--text-soft); max-width:780px; margin:0 0 18px; }
+
+  /* ---------- the whole picture ---------- */
+  .ev-map { border:1px solid var(--border); border-radius:var(--radius); padding:18px; background:var(--bg-card); }
+  .ev-band { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:var(--radius-sm);
+             border:1px dashed var(--border-2); color:var(--text-soft); font-size:.9rem; }
+  .ev-band .ev-band-k { font-family:var(--mono); font-size:.62rem; letter-spacing:.1em; text-transform:uppercase;
+                        color:var(--text-dim); white-space:nowrap; }
+  .ev-stages { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:10px; align-items:stretch; margin:14px 0; }
+  .ev-stage { border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; background:rgba(255,255,255,.02); }
+  .ev-stage h4 { margin:0 0 2px; font-size:.95rem; }
+  .ev-stage .ev-stage-k { font-family:var(--mono); font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+  .ev-stage p { margin:2px 0 10px; font-size:.78rem; color:var(--text-dim); }
+  .ev-arrow { display:flex; align-items:center; justify-content:center; color:var(--text-dim); font-size:1.3rem; }
+  .ev-node { display:flex; gap:9px; align-items:flex-start; padding:8px 10px; margin:6px 0; border-radius:8px;
+             border:1px solid var(--border); color:var(--text); text-decoration:none; font-size:.84rem; line-height:1.35;
+             background:var(--bg-card-solid); transition:border-color .15s, transform .15s; }
+  .ev-node:hover { border-color:var(--accent); transform:translateX(2px); text-decoration:none; }
+  .ev-band .ev-node { margin:0; flex:1; }
+  .ev-n { flex:0 0 auto; width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
+          font-family:var(--mono); font-size:.7rem; font-weight:700; background:var(--accent); color:#06120c; }
+  .ev-loop { display:flex; align-items:center; gap:8px; justify-content:center; font-family:var(--mono); font-size:.72rem;
+             color:var(--text-dim); padding:8px 0 12px; }
+  .ev-loop b { color:var(--accent); font-size:1rem; }
+
+  /* ---------- the ten mental models ---------- */
+  .ev-model { border:1px solid var(--border); border-radius:var(--radius); padding:22px 24px; margin:0 0 16px;
+              background:var(--bg-card); scroll-margin-top:80px; }
+  .ev-model-head { display:flex; gap:14px; align-items:flex-start; }
+  .ev-model-head .ev-n { width:30px; height:30px; font-size:.85rem; margin-top:3px; }
+  .ev-kicker { font-family:var(--mono); font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-dim); }
+  .ev-model h3 { margin:2px 0 0; font-size:1.25rem; letter-spacing:-.4px; }
+  .ev-model .ev-tldr { margin:12px 0 4px; }
+  .ev-model .ev-tldr p { color:var(--text-soft); }
+  .ev-seen { display:flex; flex-wrap:wrap; gap:6px 8px; align-items:center; margin:10px 0 2px; font-size:.78rem; color:var(--text-dim); }
+  .ev-seen a { padding:3px 9px; border-radius:999px; border:1px solid var(--border); color:var(--text-soft); text-decoration:none; }
+  .ev-seen a:hover { border-color:var(--accent-2); color:var(--text); }
+  details.ev-deep, details.ev-lesson { margin-top:12px; }
+  details.ev-deep > summary, details.ev-lesson > summary { cursor:pointer; list-style:none; }
+  details.ev-deep > summary::-webkit-details-marker, details.ev-lesson > summary::-webkit-details-marker { display:none; }
+  details.ev-deep > summary { display:inline-flex; gap:8px; align-items:center; font-family:var(--mono); font-size:.74rem;
+                              color:var(--accent-2); padding:6px 0; }
+  details.ev-deep > summary::before, details.ev-lesson > summary .ev-chev::before { content:"▸"; display:inline-block; transition:transform .15s; }
+  details[open].ev-deep > summary::before, details[open].ev-lesson > summary .ev-chev::before { transform:rotate(90deg); }
+  details.ev-deep > .markdown { border-top:1px solid var(--border); margin-top:8px; padding-top:6px; }
+  .ev-top { display:inline-block; margin-top:8px; font-family:var(--mono); font-size:.68rem; color:var(--text-dim); }
+
+  /* ---------- lessons ---------- */
+  .ev-stagegroup { margin:22px 0 8px; }
+  .ev-stagegroup h3 { margin:0 0 2px; font-size:1.05rem; }
+  .ev-stagegroup > p { margin:0 0 8px; color:var(--text-dim); font-size:.85rem; }
+  details.ev-lesson { border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg-card);
+                      margin:8px 0; scroll-margin-top:80px; }
+  details.ev-lesson > summary { display:grid; grid-template-columns:auto 1fr; gap:4px 12px; padding:12px 14px; }
+  .ev-lnum { font-family:var(--mono); font-size:.66rem; color:var(--text-dim); letter-spacing:.08em; text-transform:uppercase;
+             grid-row:1 / span 2; padding-top:3px; display:flex; gap:6px; }
+  .ev-ltitle { font-weight:700; color:var(--text); }
+  .ev-lhook { color:var(--text-soft); font-size:.86rem; }
+  .ev-lhook .ev-illus { color:var(--text-dim); font-family:var(--mono); font-size:.7rem; margin-left:6px; white-space:nowrap; }
+  details.ev-lesson > .markdown { padding:4px 18px 14px; border-top:1px solid var(--border); }
+  .ev-related { margin-top:18px; color:var(--text-dim); font-size:.85rem; }
   .ev-concepts { margin-top:12px; }
+
+  @media (max-width: 880px) {
+    .ev-stages { grid-template-columns:1fr; }
+    .ev-arrow { transform:rotate(90deg); padding:2px 0; }
+    .ev-model { padding:18px 16px; }
+    .ev-band { flex-direction:column; align-items:stretch; }
+  }
 </style>
 </head>
 <body>
@@ -43,130 +108,240 @@
   <section class="hero">
     <div class="eyebrow">Concepts · evals &amp; reliability</div>
     <h1>How do you know it actually works?</h1>
-    <p class="sub">An AI product&rsquo;s quality isn&rsquo;t a feeling; it&rsquo;s a measurement. But the measurement is
-      itself a machine that can break, drift and lie. Start with <strong>your 10 questions</strong> &mdash; the mental model, distilled from
-      the best practitioner writing on evals. Then the numbered lessons: the same ideas learned the hard way by
-      rebuilding a real eval system (the Tide money coach, September 2026) &mdash; set up a fair experiment, make sure
-      the number means something, grade the answer properly, and know what your tests don&rsquo;t cover. Every card
-      opens right here on the page.</p>
+    <p class="sub">An AI product&rsquo;s quality isn&rsquo;t a feeling; it&rsquo;s a measurement &mdash; and the measurement is a
+      machine that can break, drift and lie. This page is <strong>ten mental models</strong> for building evals you can trust,
+      <strong>one picture</strong> of how they fit together, and <strong>twelve lessons</strong> from rebuilding a real eval
+      system. Read it top to bottom; every idea opens in place.</p>
+    <div class="ev-jump">
+      <a href="#picture">1 · The whole picture</a>
+      <a href="#models">2 · Ten mental models</a>
+      <a href="#lessons">3 · Lessons from a real build</a>
+      <a href="#concepts">4 · On the concept graph</a>
+    </div>
   </section>
 
-  <hr>
+  <!-- 1 · THE WHOLE PICTURE (static: the shape of the ideas; nodes jump to the models below) -->
+  <section class="ev-sec" id="picture">
+    <h2>The whole picture</h2>
+    <p class="ev-lede">Evals are a loop, not a one-off test. You find what goes wrong, turn each failure into a check, run
+      the checks forever &mdash; and let what production teaches you feed the next round. Click any idea to jump to it.</p>
+    <div class="ev-map">
+      <div class="ev-band"><span class="ev-band-k">The foundation</span>
+        <a class="ev-node" href="#m-what-is-an-eval"><span class="ev-n">1</span>An eval is a sensor on one behaviour &mdash; product evals, not benchmarks</a></div>
+      <div class="ev-stages">
+        <div class="ev-stage">
+          <div class="ev-stage-k">Stage A</div><h4>Find what to measure</h4>
+          <p>You can only measure the failures you&rsquo;ve found.</p>
+          <a class="ev-node" href="#m-synthetic-scenarios-before-launch"><span class="ev-n">2</span>Before launch: generate scenarios from dimensions</a>
+          <a class="ev-node" href="#m-error-analysis-on-traces"><span class="ev-n">3</span>After launch: error analysis finds what to measure</a>
+        </div>
+        <div class="ev-arrow" aria-hidden="true">&rarr;</div>
+        <div class="ev-stage">
+          <div class="ev-stage-k">Stage B</div><h4>Build the checks</h4>
+          <p>One check per failure mode, shaped to the system.</p>
+          <a class="ev-node" href="#m-two-kinds-of-eval-check"><span class="ev-n">4</span>Rule or judgment picks the check</a>
+          <a class="ev-node" href="#m-code-check-best-practices"><span class="ev-n">5</span>Code checks: structure, state, behaviour</a>
+          <a class="ev-node" href="#m-aligning-an-llm-judge"><span class="ev-n">6</span>A judge is a classifier &mdash; certify it</a>
+          <a class="ev-node" href="#m-evals-by-system-type"><span class="ev-n">7</span>Split the eval along the system&rsquo;s stages</a>
+        </div>
+        <div class="ev-arrow" aria-hidden="true">&rarr;</div>
+        <div class="ev-stage">
+          <div class="ev-stage-k">Stage C</div><h4>Measure &amp; keep it current</h4>
+          <p>Numbers you can act on, and a suite that follows the product.</p>
+          <a class="ev-node" href="#m-eval-metrics-by-system-type"><span class="ev-n">8</span>Every metric maps to a real failure</a>
+          <a class="ev-node" href="#m-production-to-eval-flywheel"><span class="ev-n">9</span>The suite is a flywheel, not a snapshot</a>
+        </div>
+      </div>
+      <div class="ev-loop"><b>&#8634;</b> new failures from production go back to Stage A &mdash; that&rsquo;s the flywheel</div>
+      <div class="ev-band"><span class="ev-band-k">Across it all</span>
+        <a class="ev-node" href="#m-humans-and-automation-in-evals"><span class="ev-n">10</span>Humans set the standard; automation scales it</a></div>
+    </div>
+  </section>
 
-  <div id="ev-groups"></div>
+  <!-- 2 · TEN MENTAL MODELS (rendered from the notes in knowledge.js) -->
+  <section class="ev-sec" id="models">
+    <h2>Ten mental models</h2>
+    <p class="ev-lede">In the order you&rsquo;d use them. Each shows its core idea here; <em>go deeper</em> opens the full model in
+      place, and the chips jump to the lessons where it was learned the hard way.</p>
+    <div id="ev-models"></div>
+  </section>
 
-  <section class="ev-group">
-    <div class="section-head"><h2>The concepts behind the lessons</h2></div>
-    <p class="meta">Lessons are the <em>sources</em>; these are the nodes they back on the concept graph.</p>
+  <!-- 3 · LESSONS FROM A REAL BUILD -->
+  <section class="ev-sec" id="lessons">
+    <h2>Lessons from a real build</h2>
+    <p class="ev-lede">The same ideas, learned by rebuilding the eval system for the Tide money coach (September 2026) &mdash;
+      each one a real failure, what caused it, and the rule it taught. Open any lesson to read it here.</p>
+    <div id="ev-lessons"></div>
+  </section>
+
+  <!-- 4 · CONCEPT NODES -->
+  <section class="ev-sec" id="concepts">
+    <h2>On the concept graph</h2>
+    <p class="ev-lede">The models and lessons are the <em>sources</em>; these are the nodes they back on the
+      <a href="graph.html">concept graph</a>. The <a href="#" class="kc-link" data-slug="evals">Evals map</a> is the running index.</p>
     <div class="grid cols-3 ev-concepts" id="ev-concepts"></div>
   </section>
 
 </main>
 
 <footer class="wrap">
-  <p>AI Knowledge Center · Evals · started 2026-09-18. Lessons live as markdown in <code>knowledge/notes</code>
-     (tagged <code>evals</code>); this page builds its cards from the generated index, so a new lesson shows up
-     here automatically. Anthropic grounding:
-     <a href="https://platform.claude.com/docs/en/test-and-evaluate/develop-tests">Define success criteria and build evaluations</a>.</p>
+  <p>AI Knowledge Center · Evals. The mental models are distilled from Hamel Husain &amp; Shreya Shankar&rsquo;s
+     <a href="https://hamel.dev/blog/posts/evals-faq/">evals FAQ</a> and related writing; the lessons come from the Tide build.
+     Every block on this page is rendered from the notes in <code>knowledge/notes</code>, so it can&rsquo;t drift from them.
+     Anthropic grounding: <a href="https://platform.claude.com/docs/en/test-and-evaluate/develop-tests">Define success criteria and build evaluations</a>.</p>
 </footer>
 
 <script src="../assets/knowledge.js"></script>
 <script src="../assets/reader.js"></script>
 <script>
-/* Cards are DERIVED from window.KC_DATA (every note tagged "evals"), never typed by hand:
-   this page only owns the reading order + a one-line hook per lesson. Any evals note not
-   listed below still appears, under "Also tagged evals", so the hub can't silently go stale. */
+/* Everything below the picture is DERIVED from window.KC_DATA: this page owns only the order, the
+   short model names, the one-line lesson hooks and which lessons illustrate which model. The text
+   itself (TL;DR + full note) comes from the notes, so the page can't drift from the vault. */
 (function () {
   var D = window.KC_DATA;
   if (!D) return;
-  var GROUPS = [
-    { title: "Your 10 questions — the mental model", label: "QUESTION",
-      blurb: "Start here. Each card answers one question, distilled from the best practitioner writing on evals (Hamel Husain, Shreya Shankar, Aman Khan). The numbered groups below are the same ideas, learned the hard way on a real product.",
+
+  var MODELS = [
+    { slug: "what-is-an-eval", name: "An eval is a sensor on one behaviour", stage: "The foundation",
+      lessons: ["offline-vs-online-evals", "evals-test-judgment"] },
+    { slug: "synthetic-scenarios-before-launch", name: "Generate scenarios from dimensions, not one prompt", stage: "Stage A · Find what to measure",
+      lessons: ["freeze-everything-the-model-sees", "offline-vs-online-evals"] },
+    { slug: "error-analysis-on-traces", name: "Error analysis finds what to measure", stage: "Stage A · Find what to measure",
+      lessons: ["dimensions-vs-slices", "sort-before-you-count", "whose-fault-is-the-failure"] },
+    { slug: "two-kinds-of-eval-check", name: "Rule or judgment picks the check", stage: "Stage B · Build the checks",
+      lessons: ["three-kinds-of-grader", "word-checks-cant-read-meaning"] },
+    { slug: "code-check-best-practices", name: "Code checks test structure, state and behaviour", stage: "Stage B · Build the checks",
+      lessons: ["word-checks-cant-read-meaning", "safety-alarm-false-alarms"] },
+    { slug: "aligning-an-llm-judge", name: "A judge is a classifier — certify it", stage: "Stage B · Build the checks",
+      lessons: ["three-kinds-of-grader", "whose-fault-is-the-failure"] },
+    { slug: "evals-by-system-type", name: "Split the eval along the system’s stages", stage: "Stage B · Build the checks",
+      lessons: ["evals-test-judgment"] },
+    { slug: "eval-metrics-by-system-type", name: "Every metric maps to a real failure", stage: "Stage C · Measure & keep it current",
+      lessons: ["one-run-is-a-sample", "crashed-is-not-failed"] },
+    { slug: "production-to-eval-flywheel", name: "The suite is a flywheel, not a snapshot", stage: "Stage C · Measure & keep it current",
+      lessons: ["dont-copy-derive", "crashed-is-not-failed"] },
+    { slug: "humans-and-automation-in-evals", name: "Humans set the standard; automation scales it", stage: "Across it all",
+      lessons: ["safety-alarm-false-alarms", "whose-fault-is-the-failure"] }
+  ];
+
+  var LESSON_STAGES = [
+    { title: "Set up a fair experiment",
+      blurb: "An eval is a controlled experiment: the agent is real, the world is frozen.",
       items: [
-        ["what-is-an-eval", "What is an eval, and why? A repeatable check of one behaviour — build product evals, not benchmarks."],
-        ["two-kinds-of-eval-check", "The two types: a code check when a rule can decide, an LLM judge when it takes judgment."],
-        ["evals-by-system-type", "Basic vs RAG vs agentic: split the eval along the system’s stages and find the first thing that broke."],
-        ["eval-metrics-by-system-type", "Key metrics for each shape — and why generic quality scores mislead."],
-        ["aligning-an-llm-judge", "Align a judge like a classifier: expert labels, train/dev/test, TPR and TNR."],
-        ["synthetic-scenarios-before-launch", "No users yet? Dimensions → tuples → messages, each in its own prompt."],
-        ["error-analysis-on-traces", "Have traces? Read ~100, note, group into under 10 failure modes, count."],
-        ["production-to-eval-flywheel", "Keep it current: production failures flow into CI; tests that never fail get retired."],
-        ["humans-and-automation-in-evals", "Humans discover and decide, automation scales — never outsource the judging."],
-        ["code-check-best-practices", "Code checks: test structure, state and behaviour, with pass and fail examples."] ] },
-    { title: "1 · Set up a fair experiment",
-      blurb: "An eval is a controlled experiment: the agent is real, the world is frozen. Get this wrong and every number after it is noise.",
-      items: [
-        ["offline-vs-online-evals", "Test with pretend data before release; check real conversations after. You need both."],
-        ["evals-test-judgment", "Unit tests own the math, evals own the judgment, and the seam between them is where money apps get hurt."],
+        ["offline-vs-online-evals", "Test with frozen data before release; check real conversations after."],
+        ["evals-test-judgment", "Unit tests own the math, evals own the judgment — and the seam between them is where money apps get hurt."],
         ["freeze-everything-the-model-sees", "Freeze every input: the data, the date, the whole conversation, the limits."],
-        ["dont-copy-derive", "Two copies of one fact drift apart. Derive from one source instead."] ] },
-    { title: "2 · Make sure the number means something",
-      blurb: "Before asking “how good was it?”, ask “did we measure anything at all?” and “is this difference bigger than the noise?”",
+        ["dont-copy-derive", "Two copies of one fact drift apart. Derive from one source."] ] },
+    { title: "Make sure the number means something",
+      blurb: "First “did we measure anything?”, then “is it bigger than the noise?”",
       items: [
-        ["crashed-is-not-failed", "A test that crashed isn’t a test that failed. Keep broken runs out of every average."],
-        ["one-run-is-a-sample", "Identical runs give different scores. Measure the noise before trusting a change."] ] },
-    { title: "3 · Grade the answer properly",
-      blurb: "Every grader is blind to something. Pick by what the failure looks like, and read disagreements between graders as a signal.",
+        ["crashed-is-not-failed", "A test that crashed isn’t a test that failed."],
+        ["one-run-is-a-sample", "Identical runs give different scores. Measure the noise first."] ] },
+    { title: "Grade the answer properly",
+      blurb: "Every grader is blind to something.",
       items: [
         ["word-checks-cant-read-meaning", "Word-matching checks fail good answers: the spam-filter problem."],
-        ["three-kinds-of-grader", "Word checks, an AI judge, similarity to a perfect answer: what each one can’t see."],
-        ["safety-alarm-false-alarms", "A zero-tolerance safety gate is only as good as its checks. False alarms train people to ignore it."] ] },
-    { title: "4 · Know what your tests don’t cover",
-      blurb: "A pass rate only speaks for failures you thought to test. Map every way the AI can fail, then sort your tests onto the map.",
+        ["three-kinds-of-grader", "Word checks, an AI judge, similarity to a perfect answer: what each can’t see."],
+        ["safety-alarm-false-alarms", "A zero-tolerance gate is only as good as its checks."] ] },
+    { title: "Know what your tests don’t cover",
+      blurb: "A pass rate only speaks for failures you thought to test.",
       items: [
-        ["dimensions-vs-slices", "Dimensions are what you grade; slices are how you cut the results. Keep them apart."],
-        ["sort-before-you-count", "Test count isn’t coverage. Sort every test onto the map, and re-sort before you re-grade."],
-        ["whose-fault-is-the-failure", "A failing test isn’t evidence yet. Two-thirds of the failures were the test’s fault, not the AI’s."] ] }
+        ["dimensions-vs-slices", "Dimensions are what you grade; slices are how you cut the results."],
+        ["sort-before-you-count", "Test count isn’t coverage. Sort every test onto the map."],
+        ["whose-fault-is-the-failure", "A failing test isn’t evidence until you know whose fault it is."] ] }
   ];
   var CONCEPTS = ["evals-reliability", "error-analysis", "llm-as-judge"];
 
-  var bySlug = {};
-  (D.nodes || []).forEach(function (n) { bySlug[n.slug] = n; });
-  var cBySlug = {};
-  (D.concepts || []).forEach(function (c) { cBySlug[c.slug] = c; });
-  var evalNotes = (D.nodes || []).filter(function (n) { return (n.tags || []).indexOf("evals") !== -1; });
-
+  var bySlug = {}; (D.nodes || []).forEach(function (n) { bySlug[n.slug] = n; });
+  var cBySlug = {}; (D.concepts || []).forEach(function (c) { cBySlug[c.slug] = c; });
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) {
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-  function card(slug, hook, num, label) {
-    var n = bySlug[slug];
-    if (!n) return "";
-    return '<a class="card kc-link" href="#" data-slug="' + esc(slug) + '"><span class="arrow">→</span>' +
-      (num ? '<div class="ev-num">' + esc(label || "LESSON") + " " + num + "</div>" : "") +
-      "<h3>" + esc(n.title) + "</h3>" +
-      (hook ? '<p class="ev-hook">' + esc(hook) + "</p>" : "") +
-      '<div class="ev-foot">' + esc((D.layerLabels || {})[n.layer] || n.layer) + " · " + esc(n.depth || "") + "</div></a>";
+
+  // split a rendered note into { tldr, rest }: drop the <h1>, lift out the TL;DR section
+  function parts(html) {
+    html = (html || "").replace(/^\s*<h1>[\s\S]*?<\/h1>\s*/, "");
+    var chunks = html.split(/(?=<h2>)/), tldr = "", rest = [];
+    chunks.forEach(function (c) {
+      if (/^<h2>TL;DR<\/h2>/.test(c)) tldr = c.replace(/^<h2>TL;DR<\/h2>\s*/, "");
+      else if (c.trim()) rest.push(c);
+    });
+    if (!tldr && rest.length) { var m = rest[0].match(/<p>[\s\S]*?<\/p>/); if (m) tldr = m[0]; }
+    return { tldr: tldr, rest: rest.join("") };
   }
 
-  // each label ("QUESTION", "LESSON") numbers its own cards, so the 10 questions and the Tide lessons
-  // keep independent numbering
-  var html = "", listed = {}, counters = {};
-  GROUPS.forEach(function (g) {
-    var label = g.label || "LESSON";
-    var cards = g.items.map(function (it) {
-      if (!bySlug[it[0]]) return "";
-      listed[it[0]] = true; counters[label] = (counters[label] || 0) + 1;
-      return card(it[0], it[1], counters[label], label);
+  // lesson number (reading order) + which models each lesson illustrates
+  var lessonNum = {}, n = 0;
+  LESSON_STAGES.forEach(function (g) { g.items.forEach(function (it) { if (bySlug[it[0]]) lessonNum[it[0]] = ++n; }); });
+  var illustrates = {};
+  MODELS.forEach(function (m, i) { m.lessons.forEach(function (l) { (illustrates[l] = illustrates[l] || []).push(i + 1); }); });
+
+  // ---- ten mental models ----
+  var modelNo = {};
+  MODELS.forEach(function (m, i) { modelNo[m.slug] = i + 1; });
+  // MODELS is already in reading order (it follows the picture: foundation, A, B, C, across)
+  var ORDER = MODELS.map(function (m) { return m.slug; });
+  var mBySlug = {}; MODELS.forEach(function (m) { mBySlug[m.slug] = m; });
+  document.getElementById("ev-models").innerHTML = ORDER.map(function (slug) {
+    var m = mBySlug[slug], note = bySlug[slug];
+    if (!m || !note) return "";
+    var p = parts(note.html);
+    var chips = m.lessons.filter(function (l) { return bySlug[l]; }).map(function (l) {
+      return '<a href="#l-' + esc(l) + '">Lesson ' + lessonNum[l] + ": " + esc(bySlug[l].title.split(" — ")[0]) + "</a>";
     }).join("");
-    if (!cards) return;
-    html += '<section class="ev-group"><div class="section-head"><h2>' + esc(g.title) + "</h2></div>" +
-            '<p class="meta">' + esc(g.blurb) + '</p><div class="grid cols-3">' + cards + "</div></section>";
-  });
-  var extra = evalNotes.filter(function (n) { return !listed[n.slug]; });
-  if (extra.length) {
-    html += '<section class="ev-group"><div class="section-head"><h2>Also tagged evals</h2></div>' +
-            '<p class="meta">Related notes elsewhere on the spine, plus any new lesson not yet placed in the reading order.</p><div class="grid cols-3">' +
-            extra.map(function (n) { return card(n.slug, "", 0); }).join("") + "</div></section>";
-  }
-  document.getElementById("ev-groups").innerHTML = html;
+    return '<article class="ev-model" id="m-' + esc(slug) + '">' +
+      '<div class="ev-model-head"><span class="ev-n">' + modelNo[slug] + '</span><div>' +
+        '<div class="ev-kicker">Mental model · ' + esc(m.stage) + "</div>" +
+        "<h3>" + esc(m.name) + "</h3></div></div>" +
+      '<div class="markdown ev-tldr">' + p.tldr + "</div>" +
+      (chips ? '<div class="ev-seen">Learned the hard way: ' + chips + "</div>" : "") +
+      '<details class="ev-deep"><summary>Go deeper — the full model, worked examples and sources</summary><div class="markdown">' + p.rest + "</div></details>" +
+      '<a class="ev-top" href="#picture">↑ back to the picture</a>' +
+    "</article>";
+  }).join("");
 
+  // ---- lessons ----
+  var listed = {};
+  var html = LESSON_STAGES.map(function (g) {
+    var items = g.items.filter(function (it) { return bySlug[it[0]]; }).map(function (it) {
+      var slug = it[0], note = bySlug[slug], p = parts(note.html); listed[slug] = true;
+      var ill = (illustrates[slug] || []).map(function (k) { return "model " + k; }).join(", ");
+      return '<details class="ev-lesson" id="l-' + esc(slug) + '"><summary>' +
+        '<span class="ev-lnum"><span class="ev-chev"></span>Lesson ' + lessonNum[slug] + "</span>" +
+        '<span class="ev-ltitle">' + esc(note.title) + "</span>" +
+        '<span class="ev-lhook">' + esc(it[1]) + (ill ? '<span class="ev-illus">→ ' + ill + "</span>" : "") + "</span>" +
+        '</summary><div class="markdown"><h2>TL;DR</h2>' + p.tldr + p.rest + "</div></details>";
+    }).join("");
+    return '<div class="ev-stagegroup"><h3>' + esc(g.title) + "</h3><p>" + esc(g.blurb) + "</p>" + items + "</div>";
+  }).join("");
+  // derived guarantee: any other evals-tagged note still shows up, so the page can't silently go stale
+  var inModels = {}; MODELS.forEach(function (m) { inModels[m.slug] = true; });
+  var extra = (D.nodes || []).filter(function (x) {
+    return (x.tags || []).indexOf("evals") !== -1 && !listed[x.slug] && !inModels[x.slug];
+  });
+  if (extra.length) {
+    html += '<p class="ev-related">Related notes: ' + extra.map(function (x) {
+      return '<a href="#" class="kc-link" data-slug="' + esc(x.slug) + '">' + esc(x.title) + "</a>";
+    }).join(" · ") + "</p>";
+  }
+  document.getElementById("ev-lessons").innerHTML = html;
+
+  // ---- concept cards ----
   document.getElementById("ev-concepts").innerHTML = CONCEPTS.map(function (slug) {
     var c = cBySlug[slug];
     if (!c) return "";
     return '<a class="card kc-link" href="#" data-slug="' + esc(slug) + '"><span class="arrow">→</span>' +
-      '<div class="ev-num">' + esc((c.kind || "concept").toUpperCase()) + "</div><h3>" + esc(c.title) + "</h3>" +
-      '<p class="ev-hook">' + esc(c.summary || "") + "</p></a>";
+      '<div class="ev-kicker">' + esc((c.kind || "concept").toUpperCase()) + "</div><h3>" + esc(c.title) + "</h3>" +
+      '<p class="ev-lhook">' + esc(c.summary || "") + "</p></a>";
   }).join("");
+
+  // jumping to a lesson (#l-…) opens it in place
+  function openFromHash() {
+    var id = decodeURIComponent((location.hash || "").slice(1));
+    var el = id && document.getElementById(id);
+    if (el && el.tagName === "DETAILS") el.open = true;
+  }
+  window.addEventListener("hashchange", openFromHash);
+  openFromHash();
 })();
 </script>
 <script src="assets/app.js"></script>

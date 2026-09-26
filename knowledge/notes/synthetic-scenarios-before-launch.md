@@ -17,7 +17,6 @@ claude_specific: false
 
 # Before you have users, generate scenarios from dimensions and tuples — not one big prompt
 
-**Your question 6: how do you generate test scenarios for an AI system that isn't in production yet?**
 
 ## TL;DR
 You don't have to wait for users. List the **dimensions** your inputs vary along (who's asking, what they

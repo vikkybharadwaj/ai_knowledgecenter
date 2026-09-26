@@ -12,7 +12,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 
 ## Start here
 - 🗺️ **[The Big Picture](maps/big-picture.md)** — the spine: how the whole Claude stack fits together (the dot-connecting map).
-- 🧪 **[Evals](maps/evals.md)**: how to know an AI product actually works. Your 10 eval questions (the mental model, from Hamel Husain, Shreya Shankar and others) plus twelve plain-language lessons learned rebuilding a real eval system (hub: `docs/concepts/evals.html`).
+- 🧪 **[Evals](maps/evals.md)**: how to know an AI product actually works. Ten mental models for evals (distilled from Hamel Husain, Shreya Shankar and others) plus twelve plain-language lessons learned rebuilding a real eval system (hub: `docs/concepts/evals.html`).
 - 🏗️ **[Building & advising on AI stacks](maps/building-ai-stacks.md)** — the consulting cluster: *when to use Claude Code vs build your own harness*, and how to bootstrap a company's AI stack.
 - 🕸️ **[Concept dependency graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html)** — the tech-stack concepts and what each one depends on, laid out by spine layer (the notes below are its sources).
 - 📒 **[Git glossary](git-glossary.md)** — plain-English definitions of the git/GitHub terms (commit, branch, push, PR, worktree…) used to maintain this base.

@@ -17,7 +17,6 @@ claude_specific: false
 
 # Two kinds of eval check — code when a rule can decide, an LLM judge when it takes judgment
 
-**Your question 2: what are the two types of evals?**
 
 ## TL;DR
 Every automated eval is one of two kinds, and **the failure decides which**:
@@ -57,7 +56,7 @@ better check the editor's taste against yours before letting them sign off alone
 
 A judge can run offline or online; so can a code check. Keeping the axes apart stops the common mistake of
 thinking "we have online evals" means "we have judges". Another two-way split from the FAQ — **model
-benchmarks vs product evals** — is about *what* you're measuring, and lives in question 1.
+benchmarks vs product evals** — is about *what* you're measuring, and lives in [what is an eval](what-is-an-eval.md).
 
 ## How to apply (in practice / consulting)
 - Sort every failure mode from error analysis into *rule-decidable* or *needs judgment* before building
@@ -73,7 +72,7 @@ Sources (retrieved 2026-09-26): Husain & Shankar, *Building eval systems that im
 evaluators for every failure mode?* and the evaluator cost hierarchy — the 100–200 examples figure; Aman
 Khan, *Beyond vibe checks* — the three-way human / code / LLM framing.
 - ✅ Anthropic's own eval guide groups grading the same way — code-graded, LLM-graded and human-graded — and prefers automated grading where possible (platform.claude.com/docs *Define success criteria and build evaluations*, retrieved 2026-09-26).
-- ⚠️ "Two types" is my framing of the sources; Khan counts three (human, code, LLM). The FAQ's other "two types" (benchmarks vs product evals) is covered in question 1.
+- ⚠️ "Two kinds" is my framing of the sources; Khan counts three (human, code, LLM). The FAQ's other "two types" (benchmarks vs product evals) is covered in [what is an eval](what-is-an-eval.md).
 - ❓ The 100–200 examples per judge is the authors' rule of thumb.
 
 ## Connections

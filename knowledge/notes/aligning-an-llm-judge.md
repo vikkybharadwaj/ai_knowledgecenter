@@ -17,7 +17,6 @@ claude_specific: false
 
 # Align an LLM judge like a classifier — expert labels, three splits, and TPR/TNR, not accuracy
 
-**Your question 5: how do you align an LLM judge, and how does ground truth help?**
 
 ## TL;DR
 An LLM judge is a **classifier** — it sorts answers into pass and fail — so treat it like one. Get **ground

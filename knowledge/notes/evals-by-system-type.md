@@ -17,7 +17,6 @@ claude_specific: false
 
 # Evaluate by system shape — one call, RAG, or agent — and find the first thing that broke
 
-**Your question 3: how do evals differ for a basic LLM app vs a RAG system vs an agentic system?**
 
 ## TL;DR
 The more moving parts, the more you **split the evaluation along the parts** — and the more it matters to
