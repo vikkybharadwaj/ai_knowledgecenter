@@ -12,7 +12,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 
 ## Start here
 - 🗺️ **[The Big Picture](maps/big-picture.md)** — the spine: how the whole Claude stack fits together (the dot-connecting map).
-- 🧪 **[Evals](maps/evals.md)**: how to know an AI product actually works. Twelve plain-language lessons, learned rebuilding a real eval system (hub: `docs/concepts/evals.html`).
+- 🧪 **[Evals](maps/evals.md)**: how to know an AI product actually works. Your 10 eval questions (the mental model, from Hamel Husain, Shreya Shankar and others) plus twelve plain-language lessons learned rebuilding a real eval system (hub: `docs/concepts/evals.html`).
 - 🏗️ **[Building & advising on AI stacks](maps/building-ai-stacks.md)** — the consulting cluster: *when to use Claude Code vs build your own harness*, and how to bootstrap a company's AI stack.
 - 🕸️ **[Concept dependency graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html)** — the tech-stack concepts and what each one depends on, laid out by spine layer (the notes below are its sources).
 - 📒 **[Git glossary](git-glossary.md)** — plain-English definitions of the git/GitHub terms (commit, branch, push, PR, worktree…) used to maintain this base.
@@ -44,6 +44,16 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 | [Dimensions vs slices — how to build a failure map](notes/dimensions-vs-slices.md) | foundations | seedling |
 | [Sort your tests onto the map before trusting the count](notes/sort-before-you-count.md) | foundations | seedling |
 | [When a test fails, find out whose fault it is first](notes/whose-fault-is-the-failure.md) | foundations | seedling |
+| [An eval is a repeatable check of one behaviour](notes/what-is-an-eval.md) | foundations | seedling |
+| [Two kinds of eval check — code vs LLM judge](notes/two-kinds-of-eval-check.md) | foundations | seedling |
+| [Evaluate by system shape — one call, RAG, or agent](notes/evals-by-system-type.md) | patterns | seedling |
+| [The metrics that matter for each system shape](notes/eval-metrics-by-system-type.md) | patterns | seedling |
+| [Align an LLM judge like a classifier](notes/aligning-an-llm-judge.md) | patterns | seedling |
+| [Before you have users, generate scenarios from dimensions and tuples](notes/synthetic-scenarios-before-launch.md) | foundations | seedling |
+| [Error analysis on real traces — read, note, group, count](notes/error-analysis-on-traces.md) | foundations | seedling |
+| [Keep the eval suite current — the production-to-eval flywheel](notes/production-to-eval-flywheel.md) | foundations | seedling |
+| [Humans discover and decide; automation scales and watches](notes/humans-and-automation-in-evals.md) | foundations | seedling |
+| [Code checks — test structure, state and behaviour](notes/code-check-best-practices.md) | foundations | seedling |
 | [Three kinds of grader, and what each one can't see](notes/three-kinds-of-grader.md) | patterns | seedling |
 | [The Claude API agent primitives](notes/claude-api-agent-primitives.md) | api | budding |
 | [The Claude Agent SDK](notes/claude-agent-sdk.md) | agent-sdk | budding |
