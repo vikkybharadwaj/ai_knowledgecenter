@@ -10,17 +10,50 @@ date: 2026-09-18
 
 > **The question this section answers:** *how do you know an AI product actually works?* Quality isn't a
 > feeling; it's a measurement. But the measurement is a machine too, and it can break, drift and lie.
-> Every lesson here was learned rebuilding a real eval system (the Tide money coach, tide PR #234,
-> September 2026). Each one is **one idea, in plain words, with one real example**.
+> Two halves: **your 10 questions** — the mental model, distilled from the best practitioner writing on
+> evals — and **12 lessons** learned the hard way rebuilding a real eval system (the Tide money coach,
+> September 2026). Each note is **one idea, in plain words, with one real example**.
 > The visual hub is `docs/concepts/evals.html`; this file is its running index.
 
 ## Where it sits on the spine
 Evals live on **Foundations** and **Agent Patterns**. They're the measuring half of harness engineering:
 [Harness engineering](../notes/harness-engineering-discipline.md) says reliability is built outside the
-model, and evals are how you find out whether it worked. On the concept graph they back two nodes:
-**Evals & Reliability** (the practice) and **LLM-as-judge** (the grader pattern, new with this section).
+model, and evals are how you find out whether it worked. On the concept graph they back three nodes:
+**Evals & Reliability** (the practice), **Error analysis** (how you find what to measure) and
+**LLM-as-judge** (the grader pattern).
 
-## Read in this order
+## Your 10 questions — the mental model (start here)
+*Distilled from Hamel Husain & Shreya Shankar (evals FAQ + Lenny's Newsletter), Hamel's "Your AI Product Needs
+Evals", Parlance Labs' automated-evals study and Aman Khan's PM guide (landed 2026-09-26). Each question is one
+note; the Tide lessons below are the same ideas learned the hard way on a real product.*
+
+| # | Question | Answer in one line | Note |
+|---|---|---|---|
+| 1 | What is an eval, and why? | A repeatable check of one behaviour; build product evals, not benchmarks | [What is an eval](../notes/what-is-an-eval.md) |
+| 2 | What are the two types? | Code check when a rule can decide; LLM judge when it takes judgment | [Two kinds of eval check](../notes/two-kinds-of-eval-check.md) |
+| 3 | Basic vs RAG vs agentic? | Split the eval along the system's stages; find the first thing that broke | [Evaluate by system shape](../notes/evals-by-system-type.md) |
+| 4 | Key metrics for each? | Pass rate per real failure + recall@k/MRR, faithfulness, task success, step rates | [Metrics by system shape](../notes/eval-metrics-by-system-type.md) |
+| 5 | How to align an LLM judge? | Expert pass/fail + critique → train/dev/test → TPR and TNR | [Aligning an LLM judge](../notes/aligning-an-llm-judge.md) |
+| 6 | Scenarios before production? | Dimensions → hand-written tuples → LLM tuples → messages in a separate prompt | [Synthetic scenarios before launch](../notes/synthetic-scenarios-before-launch.md) |
+| 7 | Evals once you have traces? | Error analysis: read ~100, note, group into <10 modes, count | [Error analysis on traces](../notes/error-analysis-on-traces.md) |
+| 8 | Keep the suite current? | New production failures → CI examples; retire tests that never fail | [The production-to-eval flywheel](../notes/production-to-eval-flywheel.md) |
+| 9 | Combine automated + human? | Humans discover and decide; automation scales; never outsource the judging | [Humans and automation](../notes/humans-and-automation-in-evals.md) |
+| 10 | Code-check best practices? | Test structure, state and behaviour per scenario, with pass and fail examples | [Code-check best practices](../notes/code-check-best-practices.md) |
+
+**How the ten connect.** An eval is a sensor on one behaviour (1). You find what to point sensors at with
+error analysis — on synthetic traces before launch (6), real traces after (7). Each failure mode becomes one
+check: code if a rule can decide it (10), a judge if not — and a judge only counts once it's aligned against
+expert labels (5); those are the two kinds (2). The system's shape decides how you split the checks (3) and
+which numbers you watch (4). Humans own discovery and the standard, automation owns scale (9), and the
+flywheel keeps the whole suite tied to what production is actually doing (8).
+
+**Where the Tide lessons meet the articles.** Error analysis (7) is what produced Tide's failure map
+([dimensions vs slices](../notes/dimensions-vs-slices.md)) and test audit ([whose fault is the
+failure](../notes/whose-fault-is-the-failure.md)). The judge-alignment procedure (5) would have caught Tide's
+shared few-shot example contradicting a test. And beware one word clash: in synthetic data (6) "dimensions"
+are axes of *input variation* — what the Tide lesson calls **slices** — not types of mistake.
+
+## The Tide lessons — read in this order
 
 ### 1 · Set up a fair experiment
 *An eval is a controlled experiment: the agent is real, the world is frozen.*

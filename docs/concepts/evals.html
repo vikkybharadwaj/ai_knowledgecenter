@@ -44,10 +44,11 @@
     <div class="eyebrow">Concepts · evals &amp; reliability</div>
     <h1>How do you know it actually works?</h1>
     <p class="sub">An AI product&rsquo;s quality isn&rsquo;t a feeling; it&rsquo;s a measurement. But the measurement is
-      itself a machine that can break, drift and lie. These lessons, one idea each and in plain words, were learned the
-      hard way by rebuilding a real eval system (the Tide money coach, September 2026). Read them in order: set up a
-      fair experiment, make sure the number means something, then grade the answer properly. Every card opens right
-      here on the page.</p>
+      itself a machine that can break, drift and lie. Start with <strong>your 10 questions</strong> &mdash; the mental model, distilled from
+      the best practitioner writing on evals. Then the numbered lessons: the same ideas learned the hard way by
+      rebuilding a real eval system (the Tide money coach, September 2026) &mdash; set up a fair experiment, make sure
+      the number means something, grade the answer properly, and know what your tests don&rsquo;t cover. Every card
+      opens right here on the page.</p>
   </section>
 
   <hr>
@@ -79,6 +80,19 @@
   var D = window.KC_DATA;
   if (!D) return;
   var GROUPS = [
+    { title: "Your 10 questions — the mental model", label: "QUESTION",
+      blurb: "Start here. Each card answers one question, distilled from the best practitioner writing on evals (Hamel Husain, Shreya Shankar, Aman Khan). The numbered groups below are the same ideas, learned the hard way on a real product.",
+      items: [
+        ["what-is-an-eval", "What is an eval, and why? A repeatable check of one behaviour — build product evals, not benchmarks."],
+        ["two-kinds-of-eval-check", "The two types: a code check when a rule can decide, an LLM judge when it takes judgment."],
+        ["evals-by-system-type", "Basic vs RAG vs agentic: split the eval along the system’s stages and find the first thing that broke."],
+        ["eval-metrics-by-system-type", "Key metrics for each shape — and why generic quality scores mislead."],
+        ["aligning-an-llm-judge", "Align a judge like a classifier: expert labels, train/dev/test, TPR and TNR."],
+        ["synthetic-scenarios-before-launch", "No users yet? Dimensions → tuples → messages, each in its own prompt."],
+        ["error-analysis-on-traces", "Have traces? Read ~100, note, group into under 10 failure modes, count."],
+        ["production-to-eval-flywheel", "Keep it current: production failures flow into CI; tests that never fail get retired."],
+        ["humans-and-automation-in-evals", "Humans discover and decide, automation scales — never outsource the judging."],
+        ["code-check-best-practices", "Code checks: test structure, state and behaviour, with pass and fail examples."] ] },
     { title: "1 · Set up a fair experiment",
       blurb: "An eval is a controlled experiment: the agent is real, the world is frozen. Get this wrong and every number after it is noise.",
       items: [
@@ -104,7 +118,7 @@
         ["sort-before-you-count", "Test count isn’t coverage. Sort every test onto the map, and re-sort before you re-grade."],
         ["whose-fault-is-the-failure", "A failing test isn’t evidence yet. Two-thirds of the failures were the test’s fault, not the AI’s."] ] }
   ];
-  var CONCEPTS = ["evals-reliability", "llm-as-judge"];
+  var CONCEPTS = ["evals-reliability", "error-analysis", "llm-as-judge"];
 
   var bySlug = {};
   (D.nodes || []).forEach(function (n) { bySlug[n.slug] = n; });
@@ -114,22 +128,25 @@
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) {
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-  function card(slug, hook, num) {
+  function card(slug, hook, num, label) {
     var n = bySlug[slug];
     if (!n) return "";
     return '<a class="card kc-link" href="#" data-slug="' + esc(slug) + '"><span class="arrow">→</span>' +
-      (num ? '<div class="ev-num">LESSON ' + num + "</div>" : "") +
+      (num ? '<div class="ev-num">' + esc(label || "LESSON") + " " + num + "</div>" : "") +
       "<h3>" + esc(n.title) + "</h3>" +
       (hook ? '<p class="ev-hook">' + esc(hook) + "</p>" : "") +
       '<div class="ev-foot">' + esc((D.layerLabels || {})[n.layer] || n.layer) + " · " + esc(n.depth || "") + "</div></a>";
   }
 
-  var html = "", listed = {}, num = 0;
+  // each label ("QUESTION", "LESSON") numbers its own cards, so the 10 questions and the Tide lessons
+  // keep independent numbering
+  var html = "", listed = {}, counters = {};
   GROUPS.forEach(function (g) {
+    var label = g.label || "LESSON";
     var cards = g.items.map(function (it) {
       if (!bySlug[it[0]]) return "";
-      listed[it[0]] = true; num += 1;
-      return card(it[0], it[1], num);
+      listed[it[0]] = true; counters[label] = (counters[label] || 0) + 1;
+      return card(it[0], it[1], counters[label], label);
     }).join("");
     if (!cards) return;
     html += '<section class="ev-group"><div class="section-head"><h2>' + esc(g.title) + "</h2></div>" +
