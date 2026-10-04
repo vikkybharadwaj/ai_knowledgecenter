@@ -11,7 +11,7 @@ date: 2026-09-18
 > **The question this section answers:** *how do you know an AI product actually works?* Quality isn't a
 > feeling; it's a measurement. But the measurement is a machine too, and it can break, drift and lie.
 > Two halves: **ten mental models** — how evals work, distilled from the best practitioner writing — and
-> **12 lessons** learned the hard way rebuilding a real eval system (the Tide money coach,
+> **17 lessons** learned the hard way rebuilding a real eval system (the Tide money coach,
 > September 2026). Each note is **one idea, in plain words, with one real example**.
 > The visual hub is `docs/concepts/evals.html`; this file is its running index.
 
@@ -54,7 +54,17 @@ failure](../notes/whose-fault-is-the-failure.md)). The judge-certification proce
 shared few-shot example contradicting a test. And beware one word clash: in synthetic data (2) "dimensions"
 are axes of *input variation* — what the Tide lesson calls **slices** — not types of mistake.
 
+## The eval lifecycle — eight steps in a loop
+The order you actually do things in, from [the eval lifecycle](../notes/eval-lifecycle.md): **(1)** write
+realistic questions from dimensions → **(2)** run the real system and record everything → **(3)** a human
+grades first; a judge only after it agrees on held-out examples → **(4)** group failures by first upstream
+cause → **(5)** fix each cause in the layer it lives in → **(6)** prove each fix (frozen replays for prompts,
+live re-runs for tools, one blind judge on both sides) → **(7)** read every changed verdict → **(8)** automate
+— then round again. The hub's "whole picture" draws this loop and links every step to its models and lessons.
+
 ## The Tide lessons — read in this order
+*Lessons 1–12 come from the original 81-fixture suite (September 2026); 13–17 from the rebuilt
+100-scenario, real-data suite (October 2026).*
 
 ### 1 · Set up a fair experiment
 *An eval is a controlled experiment: the agent is real, the world is frozen.*
@@ -83,6 +93,15 @@ are axes of *input variation* — what the Tide lesson calls **slices** — not 
 11. [Sort your tests onto the map before trusting the count](../notes/sort-before-you-count.md) — "81 tests" isn't coverage. Label every test, draw the grid, and read the piles, the gaps and the thin red lines. Re-sort before you re-grade.
 12. [When a test fails, find out whose fault it is before you fix anything](../notes/whose-fault-is-the-failure.md) — a failing test isn't evidence until you know whose fault it is. In a real suite 24 failures were the test's and 9 the AI's; the quiet ones are the checks that can't fail.
 
+### 5 · Fix it, and prove the fix
+*Most failures are the system's, not the model's: in round 1, 45 of 53 were prompt, tool, engine or data problems.*
+
+13. [Fix the failure in the layer it lives in](../notes/fix-the-layer-it-lives-in.md) — prompts for behaviour; tools and data for facts. A prompt can't out-argue a confidently wrong tool.
+14. [Frozen replay](../notes/frozen-replay.md) — record a live run, replay it under the change with the clock pinned; only the change differs. Not for tool or engine fixes — those need live re-runs.
+15. [Same judge on both sides, blind](../notes/same-judge-blind-grading.md) — freeze the judge, re-grade "before" with it, and keep graders blind to which side is which.
+16. [A fix can overreach](../notes/fixes-can-overreach.md) — the total can rise while new failures hide underneath; read every Pass → Fail.
+17. [Code checks before judges](../notes/code-checks-before-judges.md) — for an agent, the trace is the answer key: every figure must come from a tool output.
+
 ## How the lessons connect (the big picture in one paragraph)
 Freezing the world (1, 3) is what makes a right answer knowable, and copied facts (4) are how the frozen
 world quietly unfreezes. A frozen world still gives noisy scores, because the model rewords every run (6),
@@ -97,6 +116,6 @@ and read the empty squares, then audit the tests themselves (12) — because a f
 ## Next up (the backlog for this section)
 - [x] ~~**Defining "complete" with a failure-mode map**~~: landed as [dimensions vs slices](../notes/dimensions-vs-slices.md) (Tide Stage 4c) and [sort before you count](../notes/sort-before-you-count.md) (step 4d part 1).
 - [x] ~~**Auditing the answer keys**~~: landed as [whose fault is the failure](../notes/whose-fault-is-the-failure.md) (Tide Stage 4d parts 2–3).
-- [ ] **Validating the judges against human grades** (Tide Stage 4e, in flight): judge–human agreement, and what removing the shared few-shot examples did to it.
-- [ ] **Rewriting the checks** (Stage 4f): turning brittle word checks into intent questions, and moving the release gate onto red lines.
+- [ ] **Certifying the per-type judges on a held-out human set** (in flight): partly covered by [same judge, blind](../notes/same-judge-blind-grading.md); the held-out certification numbers are still to come.
+- [x] ~~**Rewriting the checks**~~: the objective half landed as [code checks before judges](../notes/code-checks-before-judges.md) (trace-grounded code checks, tide #334). Still open: moving the release gate onto red lines.
 - [ ] **Eval & observability tooling**: Langfuse / LangSmith / Braintrust / Arize, from the [consulting map](building-ai-stacks.md) backlog.

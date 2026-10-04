@@ -36,6 +36,17 @@
   .ev-band .ev-node { margin:0; flex:1; }
   .ev-n { flex:0 0 auto; width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
           font-family:var(--mono); font-size:.7rem; font-weight:700; background:var(--accent); color:#06120c; }
+  .ev-stages.ev-four { grid-template-columns:1fr auto 1fr auto 1fr auto 1fr; }
+  .ev-step { padding:9px 10px; margin:6px 0; border-radius:8px; border:1px solid var(--border); background:var(--bg-card-solid); }
+  .ev-step-t { display:flex; gap:9px; align-items:flex-start; font-size:.83rem; line-height:1.35; color:var(--text); }
+  .ev-sn { flex:0 0 auto; width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
+           font-family:var(--mono); font-size:.7rem; font-weight:700; border:1.5px solid var(--accent-2); color:var(--accent-2); }
+  .ev-chips { display:flex; flex-wrap:wrap; gap:4px; margin:7px 0 0 31px; }
+  .ev-chips a { font-family:var(--mono); font-size:.64rem; padding:2px 7px; border-radius:999px; border:1px solid var(--border);
+                color:var(--text-soft); text-decoration:none; }
+  .ev-chips a.m { border-color:color-mix(in srgb, var(--accent) 45%, transparent); }
+  .ev-chips a.l { border-color:color-mix(in srgb, var(--accent-2) 45%, transparent); }
+  .ev-chips a:hover { color:var(--text); }
   .ev-loop { display:flex; align-items:center; gap:8px; justify-content:center; font-family:var(--mono); font-size:.72rem;
              color:var(--text-dim); padding:8px 0 12px; }
   .ev-loop b { color:var(--accent); font-size:1rem; }
@@ -79,7 +90,7 @@
   .ev-concepts { margin-top:12px; }
 
   @media (max-width: 880px) {
-    .ev-stages { grid-template-columns:1fr; }
+    .ev-stages, .ev-stages.ev-four { grid-template-columns:1fr; }
     .ev-arrow { transform:rotate(90deg); padding:2px 0; }
     .ev-model { padding:18px 16px; }
     .ev-band { flex-direction:column; align-items:stretch; }
@@ -110,7 +121,7 @@
     <h1>How do you know it actually works?</h1>
     <p class="sub">An AI product&rsquo;s quality isn&rsquo;t a feeling; it&rsquo;s a measurement &mdash; and the measurement is a
       machine that can break, drift and lie. This page is <strong>ten mental models</strong> for building evals you can trust,
-      <strong>one picture</strong> of how they fit together, and <strong>twelve lessons</strong> from rebuilding a real eval
+      <strong>one picture</strong> of how they fit together, and <strong>lessons</strong> from rebuilding a real eval
       system. Read it top to bottom; every idea opens in place.</p>
     <div class="ev-jump">
       <a href="#picture">1 · The whole picture</a>
@@ -123,39 +134,11 @@
   <!-- 1 · THE WHOLE PICTURE (static: the shape of the ideas; nodes jump to the models below) -->
   <section class="ev-sec" id="picture">
     <h2>The whole picture</h2>
-    <p class="ev-lede">Evals are a loop, not a one-off test. You find what goes wrong, turn each failure into a check, run
-      the checks forever &mdash; and let what production teaches you feed the next round. Click any idea to jump to it.</p>
-    <div class="ev-map">
-      <div class="ev-band"><span class="ev-band-k">The foundation</span>
-        <a class="ev-node" href="#m-what-is-an-eval"><span class="ev-n">1</span>An eval is a sensor on one behaviour &mdash; product evals, not benchmarks</a></div>
-      <div class="ev-stages">
-        <div class="ev-stage">
-          <div class="ev-stage-k">Stage A</div><h4>Find what to measure</h4>
-          <p>You can only measure the failures you&rsquo;ve found.</p>
-          <a class="ev-node" href="#m-synthetic-scenarios-before-launch"><span class="ev-n">2</span>Before launch: generate scenarios from dimensions</a>
-          <a class="ev-node" href="#m-error-analysis-on-traces"><span class="ev-n">3</span>After launch: error analysis finds what to measure</a>
-        </div>
-        <div class="ev-arrow" aria-hidden="true">&rarr;</div>
-        <div class="ev-stage">
-          <div class="ev-stage-k">Stage B</div><h4>Build the checks</h4>
-          <p>One check per failure mode, shaped to the system.</p>
-          <a class="ev-node" href="#m-two-kinds-of-eval-check"><span class="ev-n">4</span>Rule or judgment picks the check</a>
-          <a class="ev-node" href="#m-code-check-best-practices"><span class="ev-n">5</span>Code checks: structure, state, behaviour</a>
-          <a class="ev-node" href="#m-aligning-an-llm-judge"><span class="ev-n">6</span>A judge is a classifier &mdash; certify it</a>
-          <a class="ev-node" href="#m-evals-by-system-type"><span class="ev-n">7</span>Split the eval along the system&rsquo;s stages</a>
-        </div>
-        <div class="ev-arrow" aria-hidden="true">&rarr;</div>
-        <div class="ev-stage">
-          <div class="ev-stage-k">Stage C</div><h4>Measure &amp; keep it current</h4>
-          <p>Numbers you can act on, and a suite that follows the product.</p>
-          <a class="ev-node" href="#m-eval-metrics-by-system-type"><span class="ev-n">8</span>Every metric maps to a real failure</a>
-          <a class="ev-node" href="#m-production-to-eval-flywheel"><span class="ev-n">9</span>The suite is a flywheel, not a snapshot</a>
-        </div>
-      </div>
-      <div class="ev-loop"><b>&#8634;</b> new failures from production go back to Stage A &mdash; that&rsquo;s the flywheel</div>
-      <div class="ev-band"><span class="ev-band-k">Across it all</span>
-        <a class="ev-node" href="#m-humans-and-automation-in-evals"><span class="ev-n">10</span>Humans set the standard; automation scales it</a></div>
-    </div>
+    <p class="ev-lede">Evals are a loop, not a test suite you write once: find what goes wrong, grade it honestly, fix each
+      cause where it lives, prove the fix &mdash; then automate, and go round again. Each step links to the mental models
+      (<b>M</b>) and real-build lessons (<b>L</b>) that explain it. Prefer prose? Read
+      <a href="#" class="kc-link" data-slug="eval-lifecycle">the whole loop as one note</a>.</p>
+    <div class="ev-map" id="ev-loop"></div>
   </section>
 
   <!-- 2 · TEN MENTAL MODELS (rendered from the notes in knowledge.js) -->
@@ -169,7 +152,7 @@
   <!-- 3 · LESSONS FROM A REAL BUILD -->
   <section class="ev-sec" id="lessons">
     <h2>Lessons from a real build</h2>
-    <p class="ev-lede">The same ideas, learned by rebuilding the eval system for the Tide money coach (September 2026) &mdash;
+    <p class="ev-lede">The same ideas, learned by rebuilding the eval system for the Tide money coach (September&ndash;October 2026) &mdash;
       each one a real failure, what caused it, and the rule it taught. Open any lesson to read it here.</p>
     <div id="ev-lessons"></div>
   </section>
@@ -204,22 +187,22 @@
   var MODELS = [
     { slug: "what-is-an-eval", name: "An eval is a sensor on one behaviour", stage: "The foundation",
       lessons: ["offline-vs-online-evals", "evals-test-judgment"] },
-    { slug: "synthetic-scenarios-before-launch", name: "Generate scenarios from dimensions, not one prompt", stage: "Stage A · Find what to measure",
+    { slug: "synthetic-scenarios-before-launch", name: "Generate scenarios from dimensions, not one prompt", stage: "Loop step 1 · Write realistic questions",
       lessons: ["freeze-everything-the-model-sees", "offline-vs-online-evals"] },
-    { slug: "error-analysis-on-traces", name: "Error analysis finds what to measure", stage: "Stage A · Find what to measure",
-      lessons: ["dimensions-vs-slices", "sort-before-you-count", "whose-fault-is-the-failure"] },
-    { slug: "two-kinds-of-eval-check", name: "Rule or judgment picks the check", stage: "Stage B · Build the checks",
+    { slug: "error-analysis-on-traces", name: "Error analysis finds what to measure", stage: "Loop steps 3–4 · Grade and group",
+      lessons: ["dimensions-vs-slices", "sort-before-you-count", "whose-fault-is-the-failure", "fix-the-layer-it-lives-in"] },
+    { slug: "two-kinds-of-eval-check", name: "Rule or judgment picks the check", stage: "Loop step 8 · Automate the checks",
       lessons: ["three-kinds-of-grader", "word-checks-cant-read-meaning"] },
-    { slug: "code-check-best-practices", name: "Code checks test structure, state and behaviour", stage: "Stage B · Build the checks",
-      lessons: ["word-checks-cant-read-meaning", "safety-alarm-false-alarms"] },
-    { slug: "aligning-an-llm-judge", name: "A judge is a classifier — certify it", stage: "Stage B · Build the checks",
-      lessons: ["three-kinds-of-grader", "whose-fault-is-the-failure"] },
-    { slug: "evals-by-system-type", name: "Split the eval along the system’s stages", stage: "Stage B · Build the checks",
+    { slug: "code-check-best-practices", name: "Code checks test structure, state and behaviour", stage: "Loop step 8 · Automate the checks",
+      lessons: ["word-checks-cant-read-meaning", "safety-alarm-false-alarms", "code-checks-before-judges"] },
+    { slug: "aligning-an-llm-judge", name: "A judge is a classifier — certify it", stage: "Loop steps 3 & 8 · Trust the judge",
+      lessons: ["three-kinds-of-grader", "whose-fault-is-the-failure", "same-judge-blind-grading"] },
+    { slug: "evals-by-system-type", name: "Split the eval along the system’s stages", stage: "Loop steps 2 & 4 · The system’s shape",
       lessons: ["evals-test-judgment"] },
-    { slug: "eval-metrics-by-system-type", name: "Every metric maps to a real failure", stage: "Stage C · Measure & keep it current",
-      lessons: ["one-run-is-a-sample", "crashed-is-not-failed"] },
-    { slug: "production-to-eval-flywheel", name: "The suite is a flywheel, not a snapshot", stage: "Stage C · Measure & keep it current",
-      lessons: ["dont-copy-derive", "crashed-is-not-failed"] },
+    { slug: "eval-metrics-by-system-type", name: "Every metric maps to a real failure", stage: "Loop steps 6 & 8 · Measure",
+      lessons: ["one-run-is-a-sample", "crashed-is-not-failed", "frozen-replay"] },
+    { slug: "production-to-eval-flywheel", name: "The suite is a flywheel, not a snapshot", stage: "The loop itself · Keep it current",
+      lessons: ["dont-copy-derive", "crashed-is-not-failed", "fixes-can-overreach"] },
     { slug: "humans-and-automation-in-evals", name: "Humans set the standard; automation scales it", stage: "Across it all",
       lessons: ["safety-alarm-false-alarms", "whose-fault-is-the-failure"] }
   ];
@@ -248,9 +231,39 @@
       items: [
         ["dimensions-vs-slices", "Dimensions are what you grade; slices are how you cut the results."],
         ["sort-before-you-count", "Test count isn’t coverage. Sort every test onto the map."],
-        ["whose-fault-is-the-failure", "A failing test isn’t evidence until you know whose fault it is."] ] }
+        ["whose-fault-is-the-failure", "A failing test isn’t evidence until you know whose fault it is."] ] },
+    { title: "Fix it, and prove the fix",
+      blurb: "Most failures are the system’s, not the model’s. Fix each where it lives, and prove every fix fairly.",
+      items: [
+        ["fix-the-layer-it-lives-in", "Prompts for behaviour; tools and data for facts. A prompt can’t out-argue a wrong tool."],
+        ["frozen-replay", "Record a live run, replay it under the change — only the change differs."],
+        ["same-judge-blind-grading", "The same frozen judge on both sides, blind to which side is which."],
+        ["fixes-can-overreach", "The total can rise while new failures hide underneath. Read every regression."],
+        ["code-checks-before-judges", "For an agent, the trace is the answer key: every figure must come from a tool."] ] }
   ];
-  var CONCEPTS = ["evals-reliability", "error-analysis", "llm-as-judge"];
+  var CONCEPTS = ["evals-reliability", "error-analysis", "llm-as-judge", "frozen-replay"];
+  var SHOWN_ELSEWHERE = { "eval-lifecycle": true };   // linked from the picture's lede
+
+  // the eight-step loop (source: the eval-lifecycle note). Model and lesson numbers are looked up, never typed.
+  var PHASES = [ ["Find", "Find what to measure"], ["Grade", "Grade and group"], ["Fix", "Fix and prove"], ["Automate", "Automate"] ];
+  var STEPS = [
+    { phase: "Find", text: "Write realistic questions from dimensions",
+      models: ["synthetic-scenarios-before-launch"], lessons: [] },
+    { phase: "Find", text: "Run the real system on real data and record everything",
+      models: ["evals-by-system-type"], lessons: ["frozen-replay"] },
+    { phase: "Grade", text: "A human grades first; a judge only after it agrees on held-out examples",
+      models: ["aligning-an-llm-judge", "humans-and-automation-in-evals"], lessons: ["same-judge-blind-grading"] },
+    { phase: "Grade", text: "Group failures by their first upstream cause",
+      models: ["error-analysis-on-traces"], lessons: ["whose-fault-is-the-failure"] },
+    { phase: "Fix", text: "Fix the cause in the layer it lives in — prompt, tool, engine or data",
+      models: [], lessons: ["fix-the-layer-it-lives-in"] },
+    { phase: "Fix", text: "Prove each fix: frozen replays for prompts, live re-runs for tools; one blind judge on both sides",
+      models: ["eval-metrics-by-system-type"], lessons: ["frozen-replay", "same-judge-blind-grading"] },
+    { phase: "Fix", text: "Read every changed verdict — a fix can overreach",
+      models: [], lessons: ["fixes-can-overreach", "one-run-is-a-sample"] },
+    { phase: "Automate", text: "Code checks for the objective, certified judges for judgment calls, a rate with a range",
+      models: ["two-kinds-of-eval-check", "code-check-best-practices", "aligning-an-llm-judge"], lessons: ["code-checks-before-judges"] }
+  ];
 
   var bySlug = {}; (D.nodes || []).forEach(function (n) { bySlug[n.slug] = n; });
   var cBySlug = {}; (D.concepts || []).forEach(function (c) { cBySlug[c.slug] = c; });
@@ -281,6 +294,34 @@
   // MODELS is already in reading order (it follows the picture: foundation, A, B, C, across)
   var ORDER = MODELS.map(function (m) { return m.slug; });
   var mBySlug = {}; MODELS.forEach(function (m) { mBySlug[m.slug] = m; });
+  (function renderLoop() {
+    var stepNo = 0;
+    function chips(st) {
+      return st.models.filter(function (m) { return modelNo[m]; }).map(function (m) {
+          return '<a class="m" href="#m-' + esc(m) + '" title="' + esc(mBySlug[m].name) + '">M' + modelNo[m] + "</a>"; }).join("") +
+        st.lessons.filter(function (l) { return lessonNum[l]; }).map(function (l) {
+          return '<a class="l" href="#l-' + esc(l) + '" title="' + esc(bySlug[l].title) + '">L' + lessonNum[l] + "</a>"; }).join("");
+    }
+    var cols = PHASES.map(function (ph) {
+      var steps = STEPS.filter(function (st) { return st.phase === ph[0]; }).map(function (st) {
+        stepNo += 1; var c = chips(st);
+        return '<div class="ev-step"><div class="ev-step-t"><span class="ev-sn">' + stepNo + "</span><span>" + esc(st.text) +
+               "</span></div>" + (c ? '<div class="ev-chips">' + c + "</div>" : "") + "</div>";
+      }).join("");
+      return '<div class="ev-stage"><div class="ev-stage-k">' + esc(ph[0]) + "</div><h4>" + esc(ph[1]) + "</h4>" + steps + "</div>";
+    });
+    function band(k, slug) {
+      return '<div class="ev-band"><span class="ev-band-k">' + k + '</span><a class="ev-node" href="#m-' + slug +
+             '"><span class="ev-n">' + modelNo[slug] + "</span>" + esc(mBySlug[slug].name) + "</a></div>";
+    }
+    document.getElementById("ev-loop").innerHTML =
+      band("The foundation", "what-is-an-eval") +
+      '<div class="ev-stages ev-four">' + cols.join('<div class="ev-arrow" aria-hidden="true">&rarr;</div>') + "</div>" +
+      '<div class="ev-loop"><b>&#8634;</b> then round again — <a href="#m-production-to-eval-flywheel">M' +
+        modelNo["production-to-eval-flywheel"] + " · " + esc(mBySlug["production-to-eval-flywheel"].name) + "</a></div>" +
+      band("Across it all", "humans-and-automation-in-evals");
+  })();
+
   document.getElementById("ev-models").innerHTML = ORDER.map(function (slug) {
     var m = mBySlug[slug], note = bySlug[slug];
     if (!m || !note) return "";
@@ -316,7 +357,7 @@
   // derived guarantee: any other evals-tagged note still shows up, so the page can't silently go stale
   var inModels = {}; MODELS.forEach(function (m) { inModels[m.slug] = true; });
   var extra = (D.nodes || []).filter(function (x) {
-    return (x.tags || []).indexOf("evals") !== -1 && !listed[x.slug] && !inModels[x.slug];
+    return (x.tags || []).indexOf("evals") !== -1 && !listed[x.slug] && !inModels[x.slug] && !SHOWN_ELSEWHERE[x.slug];
   });
   if (extra.length) {
     html += '<p class="ev-related">Related notes: ' + extra.map(function (x) {
