@@ -68,7 +68,7 @@ users get hurt: a correct calculation, quoted wrong.
 ## Provenance & caveats
 - ✅ The tool check compares tool **names** only; the input is never checked (`evals/judges/code_checks.ts`).
 - ✅ The AI judge sees tool names, never tool data (`evals/judges/llm_judge.ts`).
-- ❓ "Every dollar amount must appear in the tool data" is a proposed check, not yet built in Tide.
+- ✅ (updated 2026-10-04) "Every dollar amount must appear in the tool data" — first proposed here — is now built: Tide's figure-grounding code check (tide #334), calibrated against the judge. See [code checks before judges](code-checks-before-judges.md).
 Checked against the tide repo on 2026-09-18 by a separate fact-check pass.
 
 ## Connections
