@@ -98,6 +98,28 @@
     <h2 class="cl-date">October 5, 2026</h2>
     <ul class="cl-items">
     <li class="cl-item">
+      <p class="cl-head"><span class="cl-tag cl-tag-fix">Fix</span><span class="cl-text">Circles are only for loop steps; models and lessons always say M#/L#</span></p>
+      <p class="cl-desc">The Evals page had bare numbers in the same visual style for two different things: green circles &quot;1&quot; (foundation) and &quot;10&quot; (across it all) were mental models M1/M10 but read as steps 1 and 10, next to the loop&#x27;s step circles 1-8. Model cards repeated it (a green &quot;2&quot; for M2).</p>
+      <details class="cl-files">
+        <summary>What changed · 2 files</summary>
+        <ul class="cl-flist">
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/7388537033e7203a3df576de495bdbc6f976e05f#diff-5c15e28d1e3331250743cc136d2c3684e1068ec86dc8e82743bae4dc66374c11" target="_blank" rel="noopener">LEARNINGS.md</a></li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">docs/concepts/evals.html</a><a class="cl-fdiff" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/7388537033e7203a3df576de495bdbc6f976e05f#diff-7e8c797525d5461b2e90850bac568a9d95cd3442baea142d7d0188766abfb29a" target="_blank" rel="noopener">diff</a>
+        <ul class="cl-changes">
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-chips a.m { border-color:color-mix(in srgb, var(--accent) 45%, transparent); }</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-chips a.l { border-color:color-mix(in srgb, var(--accent-2) 45%, transparent); }</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-chips a.m { border-color:color-mix(in srgb, var(--accent) 55%, transparent); color:var(--accent); }</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-chips a.l { border-color:color-mix(in srgb, var(--accent-2) 55%, transparent); color:var(--accent-2); }</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-model-head .ev-n { width:30px; height:30px; font-size:.85rem; margin-top:3px; }</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">/* numbering rule: circles (.ev-sn) are ONLY loop steps; models and lessons are always labelled pills */</a></li>
+          <li class="cl-chg-more">+17 more changed lines</li>
+        </ul>
+        </li>
+        </ul>
+      </details>
+      <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/82" target="_blank" rel="noopener">PR #82 →</a></div>
+    </li>
+    <li class="cl-item">
       <p class="cl-head"><span class="cl-tag cl-tag-new">New</span><span class="cl-text">One structure, one numbering — the page walks the loop the picture draws</span></p>
       <p class="cl-desc">Two pieces of feedback on the Evals page: 1. Not every lesson and mental model was reachable from the loop diagram. 2. The diagram&#x27;s numbering and structure didn&#x27;t match the content below. There were three parallel schemes: steps 1-8, models M1-10 in their own order, and lessons L1-17 under five different stage headings.</p>
       <details class="cl-files">
