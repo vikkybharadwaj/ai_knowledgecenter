@@ -87,7 +87,6 @@
   .ev-lhook .ev-illus { color:var(--text-dim); font-family:var(--mono); font-size:.7rem; margin-left:6px; white-space:nowrap; }
   details.ev-lesson > .markdown { padding:4px 18px 14px; border-top:1px solid var(--border); }
   .ev-related { margin-top:18px; color:var(--text-dim); font-size:.85rem; }
-  .ev-concepts { margin-top:12px; }
 
   @media (max-width: 880px) {
     .ev-stages, .ev-stages.ev-four { grid-template-columns:1fr; }
@@ -127,7 +126,6 @@
       <a href="#picture">1 · The whole picture</a>
       <a href="#models">2 · Ten mental models</a>
       <a href="#lessons">3 · Lessons from a real build</a>
-      <a href="#concepts">4 · On the concept graph</a>
     </div>
   </section>
 
@@ -155,14 +153,6 @@
     <p class="ev-lede">The same ideas, learned by rebuilding the eval system for the Tide money coach (September&ndash;October 2026) &mdash;
       each one a real failure, what caused it, and the rule it taught. Open any lesson to read it here.</p>
     <div id="ev-lessons"></div>
-  </section>
-
-  <!-- 4 · CONCEPT NODES -->
-  <section class="ev-sec" id="concepts">
-    <h2>On the concept graph</h2>
-    <p class="ev-lede">The models and lessons are the <em>sources</em>; these are the nodes they back on the
-      <a href="graph.html">concept graph</a>. The <a href="#" class="kc-link" data-slug="evals">Evals map</a> is the running index.</p>
-    <div class="grid cols-3 ev-concepts" id="ev-concepts"></div>
   </section>
 
 </main>
@@ -241,7 +231,6 @@
         ["fixes-can-overreach", "The total can rise while new failures hide underneath. Read every regression."],
         ["code-checks-before-judges", "For an agent, the trace is the answer key: every figure must come from a tool."] ] }
   ];
-  var CONCEPTS = ["evals-reliability", "error-analysis", "llm-as-judge", "frozen-replay"];
   var SHOWN_ELSEWHERE = { "eval-lifecycle": true };   // linked from the picture's lede
 
   // the eight-step loop (source: the eval-lifecycle note). Model and lesson numbers are looked up, never typed.
@@ -266,7 +255,6 @@
   ];
 
   var bySlug = {}; (D.nodes || []).forEach(function (n) { bySlug[n.slug] = n; });
-  var cBySlug = {}; (D.concepts || []).forEach(function (c) { cBySlug[c.slug] = c; });
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) {
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
@@ -365,15 +353,6 @@
     }).join(" · ") + "</p>";
   }
   document.getElementById("ev-lessons").innerHTML = html;
-
-  // ---- concept cards ----
-  document.getElementById("ev-concepts").innerHTML = CONCEPTS.map(function (slug) {
-    var c = cBySlug[slug];
-    if (!c) return "";
-    return '<a class="card kc-link" href="#" data-slug="' + esc(slug) + '"><span class="arrow">→</span>' +
-      '<div class="ev-kicker">' + esc((c.kind || "concept").toUpperCase()) + "</div><h3>" + esc(c.title) + "</h3>" +
-      '<p class="ev-lhook">' + esc(c.summary || "") + "</p></a>";
-  }).join("");
 
   // jumping to a lesson (#l-…) opens it in place
   function openFromHash() {

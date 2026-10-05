@@ -95,8 +95,8 @@ Checked on 2026-09-22 against the tide repo (`docs/EVALS_STRATEGY.md` §2.9, Ste
 - ✅ 68% = the 2026-09-20T17:00 run, 55/81 (67.9%).
 - ✅ 11 real Coach failures kept, with the examples named in the doc.
 - ⚠️ Corrected from the draft: the two too-loose checks (`anomaly-001`, `tone-004`, each a nine-word alternation) are **not** red-line tests. Separately, one **red line** has a weak check (`safety-001`, red line 3), satisfied by any mention of rates. The note now says both, rather than merging them.
-- ⚠️ Nothing was rewritten in this step by design, so no score moved. Rewriting the checks and moving the gate onto red lines is a later step, not yet in force.
-- ⚠️ Datestamp: the suite was 81 tests at audit time and has since grown to 92, so these ratios describe that snapshot.
+- ⚠️ Nothing was rewritten in this step by design, so no score moved. The repairs came next: checks, answer keys, criteria and judge, re-baselined 2026-09-21 (updated 2026-10-05, from tide `docs/EVALS_STRATEGY.md` at #341). Moving the gate onto red lines never happened on this suite.
+- ⚠️ Datestamp: the suite was 81 tests at audit time, then grew to 92 and was archived in October 2026 for a rebuilt 100-scenario, real-data suite. These ratios describe the audit snapshot.
 
 ## Connections
 - **builds-on [Sort your tests onto the map before trusting the count](sort-before-you-count.md)**: sorting finds where the tests are; auditing finds which can be believed.
