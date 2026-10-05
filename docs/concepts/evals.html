@@ -44,8 +44,8 @@
   .ev-chips { display:flex; flex-wrap:wrap; gap:4px; margin:7px 0 0 31px; }
   .ev-chips a { font-family:var(--mono); font-size:.64rem; padding:2px 7px; border-radius:999px; border:1px solid var(--border);
                 color:var(--text-soft); text-decoration:none; }
-  .ev-chips a.m { border-color:color-mix(in srgb, var(--accent) 45%, transparent); }
-  .ev-chips a.l { border-color:color-mix(in srgb, var(--accent-2) 45%, transparent); }
+  .ev-chips a.m { border-color:color-mix(in srgb, var(--accent) 55%, transparent); color:var(--accent); }
+  .ev-chips a.l { border-color:color-mix(in srgb, var(--accent-2) 55%, transparent); color:var(--accent-2); }
   .ev-chips a:hover { color:var(--text); }
   .ev-loop { display:flex; align-items:center; gap:8px; justify-content:center; font-family:var(--mono); font-size:.72rem;
              color:var(--text-dim); padding:8px 0 12px; }
@@ -55,7 +55,14 @@
   .ev-model { border:1px solid var(--border); border-radius:var(--radius); padding:22px 24px; margin:0 0 16px;
               background:var(--bg-card); scroll-margin-top:80px; }
   .ev-model-head { display:flex; gap:14px; align-items:flex-start; }
-  .ev-model-head .ev-n { width:30px; height:30px; font-size:.85rem; margin-top:3px; }
+  /* numbering rule: circles (.ev-sn) are ONLY loop steps; models and lessons are always labelled pills */
+  .ev-tag { flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center; min-width:30px; padding:2px 8px;
+            border-radius:999px; font-family:var(--mono); font-size:.7rem; font-weight:700; letter-spacing:.02em; }
+  .ev-tag.m { color:var(--accent); border:1px solid color-mix(in srgb, var(--accent) 55%, transparent); background:color-mix(in srgb, var(--accent) 10%, transparent); }
+  .ev-tag.l { color:var(--accent-2); border:1px solid color-mix(in srgb, var(--accent-2) 55%, transparent); background:color-mix(in srgb, var(--accent-2) 10%, transparent); }
+  .ev-model-head .ev-tag { font-size:.8rem; padding:4px 10px; margin-top:4px; }
+  .ev-lnum { align-items:center; align-self:start; }
+  .ev-lnum .ev-tag { font-size:.68rem; letter-spacing:.02em; text-transform:none; align-self:center; }
   .ev-kicker { font-family:var(--mono); font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-dim); }
   .ev-model h3 { margin:2px 0 0; font-size:1.25rem; letter-spacing:-.4px; }
   .ev-model .ev-tldr { margin:12px 0 4px; }
@@ -268,7 +275,7 @@
   function band(f) {
     var m = f.models[0];
     return '<div class="ev-band"><span class="ev-band-k">' + esc(f.band) + '</span><a class="ev-node" href="#' + f.id + '">' +
-      '<span class="ev-n">' + mNo[m] + "</span>" + esc(NAMES[m] || bySlug[m].title) + "</a>" +
+      '<span class="ev-tag m">M' + mNo[m] + "</span>" + esc(NAMES[m] || bySlug[m].title) + "</a>" +
       (f.lessons.length ? '<span class="ev-chips" style="margin:0">' + f.lessons.map(function (l) {
         return '<a class="l" href="#l-' + l + '" title="' + esc(bySlug[l].title) + '">L' + lNo[l] + "</a>"; }).join("") + "</span>" : "") + "</div>";
   }
@@ -284,15 +291,15 @@
   var lp = byId["loop"].models[0];
   document.getElementById("ev-loop").innerHTML = band(byId["foundation"]) +
     '<div class="ev-stages ev-four">' + cols.join('<div class="ev-arrow" aria-hidden="true">&rarr;</div>') + "</div>" +
-    '<div class="ev-loop"><b>&#8634;</b> then round again — <a href="#loop">M' + mNo[lp] + " · " + esc(NAMES[lp]) + "</a></div>" +
+    '<div class="ev-loop"><b>&#8634;</b> then round again — <a class="ev-node" style="display:inline-flex;margin:0" href="#loop"><span class="ev-tag m">M' + mNo[lp] + "</span>" + esc(NAMES[lp]) + "</a></div>" +
     band(byId["across"]);
 
   // ---- walk the loop: same order, same numbers ----
   function modelCard(slug) {
     var note = bySlug[slug], p = parts(note.html);
     return '<article class="ev-model" id="m-' + slug + '">' +
-      '<div class="ev-model-head"><span class="ev-n">' + mNo[slug] + '</span><div>' +
-      '<div class="ev-kicker">Mental model M' + mNo[slug] + "</div><h3>" + esc(NAMES[slug] || note.title) + "</h3></div></div>" +
+      '<div class="ev-model-head"><span class="ev-tag m">M' + mNo[slug] + '</span><div>' +
+      '<div class="ev-kicker">Mental model</div><h3>' + esc(NAMES[slug] || note.title) + "</h3></div></div>" +
       '<div class="markdown ev-tldr">' + p.tldr + "</div>" +
       '<details class="ev-deep"><summary>Go deeper — the full model, worked examples and sources</summary><div class="markdown">' + p.rest + "</div></details>" +
       "</article>";
@@ -300,7 +307,7 @@
   function lessonRow(slug) {
     var note = bySlug[slug], p = parts(note.html);
     return '<details class="ev-lesson" id="l-' + slug + '"><summary>' +
-      '<span class="ev-lnum"><span class="ev-chev"></span>Lesson L' + lNo[slug] + "</span>" +
+      '<span class="ev-lnum"><span class="ev-chev"></span><span class="ev-tag l">L' + lNo[slug] + "</span></span>" +
       '<span class="ev-ltitle">' + esc(note.title) + "</span>" +
       '<span class="ev-lhook">' + esc(HOOKS[slug] || "") + "</span>" +
       '</summary><div class="markdown"><h2>TL;DR</h2>' + p.tldr + p.rest + "</div></details>";
