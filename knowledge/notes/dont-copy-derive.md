@@ -62,7 +62,7 @@ Checked on 2026-09-18 against the tide repo by a separate fact-check pass:
 - ✅ The eval config had `COACH_MODEL = 'claude-sonnet-4-20250514' // same as production`. Production used the Bedrock profile `us.anthropic.claude-sonnet-4-20250514-v1:0`, which kept serving.
 - ✅ Answer limits: eval 1,024 vs production 4,096 tokens (fixed in `ddfed05`).
 - ✅ Frozen dates: 59 June, 19 March, 2 April, 1 February, hence "mostly June".
-- ✅ `docs/evals-map.html` (at `7737094`) showed a "30 FIXTURES" badge and 8 cards, one of them for the deleted `proj-acc-007`. Generating the list from the fixture files is planned (Tide Stage 5), not yet shipped.
+- ✅ `docs/evals-map.html` (at `7737094`) showed a "30 FIXTURES" badge and 8 cards, one of them for the deleted `proj-acc-007`. ✅ Now done (updated 2026-10-05, from tide `docs/EVALS_STRATEGY.md` at #341): the scripted-suite map is a fully generated page (`evals/scripts/generate_evals_archive.ts` builds `docs/evals-archive.html`; tide #339). Its predecessor was hand-written.
 - ✅ Prompt and tools are imported from production (`evals/runner.ts` imports `buildCoachSystemPrompt` and `coachToolConfig`).
 
 ## Connections

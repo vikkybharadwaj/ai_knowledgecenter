@@ -88,7 +88,7 @@ Checked on 2026-09-20 against the tide repo by a separate fact-check pass (tide 
 - ✅ Thin red lines: "shares anyone else's financial information", "pushes a purchase under pressure" and "misses a shortfall warning" have one fixture each. Legal advice has no fixture of its own (the two tests on that red line are about investment advice; tax appears only inside a prompt-injection test).
 - ✅ Labels live in the fixture files and the runner hard-validates them: `evals/scripts/run_suite.ts` throws before any API call if a `map_dimension`/`job`/`red_line` is missing or unknown, and writes no results file.
 - ✅ Past runs were not re-run: the dashboard resolves each result's fixture id to its current labels (`evals/scripts/generate_dashboard.ts`).
-- ⚠️ Still to come in Tide (so don't read them as done): moving grading and the gate off the legacy dimensions, and rewriting the word checks into intent-based judge questions.
+- ⚠️ What happened next (updated 2026-10-05, from tide `docs/EVALS_STRATEGY.md` at #341): the word checks, answer keys, criteria and judge were repaired, and the 92-test suite re-baselined at 66–71 of 92 (72–77%) on 2026-09-21. In October it was archived for a rebuilt 100-scenario, real-data suite. Moving its gate off the legacy dimensions was never done.
 
 ## Connections
 - **builds-on [Dimensions vs slices](dimensions-vs-slices.md)**: this is that map put to use.
