@@ -86,6 +86,16 @@
   .ev-lhook { color:var(--text-soft); font-size:.86rem; }
   .ev-lhook .ev-illus { color:var(--text-dim); font-family:var(--mono); font-size:.7rem; margin-left:6px; white-space:nowrap; }
   details.ev-lesson > .markdown { padding:4px 18px 14px; border-top:1px solid var(--border); }
+  .ev-phase { margin:34px 0 6px; padding-top:14px; border-top:1px solid var(--border); scroll-margin-top:80px; }
+  .ev-phase .ev-stage-k { font-family:var(--mono); font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); }
+  .ev-phase h3 { margin:2px 0 0; font-size:1.3rem; }
+  .ev-stepsec { margin:18px 0 6px; scroll-margin-top:80px; }
+  .ev-stephead { display:flex; gap:10px; align-items:flex-start; margin:0 0 10px; }
+  .ev-stephead .ev-sn { width:26px; height:26px; font-size:.78rem; margin-top:1px; }
+  .ev-stephead h4 { margin:0; font-size:1.02rem; line-height:1.4; }
+  .ev-stephead .ev-kicker { margin-bottom:2px; }
+  .ev-steplink { color:inherit; text-decoration:none; }
+  .ev-steplink:hover { text-decoration:underline; }
   .ev-related { margin-top:18px; color:var(--text-dim); font-size:.85rem; }
 
   @media (max-width: 880px) {
@@ -123,9 +133,12 @@
       <strong>one picture</strong> of how they fit together, and <strong>lessons</strong> from rebuilding a real eval
       system. Read it top to bottom; every idea opens in place.</p>
     <div class="ev-jump">
-      <a href="#picture">1 · The whole picture</a>
-      <a href="#models">2 · Ten mental models</a>
-      <a href="#lessons">3 · Lessons from a real build</a>
+      <a href="#picture">The whole picture</a>
+      <a href="#walk">Walk the loop</a>
+      <a href="#p-Find">Find</a>
+      <a href="#p-Grade">Grade</a>
+      <a href="#p-Fix">Fix &amp; prove</a>
+      <a href="#p-Automate">Automate</a>
     </div>
   </section>
 
@@ -133,26 +146,19 @@
   <section class="ev-sec" id="picture">
     <h2>The whole picture</h2>
     <p class="ev-lede">Evals are a loop, not a test suite you write once: find what goes wrong, grade it honestly, fix each
-      cause where it lives, prove the fix &mdash; then automate, and go round again. Each step links to the mental models
-      (<b>M</b>) and real-build lessons (<b>L</b>) that explain it. Prefer prose? Read
+      cause where it lives, prove the fix &mdash; then automate, and go round again. Click a step to jump to it below; the
+      <b>M</b> and <b>L</b> chips are exactly the mental models and real-build lessons you&rsquo;ll find under that step. Prefer prose? Read
       <a href="#" class="kc-link" data-slug="eval-lifecycle">the whole loop as one note</a>.</p>
     <div class="ev-map" id="ev-loop"></div>
   </section>
 
-  <!-- 2 · TEN MENTAL MODELS (rendered from the notes in knowledge.js) -->
-  <section class="ev-sec" id="models">
-    <h2>Ten mental models</h2>
-    <p class="ev-lede">In the order you&rsquo;d use them. Each shows its core idea here; <em>go deeper</em> opens the full model in
-      place, and the chips jump to the lessons where it was learned the hard way.</p>
-    <div id="ev-models"></div>
-  </section>
-
-  <!-- 3 · LESSONS FROM A REAL BUILD -->
-  <section class="ev-sec" id="lessons">
-    <h2>Lessons from a real build</h2>
-    <p class="ev-lede">The same ideas, learned by rebuilding the eval system for the Tide money coach (September&ndash;October 2026) &mdash;
-      each one a real failure, what caused it, and the rule it taught. Open any lesson to read it here.</p>
-    <div id="ev-lessons"></div>
+  <!-- 2 · WALK THE LOOP: the same structure and numbering as the picture -->
+  <section class="ev-sec" id="walk">
+    <h2>Walk the loop</h2>
+    <p class="ev-lede">The picture, step by step. Under each step: the <b>mental model</b> behind it (its core idea shown,
+      <em>go deeper</em> opens the full model in place), then the <b>lessons</b> from rebuilding the Tide money coach&rsquo;s
+      eval system (September&ndash;October 2026) where it was learned the hard way.</p>
+    <div id="ev-walk"></div>
   </section>
 
 </main>
@@ -167,99 +173,73 @@
 <script src="../assets/knowledge.js"></script>
 <script src="../assets/reader.js"></script>
 <script>
-/* Everything below the picture is DERIVED from window.KC_DATA: this page owns only the order, the
-   short model names, the one-line lesson hooks and which lessons illustrate which model. The text
-   itself (TL;DR + full note) comes from the notes, so the page can't drift from the vault. */
+/* ONE structure drives the whole page: FLOW (from the eval-lifecycle note). Each mental model and each lesson has
+   exactly one home step; M# and L# are numbered in reading order of FLOW, so the picture's chips and the sections
+   below always match. All text comes from the notes in knowledge.js. */
 (function () {
   var D = window.KC_DATA;
   if (!D) return;
 
-  var MODELS = [
-    { slug: "what-is-an-eval", name: "An eval is a sensor on one behaviour", stage: "The foundation",
+  var NAMES = {   // short mental-model names (the notes carry the full titles)
+    "what-is-an-eval": "An eval is a sensor on one behaviour",
+    "synthetic-scenarios-before-launch": "Generate scenarios from dimensions, not one prompt",
+    "evals-by-system-type": "Split the eval along the system’s stages",
+    "aligning-an-llm-judge": "A judge is a classifier — certify it",
+    "error-analysis-on-traces": "Error analysis finds what to measure",
+    "eval-metrics-by-system-type": "Every metric maps to a real failure",
+    "two-kinds-of-eval-check": "Rule or judgment picks the check",
+    "code-check-best-practices": "Code checks test structure, state and behaviour",
+    "production-to-eval-flywheel": "The suite is a flywheel, not a snapshot",
+    "humans-and-automation-in-evals": "Humans set the standard; automation scales it"
+  };
+  var HOOKS = {   // one-line lesson hooks
+    "offline-vs-online-evals": "Test with frozen data before release; check real conversations after.",
+    "evals-test-judgment": "Unit tests own the math, evals own the judgment — the seam between them is where money apps get hurt.",
+    "dimensions-vs-slices": "Dimensions are what you grade; slices are how you cut the results.",
+    "sort-before-you-count": "Test count isn’t coverage. Sort every test onto the map.",
+    "freeze-everything-the-model-sees": "Freeze every input: the data, the date, the whole conversation, the limits.",
+    "dont-copy-derive": "Two copies of one fact drift apart. Derive from one source.",
+    "three-kinds-of-grader": "Word checks, an AI judge, similarity to a perfect answer: what each can’t see.",
+    "crashed-is-not-failed": "A test that crashed isn’t a test that failed.",
+    "whose-fault-is-the-failure": "A failing test isn’t evidence until you know whose fault it is.",
+    "fix-the-layer-it-lives-in": "Prompts for behaviour; tools and data for facts. A prompt can’t out-argue a wrong tool.",
+    "frozen-replay": "Record a live run, replay it under the change — only the change differs.",
+    "same-judge-blind-grading": "The same frozen judge on both sides, blind to which side is which.",
+    "one-run-is-a-sample": "Identical runs give different scores. Measure the noise first.",
+    "fixes-can-overreach": "The total can rise while new failures hide underneath. Read every regression.",
+    "word-checks-cant-read-meaning": "Word-matching checks fail good answers: the spam-filter problem.",
+    "safety-alarm-false-alarms": "A zero-tolerance gate is only as good as its checks.",
+    "code-checks-before-judges": "For an agent, the trace is the answer key: every figure must come from a tool."
+  };
+  var PHASES = { Find: "Find what to measure", Grade: "Grade and group", Fix: "Fix and prove", Automate: "Automate" };
+  var FLOW = [
+    { id: "foundation", band: "The foundation", models: ["what-is-an-eval"],
       lessons: ["offline-vs-online-evals", "evals-test-judgment"] },
-    { slug: "synthetic-scenarios-before-launch", name: "Generate scenarios from dimensions, not one prompt", stage: "Loop step 1 · Write realistic questions",
-      lessons: ["freeze-everything-the-model-sees", "offline-vs-online-evals"] },
-    { slug: "error-analysis-on-traces", name: "Error analysis finds what to measure", stage: "Loop steps 3–4 · Grade and group",
-      lessons: ["dimensions-vs-slices", "sort-before-you-count", "whose-fault-is-the-failure", "fix-the-layer-it-lives-in"] },
-    { slug: "two-kinds-of-eval-check", name: "Rule or judgment picks the check", stage: "Loop step 8 · Automate the checks",
-      lessons: ["three-kinds-of-grader", "word-checks-cant-read-meaning"] },
-    { slug: "code-check-best-practices", name: "Code checks test structure, state and behaviour", stage: "Loop step 8 · Automate the checks",
-      lessons: ["word-checks-cant-read-meaning", "safety-alarm-false-alarms", "code-checks-before-judges"] },
-    { slug: "aligning-an-llm-judge", name: "A judge is a classifier — certify it", stage: "Loop steps 3 & 8 · Trust the judge",
-      lessons: ["three-kinds-of-grader", "whose-fault-is-the-failure", "same-judge-blind-grading"] },
-    { slug: "evals-by-system-type", name: "Split the eval along the system’s stages", stage: "Loop steps 2 & 4 · The system’s shape",
-      lessons: ["evals-test-judgment"] },
-    { slug: "eval-metrics-by-system-type", name: "Every metric maps to a real failure", stage: "Loop steps 6 & 8 · Measure",
-      lessons: ["one-run-is-a-sample", "crashed-is-not-failed", "frozen-replay"] },
-    { slug: "production-to-eval-flywheel", name: "The suite is a flywheel, not a snapshot", stage: "The loop itself · Keep it current",
-      lessons: ["dont-copy-derive", "crashed-is-not-failed", "fixes-can-overreach"] },
-    { slug: "humans-and-automation-in-evals", name: "Humans set the standard; automation scales it", stage: "Across it all",
-      lessons: ["safety-alarm-false-alarms", "whose-fault-is-the-failure"] }
-  ];
-
-  var LESSON_STAGES = [
-    { title: "Set up a fair experiment",
-      blurb: "An eval is a controlled experiment: the agent is real, the world is frozen.",
-      items: [
-        ["offline-vs-online-evals", "Test with frozen data before release; check real conversations after."],
-        ["evals-test-judgment", "Unit tests own the math, evals own the judgment — and the seam between them is where money apps get hurt."],
-        ["freeze-everything-the-model-sees", "Freeze every input: the data, the date, the whole conversation, the limits."],
-        ["dont-copy-derive", "Two copies of one fact drift apart. Derive from one source."] ] },
-    { title: "Make sure the number means something",
-      blurb: "First “did we measure anything?”, then “is it bigger than the noise?”",
-      items: [
-        ["crashed-is-not-failed", "A test that crashed isn’t a test that failed."],
-        ["one-run-is-a-sample", "Identical runs give different scores. Measure the noise first."] ] },
-    { title: "Grade the answer properly",
-      blurb: "Every grader is blind to something.",
-      items: [
-        ["word-checks-cant-read-meaning", "Word-matching checks fail good answers: the spam-filter problem."],
-        ["three-kinds-of-grader", "Word checks, an AI judge, similarity to a perfect answer: what each can’t see."],
-        ["safety-alarm-false-alarms", "A zero-tolerance gate is only as good as its checks."] ] },
-    { title: "Know what your tests don’t cover",
-      blurb: "A pass rate only speaks for failures you thought to test.",
-      items: [
-        ["dimensions-vs-slices", "Dimensions are what you grade; slices are how you cut the results."],
-        ["sort-before-you-count", "Test count isn’t coverage. Sort every test onto the map."],
-        ["whose-fault-is-the-failure", "A failing test isn’t evidence until you know whose fault it is."] ] },
-    { title: "Fix it, and prove the fix",
-      blurb: "Most failures are the system’s, not the model’s. Fix each where it lives, and prove every fix fairly.",
-      items: [
-        ["fix-the-layer-it-lives-in", "Prompts for behaviour; tools and data for facts. A prompt can’t out-argue a wrong tool."],
-        ["frozen-replay", "Record a live run, replay it under the change — only the change differs."],
-        ["same-judge-blind-grading", "The same frozen judge on both sides, blind to which side is which."],
-        ["fixes-can-overreach", "The total can rise while new failures hide underneath. Read every regression."],
-        ["code-checks-before-judges", "For an agent, the trace is the answer key: every figure must come from a tool."] ] }
-  ];
-  var SHOWN_ELSEWHERE = { "eval-lifecycle": true };   // linked from the picture's lede
-
-  // the eight-step loop (source: the eval-lifecycle note). Model and lesson numbers are looked up, never typed.
-  var PHASES = [ ["Find", "Find what to measure"], ["Grade", "Grade and group"], ["Fix", "Fix and prove"], ["Automate", "Automate"] ];
-  var STEPS = [
-    { phase: "Find", text: "Write realistic questions from dimensions",
-      models: ["synthetic-scenarios-before-launch"], lessons: [] },
-    { phase: "Find", text: "Run the real system on real data and record everything",
-      models: ["evals-by-system-type"], lessons: ["frozen-replay"] },
-    { phase: "Grade", text: "A human grades first; a judge only after it agrees on held-out examples",
-      models: ["aligning-an-llm-judge", "humans-and-automation-in-evals"], lessons: ["same-judge-blind-grading"] },
-    { phase: "Grade", text: "Group failures by their first upstream cause",
+    { id: "s1", phase: "Find", text: "Write realistic questions from dimensions",
+      models: ["synthetic-scenarios-before-launch"], lessons: ["dimensions-vs-slices", "sort-before-you-count"] },
+    { id: "s2", phase: "Find", text: "Run the real system on real data and record everything",
+      models: ["evals-by-system-type"], lessons: ["freeze-everything-the-model-sees", "dont-copy-derive"] },
+    { id: "s3", phase: "Grade", text: "A human grades first; a judge only after it agrees on held-out examples",
+      models: ["aligning-an-llm-judge"], lessons: ["three-kinds-of-grader", "crashed-is-not-failed"] },
+    { id: "s4", phase: "Grade", text: "Group failures by their first upstream cause",
       models: ["error-analysis-on-traces"], lessons: ["whose-fault-is-the-failure"] },
-    { phase: "Fix", text: "Fix the cause in the layer it lives in — prompt, tool, engine or data",
+    { id: "s5", phase: "Fix", text: "Fix the cause in the layer it lives in — prompt, tool, engine or data",
       models: [], lessons: ["fix-the-layer-it-lives-in"] },
-    { phase: "Fix", text: "Prove each fix: frozen replays for prompts, live re-runs for tools; one blind judge on both sides",
+    { id: "s6", phase: "Fix", text: "Prove each fix: frozen replays for prompts, live re-runs for tools; one blind judge on both sides",
       models: ["eval-metrics-by-system-type"], lessons: ["frozen-replay", "same-judge-blind-grading"] },
-    { phase: "Fix", text: "Read every changed verdict — a fix can overreach",
-      models: [], lessons: ["fixes-can-overreach", "one-run-is-a-sample"] },
-    { phase: "Automate", text: "Code checks for the objective, certified judges for judgment calls, a rate with a range",
-      models: ["two-kinds-of-eval-check", "code-check-best-practices", "aligning-an-llm-judge"], lessons: ["code-checks-before-judges"] }
+    { id: "s7", phase: "Fix", text: "Read every changed verdict — a fix can overreach",
+      models: [], lessons: ["one-run-is-a-sample", "fixes-can-overreach"] },
+    { id: "s8", phase: "Automate", text: "Code checks for the objective, certified judges for judgment calls, a rate with a range",
+      models: ["two-kinds-of-eval-check", "code-check-best-practices"],
+      lessons: ["word-checks-cant-read-meaning", "safety-alarm-false-alarms", "code-checks-before-judges"] },
+    { id: "loop", band: "Then round again", models: ["production-to-eval-flywheel"], lessons: [] },
+    { id: "across", band: "Across it all", models: ["humans-and-automation-in-evals"], lessons: [] }
   ];
 
   var bySlug = {}; (D.nodes || []).forEach(function (n) { bySlug[n.slug] = n; });
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) {
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-
-  // split a rendered note into { tldr, rest }: drop the <h1>, lift out the TL;DR section
-  function parts(html) {
+  function parts(html) {   // drop the <h1>, lift out the TL;DR section
     html = (html || "").replace(/^\s*<h1>[\s\S]*?<\/h1>\s*/, "");
     var chunks = html.split(/(?=<h2>)/), tldr = "", rest = [];
     chunks.forEach(function (c) {
@@ -270,89 +250,84 @@
     return { tldr: tldr, rest: rest.join("") };
   }
 
-  // lesson number (reading order) + which models each lesson illustrates
-  var lessonNum = {}, n = 0;
-  LESSON_STAGES.forEach(function (g) { g.items.forEach(function (it) { if (bySlug[it[0]]) lessonNum[it[0]] = ++n; }); });
-  var illustrates = {};
-  MODELS.forEach(function (m, i) { m.lessons.forEach(function (l) { (illustrates[l] = illustrates[l] || []).push(i + 1); }); });
-
-  // ---- ten mental models ----
-  var modelNo = {};
-  MODELS.forEach(function (m, i) { modelNo[m.slug] = i + 1; });
-  // MODELS is already in reading order (it follows the picture: foundation, A, B, C, across)
-  var ORDER = MODELS.map(function (m) { return m.slug; });
-  var mBySlug = {}; MODELS.forEach(function (m) { mBySlug[m.slug] = m; });
-  (function renderLoop() {
-    var stepNo = 0;
-    function chips(st) {
-      return st.models.filter(function (m) { return modelNo[m]; }).map(function (m) {
-          return '<a class="m" href="#m-' + esc(m) + '" title="' + esc(mBySlug[m].name) + '">M' + modelNo[m] + "</a>"; }).join("") +
-        st.lessons.filter(function (l) { return lessonNum[l]; }).map(function (l) {
-          return '<a class="l" href="#l-' + esc(l) + '" title="' + esc(bySlug[l].title) + '">L' + lessonNum[l] + "</a>"; }).join("");
-    }
-    var cols = PHASES.map(function (ph) {
-      var steps = STEPS.filter(function (st) { return st.phase === ph[0]; }).map(function (st) {
-        stepNo += 1; var c = chips(st);
-        return '<div class="ev-step"><div class="ev-step-t"><span class="ev-sn">' + stepNo + "</span><span>" + esc(st.text) +
-               "</span></div>" + (c ? '<div class="ev-chips">' + c + "</div>" : "") + "</div>";
-      }).join("");
-      return '<div class="ev-stage"><div class="ev-stage-k">' + esc(ph[0]) + "</div><h4>" + esc(ph[1]) + "</h4>" + steps + "</div>";
-    });
-    function band(k, slug) {
-      return '<div class="ev-band"><span class="ev-band-k">' + k + '</span><a class="ev-node" href="#m-' + slug +
-             '"><span class="ev-n">' + modelNo[slug] + "</span>" + esc(mBySlug[slug].name) + "</a></div>";
-    }
-    document.getElementById("ev-loop").innerHTML =
-      band("The foundation", "what-is-an-eval") +
-      '<div class="ev-stages ev-four">' + cols.join('<div class="ev-arrow" aria-hidden="true">&rarr;</div>') + "</div>" +
-      '<div class="ev-loop"><b>&#8634;</b> then round again — <a href="#m-production-to-eval-flywheel">M' +
-        modelNo["production-to-eval-flywheel"] + " · " + esc(mBySlug["production-to-eval-flywheel"].name) + "</a></div>" +
-      band("Across it all", "humans-and-automation-in-evals");
-  })();
-
-  document.getElementById("ev-models").innerHTML = ORDER.map(function (slug) {
-    var m = mBySlug[slug], note = bySlug[slug];
-    if (!m || !note) return "";
-    var p = parts(note.html);
-    var chips = m.lessons.filter(function (l) { return bySlug[l]; }).map(function (l) {
-      return '<a href="#l-' + esc(l) + '">Lesson ' + lessonNum[l] + ": " + esc(bySlug[l].title.split(" — ")[0]) + "</a>";
-    }).join("");
-    return '<article class="ev-model" id="m-' + esc(slug) + '">' +
-      '<div class="ev-model-head"><span class="ev-n">' + modelNo[slug] + '</span><div>' +
-        '<div class="ev-kicker">Mental model · ' + esc(m.stage) + "</div>" +
-        "<h3>" + esc(m.name) + "</h3></div></div>" +
-      '<div class="markdown ev-tldr">' + p.tldr + "</div>" +
-      (chips ? '<div class="ev-seen">Learned the hard way: ' + chips + "</div>" : "") +
-      '<details class="ev-deep"><summary>Go deeper — the full model, worked examples and sources</summary><div class="markdown">' + p.rest + "</div></details>" +
-      '<a class="ev-top" href="#picture">↑ back to the picture</a>' +
-    "</article>";
-  }).join("");
-
-  // ---- lessons ----
-  var listed = {};
-  var html = LESSON_STAGES.map(function (g) {
-    var items = g.items.filter(function (it) { return bySlug[it[0]]; }).map(function (it) {
-      var slug = it[0], note = bySlug[slug], p = parts(note.html); listed[slug] = true;
-      var ill = (illustrates[slug] || []).map(function (k) { return "model " + k; }).join(", ");
-      return '<details class="ev-lesson" id="l-' + esc(slug) + '"><summary>' +
-        '<span class="ev-lnum"><span class="ev-chev"></span>Lesson ' + lessonNum[slug] + "</span>" +
-        '<span class="ev-ltitle">' + esc(note.title) + "</span>" +
-        '<span class="ev-lhook">' + esc(it[1]) + (ill ? '<span class="ev-illus">→ ' + ill + "</span>" : "") + "</span>" +
-        '</summary><div class="markdown"><h2>TL;DR</h2>' + p.tldr + p.rest + "</div></details>";
-    }).join("");
-    return '<div class="ev-stagegroup"><h3>' + esc(g.title) + "</h3><p>" + esc(g.blurb) + "</p>" + items + "</div>";
-  }).join("");
-  // derived guarantee: any other evals-tagged note still shows up, so the page can't silently go stale
-  var inModels = {}; MODELS.forEach(function (m) { inModels[m.slug] = true; });
-  var extra = (D.nodes || []).filter(function (x) {
-    return (x.tags || []).indexOf("evals") !== -1 && !listed[x.slug] && !inModels[x.slug] && !SHOWN_ELSEWHERE[x.slug];
+  // ---- numbering: reading order of FLOW (skip notes that don't exist) ----
+  var mNo = {}, lNo = {}, sNo = {}, mi = 0, li = 0, si = 0;
+  FLOW.forEach(function (f) {
+    f.models = f.models.filter(function (x) { return bySlug[x]; });
+    f.lessons = f.lessons.filter(function (x) { return bySlug[x]; });
+    f.models.forEach(function (x) { mNo[x] = ++mi; });
+    f.lessons.forEach(function (x) { lNo[x] = ++li; });
+    if (f.phase) sNo[f.id] = ++si;
   });
+  function chips(f) {
+    return f.models.map(function (m) { return '<a class="m" href="#m-' + m + '" title="' + esc(NAMES[m] || bySlug[m].title) + '">M' + mNo[m] + "</a>"; }).join("") +
+      f.lessons.map(function (l) { return '<a class="l" href="#l-' + l + '" title="' + esc(bySlug[l].title) + '">L' + lNo[l] + "</a>"; }).join("");
+  }
+
+  // ---- the picture ----
+  function band(f) {
+    var m = f.models[0];
+    return '<div class="ev-band"><span class="ev-band-k">' + esc(f.band) + '</span><a class="ev-node" href="#' + f.id + '">' +
+      '<span class="ev-n">' + mNo[m] + "</span>" + esc(NAMES[m] || bySlug[m].title) + "</a>" +
+      (f.lessons.length ? '<span class="ev-chips" style="margin:0">' + f.lessons.map(function (l) {
+        return '<a class="l" href="#l-' + l + '" title="' + esc(bySlug[l].title) + '">L' + lNo[l] + "</a>"; }).join("") + "</span>" : "") + "</div>";
+  }
+  var byId = {}; FLOW.forEach(function (f) { byId[f.id] = f; });
+  var cols = Object.keys(PHASES).map(function (ph) {
+    var steps = FLOW.filter(function (f) { return f.phase === ph; }).map(function (f) {
+      var c = chips(f);
+      return '<div class="ev-step"><a class="ev-step-t ev-steplink" href="#' + f.id + '"><span class="ev-sn">' + sNo[f.id] +
+        "</span><span>" + esc(f.text) + "</span></a>" + (c ? '<div class="ev-chips">' + c + "</div>" : "") + "</div>";
+    }).join("");
+    return '<div class="ev-stage"><div class="ev-stage-k">' + esc(ph) + "</div><h4>" + esc(PHASES[ph]) + "</h4>" + steps + "</div>";
+  });
+  var lp = byId["loop"].models[0];
+  document.getElementById("ev-loop").innerHTML = band(byId["foundation"]) +
+    '<div class="ev-stages ev-four">' + cols.join('<div class="ev-arrow" aria-hidden="true">&rarr;</div>') + "</div>" +
+    '<div class="ev-loop"><b>&#8634;</b> then round again — <a href="#loop">M' + mNo[lp] + " · " + esc(NAMES[lp]) + "</a></div>" +
+    band(byId["across"]);
+
+  // ---- walk the loop: same order, same numbers ----
+  function modelCard(slug) {
+    var note = bySlug[slug], p = parts(note.html);
+    return '<article class="ev-model" id="m-' + slug + '">' +
+      '<div class="ev-model-head"><span class="ev-n">' + mNo[slug] + '</span><div>' +
+      '<div class="ev-kicker">Mental model M' + mNo[slug] + "</div><h3>" + esc(NAMES[slug] || note.title) + "</h3></div></div>" +
+      '<div class="markdown ev-tldr">' + p.tldr + "</div>" +
+      '<details class="ev-deep"><summary>Go deeper — the full model, worked examples and sources</summary><div class="markdown">' + p.rest + "</div></details>" +
+      "</article>";
+  }
+  function lessonRow(slug) {
+    var note = bySlug[slug], p = parts(note.html);
+    return '<details class="ev-lesson" id="l-' + slug + '"><summary>' +
+      '<span class="ev-lnum"><span class="ev-chev"></span>Lesson L' + lNo[slug] + "</span>" +
+      '<span class="ev-ltitle">' + esc(note.title) + "</span>" +
+      '<span class="ev-lhook">' + esc(HOOKS[slug] || "") + "</span>" +
+      '</summary><div class="markdown"><h2>TL;DR</h2>' + p.tldr + p.rest + "</div></details>";
+  }
+  var html = "", lastPhase = null;
+  FLOW.forEach(function (f) {
+    if (f.phase && f.phase !== lastPhase) {
+      html += '<div class="ev-phase" id="p-' + f.phase + '"><div class="ev-stage-k">' + esc(f.phase) + "</div><h3>" + esc(PHASES[f.phase]) + "</h3></div>";
+    }
+    if (!f.phase && lastPhase) html += '<div class="ev-phase"></div>';
+    lastPhase = f.phase || null;
+    var head = f.phase
+      ? '<div class="ev-stephead"><span class="ev-sn">' + sNo[f.id] + '</span><div><div class="ev-kicker">Step ' + sNo[f.id] + " · " + esc(PHASES[f.phase]) + "</div><h4>" + esc(f.text) + "</h4></div></div>"
+      : '<div class="ev-stephead"><div><div class="ev-kicker">' + esc(f.band) + "</div></div></div>";
+    html += '<div class="ev-stepsec" id="' + f.id + '">' + head + f.models.map(modelCard).join("") +
+      (f.lessons.length ? '<div class="ev-seen">Learned the hard way:</div>' + f.lessons.map(lessonRow).join("") : "") + "</div>";
+  });
+
+  // derived guarantee: any evals-tagged note not placed in FLOW still shows up
+  var placed = { "eval-lifecycle": true };
+  FLOW.forEach(function (f) { f.models.concat(f.lessons).forEach(function (x) { placed[x] = true; }); });
+  var extra = (D.nodes || []).filter(function (x) { return (x.tags || []).indexOf("evals") !== -1 && !placed[x.slug]; });
   if (extra.length) {
     html += '<p class="ev-related">Related notes: ' + extra.map(function (x) {
-      return '<a href="#" class="kc-link" data-slug="' + esc(x.slug) + '">' + esc(x.title) + "</a>";
-    }).join(" · ") + "</p>";
+      return '<a href="#" class="kc-link" data-slug="' + esc(x.slug) + '">' + esc(x.title) + "</a>"; }).join(" · ") + "</p>";
   }
-  document.getElementById("ev-lessons").innerHTML = html;
+  document.getElementById("ev-walk").innerHTML = html;
 
   // jumping to a lesson (#l-…) opens it in place
   function openFromHash() {

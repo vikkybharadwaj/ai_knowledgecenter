@@ -11,6 +11,8 @@ YYYY-MM-DD  <the lesson in one or two sentences> [→ link]
 
 ---
 
+2026-10-05  A page with a diagram and content below must have ONE structure and ONE numbering. Three parallel schemes (loop steps 1–8, models M1–10 in their own order, lessons L1–17 in different stage groups) made the picture and the content tell different stories, and Vik spotted it at once. Fix: one FLOW array; each model and lesson gets exactly one home step; M#/L# are numbered in FLOW's reading order; the picture's chips, the walk below and the Evals map are all generated from it. A test asserts that each step's chips equal the items in that step's section. [→ docs/concepts/evals.html]
+
 2026-09-26  A hub of cards that each open a modal is a *catalogue*, not something you can learn from — Vik found it "too many clicks". What reads well: one lifecycle diagram whose nodes are in-page anchors, then each idea's TL;DR shown inline with the full note in a <details> expander, all DERIVED from knowledge.js (split the rendered note at <h2>, lift the TL;DR). Number ideas in reading order, or the page feels jumpy. And keep private scaffolding off the public site: Vik's personal question list was reframed as named mental models. [→ docs/concepts/evals.html]
 
 2026-09-26  Headless Chrome won't lay out narrower than 500px: a `--window-size=390,…` screenshot crops a 500px page and LOOKS like horizontal overflow. Measure `document.documentElement.scrollWidth` before believing a mobile "clipping" bug. (This retracts the "concepts pages clip at phone width" note in PR #72: that was this artifact.)
