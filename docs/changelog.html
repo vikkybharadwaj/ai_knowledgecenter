@@ -98,6 +98,30 @@
     <h2 class="cl-date">October 5, 2026</h2>
     <ul class="cl-items">
     <li class="cl-item">
+      <p class="cl-head"><span class="cl-tag cl-tag-new">New</span><span class="cl-text">One structure, one numbering — the page walks the loop the picture draws</span></p>
+      <p class="cl-desc">Two pieces of feedback on the Evals page: 1. Not every lesson and mental model was reachable from the loop diagram. 2. The diagram&#x27;s numbering and structure didn&#x27;t match the content below. There were three parallel schemes: steps 1-8, models M1-10 in their own order, and lessons L1-17 under five different stage headings.</p>
+      <details class="cl-files">
+        <summary>What changed · 4 files</summary>
+        <ul class="cl-flist">
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/cb72f517b823e7b8e3821dc1a7c5a75e45ef307a#diff-5c15e28d1e3331250743cc136d2c3684e1068ec86dc8e82743bae4dc66374c11" target="_blank" rel="noopener">LEARNINGS.md</a></li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/cb72f517b823e7b8e3821dc1a7c5a75e45ef307a#diff-6e1811e11f08d93a36c5d17bdf3befd14cda58f97a2919ec165178b890002a87" target="_blank" rel="noopener">docs/assets/knowledge.js</a></li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">docs/concepts/evals.html</a><a class="cl-fdiff" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/cb72f517b823e7b8e3821dc1a7c5a75e45ef307a#diff-7e8c797525d5461b2e90850bac568a9d95cd3442baea142d7d0188766abfb29a" target="_blank" rel="noopener">diff</a>
+        <ul class="cl-changes">
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-phase { margin:34px 0 6px; padding-top:14px; border-top:1px solid var(--border); scroll-margin-top:80px; }</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-phase .ev-stage-k { font-family:var(--mono); font-size:.66rem; letter-spacing:.1em; text-transform:upperca…</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-phase h3 { margin:2px 0 0; font-size:1.3rem; }</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-stepsec { margin:18px 0 6px; scroll-margin-top:80px; }</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-stephead { display:flex; gap:10px; align-items:flex-start; margin:0 0 10px; }</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-stephead .ev-sn { width:26px; height:26px; font-size:.78rem; margin-top:1px; }</a></li>
+          <li class="cl-chg-more">+317 more changed lines</li>
+        </ul>
+        </li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/cb72f517b823e7b8e3821dc1a7c5a75e45ef307a#diff-ed657778354b8a2c211af6fccf2d05dcaef710fc1eff411937a7384af16f9bc1" target="_blank" rel="noopener">knowledge/maps/evals.md</a></li>
+        </ul>
+      </details>
+      <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/81" target="_blank" rel="noopener">PR #81 →</a></div>
+    </li>
+    <li class="cl-item">
       <p class="cl-head"><span class="cl-tag cl-tag-docs">Docs</span><span class="cl-text">Dropped the &quot;On the concept graph&quot; section; bring Tide-state claims up to date</span></p>
       <p class="cl-desc">Evals page: removed the &quot;On the concept graph&quot; section, its &quot;4 · On the concept graph&quot; jump link, the script that filled it, and its CSS. The concept nodes stay on the concept graph itself. - Audit of everything else the page renders (28 notes, the loop, footer): five caveats described Tide&#x27;s state as of September. Updated against tide docs/EVALS_STRATEGY.md at #341: - dimensions-vs-slices, sort-before-you-count, whose-fault-is-the-failure: the scripted suite&#x27;s checks, answer keys, criteria and judge WERE repaired (re-baseline 2026-09-21: 66-71 of 92), then the suite was archived in October for the rebuilt 100-scenario real-data suite; the gate was never moved onto red lines on it. Certifying the rebuilt suite&#x27;s per-type judges is on tide&#x27;s backlog (F4.6-F4.12). - whose-fault-is-the-failure: &quot;has since grown to 92&quot; -&gt; grew to 92, then archived. - dont-copy-derive: the &quot;planned&quot; generated test list is now done (generate_evals_archive.ts builds docs/evals-archive.html, tide #339). - Checked and still current: both external links (200), the temperature deprecation claim (re-verified on platform.claude.com), and the flywheel script the offline-evals note cites (still on tide main).</p>
       <details class="cl-files">
@@ -108,10 +132,10 @@
         <ul class="cl-changes">
           <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-concepts { margin-top:12px; }</a></li>
           <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">4 · On the concept graph</a></li>
-          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-lessons" target="_blank" rel="noopener">On the concept graph</a></li>
-          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-lessons" target="_blank" rel="noopener">The models and lessons are the sources ; these are the nodes they back on the</a></li>
-          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-lessons" target="_blank" rel="noopener">concept graph . The Evals map is the running index.</a></li>
-          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-lessons" target="_blank" rel="noopener">var CONCEPTS = [&quot;evals-reliability&quot;, &quot;error-analysis&quot;, &quot;llm-as-judge&quot;, &quot;frozen-replay&quot;];</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">On the concept graph</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">The models and lessons are the sources ; these are the nodes they back on the</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">concept graph . The Evals map is the running index.</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">var CONCEPTS = [&quot;evals-reliability&quot;, &quot;error-analysis&quot;, &quot;llm-as-judge&quot;, &quot;frozen-replay&quot;];</a></li>
           <li class="cl-chg-more">+15 more changed lines</li>
         </ul>
         </li>
