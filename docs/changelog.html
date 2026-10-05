@@ -95,6 +95,37 @@
   <div class="cl-log">
   <!-- CHANGELOG:START -->
   <section class="cl-day">
+    <h2 class="cl-date">October 5, 2026</h2>
+    <ul class="cl-items">
+    <li class="cl-item">
+      <p class="cl-head"><span class="cl-tag cl-tag-docs">Docs</span><span class="cl-text">Dropped the &quot;On the concept graph&quot; section; bring Tide-state claims up to date</span></p>
+      <p class="cl-desc">Evals page: removed the &quot;On the concept graph&quot; section, its &quot;4 · On the concept graph&quot; jump link, the script that filled it, and its CSS. The concept nodes stay on the concept graph itself. - Audit of everything else the page renders (28 notes, the loop, footer): five caveats described Tide&#x27;s state as of September. Updated against tide docs/EVALS_STRATEGY.md at #341: - dimensions-vs-slices, sort-before-you-count, whose-fault-is-the-failure: the scripted suite&#x27;s checks, answer keys, criteria and judge WERE repaired (re-baseline 2026-09-21: 66-71 of 92), then the suite was archived in October for the rebuilt 100-scenario real-data suite; the gate was never moved onto red lines on it. Certifying the rebuilt suite&#x27;s per-type judges is on tide&#x27;s backlog (F4.6-F4.12). - whose-fault-is-the-failure: &quot;has since grown to 92&quot; -&gt; grew to 92, then archived. - dont-copy-derive: the &quot;planned&quot; generated test list is now done (generate_evals_archive.ts builds docs/evals-archive.html, tide #339). - Checked and still current: both external links (200), the temperature deprecation claim (re-verified on platform.claude.com), and the flywheel script the offline-evals note cites (still on tide main).</p>
+      <details class="cl-files">
+        <summary>What changed · 6 files</summary>
+        <ul class="cl-flist">
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/dcedda8091492ab6e5bf37f0e75a9645bc9acba7#diff-6e1811e11f08d93a36c5d17bdf3befd14cda58f97a2919ec165178b890002a87" target="_blank" rel="noopener">docs/assets/knowledge.js</a></li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">docs/concepts/evals.html</a><a class="cl-fdiff" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/dcedda8091492ab6e5bf37f0e75a9645bc9acba7#diff-7e8c797525d5461b2e90850bac568a9d95cd3442baea142d7d0188766abfb29a" target="_blank" rel="noopener">diff</a>
+        <ul class="cl-changes">
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">.ev-concepts { margin-top:12px; }</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">4 · On the concept graph</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-lessons" target="_blank" rel="noopener">On the concept graph</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-lessons" target="_blank" rel="noopener">The models and lessons are the sources ; these are the nodes they back on the</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-lessons" target="_blank" rel="noopener">concept graph . The Evals map is the running index.</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-lessons" target="_blank" rel="noopener">var CONCEPTS = [&quot;evals-reliability&quot;, &quot;error-analysis&quot;, &quot;llm-as-judge&quot;, &quot;frozen-replay&quot;];</a></li>
+          <li class="cl-chg-more">+15 more changed lines</li>
+        </ul>
+        </li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/dcedda8091492ab6e5bf37f0e75a9645bc9acba7#diff-964709cc8a703d118227441be89d1e9b70f929636a3da75d3ae9946b3936b7a9" target="_blank" rel="noopener">knowledge/notes/dimensions-vs-slices.md</a></li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/dcedda8091492ab6e5bf37f0e75a9645bc9acba7#diff-8cd721a2df827956a80fccd38e850e45c6b713ecade080c813a06c4cb098015d" target="_blank" rel="noopener">knowledge/notes/dont-copy-derive.md</a></li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/dcedda8091492ab6e5bf37f0e75a9645bc9acba7#diff-947dac667e3012802a44180ccdb4f7b4ab7462de121cc5fb9a734ee0de2f5b17" target="_blank" rel="noopener">knowledge/notes/sort-before-you-count.md</a></li>
+        <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/dcedda8091492ab6e5bf37f0e75a9645bc9acba7#diff-135cb1590ff173699fc3720a849720571d01c8d60aa256cc56e947b9b694e9c9" target="_blank" rel="noopener">knowledge/notes/whose-fault-is-the-failure.md</a></li>
+        </ul>
+      </details>
+      <div class="cl-links"><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/pull/80" target="_blank" rel="noopener">PR #80 →</a></div>
+    </li>
+    </ul>
+  </section>
+  <section class="cl-day">
     <h2 class="cl-date">October 4, 2026</h2>
     <ul class="cl-items">
     <li class="cl-item">
@@ -227,8 +258,8 @@
         <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/1b70954d7b4ad4a6bedd4dfc45a42371c3dd1256#diff-6e1811e11f08d93a36c5d17bdf3befd14cda58f97a2919ec165178b890002a87" target="_blank" rel="noopener">docs/assets/knowledge.js</a></li>
         <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">docs/concepts/evals.html</a><a class="cl-fdiff" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/1b70954d7b4ad4a6bedd4dfc45a42371c3dd1256#diff-7e8c797525d5461b2e90850bac568a9d95cd3442baea142d7d0188766abfb29a" target="_blank" rel="noopener">diff</a>
         <ul class="cl-changes">
-          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">[&quot;sort-before-you-count&quot;, &quot;Test count isn’t coverage. Sort every test onto the map, and re-sort before you re-…</a></li>
-          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">[&quot;whose-fault-is-the-failure&quot;, &quot;A failing test isn’t evidence yet. Two-thirds of the failures were the test’s …</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">[&quot;sort-before-you-count&quot;, &quot;Test count isn’t coverage. Sort every test onto the map, and re-sort before you re-…</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">[&quot;whose-fault-is-the-failure&quot;, &quot;A failing test isn’t evidence yet. Two-thirds of the failures were the test’s …</a></li>
           <li class="cl-chg-more">+1 more changed line</li>
         </ul>
         </li>
@@ -266,10 +297,10 @@
         </li>
         <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">docs/concepts/evals.html</a><a class="cl-fdiff" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/92b1e350cb69f7f005e5085d70516767ab500682#diff-7e8c797525d5461b2e90850bac568a9d95cd3442baea142d7d0188766abfb29a" target="_blank" rel="noopener">diff</a>
         <ul class="cl-changes">
-          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">{ title: &quot;4 \u00b7 Know what your tests don\u2019t cover&quot;,</a></li>
-          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">{ title: &quot;4 · Know what your tests don’t cover&quot;,</a></li>
-          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">[&quot;sort-before-you-count&quot;, &quot;Test count isn\u2019t coverage. Sort every test onto the map, and re-sort before yo…</a></li>
-          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">[&quot;sort-before-you-count&quot;, &quot;Test count isn’t coverage. Sort every test onto the map, and re-sort before you re-…</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">{ title: &quot;4 \u00b7 Know what your tests don\u2019t cover&quot;,</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">{ title: &quot;4 · Know what your tests don’t cover&quot;,</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">[&quot;sort-before-you-count&quot;, &quot;Test count isn\u2019t coverage. Sort every test onto the map, and re-sort before yo…</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">[&quot;sort-before-you-count&quot;, &quot;Test count isn’t coverage. Sort every test onto the map, and re-sort before you re-…</a></li>
         </ul>
         </li>
         <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/92b1e350cb69f7f005e5085d70516767ab500682#diff-117492dceaa9a0fc38666d70b9c2e0d048a2a93fa19954bba15c0215b6a819db" target="_blank" rel="noopener">scripts/build-changelog.py</a></li>
@@ -287,12 +318,12 @@
         <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/2090ffbf5edd1e3a7be3e90d326d0d2e1daa4163#diff-6e1811e11f08d93a36c5d17bdf3befd14cda58f97a2919ec165178b890002a87" target="_blank" rel="noopener">docs/assets/knowledge.js</a></li>
         <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">docs/concepts/evals.html</a><a class="cl-fdiff" href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/2090ffbf5edd1e3a7be3e90d326d0d2e1daa4163#diff-7e8c797525d5461b2e90850bac568a9d95cd3442baea142d7d0188766abfb29a" target="_blank" rel="noopener">diff</a>
         <ul class="cl-changes">
-          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">[&quot;safety-alarm-false-alarms&quot;, &quot;A zero-tolerance safety gate is only as good as its checks. False alarms train …</a></li>
-          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">{ title: &quot;4 \u00b7 Know what your tests don\u2019t cover&quot;,</a></li>
-          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">blurb: &quot;A pass rate only speaks for failures you thought to test. Map every way the AI can fail, then sort you…</a></li>
-          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">items: [</a></li>
-          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">[&quot;dimensions-vs-slices&quot;, &quot;Dimensions are what you grade; slices are how you cut the results. Keep them apart.&quot;…</a></li>
-          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">[&quot;sort-before-you-count&quot;, &quot;Test count isn\u2019t coverage. Sort every test onto the map, and re-sort before yo…</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">[&quot;safety-alarm-false-alarms&quot;, &quot;A zero-tolerance safety gate is only as good as its checks. False alarms train …</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">{ title: &quot;4 \u00b7 Know what your tests don\u2019t cover&quot;,</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">blurb: &quot;A pass rate only speaks for failures you thought to test. Map every way the AI can fail, then sort you…</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">items: [</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">[&quot;dimensions-vs-slices&quot;, &quot;Dimensions are what you grade; slices are how you cut the results. Keep them apart.&quot;…</a></li>
+          <li class="cl-chg cl-chg-added"><span class="cl-csign">+</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">[&quot;sort-before-you-count&quot;, &quot;Test count isn\u2019t coverage. Sort every test onto the map, and re-sort before yo…</a></li>
           <li class="cl-chg-more">+1 more changed line</li>
         </ul>
         </li>
@@ -338,7 +369,7 @@
           <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">Evals map . · Where it sits in the stack: the</a></li>
           <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">Evals &amp; Reliability concept on the</a></li>
           <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">concept graph . ·</a></li>
-          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html#ev-concepts" target="_blank" rel="noopener">document.getElementById(&quot;ev-count&quot;).textContent = num + &quot; lessons so far&quot;;</a></li>
+          <li class="cl-chg cl-chg-removed"><span class="cl-csign">−</span><a href="https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/evals.html" target="_blank" rel="noopener">document.getElementById(&quot;ev-count&quot;).textContent = num + &quot; lessons so far&quot;;</a></li>
         </ul>
         </li>
         <li><span class="cl-fstat cl-fstat-edit">edit</span><a href="https://github.com/vikkybharadwaj/ai_knowledgecenter/commit/5b1fc08890cafdee7cab76a98bd26e88108eac50#diff-c13743d31849813242d2becdd14e32e60f57d09d77fc4672681aa04cf9ddeaae" target="_blank" rel="noopener">knowledge/notes/crashed-is-not-failed.md</a></li>
