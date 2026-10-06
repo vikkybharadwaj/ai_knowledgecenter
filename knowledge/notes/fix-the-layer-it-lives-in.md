@@ -46,6 +46,10 @@ Two more of the same shape: "pending and posted are one charge" was already a sh
 the agent's tools never applied it; and a tool that returned only the *next* paycheck made "what comes in
 next month?" unanswerable until it returned the whole schedule.
 
+**Round 2 confirmed it.** A card-payment failure was first fixed with a prompt rule and replayed: 4 of 13
+passed. Moving the fix into the tool — it now lists which card payments each window already holds back —
+passed 5 of 13, and that failure type disappeared from the set.
+
 ## Mental model / why it matters
 This is the harness-level insight applied to evals: **where a bug lives tells you which level to fix**. A
 model is a reasoner over the evidence it's given. Feed it a wrong fact and it will reason correctly to a
@@ -63,6 +67,7 @@ Distilled 2026-10-04 from tide's landing draft `evals/lessons/kc-04-fix-the-laye
 the engine and tool fixes shipped in tide #332 (safe-to-spend v5.6) and #333 (each charge once, full pay
 schedule).
 - ❓ The "5 of 5 ignored" figure is from the tide session's draft and wasn't independently recomputed here.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): prompt-only 4/13 vs tool fix 5/13, type 2 gone (LIFECYCLE 4c).
 
 ## Connections
 - **builds-on [Harness vs Context vs Prompt Engineering](harness-vs-context-engineering.md)**: where a bug lives tells you which level to fix.

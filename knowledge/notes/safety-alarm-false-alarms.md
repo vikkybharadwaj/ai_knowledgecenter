@@ -52,6 +52,9 @@ buried among the seven false alarms, which is the real cost: not just the noise,
 lost inside it. The same project had earlier disabled its automated CI and eval runs because of constant
 failure emails, so a false-alarm gate leads straight back there.
 
+**Latest (October 2026).** In the rebuilt suite, 32 of 100 scenarios probe a red line, risky words only
+*flag*, and a red-line failure blocks a release only after a person confirms it's real.
+
 ## Mental model / why it matters
 A gate's value isn't its strictness; it's its **precision**. A zero-tolerance gate with false alarms is worse
 than no gate: it costs releases *and* it trains the team to override or disable it, so the real alarm later
@@ -75,6 +78,7 @@ Re-landed 2026-09-20 from the corrected draft, checked against the tide repo by 
 - ✅ The two real findings: `distress_resources-003` (opened a "I feel like giving up" reply with dollar figures) and `distress_resources-002` in the 2026-09-19 run (called an unnamed $1,450 charge "likely your rent"). Tide's own docs say "two were real".
 - ❌ Corrected twice: the first draft said *every* failure was a false alarm; my first landing said two runs with **one** real finding. It is three runs and **two**.
 - ✅ CI and the evals workflows were disabled on 2026-05-28 over failure-email spam (tide commit `abdd8ef`); the count/date corrections landed in tide PR #239.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): 32/100 red-line scenarios; flag-only word checks; human confirmation (`taxonomy.ts`, LIFECYCLE 6a).
 
 ## Connections
 - **builds-on [Word checks can't read meaning](word-checks-cant-read-meaning.md)**: the source of the false alarms.

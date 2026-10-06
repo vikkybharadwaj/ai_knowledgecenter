@@ -53,6 +53,10 @@ wrong tool. Freezing the inputs doesn't make a test pass; it makes the failure *
 And the limits: the eval allowed answers of 1,024 tokens while the real app allows 4,096, so long answers were
 cut off and recorded as crashes.
 
+**Latest (October 2026).** With real data, Tide freezes by *recording*: each scenario's moment and every
+tool output are saved, and a replay pins the clock to that moment. Scenarios whose right answer changes with
+the live balance are tagged "depends on the day", so a live difference isn't mistaken for a regression.
+
 ## Mental model / why it matters
 The model's whole world is its context window. In production you curate that window for *accuracy*; in an
 eval you also freeze it for *repeatability*. Anything in the window that isn't set by the test is an
@@ -74,6 +78,7 @@ Checked on 2026-09-18 against the tide repo (PR #234) by a separate fact-check p
 - ✅ Conversation history now reaches the AI (`runner.ts`) and both judges (`judges/transcript.ts`). `proj-acc-008` still fails after the fix (it calls `get_spending_by_category` instead of `query_transactions`).
 - ✅ Limits: the eval used `max_tokens: 1024` against production's `maxTokens: 4096` (`bedrock_service.ts:182`). Fixed in `ddfed05`.
 - ❌ Corrected from the draft: it said the stale payday was in *June* and merged two tests into one story. The 1/5 → 4/5 case was a **March 27** payday. (The June 22 case, `payday_anchors-004`, only moved 2 → 3.)
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): `rendered_at` pinning and the `reach` tag (LIFECYCLE 2c; build_round1.py).
 
 ## Connections
 - **builds-on [An offline eval is a controlled experiment](offline-vs-online-evals.md)**: this is the checklist that keeps the experiment controlled.

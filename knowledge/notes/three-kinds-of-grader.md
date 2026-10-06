@@ -19,8 +19,8 @@ claude_specific: false
 
 ## TL;DR
 AI answers are usually graded three ways: **word checks**, an **AI judge with written rules**, and
-**similarity to a perfect answer**. Each one is blind to something. Knowing what each grader *can't* see is how
-you pick the right one, and how you read it when they disagree.
+**similarity to a perfect answer**. Each one is blind to something. Knowing what each grader *can't* see is how you pick the right one, and how
+you read it when they disagree. Tide ended up **retiring the third** — and the reasons are the lesson.
 
 ## The three graders, simply
 
@@ -47,6 +47,25 @@ the other way round. In that run the judge was clearly the lenient one. One like
 *names* of the tools the AI called, but never the data they returned, so it can't check whether the numbers are
 right. (Later runs were more balanced, 3 cases each way, so read this as a warning sign rather than a law.)
 
+## Why Tide retired the similarity grader (September 2026)
+The similarity score compared each reply with a hand-written ideal answer and rated it 1–5. It never decided
+a result, and three things made it hard to defend:
+1. **It couldn't see what it needed** — only the question, the ideal answer, the reply and the tool names;
+   never the data, never the test's criteria. It measured agreement with the ideal answer, not whether the
+   ideal answer was right.
+2. **Its target was unverified.** An audit found 18 of 81 ideal answers quoting figures that appear nowhere in
+   their own test; four invented the exact failure their test existed to catch.
+3. **It rarely agreed with the verdict:** in the last run, 16 answers scored 4–5 and failed, and 12 scored 1–2
+   and passed.
+
+**The real cost of retiring it:** the ideal answers had also been an **oracle for testing the checks** — every
+rule check had to pass its own test's ideal answer, which caught five broken checks at once. With the ideal
+answers gone, broken checks can return silently. So when you drop a reference grader, replace that oracle role.
+
+**Where Tide landed:** a test passes on two graders — every rule (code) check passes, and an AI judge agrees.
+The rebuilt real-data suite uses code checks over the recorded trace plus an AI judge aligned to the owner's
+own grades.
+
 ## Mental model / why it matters
 Every grader is a sensor with a blind spot. One sensor alone gives you a confident wrong reading. Several
 sensors with *different* blind spots, whose disagreements you actually read, give you a picture. It's also the
@@ -72,6 +91,7 @@ grader that works on live traffic, where nobody knows the right answer.
 - ⚠️ Corrected from the draft: "zero the other way" held only in that run (later runs had 3 each way), and "the reason turned out to be" was softened to "one likely reason". That run also had stale dates.
 - ✅ Grader types (code-graded, exact match, LLM-graded incl. Likert) and "use a different model to evaluate than the one that generated the output": platform.claude.com/docs "Define success criteria and build evaluations" (retrieved 2026-09-18).
 All Tide figures checked against the tide repo on 2026-09-18 by a separate fact-check pass.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): the similarity grader's retirement, its three reasons and its oracle cost (strategy §2.15).
 
 ## Connections
 - **builds-on [Word checks can't read meaning](word-checks-cant-read-meaning.md)**: grader #1 in depth.

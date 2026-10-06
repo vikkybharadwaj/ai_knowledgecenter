@@ -42,6 +42,10 @@ been judged by comparing one run before with one run after: 54 vs 53, which look
 comparison was pure noise. The real effect only showed up in the specific tests the change targeted, and in
 the steadier similarity scores.
 
+**Latest (October 2026).** On the real-data suite about **29% of identical inputs** gave a different answer,
+and one failure type went from 5 of 5 fixed in one replay to 2 of 5 in the next with no rule change. Tide's
+next step is repeats and a reported range.
+
 ## Mental model / why it matters
 A frozen world removes *outside* causes of change, but the model itself is still random. Freezing buys
 attribution only once you know the size of that randomness. This is also why "the score went up 3 points"
@@ -63,6 +67,7 @@ strong one.
 - ✅ Two identical runs on 2026-09-18 (`T17-47`: 52/81, `T18-01`: 56/81); 14 of 81 flipped (17.3%). The earlier before/after pair was 54 vs 53 (`T11-07` vs `T16-12`), while similarity means moved 3.14 → 3.42. All checked against the tide repo results by a separate fact-check pass.
 - ✅ Claude models released after Opus 4.6 reject any `temperature` other than 1.0 with a 400 error, and even `0.0` was never fully deterministic: platform.claude.com/docs Messages API reference + "Model deprecations" (retrieved 2026-09-18).
 - ❓ "Run 2–3 times" is a practical rule of thumb, not a statistical guarantee. More runs give a tighter noise floor.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): ~29% and the 5/5 → 2/5 swing (LIFECYCLE 2c, 5a).
 
 ## Connections
 - **builds-on [An offline eval is a controlled experiment](offline-vs-online-evals.md)**: freezing gives attribution only once you know the noise.

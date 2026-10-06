@@ -5,7 +5,7 @@ kind: concept
 spine_layer: foundations
 tags: [evals, coverage, graders, failure-modes]
 connections:
-  - { to: sort-before-you-count, type: builds-on, why: "Sorting says where the tests are; auditing says which of them can be believed. Both happen before you touch the model." }
+  - { to: dimensions-vs-slices, type: builds-on, why: "The map says where the tests are; auditing says which of them can be believed. Both happen before you touch the model." }
   - { to: word-checks-cant-read-meaning, type: builds-on, why: "Most broken tests are brittle word checks: a banned word used to say the opposite, or one accepted phrasing out of many correct ones." }
   - { to: three-kinds-of-grader, type: used-with, why: "Graders disagreeing — every code check passing while the judge fails — is the tell that points at the test rather than the model." }
   - { to: safety-alarm-false-alarms, type: used-with, why: "The audit's sharpest finding is a check that never fails: a red line whose check any answer satisfies protects nothing." }
@@ -70,6 +70,12 @@ pass, plus a **red line whose check any answer satisfies** — one that warns ab
 that merely mentions "rates are high" both pass it. Those had never failed, which is exactly why nobody had
 looked at them.
 
+**Latest (October 2026): one level deeper.** Once you know a failure is the AI's, ask *which part of the
+system* — in the rebuild, **45 of 53** traced to the prompt, a tool, the engine or the data, not the model's
+reasoning (see [fix the failure in the layer it lives in](fix-the-layer-it-lives-in.md)). And "whose fault"
+can be a product question: on one remaining failure type the judge reasoned from cash while the product's own
+safe-to-spend logic said "wait". Which reading is right is the owner's call, not the grader's.
+
 ## Mental model / why it matters
 An eval suite is an instrument, and this is the step where you **calibrate the instrument before reading
 it**. It's the same "did we measure anything?" question as a crashed run, moved one level up: a crashed run
@@ -97,9 +103,10 @@ Checked on 2026-09-22 against the tide repo (`docs/EVALS_STRATEGY.md` §2.9, Ste
 - ⚠️ Corrected from the draft: the two too-loose checks (`anomaly-001`, `tone-004`, each a nine-word alternation) are **not** red-line tests. Separately, one **red line** has a weak check (`safety-001`, red line 3), satisfied by any mention of rates. The note now says both, rather than merging them.
 - ⚠️ Nothing was rewritten in this step by design, so no score moved. The repairs came next: checks, answer keys, criteria and judge, re-baselined 2026-09-21 (updated 2026-10-05, from tide `docs/EVALS_STRATEGY.md` at #341). Moving the gate onto red lines never happened on this suite.
 - ⚠️ Datestamp: the suite was 81 tests at audit time, then grew to 92 and was archived in October 2026 for a rebuilt 100-scenario, real-data suite. These ratios describe the audit snapshot.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): 45 of 53 system-side; type 16 as an open product-semantics question (LIFECYCLE 4, 4c).
 
 ## Connections
-- **builds-on [Sort your tests onto the map before trusting the count](sort-before-you-count.md)**: sorting finds where the tests are; auditing finds which can be believed.
+- **builds-on [Dimensions vs slices](dimensions-vs-slices.md)**: the map finds where the tests are; auditing finds which can be believed.
 - **builds-on [Word checks can't read meaning](word-checks-cant-read-meaning.md)**: the mechanism behind most broken tests.
 - **used-with [Three kinds of grader](three-kinds-of-grader.md)**: grader disagreement is the tell.
 - **used-with [A safety alarm is only as good as its checks](safety-alarm-false-alarms.md)**: a red line with a weak check protects nothing.

@@ -204,7 +204,6 @@
     "offline-vs-online-evals": "Test with frozen data before release; check real conversations after.",
     "evals-test-judgment": "Unit tests own the math, evals own the judgment — the seam between them is where money apps get hurt.",
     "dimensions-vs-slices": "Dimensions are what you grade; slices are how you cut the results.",
-    "sort-before-you-count": "Test count isn’t coverage. Sort every test onto the map.",
     "freeze-everything-the-model-sees": "Freeze every input: the data, the date, the whole conversation, the limits.",
     "dont-copy-derive": "Two copies of one fact drift apart. Derive from one source.",
     "three-kinds-of-grader": "Word checks, an AI judge, similarity to a perfect answer: what each can’t see.",
@@ -217,18 +216,21 @@
     "fixes-can-overreach": "The total can rise while new failures hide underneath. Read every regression.",
     "word-checks-cant-read-meaning": "Word-matching checks fail good answers: the spam-filter problem.",
     "safety-alarm-false-alarms": "A zero-tolerance gate is only as good as its checks.",
-    "code-checks-before-judges": "For an agent, the trace is the answer key: every figure must come from a tool."
+    "code-checks-before-judges": "For an agent, the trace is the answer key: every figure must come from a tool.",
+    "instrument-before-you-evaluate": "You can’t evaluate what you can’t see. Record every tool output before writing a single eval.",
+    "measure-the-judge-before-you-change-it": "Hold the answers fixed, vary the judge. Removing its shared examples helped most.",
+    "fresh-live-round": "Replays prove each fix alone; a fresh live round finds what the fixes broke together."
   };
   var PHASES = { Find: "Find what to measure", Grade: "Grade and group", Fix: "Fix and prove", Automate: "Automate" };
   var FLOW = [
     { id: "foundation", band: "The foundation", models: ["what-is-an-eval"],
       lessons: ["offline-vs-online-evals", "evals-test-judgment"] },
     { id: "s1", phase: "Find", text: "Write realistic questions from dimensions",
-      models: ["synthetic-scenarios-before-launch"], lessons: ["dimensions-vs-slices", "sort-before-you-count"] },
+      models: ["synthetic-scenarios-before-launch"], lessons: ["dimensions-vs-slices"] },
     { id: "s2", phase: "Find", text: "Run the real system on real data and record everything",
-      models: ["evals-by-system-type"], lessons: ["freeze-everything-the-model-sees", "dont-copy-derive"] },
+      models: ["evals-by-system-type"], lessons: ["instrument-before-you-evaluate", "freeze-everything-the-model-sees", "dont-copy-derive"] },
     { id: "s3", phase: "Grade", text: "A human grades first; a judge only after it agrees on held-out examples",
-      models: ["aligning-an-llm-judge"], lessons: ["three-kinds-of-grader", "crashed-is-not-failed"] },
+      models: ["aligning-an-llm-judge"], lessons: ["three-kinds-of-grader", "crashed-is-not-failed", "measure-the-judge-before-you-change-it"] },
     { id: "s4", phase: "Grade", text: "Group failures by their first upstream cause",
       models: ["error-analysis-on-traces"], lessons: ["whose-fault-is-the-failure"] },
     { id: "s5", phase: "Fix", text: "Fix the cause in the layer it lives in — prompt, tool, engine or data",
@@ -240,7 +242,7 @@
     { id: "s8", phase: "Automate", text: "Code checks for the objective, certified judges for judgment calls, a rate with a range",
       models: ["two-kinds-of-eval-check", "code-check-best-practices"],
       lessons: ["word-checks-cant-read-meaning", "safety-alarm-false-alarms", "code-checks-before-judges"] },
-    { id: "loop", band: "Then round again", models: ["production-to-eval-flywheel"], lessons: [] },
+    { id: "loop", band: "Then round again", models: ["production-to-eval-flywheel"], lessons: ["fresh-live-round"] },
     { id: "across", band: "Across it all", models: ["humans-and-automation-in-evals"], lessons: [] }
   ];
 
@@ -292,7 +294,9 @@
   var lp = byId["loop"].models[0];
   document.getElementById("ev-loop").innerHTML = band(byId["foundation"]) +
     '<div class="ev-stages ev-four">' + cols.join('<div class="ev-arrow" aria-hidden="true">&rarr;</div>') + "</div>" +
-    '<div class="ev-loop"><b>&#8634;</b> then round again — <a class="ev-node" style="display:inline-flex;margin:0" href="#loop"><span class="ev-tag m">M' + mNo[lp] + "</span>" + esc(NAMES[lp]) + "</a></div>" +
+    '<div class="ev-loop"><b>&#8634;</b> then round again — <a class="ev-node" style="display:inline-flex;margin:0" href="#loop"><span class="ev-tag m">M' + mNo[lp] + "</span>" + esc(NAMES[lp]) + "</a>" +
+      (byId["loop"].lessons.length ? '<span class="ev-chips" style="margin:0 0 0 6px">' + byId["loop"].lessons.map(function (l) {
+        return '<a class="l" href="#l-' + l + '" title="' + esc(bySlug[l].title) + '">L' + lNo[l] + "</a>"; }).join("") + "</span>" : "") + "</div>" +
     band(byId["across"]);
 
   // ---- walk the loop: same order, same numbers ----

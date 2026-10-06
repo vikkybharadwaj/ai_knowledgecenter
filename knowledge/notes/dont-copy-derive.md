@@ -41,6 +41,16 @@ your mail goes missing for months before anyone notices.
 The fix Tide shipped for the prompt and tools is the model to copy: the eval runner **imports** the production
 system prompt and tool definitions instead of keeping its own version, so those two can't drift any more.
 
+**Latest (October 2026): the same bug, three more times — and the big fix.**
+- The safe-to-spend **tool description** — a prose copy of the engine's behaviour — still described an older
+  version, and the Coach repeated it.
+- The **prompt** still described a coaching-history feature that nothing wrote to any more, which invited
+  invented "past advice". Removing dead features was a fix in its own right.
+- The eval map and dashboard each kept their own copy of the stage, job and red-line **labels**, and they
+  drifted. Now one file (`taxonomy.ts`) owns them.
+- **The big fix:** the app and the eval runner share **one Coach entry point**, so the thing tested is the thing
+  shipped.
+
 ## Mental model / why it matters
 A copy isn't data; it's a **scheduled silent failure**. You don't know when it'll fire, only that it will, and
 it fails without an error, because both copies still look valid. The cure isn't more discipline. It's removing
@@ -64,6 +74,7 @@ Checked on 2026-09-18 against the tide repo by a separate fact-check pass:
 - ✅ Frozen dates: 59 June, 19 March, 2 April, 1 February, hence "mostly June".
 - ✅ `docs/evals-map.html` (at `7737094`) showed a "30 FIXTURES" badge and 8 cards, one of them for the deleted `proj-acc-007`. ✅ Now done (updated 2026-10-05, from tide `docs/EVALS_STRATEGY.md` at #341): the scripted-suite map is a fully generated page (`evals/scripts/generate_evals_archive.ts` builds `docs/evals-archive.html`; tide #339). Its predecessor was hand-written.
 - ✅ Prompt and tools are imported from production (`evals/runner.ts` imports `buildCoachSystemPrompt` and `coachToolConfig`).
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): stale tool description (finding #4), dead features (type 14), `taxonomy.ts`, shared `runCoachTurn` (LIFECYCLE 2a, 5a).
 
 ## Connections
 - **used-with [Freeze everything the model can see](freeze-everything-the-model-sees.md)**: most leaks were drifted copies.

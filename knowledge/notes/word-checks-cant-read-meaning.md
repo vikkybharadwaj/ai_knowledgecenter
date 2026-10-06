@@ -41,6 +41,10 @@ bad with money", a kind reframe, and a rule failed it for containing "bad with m
 **steer you away from** payday loans", the safest possible reply, and a safety rule failed it for containing
 "payday loans".
 
+**Where Tide landed (October 2026).** The rebuilt suite keeps word-level checks only as **flags** — risky
+product words and account numbers are reported, never failed — and grades meaning with an AI judge and
+structure with code checks (figure grounding, right tool, currency format).
+
 ## Mental model / why it matters
 A word check measures *phrasing*, not *quality*. So when the model gets better at phrasing (warmer, more
 natural, more careful), a brittle suite reports it as a **regression**. The suite ends up punishing exactly
@@ -63,6 +67,7 @@ the improvements you're trying to make.
 - ✅ 16 of 27 failures in run `2026-09-18T11-07`. Caveat: that run still used the live clock, so some of the 16 are date problems.
 - ✅ The two quoted examples are real but come from later runs: "not bad with money" is `tone-006` (`T16-12`); "steer you away from payday loans" is `distress_resources-001` (`T18-01`). The four failure patterns all exist in the suite (`$2,200.00`, "bank app", "No anomalies flagged", `conf-003` failing on "2026-03-27").
 All checked against the tide repo on 2026-09-18 by a separate fact-check pass.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): checks 11–12 are flag-only (LIFECYCLE 6a).
 
 ## Connections
 - **part-of [Three kinds of grader](three-kinds-of-grader.md)**: word checks are grader #1; this is their blind spot in depth.

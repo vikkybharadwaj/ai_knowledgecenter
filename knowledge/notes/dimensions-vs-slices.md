@@ -5,7 +5,7 @@ kind: concept
 spine_layer: foundations
 tags: [evals, coverage, failure-modes]
 connections:
-  - { to: sort-before-you-count, type: enables, why: "The map is the thing you sort tests onto; without it, 'coverage' has no coordinates and a test count is all you have." }
+  - { to: whose-fault-is-the-failure, type: enables, why: "Once every test has a place on the map, the next question is whether each failing test can be believed." }
   - { to: evals-test-judgment, type: builds-on, why: "The stages an answer passes through are that note's three-link chain generalized: pick the tool, fetch the data, use the numbers, then say it well." }
   - { to: three-kinds-of-grader, type: used-with, why: "A dimension is only real if some grader can see it — accuracy needs the data in front of the grader, tone needs a judge." }
   - { to: safety-alarm-false-alarms, type: used-with, why: "Red lines are the map's zero-tolerance squares, so they inherit that note's warning: validate the checks before letting them block a release." }
@@ -75,6 +75,13 @@ failed" from "the test failed" before counting anything.**
 scenarios, so coverage comes from the grid rather than whatever questions come to mind — and make sure
 **every red line gets several tests**.
 
+**Inherited a suite instead?** Sort every existing test onto the grid before writing new ones: put the labels
+*inside* each test, have the runner refuse a test with a missing label, then read the grid three ways —
+**piles** (easy tests heaped in one square), **gaps** (whole jobs or stages with no tests) and **thin red lines**
+(a must-never-happen with one test or none). Tide's old suite: "accurate facts" held 35 of 81 tests, two stages
+had one test each, one job had none, and three red lines rested on a single test. And **re-sort before you
+re-grade** — change the grouping and the grading in separate steps, so you know which one moved the numbers.
+
 **Everyday analogy:** sorting a closet. "Shirts, pants, shoes" is one kind of category. Adding "blue things"
 mixes in a second kind, and now a blue shirt belongs in two places. Sort by *type*, then use *colour* as a
 label you can filter by.
@@ -128,9 +135,10 @@ Checked on 2026-09-20 against the tide repo by a separate fact-check pass (tide 
 - ❌ Corrected from the draft: the "$847 invented charge" is the strategy doc's *hypothetical* illustration. The real $847 is a genuine anomaly the Coach is supposed to flag (`anomaly-001`); the observed fabrication failures are `anomaly-002`/`anomaly-006`.
 - ⚠️ "About half the failures were the test's fault" is the repo's own wording; the concrete figure behind it is 5 of 12 examined (≈42%).
 - ⚠️ "Lost track of the conversation" had no dimension at all; "fetches the right data" had none *of its own* (folded into accuracy).
+- ✅ (2026-10-06) Absorbed the former lesson *sort before you count*: inherited-suite sorting, labels in the test, piles/gaps/thin red lines, 35 of 81 (tide PR #247).
 
 ## Connections
-- **enables [Sort your tests onto the map before trusting the count](sort-before-you-count.md)**: the map gives coverage its coordinates.
+- **enables [When a test fails, find out whose fault it is](whose-fault-is-the-failure.md)**: placed on the map, then audited.
 - **builds-on [Evals test judgment; unit tests test math](evals-test-judgment.md)**: the stages generalize the three-link chain.
 - **used-with [Three kinds of grader](three-kinds-of-grader.md)**: a dimension is only real if a grader can see it.
 - **used-with [A safety alarm is only as good as its checks](safety-alarm-false-alarms.md)**: red lines are the zero-tolerance squares.
