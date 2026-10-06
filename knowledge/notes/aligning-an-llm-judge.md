@@ -64,6 +64,13 @@ them a few marked papers (train), have them mark a practice batch and discuss wh
 check them on a batch neither of you has discussed (test). And you track both "missed a wrong answer" and
 "marked a right answer wrong", because those cost different things.
 
+**How Tide did it (October 2026).** The owner graded two blind sets of 10. The first judge agreed on 7 of 10;
+tuned on set 1 it reached 10 of 10; then it was **frozen** (fingerprinted) and scored once on the held-out set 2:
+7 of 9. The next version graded the other 80 answers as provisional *silver* labels next to the owner's 20 *gold*
+ones — and stays provisional until per-type judges are certified on held-out labels. Earlier, on the archived
+suite, the one judge change that improved both catch rate and false alarms was *removing* its shared examples —
+see [measure the judge before you change it](measure-the-judge-before-you-change-it.md).
+
 ## Mental model / why it matters
 Ground truth does **three jobs**: it *teaches* the judge (train), *steers* the prompt (dev), and *certifies*
 it (test). Without it, a judge is just another opinion — and an unmeasured opinion inside a dashboard is
@@ -86,6 +93,7 @@ Husain 2024 — raw agreement misleads on imbalanced data.
 - ✅ "Use a different model to evaluate than the model used to generate the evaluated output" — Anthropic's eval guide, platform.claude.com/docs *Define success criteria and build evaluations* (retrieved 2026-09-26).
 - ⚠️ The score-correction formula isn't given in the visible sources; captured as the principle only.
 - ❓ Split percentages and the 100–200 examples figure are the authors' recommendations.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): 7/10 → 10/10 tuned → frozen → 7/9 held-out; 20 gold + 80 silver; provisional until certified (LIFECYCLE phase 3).
 
 ## Connections
 - **builds-on [Three kinds of grader](three-kinds-of-grader.md)**: from "the judge has blind spots" to "measure them".

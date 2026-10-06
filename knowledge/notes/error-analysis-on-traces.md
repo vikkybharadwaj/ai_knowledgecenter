@@ -63,6 +63,11 @@ read that trace.
 **Everyday analogy:** a doctor's rounds. You don't order every test on every patient. You examine patients,
 note what's wrong, notice that five of them have the same symptoms, and *then* decide what to test for.
 
+**How Tide did it (October 2026).** 20 owner-graded and 80 judge-graded answers, each with a critique of the
+first upstream failure. The 53 failures were grouped into **14 types**, each with the layer where its fix lives
+— and **45 of 53 were prompt, tool, engine or data problems**, not the model's reasoning. A fresh round after the
+fixes found **two new types** the fixes themselves had created, which is why you keep coding fresh traces.
+
 ## Mental model / why it matters
 Every other eval step assumes you know **what** to measure. Error analysis is where that knowledge comes
 from, which is why it's "the most important activity in evals". It's also the direct cure for vanity
@@ -85,6 +90,7 @@ mod. 2026-09-01) — four steps, 30 traces, first failure, saturation, ~100 trac
 criteria drift, annotation rules; FAQ *How do I surface problematic traces…?* and *How can I efficiently
 sample…?* — sampling; Hamel Husain 2024 — remove friction from looking at data.
 - ❓ Practitioner methodology; the 30 / 100 / "under 10" figures are the authors' heuristics.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): 14 types, 45 of 53 system-side, 2 new types in round 2 (LIFECYCLE phases 3, 4, 4c).
 
 ## Connections
 - **enables [Dimensions vs slices](dimensions-vs-slices.md)**: the taxonomy becomes the failure map.

@@ -12,7 +12,7 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 
 ## Start here
 - 🗺️ **[The Big Picture](maps/big-picture.md)** — the spine: how the whole Claude stack fits together (the dot-connecting map).
-- 🧪 **[Evals](maps/evals.md)**: how to know an AI product actually works. Ten mental models for evals (distilled from Hamel Husain, Shreya Shankar and others) plus seventeen plain-language lessons learned rebuilding a real eval system, and the eight-step loop that ties them together (hub: `docs/concepts/evals.html`).
+- 🧪 **[Evals](maps/evals.md)**: how to know an AI product actually works. Ten mental models for evals (distilled from Hamel Husain, Shreya Shankar and others) plus nineteen plain-language lessons learned rebuilding a real eval system, and the eight-step loop that ties them together (hub: `docs/concepts/evals.html`).
 - 🏗️ **[Building & advising on AI stacks](maps/building-ai-stacks.md)** — the consulting cluster: *when to use Claude Code vs build your own harness*, and how to bootstrap a company's AI stack.
 - 🕸️ **[Concept dependency graph](https://vikkybharadwaj.github.io/ai_knowledgecenter/concepts/graph.html)** — the tech-stack concepts and what each one depends on, laid out by spine layer (the notes below are its sources).
 - 📒 **[Git glossary](git-glossary.md)** — plain-English definitions of the git/GitHub terms (commit, branch, push, PR, worktree…) used to maintain this base.
@@ -42,7 +42,6 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 | [Evals test judgment; unit tests test math](notes/evals-test-judgment.md) | foundations | seedling |
 | [A safety alarm is only as good as its checks](notes/safety-alarm-false-alarms.md) | foundations | seedling |
 | [Dimensions vs slices — how to build a failure map](notes/dimensions-vs-slices.md) | foundations | seedling |
-| [Sort your tests onto the map before trusting the count](notes/sort-before-you-count.md) | foundations | seedling |
 | [When a test fails, find out whose fault it is first](notes/whose-fault-is-the-failure.md) | foundations | seedling |
 | [An eval is a repeatable check of one behaviour](notes/what-is-an-eval.md) | foundations | seedling |
 | [Two kinds of eval check — code vs LLM judge](notes/two-kinds-of-eval-check.md) | foundations | seedling |
@@ -60,6 +59,9 @@ hanging off a single [**Big Picture spine**](maps/big-picture.md).
 | [Same judge on both sides, blind to which side is which](notes/same-judge-blind-grading.md) | patterns | seedling |
 | [A fix can overreach — read every regression](notes/fixes-can-overreach.md) | foundations | seedling |
 | [Code checks before judges — the trace is the answer key](notes/code-checks-before-judges.md) | patterns | seedling |
+| [You can't evaluate what you can't see — instrument first](notes/instrument-before-you-evaluate.md) | patterns | seedling |
+| [Measure the judge before you change it](notes/measure-the-judge-before-you-change-it.md) | patterns | seedling |
+| [Close each cycle with a fresh live round](notes/fresh-live-round.md) | patterns | seedling |
 | [Three kinds of grader, and what each one can't see](notes/three-kinds-of-grader.md) | patterns | seedling |
 | [The Claude API agent primitives](notes/claude-api-agent-primitives.md) | api | budding |
 | [The Claude Agent SDK](notes/claude-agent-sdk.md) | agent-sdk | budding |

@@ -42,6 +42,10 @@ crashed before the AI answered, and every crash was scored as a fail. Nothing al
 truth was *we stopped measuring*. Production was fine the whole time, because it runs on a different cloud
 (Amazon Bedrock) that hadn't retired that model.
 
+**Latest (October 2026).** The real-data runner applies the same rule: an incomplete run gets **"no score"**,
+not a fake 0%, and a "complete trace" code check marks any answer without a full record as "no score". A cost
+cap stops runaway runs.
+
 ## Mental model / why it matters
 Every eval result carries **two answers**, in order: *did we measure anything?* and only then *how good was
 it?* Mixing them up is how eval programmes die quietly: people stop trusting the dashboard, then stop
@@ -65,6 +69,7 @@ Checked on 2026-09-18 against the tide repo (worktree `evals-revival`, PR #234) 
 - ✅ All four fixes exist in code: `evals/preflight.ts` (a 1-token call per model; throws and writes no results), `evals/run_health.ts` (invalid if every test crashed, or ≥50% crashed with the same cause), `generate_dashboard.ts` (trend shows valid runs only, plus a harness-failure banner), and `failure_kind.ts` + `evals.yml` (opens an issue only for harness failures).
 - ✅ Retired models fail and Bedrock runs its own schedule: platform.claude.com/docs "Model deprecations" (retrieved 2026-09-18).
 - ✅ Tide's own comments and docs said "91 nights, around 2026-06-21" until tide PR #239 (2026-09-18) corrected them to 95 nights from 2026-06-16, after the 2026-06-15 retirement.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): "no score" for incomplete runs, check 13, cost cap (LIFECYCLE 2b, 6a).
 
 ## Connections
 - **builds-on [An offline eval is a controlled experiment](offline-vs-online-evals.md)**: that note states the validity rule; this is the full lesson behind it.

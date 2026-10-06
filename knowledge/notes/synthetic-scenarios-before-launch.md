@@ -66,6 +66,12 @@ call** also beats asking for many at once.
 it on demand — but the simulator can't tell you how often engines actually catch fire. For that, you need
 real flight records.
 
+**How Tide did it (October 2026).** 100 scenarios from job × stage × persona (terse, chatty, anxious, vague,
+pushy) × shape (single or multi-turn), with every red line probed. Scenarios carry **question text only, no
+data**, because they run against the real Coach on the owner's real accounts. Each is tagged with the tools a
+good answer needs, and a *reach*: whether the right answer changes with the live balance, or the data is
+empty for this user (so the test is whether it says so honestly).
+
 ## Mental model / why it matters
 Dimensions are a **coverage map for inputs**; the failure map is a **coverage map for mistakes**. You need
 both. Note the word clash: here "dimensions" means axes of *input variation* — what the Tide lesson called
@@ -87,6 +93,7 @@ failure-oriented dimensions, one model call per scenario, "get real users instea
 data where possible"); FAQ *How do I surface problematic traces…?* (stress-testing prompt constraints); FAQ on
 RAG (reverse query generation); Hamel Husain 2024 (educated guesses, LLM-generated test inputs).
 - ❓ Practitioner methodology, not a vendor spec.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): scenario dimensions and tags (`evals/scenarios/build_round1.py`, LIFECYCLE phase 1).
 
 ## Connections
 - **used-with [Dimensions vs slices](dimensions-vs-slices.md)**: these dimensions are input axes — Tide's "slices".

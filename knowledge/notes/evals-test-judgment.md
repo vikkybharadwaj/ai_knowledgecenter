@@ -51,6 +51,11 @@ barely checked link 3. A few word checks looked for an exact number, and they br
 wasn't shown the data, so it couldn't check numbers at all. So the most important question for a money app,
 *"did the AI tell the user the right number?"*, was the least tested thing in the suite.
 
+**Latest (October 2026).** The engine bug behind an impossible "this week" figure was proven the
+unit-test way, not by evals: tests on the reconstructed day, plus a no-regression match to the cent against the
+old engine on a normal day. And the grounding check this lesson proposed — every figure must come from the
+data — now runs on every recorded run.
+
 ## Mental model / why it matters
 Evals and unit tests aren't competitors; they own different links of one chain. The dangerous place is the
 **seam** between them. Each side assumes the other covers it, so nobody does. In a money app that seam is where
@@ -70,6 +75,7 @@ users get hurt: a correct calculation, quoted wrong.
 - ✅ The AI judge sees tool names, never tool data (`evals/judges/llm_judge.ts`).
 - ✅ (updated 2026-10-04) "Every dollar amount must appear in the tool data" — first proposed here — is now built: Tide's figure-grounding code check (tide #334), calibrated against the judge. See [code checks before judges](code-checks-before-judges.md).
 Checked against the tide repo on 2026-09-18 by a separate fact-check pass.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): engine fix proven by unit tests + no-regression match (LIFECYCLE 5b).
 
 ## Connections
 - **builds-on [An offline eval is a controlled experiment](offline-vs-online-evals.md)**: pretend data is what separates the layers.

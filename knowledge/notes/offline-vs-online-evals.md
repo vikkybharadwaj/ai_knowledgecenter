@@ -19,8 +19,11 @@ claude_specific: false
 
 ## TL;DR
 An **offline eval** runs the *real* agent (the production system prompt, the production tool
-definitions, the real Claude model) against a **frozen world**: every tool call returns data the
-test case (the *fixture*) wrote in advance. So each fixture asks a conditional question: *if the
+definitions, the real Claude model) against a **frozen world**, so only the agent can change between runs.
+There are two ways to freeze that world: **author it** (mock fixtures: every tool call returns data the
+test case wrote in advance) or **record it** from a real run (a frozen replay serves the exact tool outputs
+the agent saw). Tide began with authored mocks and moved to recordings of the real agent on real data,
+because mocks never test the agent on what it actually sees. So each fixture asks a conditional question: *if the
 world looked exactly like this, would the agent do the right thing?* Freezing the world leaves the
 agent's judgment as the only variable, and that is what lets you know the right answer in advance.
 The cost is realism, which you buy back with **online evals** on sampled production traffic and a
@@ -83,6 +86,22 @@ Claude API had retired, while production on Amazon Bedrock kept working. First a
 at all?"*, then *"how good was it?"* The full lesson is
 [A test that crashed is not a test that failed](crashed-is-not-failed.md).
 
+## How Tide's approach changed (September → October 2026)
+**September: authored mocks.** 92 hand-written conversations with invented data. That work made the tests
+honest — audited checks, a measured judge, a noise floor — but three limits remained: the failure map was
+designed top-down rather than discovered in real answers; **the tools were mocks, so the Coach was never
+tested on what it actually sees**; and the judge was checked against grades an AI wrote, not the product
+owner's.
+
+**October: real data, recorded.** The rebuild runs the **real Coach on the owner's real bank data** through
+the same entry point the app uses, records every tool output, and makes the owner's grades the ground truth.
+Scenarios carry only the question; the data is real. To prove a fix, the recording is replayed — the same
+questions, the same tool outputs, the clock pinned — so only the change differs. **Live runs discover; frozen
+replays prove.** The scripted suite was archived.
+
+**The flywheel survives the switch.** With recordings, a flagged real conversation doesn't need to be
+re-authored as a mock: its trace already *is* a frozen test.
+
 ## Mental model / why it matters
 Think **flight simulator vs flight recorder.** The simulator (offline) lets you script the storm,
 knows the correct manoeuvre, and replays identically, so it's where you catch regressions before
@@ -128,6 +147,7 @@ runs at 0/81 from 2026-06-16.
   real stale-clock case is `proj-acc-002`. Frozen dates shipped in PR #234.
 - ❓ The five-reason ordering and the flight-simulator analogy are opinion (a teaching frame), not
   vendor guidance.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): the three limits of the mocked suite and the move to real data + recorded replays (strategy §7 "Why rebuild"; LIFECYCLE phases 0–2).
 
 ## Connections
 - **builds-on [Harness engineering — reliability lives outside the model weights](harness-engineering-discipline.md)**: evals are the feedback signal that note's harness depends on; this note is how to make that signal trustworthy.

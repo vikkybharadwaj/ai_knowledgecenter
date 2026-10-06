@@ -41,6 +41,10 @@ owner-graded answers — it agreed **20 of 20**, though partly in-sample — so 
 Five blind grader agents scored the replays, and reading their changed verdicts caught **four places where
 the new prompt rules overreached**.
 
+**Blind means blind.** During grading, five of the AI judge's verdicts were accidentally shown in chat
+before the owner graded those answers. They were swapped for unseen ones. A grader who has seen the other
+grader's answer is no longer an independent check.
+
 ## Mental model / why it matters
 An experiment has two places noise can sneak in: the *world* and the *measurement*. Frozen replay pins the
 world; this pins the measurement. Blindness matters because whoever made the change *wants* it to work —
@@ -57,6 +61,7 @@ Distilled 2026-10-04 from tide's landing draft `evals/lessons/kc-02-same-judge-b
 checked against tide `docs/evals-map.html`: the judge re-graded all 20 owner-graded answers, 20/20, "partly
 in-sample".
 - ⚠️ 20/20 is partly in-sample, so it shows consistency rather than certifying the judge; certification still needs a held-out set.
+- ✅ (updated 2026-10-06 from tide `evals/LIFECYCLE.md` + `docs/EVALS_STRATEGY.md` at `a3ed538`; real-data amounts withheld per tide's privacy rule): the revealed-verdicts mistake and its fix (LIFECYCLE phase 3).
 
 ## Connections
 - **builds-on [Aligning an LLM judge](aligning-an-llm-judge.md)**: certify it, then use it fairly.
