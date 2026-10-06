@@ -296,7 +296,7 @@
     band(byId["across"]);
 
   // ---- walk the loop: same order, same numbers ----
-  // On this page a mental model shows only the idea itself. Its "How to apply", "Provenance & caveats" and
+  // On this page a mental model or lesson shows only the idea itself (and a lesson its real example). Its "How to apply", "Provenance & caveats" and
   // "Connections" sections stay in the note (they back the concept graph and the fact-check record) and open
   // with one click in the reader.
   var LEAN_OUT = /^<h2>(How to apply|Provenance|Connections)/;
@@ -316,6 +316,8 @@
   }
   function lessonRow(slug) {
     var note = bySlug[slug], p = parts(note.html);
+    p.rest = lean(p.rest) + '<p class="ev-full"><a href="#" class="kc-link" data-slug="' + slug +
+      '">How to apply, sources and connections — open the full note</a></p>';
     return '<details class="ev-lesson" id="l-' + slug + '"><summary>' +
       '<span class="ev-lnum"><span class="ev-chev"></span><span class="ev-tag l">L' + lNo[slug] + "</span></span>" +
       '<span class="ev-ltitle">' + esc(note.title) + "</span>" +
