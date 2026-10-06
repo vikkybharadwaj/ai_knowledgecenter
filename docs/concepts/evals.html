@@ -103,6 +103,7 @@
   .ev-stephead .ev-kicker { margin-bottom:2px; }
   .ev-steplink { color:inherit; text-decoration:none; }
   .ev-steplink:hover { text-decoration:underline; }
+  .ev-full { margin:14px 0 2px; font-family:var(--mono); font-size:.72rem; }
   .ev-related { margin-top:18px; color:var(--text-dim); font-size:.85rem; }
 
   @media (max-width: 880px) {
@@ -295,13 +296,22 @@
     band(byId["across"]);
 
   // ---- walk the loop: same order, same numbers ----
+  // On this page a mental model shows only the idea itself. Its "How to apply", "Provenance & caveats" and
+  // "Connections" sections stay in the note (they back the concept graph and the fact-check record) and open
+  // with one click in the reader.
+  var LEAN_OUT = /^<h2>(How to apply|Provenance|Connections)/;
+  function lean(rest) {
+    return rest.split(/(?=<h2>)/).filter(function (c) { return !LEAN_OUT.test(c); }).join("");
+  }
   function modelCard(slug) {
     var note = bySlug[slug], p = parts(note.html);
+    p.rest = lean(p.rest) + '<p class="ev-full"><a href="#" class="kc-link" data-slug="' + slug +
+      '">How to apply, sources and connections — open the full note</a></p>';
     return '<article class="ev-model" id="m-' + slug + '">' +
       '<div class="ev-model-head"><span class="ev-tag m">M' + mNo[slug] + '</span><div>' +
       '<div class="ev-kicker">Mental model</div><h3>' + esc(NAMES[slug] || note.title) + "</h3></div></div>" +
       '<div class="markdown ev-tldr">' + p.tldr + "</div>" +
-      '<details class="ev-deep"><summary>Go deeper — the full model, worked examples and sources</summary><div class="markdown">' + p.rest + "</div></details>" +
+      '<details class="ev-deep"><summary>Go deeper — the full idea and a worked example</summary><div class="markdown">' + p.rest + "</div></details>" +
       "</article>";
   }
   function lessonRow(slug) {
